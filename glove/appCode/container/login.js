@@ -11,12 +11,16 @@ import{
 	Navigator,
 	RefreshControl,
 	View,
-	ListView
+	ListView,
+	Dimensions
 } from 'react-native';
 import React,{ Component } from 'react';
 import UserPhoto from '../components/userPhoto';
 import ProductDetail from '../pages/productDetail';
 import LoginFragment from '../components/loginFragment';
+
+let {width,height}=Dimensions.get('window');
+
 export default class Login extends Component{
 	constructor(props){
 		super(props);
@@ -35,14 +39,20 @@ export default class Login extends Component{
 	render(){
 		return(
 			<View style={styles.container}> 
-				<UserPhoto />
-				<LoginFragment />
-
-				<TouchableOpacity onPress={this._toIphoneList.bind(this)}
-	                          	  underlayColor='#E1F6FF'>
-	         		 <Text>还没注册？</Text>          
-	        	</TouchableOpacity>
-				<Text>忘记密码</Text>
+				<View style={styles.userPhoto}>
+				    <UserPhoto />
+				</View>
+				<View style={styles.loginwrap}>
+					<LoginFragment />
+				</View>
+				<View style={styles.bottom}>
+					<TouchableOpacity onPress={this._toIphoneList.bind(this)} underlayColor='#E1F6FF'>
+		         		 <Text>还没注册？</Text>          
+		        	</TouchableOpacity>
+		        	<TouchableOpacity>
+						<Text>忘记密码</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -50,8 +60,25 @@ export default class Login extends Component{
 
 let styles=StyleSheet.create({
 	container:{
+		flexDirection:'column',
+		marginTop:40
+	},
+	userPhoto:{
+		justifyContent:'flex-start',
+		alignItems:'center'
+	},
+	loginwrap:{
+		marginTop:60,
+	},
+	bottom:{
 		flex:1,
-		marginTop:10
+		flexDirection:'row',
+		alignItems:'flex-end',
+		justifyContent:'space-around',
+		marginTop:100
 	}
+
+
+
 });
 
