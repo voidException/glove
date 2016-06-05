@@ -21,11 +21,13 @@ export default class UserPhoto extends Component{
 let styles=StyleSheet.create({
 	container:{
 		width:80,
-		height:80
+		height:80,
+		
 	},
 	image:{
 		width:80,
-		height:80
+		height:80,
+		
 	}
 
 

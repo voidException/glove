@@ -18,7 +18,6 @@ import React,{ Component } from 'react';
 import UserPhoto from '../components/userPhoto';
 import ProductDetail from '../pages/productDetail';
 import LoginFragment from '../components/loginFragment';
-
 let {width,height}=Dimensions.get('window');
 
 export default class Login extends Component{
@@ -36,8 +35,11 @@ export default class Login extends Component{
     });
 
   }
+
 	render(){
+		//把这里的根View 换成ScrollView应该可以在弹出键盘的时候上移
 		return(
+			
 			<View style={styles.container}> 
 				<View style={styles.userPhoto}>
 				    <UserPhoto />
@@ -54,18 +56,21 @@ export default class Login extends Component{
 					</TouchableOpacity>
 				</View>
 			</View>
+
 		);
 	}
 }
 
 let styles=StyleSheet.create({
 	container:{
+		flex:1,
 		flexDirection:'column',
 		marginTop:40
 	},
 	userPhoto:{
 		justifyContent:'flex-start',
-		alignItems:'center'
+		alignItems:'center',
+		marginTop:20
 	},
 	loginwrap:{
 		marginTop:60,
@@ -75,7 +80,7 @@ let styles=StyleSheet.create({
 		flexDirection:'row',
 		alignItems:'flex-end',
 		justifyContent:'space-around',
-		marginTop:100
+		marginBottom:20
 	}
 
 
