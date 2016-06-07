@@ -13,26 +13,12 @@ import {
 	ListView
 } from 'react-native';
 import React,{Component} from 'react';
-
 import Login from './login';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import {fetchPostsIfNeeded} from '../actions/navigatorAction'
 
-class Fenqimans extends Component{
-	constructor(props){
-		super(props);
-	}
-	render(){
-		return(
 
-			<View> 
-				<Text> 这个是Fenqiman页面</Text>
-			</View>
-		);
-	}
-}
-//以上Fenqimans类无用
 //Inavigator类是登录得首页
 class INavigator extends Component{
 	constructor(props){
@@ -40,11 +26,11 @@ class INavigator extends Component{
 	}
 
 	componentDidMount(){
-		//
+		// selectedReddit来自于mapStateToProps dispatch 来自于store
 		const {dispatch,selectedReddit}=this.props;
 		//console.log(dispatch)
 		//console.log(selectedReddit)
-		console.log(this.props)
+		//console.log(this.props)
 		dispatch(fetchPostsIfNeeded(selectedReddit))
 	}
 
@@ -70,6 +56,8 @@ class INavigator extends Component{
 
 function mapStateToProps(state,ownProps){
 	//console.log(ownProps);
+	//console.log(state);
+	//这里的state就是store里面的各种键值对，这里的selectedReddit 是fronted或者reactjs,  store是个外壳
 	const {selectedReddit,postsByReddit}= state;
 	const {
 		isFetching,

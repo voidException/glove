@@ -12,27 +12,29 @@ export function selectedReddit(state = 'reactjs', action) {
   }
 }
 
+
+
 function posts(state ={
 	isFetching:false,
 	didInvalidate:false,
 	items:[]
-},action){
-	switch(action.type){
-		case	REQUEST_POSTS:
-			return Object.assign({},state,{
-				didInvalidate:true
-			})
-		case	RECEIVE_POSTS:
-			return Object.assign({},state,{
-				isFetching:false,
-				didInvalidate:false,
-				items:action.posts,
-				lastUpdated:action.receivedAt
+    },action){
+		switch(action.type){
+			case	REQUEST_POSTS:
+				return Object.assign({},state,{
+					didInvalidate:true
+				})
+			case	RECEIVE_POSTS:
+				return Object.assign({},state,{
+					isFetching:false,
+					didInvalidate:false,
+					items:action.posts,
+					lastUpdated:action.receivedAt
 
-			})
-		default:
-			return state
-	}
+				}) //在上面的代码里，可以看到，最终把从网络获取到的数据
+			default:
+				return state
+		}
 
 }
 

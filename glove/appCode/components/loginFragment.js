@@ -2,6 +2,8 @@
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
 import {ScrollView,Text,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions} from 'react-native';
+import ErrorTips from './errorTips';
+
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
 var KeyboardSpacer = require('react-native-keyboard-spacer');
@@ -12,7 +14,8 @@ export default class LoginFragment extends Component{
 		super(props);
 		this.state={
 			userEmail:null,
-			userPassword:null
+			userPassword:null,
+			onoff:null 
 		}
 
 	}
@@ -20,6 +23,12 @@ export default class LoginFragment extends Component{
 	dismiss(){ //这种方法也可以隐藏键盘，在
 		dismissKeyboard();
 		//接下来这里发送请求dispatch
+		if(!this.verify()){
+			return ;
+		}//校验
+
+
+
 	}
 	handleEmailChange(event){
 	  	this.setState({
@@ -33,14 +42,41 @@ export default class LoginFragment extends Component{
     	});
     }
     verify(){
-    	//校验邮箱和密码是否合法 
-    	console.log('verify');
+    	//输入完密码，点击return时，校验邮箱和密码是否合法 
+    	//console.log('verify');
+    	let email=this.state.userEmail;
+    	let password=this.state.userPassword;
+    	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
+    	if(email==null ||password==null ||email.length<10 || password<7 || !regx.test(email)){
+    		//控制'您输入的邮箱或密码有误'
+    		this.setState({
+    			onoff:1
+    		});
+    		return false;
+    		//console.log(this.state.onoff);
+    	}
     }
     focusNextField(nextField){
     	//点击return时，密码框自动获得焦点
     	this.refs[nextField].focus();
     }
+    //如果弹出提示错误，那么用户点击邮箱或者密码输入框的时候，提示错误应该消失
+    focusToclean(){
+    	this.refs.refemail.focus();
+    	this.setState({
+    		onoff:null
+    	});
+    }
+    focusTocleanPass(){
+    	this.refs.refpass.focus();
+    	this.setState({
+    		onoff:null
+    	});
+    }
+
 	render(){
+		let errTip=this.state.onoff ? <ErrorTips />: null;
+		console.log(errTip);
 		return(
 			    <ScrollView>
 				<View style={styles.email}>
@@ -60,7 +96,7 @@ export default class LoginFragment extends Component{
 						autoCorrect={false}	
 						onChange={this.handleEmailChange.bind(this)}						
 						onSubmitEditing={() => this.focusNextField('refpass')}
-						onFocus={() => { this.refs.refemail.focus() }}
+						onFocus={this.focusToclean.bind(this)}
 					/>
 				</View>
 				<View style={styles.password}>
@@ -76,10 +112,12 @@ export default class LoginFragment extends Component{
 						 autoCorrect={false}
 						 onChange={this.handlePassChange.bind(this)}
 						 onSubmitEditing={this.verify.bind(this)}
-						 onFocus={() => { this.refs.refpass.focus() }}
-						 />
+						 onFocus={this.focusTocleanPass.bind(this)}
+					/>
 				</View>
 				<KeyboardSpacer/>
+			{/**  这里根据登录校验进行提示**/}
+				 <View style={styles.err}>{errTip}</View>
 				<TouchableOpacity 
 					style={styles.loginwrap}
 					onPress={this.dismiss.bind(this)}>					
@@ -133,6 +171,12 @@ let styles=StyleSheet.create({
 		marginRight:10,
 		borderWidth:1,
 		borderColor:'gray'
+	},
+	err:{
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'center',
+		marginTop:10
 	},
 	loginwrap:{
 		marginTop:40,

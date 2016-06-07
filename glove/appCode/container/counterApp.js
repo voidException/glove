@@ -7,7 +7,7 @@ import Counter from '../components/counter';
 import * as counterActions from '../actions/counterActions';
 import { connect} from 'react-redux';
 
-//CounterApp充当在外层的容器，首页列表的数据将从这个类中联网获取
+//CounterApp充当在外层的容器，首页的数据将从这个类中联网获取
 class CounterApp extends Component{
 	constructor(props){
 		super(props);
