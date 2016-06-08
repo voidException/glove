@@ -24,6 +24,11 @@ export default class Login extends Component{
 	constructor(props){
 		super(props);
 	}
+
+	componentWillMount(){
+		//console.log(this.props);
+	}
+	
 	//私有方法
     _toIphoneList(url){
     this.props.navigator.push({
@@ -45,7 +50,7 @@ export default class Login extends Component{
 				    <UserPhoto />
 				</View>
 				<View style={styles.loginwrap}>
-					<LoginFragment />
+					<LoginFragment  {...this.props}/>
 				</View>
 				<View style={styles.bottom}>
 					<TouchableOpacity onPress={this._toIphoneList.bind(this)} underlayColor='#E1F6FF'>

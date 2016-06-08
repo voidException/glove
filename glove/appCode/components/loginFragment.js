@@ -3,6 +3,7 @@
 import  React,{ Component} from 'react';
 import {ScrollView,Text,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions} from 'react-native';
 import ErrorTips from './errorTips';
+import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
@@ -19,13 +20,26 @@ export default class LoginFragment extends Component{
 		}
 
 	}
+	componentWillMount(){
+		//console.log(this.props.pass);
+	}
 	
 	dismiss(){ //这种方法也可以隐藏键盘，在
 		dismissKeyboard();
-		//接下来这里发送请求dispatch
-		if(!this.verify()){
-			return ;
-		}//校验
+		//dispatch从父组件一层层传递下来，
+		//接下来这里发送请求 dispatch(fetchUserProfileIfNeeded) 这个就是登录了，哈哈
+		let userAccount={
+			userEmail:this.state.userEmail,
+			userPassword:this.state.userPassword
+		};
+		const  {dispatch} =this.props.pass;
+		console.log(dispatch)
+		dispatch(fetchUserProfileIfNeeded( userAccount));
+
+		// if(!this.verify()){
+		// 	return ;
+		// }//校验
+
 
 
 
@@ -76,7 +90,7 @@ export default class LoginFragment extends Component{
 
 	render(){
 		let errTip=this.state.onoff ? <ErrorTips />: null;
-		console.log(errTip);
+		//console.log(errTip);
 		return(
 			    <ScrollView>
 				<View style={styles.email}>
@@ -115,7 +129,7 @@ export default class LoginFragment extends Component{
 						 onFocus={this.focusTocleanPass.bind(this)}
 					/>
 				</View>
-				<KeyboardSpacer/>
+				{/**<KeyboardSpacer/> **}
 			{/**  这里根据登录校验进行提示**/}
 				 <View style={styles.err}>{errTip}</View>
 				<TouchableOpacity 

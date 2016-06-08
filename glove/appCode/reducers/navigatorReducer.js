@@ -39,7 +39,7 @@ function posts(state ={
 }
 
 //这里的action.reddit 要么是reactjs，要么是fronted，当做了键值对的键
-export function postsByReddit(state={},action){
+export function postsByReddits(state={},action){
 	switch(action.type){
 	
 		case RECEIVE_POSTS:

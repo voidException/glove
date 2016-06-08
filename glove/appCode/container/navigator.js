@@ -28,9 +28,10 @@ class INavigator extends Component{
 	componentDidMount(){
 		// selectedReddit来自于mapStateToProps dispatch 来自于store
 		const {dispatch,selectedReddit}=this.props;
-		//console.log(dispatch)
+		console.log(dispatch)
 		//console.log(selectedReddit)
 		//console.log(this.props)
+		//通过打印log可以看出dispatch 不是state传过来的，
 		dispatch(fetchPostsIfNeeded(selectedReddit))
 	}
 
@@ -46,7 +47,9 @@ class INavigator extends Component{
 					initialRoute={{name:defaultName,component:defaultComponent,index:0}}
 					renderScene={(route,navigator)=>{
 						let Component=route.component; //这个就是defaultComponent
-						return <Component {...route.params} navigator={navigator} />
+						//route.params 未定义这个得好好研究
+						//console.log(this.props)
+						return <Component {...route.params} navigator={navigator}  pass={this.props} />
 					}} />	
 		);
 	}
@@ -58,12 +61,12 @@ function mapStateToProps(state,ownProps){
 	//console.log(ownProps);
 	//console.log(state);
 	//这里的state就是store里面的各种键值对，这里的selectedReddit 是fronted或者reactjs,  store是个外壳
-	const {selectedReddit,postsByReddit}= state;
+	const {selectedReddit,postsByReddits}= state;
 	const {
 		isFetching,
 		lastUpdated,
 		items:posts
-	}=postsByReddit[selectedReddit] ||{
+	}=postsByReddits[selectedReddit] ||{
 		isFetching:true,
 		items:[]
 	}
@@ -73,7 +76,7 @@ function mapStateToProps(state,ownProps){
 		posts,
 		isFetching,
 		lastUpdated,
-		postsByReddit
+		postsByReddits
 	}
 }
 //以下展示两种包裹action的方法，使它们等价于disptch(action)
