@@ -3,9 +3,9 @@ import {URLLogin} from '../utils/url';
 
 //userAccount 包含邮箱和密码，外部传入
 export function  receiveUserProfile(userAccount,json){
-	console.log(json);
+	
 	return{
-		type:types.GET_userProfile,
+		type:types.Login_userProfile,
 		userAccount,
 		posts:json.data,
 		receivedAt:Date.now()
@@ -14,7 +14,7 @@ export function  receiveUserProfile(userAccount,json){
 
 
 export  function fetchUserProfile(userAccount){
-    console.log(userAccount)
+   
 	return dispatch=>{
 		return fetch(URLLogin,{
 					method:'POST',

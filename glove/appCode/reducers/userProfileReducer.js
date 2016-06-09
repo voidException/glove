@@ -1,17 +1,21 @@
 
 //import { GET_userProfile } from '../actions/actionTypes';
 import * as types  from '../actions/actionTypes';
-
-
-
+import {DeviceEventEmitter} from 'react-native';
 export  function  userProfile(state={
-		isFetching:false,
+		logined:false,
 		items:[]
 	},action){
+		let tag=false;
+		if (action.posts!==null || action.posts!==[]) {
+			tag=true;
+		}
+		DeviceEventEmitter.emit('loginSuccess', { });
+		
 		switch(action.type){
-			case types.GET_userProfile:
+			case types.Login_userProfile:
 				return Object.assign({},state,{
-					isFetching:true,
+					logined:tag,
 					items:action.posts,
 					lastUpdated:action.receivedAt
 				})

@@ -15,7 +15,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 
-export default class MainPage extends Component{
+export default class RegisterPage extends Component{
 	constructor(props){
 		super(props);
 		
@@ -25,7 +25,7 @@ export default class MainPage extends Component{
 		return(
 			<View style={styles.container}> 
 			
-				<Text> 这个是主页</Text>
+				<Text> 注册的页面</Text>
 			</View>
 		);
 	}

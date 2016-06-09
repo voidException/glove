@@ -16,7 +16,7 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 import UserPhoto from '../components/userPhoto';
-import MainPage from '../pages/mainPage';
+import RegisterPage from '../pages/registerPage';
 import LoginFragment from '../components/loginFragment';
 let {width,height}=Dimensions.get('window');
 
@@ -30,16 +30,14 @@ export default class Login extends Component{
 	}
 	
 	//私有方法
-    _toIphoneList(url){
-    this.props.navigator.push({
-      component:MainPage,
-      passProps:{
-        productID:100201,
-        
-      }
-    });
-
-  }
+    goRegisterPage(){
+	    this.props.navigator.push({
+		    component:RegisterPage,
+		    passProps:{
+		        productID:100201,      
+		    }
+	    });
+    }
 
 	render(){
 		//把这里的根View 换成ScrollView应该可以在弹出键盘的时候上移
@@ -53,7 +51,7 @@ export default class Login extends Component{
 					<LoginFragment  {...this.props}/>
 				</View>
 				<View style={styles.bottom}>
-					<TouchableOpacity onPress={this._toIphoneList.bind(this)} underlayColor='#E1F6FF'>
+					<TouchableOpacity onPress={this.goRegisterPage.bind(this)} underlayColor='#E1F6FF'>
 		         		 <Text>还没注册？</Text>          
 		        	</TouchableOpacity>
 		        	<TouchableOpacity>
