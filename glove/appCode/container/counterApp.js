@@ -3,7 +3,7 @@
 import React,{Component} from 'react';
 import { bindActionCreators } from 'redux';
 import Counter from '../components/counter';
-//导入整个模块，并命名为counterActions
+//导入整个模块，并命名为counterActions ,
 import * as counterActions from '../actions/counterActions';
 import { connect} from 'react-redux';
 
@@ -25,7 +25,7 @@ class CounterApp extends Component{
 
 }
 
-//counterActions 模块中包含的所有actions 都等价于dispatch(action)
+//counterActions 模块中包含的所有actions(increment decrement) 都等价于dispatch(action) 
 export default connect(state=>({
 		state:state.counter
 	}),

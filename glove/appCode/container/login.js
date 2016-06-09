@@ -16,7 +16,7 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 import UserPhoto from '../components/userPhoto';
-import ProductDetail from '../pages/productDetail';
+import MainPage from '../pages/mainPage';
 import LoginFragment from '../components/loginFragment';
 let {width,height}=Dimensions.get('window');
 
@@ -32,7 +32,7 @@ export default class Login extends Component{
 	//私有方法
     _toIphoneList(url){
     this.props.navigator.push({
-      component:ProductDetail,
+      component:MainPage,
       passProps:{
         productID:100201,
         
@@ -87,8 +87,5 @@ let styles=StyleSheet.create({
 		justifyContent:'space-around',
 		marginBottom:20
 	}
-
-
-
 });
 

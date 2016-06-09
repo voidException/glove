@@ -39,10 +39,6 @@ export default class LoginFragment extends Component{
 		// if(!this.verify()){
 		// 	return ;
 		// }//校验
-
-
-
-
 	}
 	handleEmailChange(event){
 	  	this.setState({

@@ -1,5 +1,5 @@
 import * as types from './actionTypes';
-import URLLogin from '../utils/url';
+import {URLLogin} from '../utils/url';
 
 //userAccount 包含邮箱和密码，外部传入
 export function  receiveUserProfile(userAccount,json){
@@ -14,9 +14,9 @@ export function  receiveUserProfile(userAccount,json){
 
 
 export  function fetchUserProfile(userAccount){
-    
+    console.log(userAccount)
 	return dispatch=>{
-		return fetch('http://127.0.0.1:8080/glove/user/login',{
+		return fetch(URLLogin,{
 					method:'POST',
 					headers:{
 						'Accept': 'application/json',

@@ -15,7 +15,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 
-export default class ProductDetail extends Component{
+export default class MainPage extends Component{
 	constructor(props){
 		super(props);
 		console.log(this.props.productID)
@@ -25,7 +25,7 @@ export default class ProductDetail extends Component{
 		return(
 			<View style={styles.container}> 
 			
-				<Text> 这个是商品详情页</Text>
+				<Text> 这个是主页</Text>
 			</View>
 		);
 	}
