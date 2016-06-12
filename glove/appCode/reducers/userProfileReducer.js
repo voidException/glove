@@ -10,7 +10,8 @@ export  function  userProfile(state={
 		if (action.posts!==null || action.posts!==[]) {
 			tag=true;
 		}
-		DeviceEventEmitter.emit('loginSuccess', { });
+		//执行到这里说明接收到了数据
+		//DeviceEventEmitter.emit('loginSuccess', { });
 		
 		switch(action.type){
 			case types.Login_userProfile:

@@ -1,3 +1,4 @@
+//该页面是5大页面的容器，
 
 import{
 	AppRegistry,
@@ -15,7 +16,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 
-export default class FindPasswordPage extends Component{
+export default class FaxianPage extends Component{
 	constructor(props){
 		super(props);
 		
@@ -25,7 +26,7 @@ export default class FindPasswordPage extends Component{
 		return(
 			<View style={styles.container}> 
 			
-				<Text> 这个是找回密码的页面</Text>
+				<Text> 发现页面</Text>
 			</View>
 		);
 	}

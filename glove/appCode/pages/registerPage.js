@@ -25,7 +25,7 @@ export default class RegisterPage extends Component{
 		return(
 			<View style={styles.container}> 
 			
-				<Text> 注册的页面</Text>
+				<Text> 这个是注册的页面</Text>
 			</View>
 		);
 	}

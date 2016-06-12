@@ -4,14 +4,14 @@ import  React,{ Component} from 'react';
 import { NativeAppEventEmitter ,ScrollView,Text,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
 import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
-import MainPage from '../pages/mainPage';
-
+import MyMainPage from '../pages/mainPage';
+import { connect } from 'react-redux';
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
-var KeyboardSpacer = require('react-native-keyboard-spacer');
+//var KeyboardSpacer = require('react-native-keyboard-spacer');
 
 
-export default class LoginFragment extends Component{
+export default class DengLuFragment extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -22,24 +22,26 @@ export default class LoginFragment extends Component{
 
 	}
 	componentDidMount(){
-		
-		DeviceEventEmitter.addListener('loginSuccess', () => {
-            
-            this.goMainPage();  
-        });
-
+		//console.log(this.props);
 	}
 	//一旦该组件的某个props属性改变了，就会执行这个方法，真是太好了
 	componentWillReceiveProps(nextProps) {
-		//还不知道这个方法该如何使用
-		//console.log(nextProps)		
+		
+		//console.log(nextProps.userProfile.logined); //true
+		//console.log(this.props.userProfile.logined); //false
+		if(nextProps.userProfile.logined!==this.props.userProfile.logined){
+			this.goMainPage();
+		}
+
+
 	}
 	goMainPage(){
+		
 	    this.props.navigator.push({
-		    component:MainPage,
-		    passProps:{
-		        productID:100201,      
-		    }
+		    component:MyMainPage,
+		    // params:{
+		    //     navigator:this.props.navigator,
+		    // }
 	    });
     }
     
@@ -59,21 +61,19 @@ export default class LoginFragment extends Component{
 		};
 		const  {dispatch} =this.props;
 		dispatch(fetchUserProfileIfNeeded( userAccount));	
-		//为啥不起作用呢
-		
+		//DeviceEventEmitter.emit('loginSuccess', { });
+		//this.goMainPage();
 		// this.goMainPage();
 		//使用以下两种方法都可以
 		/*
-		//DeviceEventEmitter.emit('loginSuccess', { });
+		DeviceEventEmitter.emit('loginSuccess', { });
 		
 		setTimeout(() => {
 			    if(this.props.userProfile.logined){
 				     this.goMainPage();
 			     }
 			}, 3000);
-		*/
-		
-		 
+		 */
 	}
 	handleEmailChange(event){
 	  	this.setState({
@@ -175,6 +175,18 @@ export default class LoginFragment extends Component{
 		);
 	}
 }
+function mapStateToProps(state,ownProps){
+	//console.log(ownProps);
+	//console.log(state);
+	//这里的state就是store里面的各种键值对，这里的selectedReddit 是fronted或者reactjs,  store是个外壳
+	//在这个函数中，应该从store中取出所有需要的state，向下传递
+	const { userProfile }= state;	
+	return {
+		userProfile,
+	}
+}
+const LoginFragment=connect(mapStateToProps)(DengLuFragment);
+export default LoginFragment ;
 
 
 let styles=StyleSheet.create({
@@ -195,8 +207,6 @@ let styles=StyleSheet.create({
 		marginBottom:4,
 		alignItems:'center',
 		justifyContent:'space-around',
-
-
 	},
 	emailinput:{
 		height:30,

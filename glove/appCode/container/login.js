@@ -32,10 +32,7 @@ export default class Login extends Component{
 	//私有方法
     goRegisterPage(){
 	    this.props.navigator.push({
-		    component:RegisterPage,
-		    passProps:{
-		        productID:100201,      
-		    }
+		    component:RegisterPage
 	    });
     }
 

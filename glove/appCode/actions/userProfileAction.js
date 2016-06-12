@@ -29,6 +29,9 @@ export  function fetchUserProfile(userAccount){
 		       })
 			   .then(response=>response.json())
 			   .then(json=>dispatch(receiveUserProfile(userAccount,json)))
+			   .catch(function(e){
+			   		console.log('没有连接网络')
+			   })
 	}
 }
 

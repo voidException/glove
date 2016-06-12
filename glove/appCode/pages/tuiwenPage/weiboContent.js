@@ -1,11 +1,10 @@
+//该页面是5大页面的容器，
 
 import{
-	AppRegistry,
 	StyleSheet,
 	Text,
 	Image,
 	ScrollView,
-	TouchableHighlight,
 	TouchableOpacity,
 	NavigatorIOS,
 	Navigator,
@@ -15,7 +14,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 
-export default class FindPasswordPage extends Component{
+export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
 		
@@ -25,7 +24,7 @@ export default class FindPasswordPage extends Component{
 		return(
 			<View style={styles.container}> 
 			
-				<Text> 这个是找回密码的页面</Text>
+				<Text> 具体的一条微博</Text>
 			</View>
 		);
 	}

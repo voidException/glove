@@ -15,9 +15,9 @@ import {
 import React,{Component} from 'react';
 import Login from './login';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux'
-
-
+import { connect } from 'react-redux';
+import MyMainPage from '../pages/mainPage';
+import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -30,10 +30,17 @@ class INavigator extends Component{
 		//console.log(dispatch)		
 		//console.log(this.props)
 		//通过打印log可以看出dispatch 不是state传过来的，
-		//dispatch(fetchPostsIfNeeded(selectedReddit))
+		let requestParams={
+			userID:1,
+			page:1,
+			pageSize:6
+		};
+		const {dispatch}=this.props;
+		//dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 	render(){
 		let defaultName='TheLoginPage';
+		//let defaultComponent=Login;
 		let defaultComponent=Login;
 		return(
 			
@@ -43,7 +50,7 @@ class INavigator extends Component{
 						let Component=route.component; //这个就是defaultComponent
 						//route.params 未定义这个得好好研究
 						//console.log(this.props)
-						return <Component {...route.params} navigator={navigator}  {...this.props} />
+						return <Component {...route.params} navigator={navigator}  />
 					}
 				}/>	
 		);

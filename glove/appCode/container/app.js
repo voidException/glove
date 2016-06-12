@@ -1,5 +1,4 @@
 import React,{	Component	} from 'react';
-import  { View } from 'react-native';
 
 import {  createStore,applyMiddleware,combineReducers  } from 'redux';
 import {  Provider  } from 'react-redux';
