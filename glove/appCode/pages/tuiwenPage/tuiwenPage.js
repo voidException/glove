@@ -69,7 +69,7 @@ class TuiWenPage extends Component{
 		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
-					<Text>嗨，你好</Text>
+					<Text style={styles.toper}>给点爱，一起温暖世界</Text>
 				    <ListView 
 				    	 contentContainerStyle={styles.list}
 			             dataSource={this.state.dataSource}
@@ -117,6 +117,12 @@ let styles=StyleSheet.create({
 	container:{
 		flex:1,
 		marginTop:40
+	},
+	toper:{
+		flexDirection:'row',
+		justifyContent:'center',
+		alignSelf:'center',
+		color:'red'
 	},
 	list: {
 	    justifyContent: 'flex-start',

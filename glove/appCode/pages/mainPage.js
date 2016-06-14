@@ -45,7 +45,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 		return(
 				<TabBarIOS tintColor="white" barTintColor="darkslateblue">
 					<TabBarIOS.Item
-						title="推文"
+						title="给爱"
 						icon={require('./imgs/Public_btn_01_nor_.png')}
 						selected={this.state.selectedTab==='tuiwen'}
 						onPress={()=>{
