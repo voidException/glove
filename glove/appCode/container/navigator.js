@@ -31,18 +31,18 @@ class INavigator extends Component{
 		//console.log(dispatch)		
 		//console.log(this.props)
 		//通过打印log可以看出dispatch 不是state传过来的，
-		let requestParams={
-			userID:1,
-			page:1,
-			pageSize:6
-		};
-		const {dispatch}=this.props;
+		// let requestParams={
+		// 	userID:1,
+		// 	page:1,
+		// 	pageSize:6
+		// };
+		// const {dispatch}=this.props;
 		//dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 	render(){
 		let defaultName='TheLoginPage';
 		//let defaultComponent=Login;
-		let defaultComponent=WeiBoItem;
+		let defaultComponent=Login;
 		return(
 			
 				<Navigator

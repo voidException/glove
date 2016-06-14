@@ -29,15 +29,16 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 		this.state={
 			selectedTab:'tuiwen'
 		}	
+		//console.log(this.props)
 	}
 	componentWillMount(){
 		//console.log(this.props);
-		let requestParams={
-			userID:1,
-			page:1,
-			pageSize:6
-		};
-		const {dispatch}=this.props;
+		// let requestParams={
+		// 	userID:1,
+		// 	page:1,
+		// 	pageSize:6
+		// };
+		// const {dispatch}=this.props;
 		//dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 	render(){
@@ -51,7 +52,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 							this.setState({selectedTab:'tuiwen'});
 						}}>
 
-						<TuiWenPageWrapper />
+						<TuiWenPageWrapper {...this.props}/>
 					</TabBarIOS.Item>
 					
 					<TabBarIOS.Item

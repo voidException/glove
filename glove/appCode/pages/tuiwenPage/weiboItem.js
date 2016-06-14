@@ -20,60 +20,64 @@ export default class WeiBoItem extends Component{
 		super(props);
 		//console.log(this.props)
 		this.state={
-			tweetid:0,
-			useridtweet:0,
-			aTuiWenData:null,
-			tweetid:null,
-			useridtweet:null,
-			sourcemsgid:null,
-			tagid:null,
-			msgcontent:null,
-			boxtimes:null,
-			commenttimes:null,
-			deletetag:null,
-			msgcontent:null,
-			ok:0,
-			publicsee:1,
-			publishtime:null,
-			reportedtimes:0,
-			sourcemsgid:1,
-			tagid:1,
-			topic:1,
-			tweetbackupone:null,
-			tweetbackuptwo:null,
-			tweetbackupthree:null,
-			tweetbackupfour:null,
-			tweetbackupfive:0,
-			tweetbackupsix:0,
-			videoaddress:null
+			tweetid:this.props.row.ok || 0,
+			useridtweet: this.props.row.useridtweet || 0,
+			useridtweet: this.props.row.useridtweet || 0,
+			sourcemsgid: this.props.row.sourcemsgid || 0,
+			msgcontent: this.props.row.msgcontent || null,
+			boxtimes: this.props.row.boxtimes || null,
+			commenttimes: this.props.row.commenttimes || 0,
+			deletetag: this.props.row.deletetag || 0,
+			ok: this.props.row.ok || 0,
+			publicsee: this.props.row.publicsee || 0,
+			publishtime: this.props.row.publishtime || null,
+			reportedtimes: this.props.row.reportedtimes || 0,
+			sourcemsgid:this.props.row.sourcemsgid || 0,
+			tagid: this.props.row.tagid || 1,
+			topic:this.props.row.topic || 1,
+			tweetbackupone: this.props.row.tweetbackupone || null,
+			tweetbackuptwo: this.props.row.tweetbackuptwo || null,
+			tweetbackupthree: this.props.row.tweetbackupthree ||null,
+			tweetbackupfour: this.props.row.tweetbackupfour || null,
+			tweetbackupfive: this.props.row.tweetbackupfive ||0,
+			tweetbackupsix: this.props.row.tweetbackupsix ||0,
+			videoaddress: this.props.row.videoaddress ||null
 		}
+		//console.log(this.state.tweetid)
 	}//应该提供个获取一条推文的API，当发现有转发的推文存在时，应该单独获取，服务器组装太麻烦了
 	 //这个组件还依赖于登录的结果，比如大V是否显示
-	getJson(json){		
-		this.setState({
-			aTuiWenData:json.data[0]
-		});
-		console.log(this.state.aTuiWenData.tweetbackupfive===null);
-	}
+	// getJson(json){		
+	// 	this.setState({
+	// 		aTuiWenData:json.data[0]
+	// 	});
+	// 	//console.log(this.state.aTuiWenData.tweetbackupfive===null);
+	// }
 	componentWillMount(){
-		fetch('http://127.0.0.1:8080/glove/weibos/getTweetLists',{
-					method:'POST',
-					headers:{
-						'Accept': 'application/json',
-    					'Content-Type': 'application/json',
-    				},
-    				body: JSON.stringify({
-					    userID: 1,
-					    page: 1,
-					    pageSize:1
-					})
-		       })
-			   .then(response=>response.json())
-			   .then(json=>this.getJson(json))
-			   .catch(function(e){
-			   		console.log('请求推文出错了')
-			   })
+		// fetch('http://127.0.0.1:8080/glove/weibos/getTweetLists',{
+		// 			method:'POST',
+		// 			headers:{
+		// 				'Accept': 'application/json',
+  //   					'Content-Type': 'application/json',
+  //   				},
+  //   				body: JSON.stringify({
+		// 			    userID: 1,
+		// 			    page: 1,
+		// 			    pageSize:1
+		// 			})
+		//        })
+		// 	   .then(response=>response.json())
+		// 	   .then(json=>this.getJson(json))
+		// 	   .catch(function(e){
+		// 	   		console.log('请求推文出错了')
+		// 	   })
 	}
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			tweetid:nextProps.tweetid
+		});
+	}
+
+
 	goOtherWoPage(){
 		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
 		this.props.navigator.push({
@@ -92,8 +96,9 @@ export default class WeiBoItem extends Component{
 		});
 	}
 	render(){
-		//let row=this.props.row;
-		let oneWeiBoData=this.state.aTuiWenData;
+		//确保渲染前的每一个数据域都有值，否则会出现错误
+		let row=this.props.row;
+		//console.log(row)
 		return(
 			
 			<View style={{flex:1 ,marginTop:60}}>
@@ -109,7 +114,7 @@ export default class WeiBoItem extends Component{
 							
 							<View style={styles.nameV}>
 								<Text>{this.state.tweetbackupone}</Text>
-								<Text>大V</Text>
+								<Text>大V{this.state.tweetid}</Text>
 							</View>
 						</View>
 					</TouchableOpacity>
