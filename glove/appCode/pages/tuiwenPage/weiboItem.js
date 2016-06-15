@@ -41,7 +41,8 @@ export default class WeiBoItem extends Component{
 			tweetbackupfour: this.props.row.tweetbackupfour || null,
 			tweetbackupfive: this.props.row.tweetbackupfive ||0,
 			tweetbackupsix: this.props.row.tweetbackupsix ||0,
-			videoaddress: this.props.row.videoaddress ||null
+			videoaddress: this.props.row.videoaddress ||null,
+			sourcemsgContent:null //这个是原创内容，稍后获取
 		}
 		//console.log(this.state.tweetid)
 	}//应该提供个获取一条推文的API，当发现有转发的推文存在时，应该单独获取，服务器组装太麻烦了
@@ -53,6 +54,10 @@ export default class WeiBoItem extends Component{
 	// 	//console.log(this.state.aTuiWenData.tweetbackupfive===null);
 	// }
 	componentWillMount(){
+		//在这里，会根据tagid判断，决定dispatch取原创微博，
+		//然后获取到原创微博存储到store中的一个特定的数组中，但不知道这样是否造成显示卡顿，因为这个weiboItem
+		//存储了太多原创内容props，所以还是存储到本地的storage中，然后根据健取出来，this.setState({sourcemsgConet:aaa})
+
 		// fetch('http://127.0.0.1:8080/glove/weibos/getTweetLists',{
 		// 			method:'POST',
 		// 			headers:{
@@ -95,9 +100,12 @@ export default class WeiBoItem extends Component{
 			component:WeiBoContent
 		});
 	}
+	reportMe(){
+		//这里实现举报次数增加
+	}
 	render(){
 		//确保渲染前的每一个数据域都有值，否则会出现错误
-		let row=this.props.row;
+		//let row=this.props.row;
 		//console.log(row)
 		return(
 			
@@ -109,33 +117,44 @@ export default class WeiBoItem extends Component{
 							{	
 								 this.state.tweetbackuptwo ===null ?
 								  <Image source={require('../../image/default.jpg')} resizeMode={'contain'} style={styles.image}/>
-								: <Image source={{uri:this.state.aTuiWenData.tweetbackuptwo}} resizeMode={'contain'} style={styles.image}/>	
+								: <Image source={{uri:this.state.tweetbackuptwo}} resizeMode={'contain'} style={styles.image}/>	
 							}
 							
 							<View style={styles.nameV}>
 								<Text>{this.state.tweetbackupone}</Text>
-								<Text>大V{this.state.tweetid}</Text>
+								{ 
+									this.state.tweetbackupfive===3 ?
+									<Text>大v</Text> 
+								   : null
+								}								
 							</View>
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>
-						<View style={{marginRight:4}}>
-							<Text>求助人</Text>
-							<Text>@张三</Text>
-						</View>
+						{
+						 this.state.tweetbackupsix ?
+							<View style={{marginRight:4}}>
+								<Text>求助人</Text>
+								<Text>@{this.state.tweetbackupthree}</Text>
+							</View>
+						: null
+						}
 					</TouchableOpacity>
 				</View>
 				<TouchableOpacity onPress={this.goWeiBoContent.bind(this)}>			
 					<View style={styles.upContent}>
-						<Text>莫泰山携百亿私募回归 私募逐鹿公募尚待制度落地】在竞相争夺公募基金牌照的多家私募基金中又增添了一位实力悍将。随着上海博道投资管理有限公司(以下简称“博道投资”)加入公募基金牌照申请阵营</Text>
+						<Text>{this.state.msgcontent}</Text>
 					</View>
 				</TouchableOpacity>
-
-				<TouchableOpacity onPress={this.goOriginWeiBoContent.bind(this)}>	
-					<View style={styles.downContent}>
-						<Text>原来推文的内容近日，罗湖海关截获 “ 李斯特菌 ”280 瓶。1 内地旅客从罗湖口岸入境被抽查发现，其携带有几百个装有细小褐色颗粒的瓶子，经现场初步判定为李斯特菌。</Text>
-					</View>
-				</TouchableOpacity>				
+				{
+					this.state.tagid===2 ? 
+						<TouchableOpacity onPress={this.goOriginWeiBoContent.bind(this)}>	
+							<View style={styles.downContent}>
+								<Text>如果为2,根据sourcemsgid，异步获取原创消息的内容展示在这里</Text>
+							</View>
+						</TouchableOpacity>
+					: null
+				}			
 				<View style={styles.footer}>
 					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>	
 						<Text style={styles.footerText}>转发</Text>
@@ -143,7 +162,7 @@ export default class WeiBoItem extends Component{
 					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>
 						<Text style={styles.footerText}>评论</Text>
 					</TouchableOpacity>
-					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>
+					<TouchableOpacity	 onPress={this.reportMe.bind(this)}>
 						<Text style={styles.footerText}>举报</Text>
 					</TouchableOpacity>					
 				</View>
