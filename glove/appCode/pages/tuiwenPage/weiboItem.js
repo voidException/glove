@@ -57,7 +57,7 @@ export default class WeiBoItem extends Component{
 		//在这里，会根据tagid判断，决定dispatch取原创微博，
 		//然后获取到原创微博存储到store中的一个特定的数组中，但不知道这样是否造成显示卡顿，因为这个weiboItem
 		//存储了太多原创内容props，所以还是存储到本地的storage中，然后根据健取出来，this.setState({sourcemsgConet:aaa})
-
+		
 		// fetch('http://127.0.0.1:8080/glove/weibos/getTweetLists',{
 		// 			method:'POST',
 		// 			headers:{
