@@ -26,17 +26,17 @@ export default class WeiBoContent extends Component{
 				<View style={styles.shareText}><Text>分享到</Text></View>
 				<View style={styles.shareWrapper}> 					
 					<View style={styles.shareItemWrapper}>
-						<Image source={require('../imgs/weixin.png')}  style={styles.shareItemWrapper} resizeMode={'contain'}/>
+						<Image source={require('../imgs/weixin.png')}  style={styles.shareItem} resizeMode={'contain'}/>
 						<Text>朋友圈</Text>
 					</View>
 
 					<View style={styles.shareItemWrapper}>
-						<Image source={require('../imgs/qzone.jpg')} style={styles.shareItemWrapper} resizeMode={'contain'} />
+						<Image source={require('../imgs/qzone.jpg')} style={styles.shareItem} resizeMode={'contain'} />
 						<Text>Qzone</Text>
 					</View>
 
 					<View style={styles.shareItemWrapper}>
-						<Image source={require('../imgs/weibo.png')}  style={styles.shareItemWrapper} resizeMode={'contain'}/>
+						<Image source={require('../imgs/weibo.png')}  style={styles.shareItem} resizeMode={'contain'}/>
 						<Text>微博</Text>
 					</View>
 				</View>
@@ -73,12 +73,16 @@ let styles=StyleSheet.create({
 		justifyContent:'space-between',
 		borderBottomWidth:1,
 		borderColor:'red',
-		height:60
+		marginLeft:10,
+		marginRight:10
 	},
 	shareItemWrapper:{
-		width:60,
-		height:40,
+		
 		alignItems:'center'
+	},
+	shareItem:{
+		width:60,
+		height:60
 	},
 	commentWrapper:{
 		flexDirection:'row',

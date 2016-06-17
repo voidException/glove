@@ -14,6 +14,7 @@
     "isomorphic-fetch": "^2.1.1",
     "redux-logger": "^2.4.0",
     "react-native-keyboard-spacer":"^0.2.0",
-    "react-native-tab-navigator": "^0.3.2"
+    "react-native-tab-navigator": "^0.3.2",
+    "react-native-swiper2" :"^2.0.6"
   }
 }
