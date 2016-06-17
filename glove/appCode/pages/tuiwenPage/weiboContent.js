@@ -19,12 +19,37 @@ export default class WeiBoContent extends Component{
 		super(props);
 		
 	}
-
 	render(){
 		return(
-			<View style={styles.container}> 
-			
-				<Text> 具体的一条微博</Text>
+			<View style={styles.container}> 			
+				<View style={styles.broadcast}><Text> 传播温暖</Text></View>
+				<View style={styles.shareText}><Text>分享到</Text></View>
+				<View style={styles.shareWrapper}> 					
+					<View style={styles.shareItemWrapper}>
+						<Image source={require('../imgs/weixin.png')}  style={styles.shareItemWrapper} resizeMode={'contain'}/>
+						<Text>朋友圈</Text>
+					</View>
+
+					<View style={styles.shareItemWrapper}>
+						<Image source={require('../imgs/qzone.jpg')} style={styles.shareItemWrapper} resizeMode={'contain'} />
+						<Text>Qzone</Text>
+					</View>
+
+					<View style={styles.shareItemWrapper}>
+						<Image source={require('../imgs/weibo.png')}  style={styles.shareItemWrapper} resizeMode={'contain'}/>
+						<Text>微博</Text>
+					</View>
+				</View>
+
+				<View style={styles.commentWrapper}>
+					<TouchableOpacity>
+						<Text>转发</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity>
+						<Text>评论</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -32,8 +57,33 @@ export default class WeiBoContent extends Component{
 
 let styles=StyleSheet.create({
 	container:{
+	
+		marginTop:20
+	},
+	shareText:{
+		marginTop:20,
+	},
+	broadcast:{
+		flexDirection:'row',
+		justifyContent:'center'
+	},
+	shareWrapper:{
+		flexDirection:'row',
 		flex:1,
-		marginTop:100
+		justifyContent:'space-between',
+		borderBottomWidth:1,
+		borderColor:'red',
+		height:60
+	},
+	shareItemWrapper:{
+		width:60,
+		height:40,
+		alignItems:'center'
+	},
+	commentWrapper:{
+		flexDirection:'row',
+		justifyContent:'space-around'
 	}
+
 });
 
