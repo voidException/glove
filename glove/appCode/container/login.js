@@ -65,7 +65,8 @@ let styles=StyleSheet.create({
 	container:{
 		flex:1,
 		flexDirection:'column',
-		marginTop:40
+		marginTop:40,
+		backgroundColor:'#ffffff'
 	},
 	userPhoto:{
 		justifyContent:'flex-start',

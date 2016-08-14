@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import MyMainPage from '../pages/mainPage';
 import WeiBoItem from '../pages/tuiwenPage/weiboItem';
 import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
+import ZhuPage from '../pages/zhuPage/zhuPage';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -41,8 +42,8 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
 		let defaultComponent=Login;
+		//let defaultComponent=ZhuPage;
 		return(
 			
 				<Navigator

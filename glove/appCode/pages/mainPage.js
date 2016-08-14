@@ -42,7 +42,8 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 		//dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 	render(){
-		return(
+		return(	
+				
 				<TabBarIOS tintColor="white" barTintColor="darkslateblue">
 					<TabBarIOS.Item
 						title="给爱"
@@ -54,7 +55,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 
 						<TuiWenPageWrapper {...this.props}/>
 					</TabBarIOS.Item>
-					
+					{/*
 					<TabBarIOS.Item
 						title="主页"
 						icon={require('./imgs/Public_btn_02_nor_.png')}
@@ -64,6 +65,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						}}>
 						<ZhuPage />
 					</TabBarIOS.Item>
+
 					<TabBarIOS.Item
 						title="消息"
 						icon={require('./imgs/Public_btn_03_nor_.png')}
@@ -71,8 +73,9 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						onPress={()=>{
 							this.setState({selectedTab:'message'});
 						}}>
-						<MessagePage />
+						<MessagePage />Image
 					</TabBarIOS.Item>
+					*/}
 					<TabBarIOS.Item
 						title="发现"
 						icon={require('./imgs/Public_btn_01_nor_.png')}
@@ -92,6 +95,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						<WoPage />
 					</TabBarIOS.Item>
 				</TabBarIOS>
+				
 		);
 	}
 }

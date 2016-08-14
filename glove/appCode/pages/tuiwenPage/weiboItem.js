@@ -13,12 +13,13 @@ import React,{ Component } from 'react';
 import OtherWoPage from '../woPage/otherWoPage';
 import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
+import AutoLink from 'react-native-autolink';
+import Hyperlink from 'react-native-hyperlink';
 let {width,height}=Dimensions.get('window');
 
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props)
 		this.state={
 			tweetid:this.props.row.ok || 0,
 			useridtweet: this.props.row.useridtweet || 0,
@@ -103,6 +104,16 @@ export default class WeiBoItem extends Component{
 	reportMe(){
 		//这里实现举报次数增加
 	}
+	goBeatRenMainPage(url){
+		//console.log(url);//成功了，哈哈
+		// //在这里把url(用户昵称)传递给主页
+		this.props.navigator.push({
+			component:OtherWoPage,
+			params:{
+				nickname:url
+			}
+		});
+	}
 	render(){
 		//确保渲染前的每一个数据域都有值，否则会出现错误
 		//let row=this.props.row;
@@ -143,7 +154,12 @@ export default class WeiBoItem extends Component{
 				</View>
 				<TouchableOpacity onPress={this.goWeiBoContent.bind(this)}>			
 					<View style={styles.upContent}>
-						<Text>{this.state.msgcontent}</Text>
+						<AutoLink
+				          text={this.state.msgcontent}
+				          hashtag="instagram"
+				          twitter={true}
+				          phone={true}
+				          onPress={this.goBeatRenMainPage.bind(this)} />
 					</View>
 				</TouchableOpacity>
 				{

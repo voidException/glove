@@ -19,10 +19,19 @@ export default class WeiBoContent extends Component{
 		super(props);
 		
 	}
+	backUp(){
+		this.props.navigator.pop();
+	}
 	render(){
 		return(
 			<View style={styles.container}> 			
-				<View style={styles.broadcast}><Text> 传播温暖</Text></View>
+				<View style={styles.broadcast}>
+					<TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
+						<Text >﹤ 返回</Text>
+					</TouchableOpacity>
+					<Text style={styles.broad}> 传播温暖</Text>
+				</View>
+
 				<View style={styles.shareText}><Text>分享到</Text></View>
 				<View style={styles.shareWrapper}> 					
 					<View style={styles.shareItemWrapper}>
@@ -65,7 +74,15 @@ let styles=StyleSheet.create({
 	},
 	broadcast:{
 		flexDirection:'row',
-		justifyContent:'center'
+		justifyContent:'center',
+
+	},
+	returnButton:{
+		position:'absolute',
+		left:2
+	},
+	broad:{
+		textAlign:'center'
 	},
 	shareWrapper:{
 		flexDirection:'row',

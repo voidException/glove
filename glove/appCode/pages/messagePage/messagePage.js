@@ -35,7 +35,9 @@ export default class MessagePage extends Component{
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
-		marginTop:100
+		marginTop:100,
+		alignItems:'center',
+		justifyContent:'center'
 	}
 });
 
