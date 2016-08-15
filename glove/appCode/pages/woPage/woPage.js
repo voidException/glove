@@ -252,7 +252,8 @@ let styles=StyleSheet.create({
     },
     texts: {      
         fontSize: 16,     
-        alignSelf:'center'
+        alignSelf:'center',
+        fontWeight:'bold'
       }
 });
 

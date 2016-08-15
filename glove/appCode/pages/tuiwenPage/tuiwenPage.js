@@ -31,10 +31,11 @@ class TuiWenPage extends Component{
 		
 		this.state={
 			dataSource:DS.cloneWithRows([]),
+			isRefreshing: false,
 		}
 		//console.log(this.props)
 	}
-	 componentWillMount(){
+	componentWillMount(){
 		//console.log(this.props);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
 		let requestParams={
@@ -64,15 +65,32 @@ class TuiWenPage extends Component{
 	renderRow(row,sectionID){
 		return( <WeiBoItem  row={row} {...this.props}/>);
 	}
+	_onRefresh() {
+		setTimeout(()=>{
+			console.log('测试下拉刷新');
+			// this.setState({
+			// 	isRefreshing: false,
+			// });
+		},10000);
+	}
 
 	render(){
 		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
-					<View style={{backgroundColor:'#AEDDE3',height:60,justifyContent:'flex-end',alignItems:'center'}}>
+					<View style={{backgroundColor:'#AEDDE3',height:60,paddingTop:24,justifyContent:'center',alignItems:'center'}}>
 						<Text style={styles.toper}>给点爱，一起温暖世界</Text>
 					</View>
 				    <ListView 
+				    	refreshControl={
+					        <RefreshControl
+					            refreshing={this.state.isRefreshing}
+					            onRefresh={this._onRefresh.bind(this)}
+					            tintColor="#ff0000"
+					            title="Loading..."
+					            titleColor="#00ff00"
+					            colors={['#ff0000', '#00ff00', '#0000ff']}
+					            progressBackgroundColor="#ffff00"/>}
 				    	 contentContainerStyle={styles.list}
 			             dataSource={this.state.dataSource}
 			             renderRow={this.renderRow.bind(this)}
@@ -124,8 +142,8 @@ let styles=StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'center',
 		alignSelf:'center',
-		color:'red',
-		fontSize:16
+		color:'white',
+		fontSize:18
 	},
 	list: {
 	    justifyContent: 'flex-start',
