@@ -10,14 +10,20 @@ import{
 	Navigator,
 	RefreshControl,
 	View,
-	ListView
+	ListView,
+	PixelRatio,
+	Platform,
+	Dimensions
 } from 'react-native';
 import React,{Component} from 'react';
-
+let ratio = PixelRatio.get();
+let lineHeight = Platform.OS === 'ios' ? 14 : 16;
+let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
+let width=Dimensions.get('window').width;
+let height=Dimensions.get('window').height;
 export default class WeiBoContent extends Component{
 	constructor(props){
-		super(props);
-		
+		super(props);		
 	}
 	backUp(){
 		this.props.navigator.pop();
@@ -27,12 +33,16 @@ export default class WeiBoContent extends Component{
 			<View style={styles.container}> 			
 				<View style={styles.broadcast}>
 					<TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
-						<Text >﹤ 返回</Text>
+						<Image source={require('./image/ic_web_back.png')} style={styles.backImg} resizeMode={'contain'} />
+						<Text style={{fontSize:18,color:'red'}}>返回</Text>
 					</TouchableOpacity>
 					<Text style={styles.broad}> 传播温暖</Text>
+					<View style={{width:30}}></View>
 				</View>
 
-				<View style={styles.shareText}><Text>分享到</Text></View>
+				<View style={styles.shareText}>
+					<Text style={styles.shareTxt}>分享到:</Text>
+				</View>
 				<View style={styles.shareWrapper}> 					
 					<View style={styles.shareItemWrapper}>
 						<Image source={require('../imgs/weixin.png')}  style={styles.shareItem} resizeMode={'contain'}/>
@@ -51,11 +61,25 @@ export default class WeiBoContent extends Component{
 				</View>
 
 				<View style={styles.commentWrapper}>
-					<TouchableOpacity>
+					<TouchableOpacity style={styles.comment}>
+						<Text>转发</Text>
+						<Text>235</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity style={styles.comment}>
+						<Text>评论</Text>
+						<Text>235</Text>
+					</TouchableOpacity>
+				</View>
+
+				<View style={styles.commentBottomWrapper}>
+					<TouchableOpacity style={styles.bottomer}>
+						<Image source={require('../../image/redirect_icon.png')}  style={styles.bottomerImg} resizeMode={'contain'}/>
 						<Text>转发</Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity>
+					<TouchableOpacity style={styles.bottomer}>
+						<Image source={require('../../image/comment_icon.png')}  style={styles.bottomerImg} resizeMode={'contain'}/>
 						<Text>评论</Text>
 					</TouchableOpacity>
 				</View>
@@ -66,32 +90,46 @@ export default class WeiBoContent extends Component{
 
 let styles=StyleSheet.create({
 	container:{
-	
-		marginTop:20
+		flex:1,
+		backgroundColor:'#F9F9F9',
+	},
+	backImg:{
+		height:18,
+		width:18
 	},
 	shareText:{
-		marginTop:20,
+		marginTop:10,
+		marginLeft:5
+	},
+	shareTxt:{
+		fontSize:18,
+		color:'red'
 	},
 	broadcast:{
+		height:64,
+		backgroundColor:'#69B94C',
 		flexDirection:'row',
-		justifyContent:'center',
+		alignItems:'center',
+		justifyContent:'space-between',
 
 	},
 	returnButton:{
-		position:'absolute',
-		left:2
+		flexDirection:'row',
+		justifyContent:'flex-start'
 	},
 	broad:{
-		textAlign:'center'
+		textAlign:'center',
+		fontSize:18,
+		color:'#FFFFFF'
 	},
 	shareWrapper:{
 		flexDirection:'row',
-		flex:1,
 		justifyContent:'space-between',
-		borderBottomWidth:1,
-		borderColor:'red',
-		marginLeft:10,
-		marginRight:10
+		borderTopWidth:1/ratio,
+		borderBottomWidth:1/ratio,
+		borderTopColor:'red',
+		paddingLeft:10,
+		paddingRight:10
 	},
 	shareItemWrapper:{
 		
@@ -103,8 +141,34 @@ let styles=StyleSheet.create({
 	},
 	commentWrapper:{
 		flexDirection:'row',
-		justifyContent:'space-around'
-	}
+		justifyContent:'space-around',
+		alignItems:'center',
+		height:30,
+		backgroundColor:'#FFFFFF'
+	},
+	comment:{
+		flexDirection:'row',
+		alignItems:'center',
+		borderBottomWidth:1,
+		borderColor:'red',
 
+	},
+	commentBottomWrapper:{
+		position:'absolute',
+		width:width,
+		bottom:0,
+		flexDirection:'row',
+		justifyContent:'space-around',
+		alignItems:'center',
+		height:30,
+		backgroundColor:'#FFFFFF'
+	},
+	bottomer:{
+		flexDirection:'row',
+	},
+	bottomerImg:{
+		width:15,
+		height:15
+	}
 });
 

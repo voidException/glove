@@ -32,16 +32,18 @@ class TuiWenPage extends Component{
 		this.state={
 			dataSource:DS.cloneWithRows([]),
 			isRefreshing: false,
+			page:1,
+			pageSize:6
 		}
 		//console.log(this.props)
 	}
-	componentWillMount(){
+	componentDidMount(){
 		//console.log(this.props);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
 		let requestParams={
 			userID:1,
 			page:1,
-			pageSize:16
+			pageSize:6
 		};
 
 		const {dispatch}=this.props;
@@ -56,22 +58,35 @@ class TuiWenPage extends Component{
 	//异步获取数据后，更新的是store，connect会感知到，将会执行这个方法，这样weiboItem就有数据了
 	componentWillReceiveProps(nextProps) {
 		//必须确保cloneWithRows是一个数组！！
+		//console.log(nextProps);	
 		this.setState({
 			dataSource: DS.cloneWithRows(nextProps.weiboList.tuiwenList)
 		});
 		
+	}
+	componentWillUpdate(nextProps,nextState){
+		//console.log(nextProps);
+		//console.log(nextState);
 	}
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
 		return( <WeiBoItem  row={row} {...this.props}/>);
 	}
 	_onRefresh() {
-		setTimeout(()=>{
-			console.log('测试下拉刷新');
-			// this.setState({
-			// 	isRefreshing: false,
-			// });
-		},10000);
+		// setTimeout(()=>{
+		// 	console.log('测试下拉刷新');
+		// 	this.setState({
+		// 		isRefreshing: false,
+		// 	});
+		// },10000);
+		let requestParams={
+			userID:1,
+			page:1,
+			pageSize:18
+		};
+
+		const {dispatch}=this.props;
+		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 
 	render(){
@@ -104,11 +119,11 @@ class TuiWenPage extends Component{
 }
 
 function mapStateToProps(state,ownProps){
-	//console.log(ownProps);
-	//console.log(state);
-	//这里的state就是store里面的各种键值对，这里的selectedReddit 是fronted或者reactjs,  store是个外壳
+	//debugger
+	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
 	const { userProfile,weiboList }= state;	 
+	//console.log(weiboList);
 	return {
 		userid:userProfile.items.userid,
 		weiboList:weiboList
@@ -117,13 +132,13 @@ function mapStateToProps(state,ownProps){
 //以下展示两种包裹action的方法，使它们等价于disptch(action)
 //  const mapDispatchToProps=(dispatch,ownProps)=>{
 	
-//  	return {
+//  return {
 // 		getLists:()=>{
 // 			dispatch(fetchTuiwenPageIfNeeded(requestParams))
 // 		}
 // 		someActions:bindActionCreators(fetchTuiwenPageIfNeeded(requestParams),dispatch)
 //  	}
-// }
+//  }
 
 //也可以在这里面直接定义参数函数，注意没有return
 //const MyNavigator=connect(mapStateToProps,mapDispatchToProps)(INavigator);
