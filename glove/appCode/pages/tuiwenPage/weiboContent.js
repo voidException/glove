@@ -16,6 +16,7 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{Component} from 'react';
+import ZhuanfaPageWrapper from './zhuanfaPage';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -71,7 +72,7 @@ export default class WeiBoContent extends Component{
 						<Text>235</Text>
 					</TouchableOpacity>
 				</View>
-
+                <ZhuanfaPageWrapper />
 				<View style={styles.commentBottomWrapper}>
 					<TouchableOpacity style={styles.bottomer}>
 						<Image source={require('../../image/redirect_icon.png')}  style={styles.bottomerImg} resizeMode={'contain'}/>

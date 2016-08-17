@@ -43,8 +43,8 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
-		let defaultComponent=WeiBoContent;
+		let defaultComponent=Login;
+		//let defaultComponent=WeiBoContent;
 		return(
 			
 				<Navigator
