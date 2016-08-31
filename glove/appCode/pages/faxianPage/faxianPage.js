@@ -54,23 +54,13 @@ export default class FaxianPage extends Component{
 				<View style={styles.topper}>			    
 				    <Text style={{fontSize:18,color:'#fff'}}>发现</Text>
 				</View>
-				<Swiper style={styles.swiper} autoplay={true} showsButtons={false} height={0.3*height}>
-			        <View style={styles.slide1}>
-					    <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
-			           		<Image source={{uri:this.state.wheelImageOne}} resizeMode={'cover'} style={{width:width,height:0.3*height}}/>
-			            </TouchableOpacity>
-			        </View>
-			        <View style={styles.slide2}>
-			            <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
-			           		<Image source={{uri:this.state.wheelImageTwo}} resizeMode={'cover'} style={{width:width,height:0.3*height}}/>
-			            </TouchableOpacity>
-			        </View>
-			        <View style={styles.slide3}>
-			        	<TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
-			           		<Image source={{uri:this.state.wheelImageThree}} resizeMode={'cover'} style={{width:width,height:0.3*height}}/>
-			            </TouchableOpacity>
-			        </View>
-			    </Swiper>
+
+				<View>
+				    <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
+		           		<Image source={{uri:this.state.wheelImageOne}} resizeMode={'cover'} style={{width:width,height:0.2*height}}/>
+		            </TouchableOpacity>
+		        </View>
+			       
 			    <View style={styles.itemWrapperTop}>
 			        <View style={styles.leftWrapper}>
 				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
@@ -107,6 +97,13 @@ export default class FaxianPage extends Component{
 			    	</View>
 			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
 			    </View>
+			    <View style={styles.itemWrapper}>
+			     	<View style={styles.leftWrapper}>
+				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
+				    	<Text>检查更新</Text>	
+			    	</View>
+			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
+			    </View>
 	      </View>
 		);
 	}
@@ -115,7 +112,8 @@ export default class FaxianPage extends Component{
 let styles=StyleSheet.create({
 	 wrapper: {
 	 	flex:1 ,
-	 	backgroundColor:'#F9F9F9'	
+	 	backgroundColor:'#F9F9F9',
+	
 	 },
 	topper:{
 	 	paddingTop:statusBarHeight,

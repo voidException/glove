@@ -38,51 +38,35 @@ export default class WeiBoContent extends Component{
 						<Text style={{fontSize:18,color:'red'}}>返回</Text>
 					</TouchableOpacity>
 					<Text style={styles.broad}> 传播温暖</Text>
-					<View style={{width:30}}></View>
-				</View>
-
-				<View style={styles.shareText}>
-					<Text style={styles.shareTxt}>分享到:</Text>
-				</View>
-				<View style={styles.shareWrapper}> 					
-					<View style={styles.shareItemWrapper}>
-						<Image source={require('../imgs/weixin.png')}  style={styles.shareItem} resizeMode={'contain'}/>
-						<Text>朋友圈</Text>
-					</View>
-
-					<View style={styles.shareItemWrapper}>
-						<Image source={require('../imgs/qzone.jpg')} style={styles.shareItem} resizeMode={'contain'} />
-						<Text>Qzone</Text>
-					</View>
-
-					<View style={styles.shareItemWrapper}>
-						<Image source={require('../imgs/weibo.png')}  style={styles.shareItem} resizeMode={'contain'}/>
-						<Text>微博</Text>
+					<View style={{width:30}}>
+						<Text>留言</Text>
 					</View>
 				</View>
 
-				<View style={styles.commentWrapper}>
-					<TouchableOpacity style={styles.comment}>
-						<Text>转发</Text>
-						<Text>235</Text>
-					</TouchableOpacity>
-
-					<TouchableOpacity style={styles.comment}>
-						<Text>评论</Text>
-						<Text>235</Text>
-					</TouchableOpacity>
-				</View>
-                <ZhuanfaPageWrapper />
+				
+                {/* 这里是项目或者推文的详情*/}
 				<View style={styles.commentBottomWrapper}>
-					<TouchableOpacity style={styles.bottomer}>
-						<Image source={require('../../image/redirect_icon.png')}  style={styles.bottomerImg} resizeMode={'contain'}/>
-						<Text>转发</Text>
-					</TouchableOpacity>
+				
+					<View style={styles.shareText}>
+						<Text style={styles.shareTxt}>传播到:</Text>
+					</View>	
+					<View style={styles.shareWrapper}>	
+						<View style={styles.shareItemWrapper}>
+							<Image source={require('../imgs/weixin.png')}  style={styles.shareItem} resizeMode={'contain'}/>
+							<Text>朋友圈</Text>
+						</View>
 
-					<TouchableOpacity style={styles.bottomer}>
-						<Image source={require('../../image/comment_icon.png')}  style={styles.bottomerImg} resizeMode={'contain'}/>
-						<Text>评论</Text>
-					</TouchableOpacity>
+						<View style={styles.shareItemWrapper}>
+							<Image source={require('../imgs/qzone.jpg')} style={styles.shareItem} resizeMode={'contain'} />
+							<Text>Qzone</Text>
+						</View>
+
+						<View style={styles.shareItemWrapper}>
+							<Image source={require('../imgs/weibo.png')}  style={styles.shareItem} resizeMode={'contain'}/>
+							<Text>微博</Text>
+						</View>
+					</View>
+
 				</View>
 			</View>
 		);
@@ -158,10 +142,10 @@ let styles=StyleSheet.create({
 		position:'absolute',
 		width:width,
 		bottom:0,
-		flexDirection:'row',
+		//flexDirection:'row',
 		justifyContent:'space-around',
-		alignItems:'center',
-		height:30,
+		//alignItems:'center',
+		height:110,
 		backgroundColor:'#FFFFFF'
 	},
 	bottomer:{

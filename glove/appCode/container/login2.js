@@ -140,8 +140,12 @@ export default class Login extends Component{
 				</View>
 
 				<View style={styles.loginwrap}>
-					<LoginFragment  {...this.props}/>
+					{/*<LoginFragment  {...this.props}/> */}
 
+					{ this.state.off==1 ?
+					 <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
+					 :null
+					}
 				</View>
 
 

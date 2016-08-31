@@ -15,11 +15,13 @@ import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
+
 let {width,height}=Dimensions.get('window');
 
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
+		console.log(this.props)
 		this.state={
 			tweetid:this.props.row.ok || 0,
 			useridtweet: this.props.row.useridtweet || 0,
@@ -173,10 +175,10 @@ export default class WeiBoItem extends Component{
 				}			
 				<View style={styles.footer}>
 					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>	
-						<Text style={styles.footerText}>转发</Text>
+						<Text style={styles.footerText}>传播</Text>
 					</TouchableOpacity>
 					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>
-						<Text style={styles.footerText}>评论</Text>
+						<Text style={styles.footerText}>留言</Text>
 					</TouchableOpacity>
 					<TouchableOpacity	 onPress={this.reportMe.bind(this)}>
 						<Text style={styles.footerText}>举报</Text>

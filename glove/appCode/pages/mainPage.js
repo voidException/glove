@@ -17,10 +17,10 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 import FaxianPage from './faxianPage/faxianPage';
-import MessagePage from './messagePage/messagePage';
+import HelpPage from './messagePage/helpPage';
 import TuiWenPageWrapper from './tuiwenPage/tuiwenPage';
 import WoPage  from './woPage/woPage';
-import ZhuPage from './zhuPage/zhuPage';
+import ItemPageWrapper from './zhuPage/itemPage';
 import { connect } from 'react-redux';
 import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
  class MainPage extends Component{
@@ -46,7 +46,16 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 				
 				<TabBarIOS tintColor="white" barTintColor="darkslateblue">
 					<TabBarIOS.Item
-						title="给爱"
+						title="项目"
+						icon={require('./imgs/Public_btn_02_nor_.png')}
+						selected={this.state.selectedTab==='zhuye'}
+						onPress={()=>{
+							this.setState({selectedTab:'zhuye'});
+						}}>
+						<ItemPageWrapper />
+					</TabBarIOS.Item>
+					<TabBarIOS.Item
+						title="推文"
 						icon={require('./imgs/Public_btn_01_nor_.png')}
 						selected={this.state.selectedTab==='tuiwen'}
 						onPress={()=>{
@@ -55,27 +64,18 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 
 						<TuiWenPageWrapper {...this.props}/>
 					</TabBarIOS.Item>
-					{/*
+					
+					
 					<TabBarIOS.Item
-						title="主页"
-						icon={require('./imgs/Public_btn_02_nor_.png')}
-						selected={this.state.selectedTab==='zhuye'}
-						onPress={()=>{
-							this.setState({selectedTab:'zhuye'});
-						}}>
-						<ZhuPage />
-					</TabBarIOS.Item>
-
-					<TabBarIOS.Item
-						title="消息"
+						title="资助"
 						icon={require('./imgs/Public_btn_03_nor_.png')}
 						selected={this.state.selectedTab==='message'}
 						onPress={()=>{
 							this.setState({selectedTab:'message'});
 						}}>
-						<MessagePage />Image
+						<HelpPage />
 					</TabBarIOS.Item>
-					*/}
+					
 					<TabBarIOS.Item
 						title="发现"
 						icon={require('./imgs/Public_btn_01_nor_.png')}

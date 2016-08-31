@@ -78,6 +78,9 @@ export default class WoPage extends Component{
                 	<Text>500（人）</Text>
                 	<Text>7000（元）</Text>
                 </View>
+                <View style={styles.myItem}>
+                    <Text>我的项目</Text>
+                </View>
                 <View style={styles.itemWrapper}>                  
                     <Image source={require('./image/personal_navibar_icon_message.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                     <Text style={styles.texts}>私信问问</Text>
@@ -218,6 +221,18 @@ let styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         //borderBottomColor:'#F9F9F9',
         borderTopWidth:1/ratio,
+        //borderTopColor:'#F9F9F9',
+        backgroundColor:'#ffffff'
+    },
+    myItem:{
+        height:45,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        //marginTop:10,
+        //marginRight:7,
+        borderBottomWidth:1/ratio,
+        //borderBottomColor:'#F9F9F9',
         //borderTopColor:'#F9F9F9',
         backgroundColor:'#ffffff'
     },
