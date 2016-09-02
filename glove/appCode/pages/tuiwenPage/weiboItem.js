@@ -21,7 +21,7 @@ let {width,height}=Dimensions.get('window');
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		console.log(this.props)
+		//console.log(this.props)
 		this.state={
 			tweetid:this.props.row.ok || 0,
 			useridtweet: this.props.row.useridtweet || 0,
@@ -122,14 +122,14 @@ export default class WeiBoItem extends Component{
 		//console.log(row)
 		return(
 			
-			<View style={{flex:1 ,marginTop:60}}>
+			<View style={{flex:1 }}>
 								
 				<View style={styles.headerWrapper}>
 					<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>
 						<View  style={styles.header}>
 							{	
 								 this.state.tweetbackuptwo ===null ?
-								  <Image source={require('../../image/default.jpg')} resizeMode={'contain'} style={styles.image}/>
+								  <Image source={require('../../image/default.jpg')} style={styles.image}/>
 								: <Image source={{uri:this.state.tweetbackuptwo}} resizeMode={'contain'} style={styles.image}/>	
 							}
 							
@@ -138,7 +138,7 @@ export default class WeiBoItem extends Component{
 								{ 
 									this.state.tweetbackupfive===3 ?
 									<Text>大v</Text> 
-								   : null
+								   : <Text>大v</Text> 
 								}								
 							</View>
 						</View>
@@ -194,7 +194,8 @@ let styles=StyleSheet.create({
 	
 	image:{
 		width:40,
-		height:40,		
+		height:40,	
+		borderRadius:20	
 	},
 	header:{
 		flexDirection:'row',

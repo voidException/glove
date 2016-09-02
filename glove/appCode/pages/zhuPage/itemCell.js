@@ -12,31 +12,66 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 let {width,height}=Dimensions.get('window');
+let itemphoto= 'http://7xihgc.com1.z0.glb.clouddn.com/15.jpg'
 export default class ItemCell extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			itemid: 	0,
-			itemname: 	'这是一个测试项目',
-			circleidstart: 0,
-			circleidsupervise: 	0,
-			itemstart: null,
-			itemend: null,
-			itemtargetmoney: 0,
-			itemrealmoney: 0,
-			itemdescription: null,
-			itemphoto: 'http://7xihgc.com1.z0.glb.clouddn.com/15.jpg' || null, //这个是发起组织（爱心社或者公益组织）的头像
-			itemOwnerNickName:'爱心社',
-			itemEndTimeTips:'10',
-			imgurlone: null,
-			imgurltwo: null,
-			imgurlthree: null,
-			imgurlfour: null,
-			imgurlfive: null,
-			imgurlsix:null,	
-
+			itemid: this.props.row.item.itemid || 0,
+			itemname:this.props.row.item.itemname ||null,
+			circleidstart: this.props.row.item.circleidstart ||0,
+			circleidsupervise:this.props.row.item.circleidsupervise || 0,
+			//itemstart: this.props.row.item.itemstart || 0,
+			itemend: this.props.row.item.itemend || null,
+			itemtargetmoney: this.props.row.item.itemtargetmoney||0,
+			itemrealmoney: this.props.row.item.itemrealmoney||0,
+			itemdescription: this.props.row.item.itemdescription ||null,
+			circleidstartNickName:this.props.row.circleidstartNickName || null, //创建项目的用户昵称
+			circleidstartPhoto:this.props.row.circleidstartPhoto || itemphoto, //创建项目的用户头像地址
+			circleidsuperviseNickName: this.props.row.circleidsuperviseNickName||null,//项目监督团队的昵称
+			useridprincipalNickName: this.props.row.circleidstartNickName || null, //项目具体执行人的昵称
+			imgurlone: this.props.row.item.imgurlone ||null,
+			imgurltwo: this.props.row.item.imgurltwo ||null,
+			imgurlthree: this.props.row.item.imgurlthree ||null,
+			imgurlfour: this.props.row.item.imgurlfour ||null,
+			imgurlfive: this.props.row.item.imgurlfive ||null,
+			imgurlsix:this.props.row.item.imgurlsix ||null,
+			backupthree:this.props.row.item.backupthree || null,
+			backupfour:this.props.row.item.backupfour || null,
+			backupsix:this.props.row.item.backupsix || null,
+			progress:0
 		}
-		console.log(this.props)
+		 // console.log(this.props.row);
+		  //console.log(this.props.row);
+		// console.log(this.props.row.circleidsupervise);
+	}
+    goItemContent(){
+    	console.log(Text)
+    }
+	
+	componentDidMount(){
+		//计算百分比和时间转换
+		//console.log(this.props.row.itemstart);
+		let timeNeedHandle=this.props.row.item.itemend;
+		var date = new Date(timeNeedHandle);
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		D = date.getDate() + ' ';
+		//console.log(Y+M+D)
+		let itemEndTime=Y+M+D;
+		this.setState({
+			itemend:itemEndTime
+		});
+		//进度的百分比
+		
+		let target=this.props.row.item.itemtargetmoney;
+		let real=this.props.row.item.itemrealmoney;
+		let ratio=100*(real/target);
+		let strRatio=ratio.toString();
+		let substrRatio=strRatio.substring(0,5)+'%';
+        this.setState({
+        	progress:substrRatio
+        });
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -50,29 +85,29 @@ export default class ItemCell extends Component{
 			<View style={styles.container}>
 				<View style={styles.topper}>
 					<View style={styles.topperleft}>
-						<Image  source={{uri:this.state.itemphoto}} resizeMode={'cover'} style={styles.topperleftimg} />
-						<Text style={styles.topperleftTxtLeft}>{this.state.itemOwnerNickName}</Text>
+						<Image  source={{uri:this.state.circleidstartPhoto}} resizeMode={'cover'} style={styles.topperleftimg} />
+						<Text style={styles.topperleftTxtLeft}>{this.state.circleidstartNickName}</Text>
 					</View>
-					<Text style={styles.topperMiddle}><Text style={styles.redTxt}>{this.state.itemEndTimeTips}</Text>天后结束</Text>
-					<View style={styles.topperimgWrapper}>
+					
+					<View style={styles.topperRight}>
+					   	<Text style={styles.topperMiddle}>{this.state.itemend}结束</Text>
 						<Image source={require('./image/topperImgUrl.png')} style={styles.topperimg} />
 					</View>
 				</View>
 				
 				<View style={styles.titleWrapper}>
-					<Text style={styles.title}>你陪我变大，我陪你变老————给爸爸妈妈的关怀【东阿阿胶】，欢迎订购</Text>
+					<Text style={styles.title}>{this.state.itemname}</Text>
 				</View>
 				<View style={styles.viceTitleWrapper}>
-					<Text style={styles.viceTitle}>这里是副标题，第一期众筹圆满结束，超额完成，好评如潮，感谢爱心社给我提供的平台</Text>
+					<Text style={styles.viceTitle}>{this.state.backupthree}</Text>
 				</View>
 				<ScrollView style={styles.images} horizontal={true}>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
-					<Image  source={{uri:this.state.itemphoto}} style={styles.image}/>
+					<Image  source={{uri:this.state.imgurlone}} style={styles.image}/>
+					<Image  source={{uri:this.state.imgurltwo}} style={styles.image}/>
+					<Image  source={{uri:this.state.imgurlthree}} style={styles.image}/>
+					<Image  source={{uri:this.state.imgurlfour}} style={styles.image}/>
+					<Image  source={{uri:this.state.imgurlfive}} style={styles.image}/>
+					<Image  source={{uri:this.state.imgurlsix}} style={styles.image}/>
 
 				</ScrollView>
 			    {/* 这里是项目的标签*/}
@@ -82,37 +117,35 @@ export default class ItemCell extends Component{
 				    		<Text style={styles.category}>类别</Text>
 				    	</View>
 				    	<View>
-				    		<Text style={styles.txt}>#助学</Text>
-				    	</View>
-				    	<View>
-				    		<Text style={styles.txt}>#山区</Text>
-				    	</View>
-				    	<View>
-				    		<Text style={styles.txt}>#贫困儿童</Text>
-				    	</View>
+				    		<Text style={styles.txt}>{this.state.backupfour}</Text>
+				    	</View>				    	
 				    </View>
 
 			    	<View>
-			    		<Text style={styles.viceTitle}>已获<Text style={styles.redTxt}>500</Text>次支持</Text>
+			    		<Text style={styles.viceTitle}>已获<Text style={styles.redTxt}>{this.state.backupsix}</Text>次支持</Text>
 			    	</View>
 			    </View>
 
 			    <View style={styles.checkWrapper}>
 			    	<Image source={require('./image/authorize_ico.png')} style={{width:10,height:10}} resizeMode={'contain'}/>
-					<Text style={styles.checkTxt}>北京大学爱心社<Text style={{color:'blue'}}>(审核通过)</Text></Text>
+					<Text style={styles.checkTxt}>{this.state.circleidsuperviseNickName}<Text onPress={this.goItemContent.bind(this)} style={{color:'blue'}}>(负责监督)</Text></Text>
+				</View><View style={styles.checkWrapper}>
+			    	<Image source={require('./image/authorize_ico.png')} style={{width:10,height:10}} resizeMode={'contain'}/>
+					<Text style={styles.checkTxt}> @{this.state.useridprincipalNickName}<Text style={{color:'blue'}}>(负责具体执行)</Text></Text>
 				</View>
+
 			    <View style={styles.bottomWrapper}>
 			    	<View style={styles.bottomItem}>
 			       		 <Image  source={require('./image/total.png')} style={styles.bottomico} />
-			       		 <Text style={styles.txt}>目标<Text style={styles.yellowTxt}>15000</Text>元</Text>
+			       		 <Text style={styles.txt}>目标<Text style={styles.yellowTxt}>{this.state.itemtargetmoney}</Text>元</Text>
 			        </View>
 			        <View style={styles.bottomItem}>
 			       		 <Image  source={require('./image/money.png')} style={styles.bottomico} />
-			       		 <Text style={styles.txt}>已筹款<Text style={styles.yellowTxt}>15000</Text>元</Text>
+			       		 <Text style={styles.txt}>已筹款<Text style={styles.yellowTxt}>{this.state.itemrealmoney}</Text>元</Text>
 			        </View>
 			        <View style={styles.bottomItem}>
 			       		 <Image  source={require('./image/speed.png')} style={styles.bottomico} />
-			       		 <Text style={styles.txt}>进度<Text style={styles.purpleTxt}>90%</Text></Text>
+			       		 <Text style={styles.txt}>进度<Text style={styles.purpleTxt}>{this.state.progress}</Text></Text>
 			        </View>
 			    </View>
 
@@ -123,7 +156,6 @@ export default class ItemCell extends Component{
 
 let styles=StyleSheet.create({
 	container:{
-		marginTop:64,
 		marginLeft:3,
 		marginRight:3
 	},
@@ -131,8 +163,7 @@ let styles=StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'space-between',
 	},
-	topperimgWrapper:{
-		width:0.3*width,
+	topperRight:{
 		flexDirection:'row',
 		justifyContent:'flex-end'
 	},
@@ -144,7 +175,6 @@ let styles=StyleSheet.create({
 		flexDirection:'row',
 		alignItems:'center',
 		justifyContent:'flex-start',
-		width:0.3*width
 	},
 	topperleftTxtLeft:{
 		marginLeft:8,
@@ -152,10 +182,8 @@ let styles=StyleSheet.create({
 		color:'#000'
 	},
 	topperMiddle:{
-		marginLeft:10,
 		fontSize:14,
 		color:'#0092C3',
-		width:0.3*width
 	},
 	topperleftimg:{
 		height:24,

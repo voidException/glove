@@ -72,7 +72,7 @@ export default class FaxianPage extends Component{
 			     <View style={styles.itemWrapper}>
 			     	<View style={styles.leftWrapper}>
 				    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>他们需要帮助</Text>	
+				    	<Text>明星与大V基金</Text>	
 			    	</View>
 			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 			    </View>
@@ -86,21 +86,21 @@ export default class FaxianPage extends Component{
 			     <View style={styles.itemWrapper}>
 			     	<View style={styles.leftWrapper}>
 				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>关于我们</Text>	
+				    	<Text>社会公益机构</Text>	
 			    	</View>
 			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 			    </View>
 			    <View style={styles.itemWrapperTop}>
 			    	<View style={styles.leftWrapper}>
 				    	<Image source={require('./image/find_more_friend_shake.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text style={styles.texts}>意见反馈</Text>
+				    	<Text style={styles.texts}>加入我们</Text>
 			    	</View>
 			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
 			    </View>
 			    <View style={styles.itemWrapper}>
 			     	<View style={styles.leftWrapper}>
 				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>检查更新</Text>	
+				    	<Text>更多</Text>	
 			    	</View>
 			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 			    </View>

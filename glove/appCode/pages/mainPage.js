@@ -52,7 +52,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						onPress={()=>{
 							this.setState({selectedTab:'zhuye'});
 						}}>
-						<ItemPageWrapper />
+						<ItemPageWrapper  {...this.props} />
 					</TabBarIOS.Item>
 					<TabBarIOS.Item
 						title="推文"

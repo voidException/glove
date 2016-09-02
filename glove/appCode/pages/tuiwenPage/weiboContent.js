@@ -37,9 +37,9 @@ export default class WeiBoContent extends Component{
 						<Image source={require('./image/ic_web_back.png')} style={styles.backImg} resizeMode={'contain'} />
 						<Text style={{fontSize:18,color:'red'}}>返回</Text>
 					</TouchableOpacity>
-					<Text style={styles.broad}> 传播温暖</Text>
-					<View style={{width:30}}>
-						<Text>留言</Text>
+					<Text style={styles.broad}>转发</Text>
+					<View style={{marginRight:5}}>
+						<Text style={styles.broad}>留言</Text>
 					</View>
 				</View>
 

@@ -47,6 +47,7 @@ let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 			isRefreshing: false, //
 			dataSource:DS.cloneWithRows([]),
 		}
+		//console.log(this.props)
 		
 	}
 	componentDidMount(){
@@ -56,26 +57,46 @@ let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 			proof :'111',
 			userID:1,
 			page:1,
-			pageSize:6
+			pageSize:3
 		};
 
 		const {dispatch}=this.props;
 		dispatch(fetchItemPageIfNeeded(requestParams))
 	}
 	componentWillReceiveProps(nextProps) {
-		//必须确保cloneWithRows是一个数组！！
-		//console.log(nextProps);	
+		//必须确保cloneWithRows是一个数组！！	
 		this.setState({
 			dataSource: DS.cloneWithRows(nextProps.itemList.itemList)
 		});
+		//console.log(this.props)
 		
+	}
+	loadMore(){
+		 //加载完数据后调用这个方法，定位到合适的地方
+		 this.refs.scroll.scrollTo({x:0, y:300, animated:true})
 	}
 
 	_onRefresh() {
-		
+		console.log('onRefresh');
+	}
+	_onScroll(e){
+		// console.log('onScroll')
+		// console.log(e.nativeEvent);
+        /**
+         //这个方法不能用
+		let scrollH = e.nativeEvent.contentSize.height;
+        let y = e.nativeEvent.contentOffset.y;
+        let height = e.nativeEvent.layoutMeasurement.height;
+        console.log(height)
+        console.log('handle scroll', scrollH, y, height);
+        if (scrollH - height < y){
+        	console.log('上啦刷新')
+        }
+        **/
+
 	}
 	renderRow(row,sectionID){
-		return( <ItemCell  row={row} {...this.props}/>);
+		return( <ItemCell  row={row}  />);
 	}
 	wheelImageTouch(url){
 		
@@ -88,9 +109,23 @@ let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 		return(
 			<View style={styles.container}>
 				<View style={styles.topper}>			    
-					    <Text style={{fontSize:18,color:'#fff'}}>给爱</Text>
+					    <Text style={{fontSize:18,color:'#fff'}}>项目</Text>
 				</View>
-			<ScrollView > 
+			<ScrollView
+				ref='scroll'
+				refreshControl={
+			        <RefreshControl
+			            refreshing={this.state.isRefreshing}
+			            onRefresh={this._onRefresh.bind(this)}
+			            tintColor="#ff0000"
+			            title="Loading..."
+			            titleColor="#00ff00"
+			            colors={['#ff0000', '#00ff00', '#0000ff']}
+			            progressBackgroundColor="#ffff00"/>
+			     }
+			    onScroll={this._onScroll.bind(this)}
+			    scrollEventThrottle={200}> 
+
 				<View style={styles.wrapper}>
 					<StatusBar backgroundColor='#3B3738' barStyle="default"/>
 				
@@ -114,15 +149,6 @@ let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 				    </Swiper>
 		        </View>
 		        <ListView 
-				    	refreshControl={
-					        <RefreshControl
-					            refreshing={this.state.isRefreshing}
-					            onRefresh={this._onRefresh.bind(this)}
-					            tintColor="#ff0000"
-					            title="Loading..."
-					            titleColor="#00ff00"
-					            colors={['#ff0000', '#00ff00', '#0000ff']}
-					            progressBackgroundColor="#ffff00"/>}
 				    	 contentContainerStyle={styles.list}
 			             dataSource={this.state.dataSource}
 			             renderRow={this.renderRow.bind(this)}
@@ -130,6 +156,9 @@ let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 			             pageSize={2} 
 			             scrollRenderAheadDistance={300}
 			             enableEmptySections={true}/>	
+			   <View style={styles.loadMore}>
+			        <Text onPress={this.loadMore.bind(this)} style={styles.loadMoreTxt}>加载更多</Text>
+			   </View>
 		    </ScrollView> 
 	        </View>
 		);
@@ -143,7 +172,7 @@ function mapStateToProps(state,ownProps){
 	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
 	const { userProfile,itemList }= state;	 
-	//console.log(weiboList);
+	//console.log(itemList);
 	return {
 		userid:userProfile.items.userid,
 		itemList:itemList
@@ -157,18 +186,16 @@ let styles=StyleSheet.create({
 		flex:1
 	},
 	 wrapper: {
-	 	flex:1 	
+	 	//flex:1 	
 	 },
 	 topper:{
-	 	marginTop:statusBarHeight,
-	 	height:40,
+	 	height:64,
 	 	justifyContent:'center',
 	 	alignItems:'center',
 	 	backgroundColor:'#FF555A'
 	 	
 	 },
 	 swiper:{
-	 	marginTop:2,
 	 	height:150
 	 },
 	  slide1: {	    
@@ -199,7 +226,17 @@ let styles=StyleSheet.create({
 	    flexDirection: 'column',
 	    flexWrap: 'wrap',
 	    flex:1
+  	},
+  	loadMore:{
+  		height:40,
+  		justifyContent:'center',
+  		alignItems:'center',
+  		flexDirection:'row'
+  	},
+  	loadMoreTxt:{
+  		fontSize:16
   	}
+
 });
 
 

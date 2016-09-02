@@ -78,12 +78,24 @@ export default class WoPage extends Component{
                 	<Text>500（人）</Text>
                 	<Text>7000（元）</Text>
                 </View>
-                <View style={styles.myItem}>
-                    <Text>我的项目</Text>
+                <View style={styles.tuiwenWrapper}>
+                    
+                        <View style={styles.txtWrapper}>
+                            <Text style={styles.tuiwenWrapperTxt}>100</Text>
+                            <Text style={styles.txt}>发起的项目</Text>                           
+                        </View>
+                        <View style={styles.txtWrapper}>
+                            <Text style={styles.tuiwenWrapperTxt}>9000</Text>
+                            <Text style={styles.txt}>参与的项目</Text>
+                        </View>
+                        <View style={styles.txtWrapper}>
+                            <Text style={styles.tuiwenWrapperTxt}>120</Text>
+                            <Text style={styles.txt}>关注的项目</Text>
+                        </View>                 
                 </View>
                 <View style={styles.itemWrapper}>                  
                     <Image source={require('./image/personal_navibar_icon_message.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>私信问问</Text>
+                    <Text style={styles.texts}>加入的基金</Text>
                     <View style={{width:40}}></View>
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
@@ -98,7 +110,7 @@ export default class WoPage extends Component{
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/nav_zhoubianyou.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>举报</Text>
+                    <Text style={styles.texts}>我的积分</Text>
                     <View style={{width:40}}></View>
                 </View>
 			</View>
@@ -140,6 +152,7 @@ let styles=StyleSheet.create({
     topleftImg:{
         height:80,
         width:80,
+        borderRadius:40
     },
     topRight:{
         flexDirection:'row',
