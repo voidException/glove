@@ -81,8 +81,8 @@ class TuiWenPage extends Component{
 		// },10000);
 		let requestParams={
 			userID:1,
-			page:1,
-			pageSize:18
+			page:7,
+			pageSize:4
 		};
 
 		const {dispatch}=this.props;

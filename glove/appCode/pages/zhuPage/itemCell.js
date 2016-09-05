@@ -79,6 +79,9 @@ export default class ItemCell extends Component{
 			// 	itemid:nextProps.tweetid
 			// });
 	}
+	test(){
+		console.log('aa');
+	}
 
 	render(){
 		return(
@@ -95,7 +98,7 @@ export default class ItemCell extends Component{
 					</View>
 				</View>
 				
-				<View style={styles.titleWrapper}>
+				<View style={styles.titleWrapper} onPress={this.test.bind(this)}>
 					<Text style={styles.title}>{this.state.itemname}</Text>
 				</View>
 				<View style={styles.viceTitleWrapper}>
