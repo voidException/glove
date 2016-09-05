@@ -15,7 +15,7 @@ export function  receiveItemPage(requestParams,json){
 		type:types.Get_itemPage,
 		param:requestParams,   
 		posts:json.lp,
-		receivedAt:Date.now()
+		receivedAt: Math.floor(Date.now()/1000)
 	}
 }
 
@@ -43,6 +43,7 @@ export  function fetchItemPage(requestParams){
 			   .then(response=>response.json())
 			   .then(json=>dispatch(receiveItemPage(requestParams,json)))
 			   .catch(function(e){
+			   	debugger;
 			   		console.log('请求项目列表出错了ma');
 			   		console.trace(e);
 			   })

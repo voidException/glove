@@ -60,8 +60,8 @@ let lastItemstartTime=null;
 			userID:1,
 			page:1,
 			pageSize:3,
-			lastUpdate:100000,
-			lastItemstart:1000,   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
+			lastUpdate:1272203183,
+			lastItemstart:1272203183,   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:1
 		};
 
@@ -80,11 +80,14 @@ let lastItemstartTime=null;
 		//这里获取nextProps.itemList.itemLis[length].item.itemstart的值，赋给全局变量
 		let itemLength=nextProps.itemList.itemList.length-1;
 		lastItemstartTime=nextProps.itemList.itemList[itemLength].item.itemstart
-        // console.log(itemLength);
-        // console.log(lastItemstartTime)
-		this.setState({
+        //console.log(nextProps.itemList.itemList.length);
+        //console.log(nextProps.itemList.itemList);
+
+    	this.setState({
 			dataSource: DS.cloneWithRows(nextProps.itemList.itemList)
 		});
+       
+		
         
 		if (nextProps.wheelImg.wheelImg.length!==0) {
 			this.setState({
@@ -106,11 +109,12 @@ let lastItemstartTime=null;
 			userID:1,
 			page:3,
 			pageSize:3,
-			lastUpdate:null,
-			lastItemstart:lastItemstartTime ||65656656565,  
+			lastUpdate:6666666,
+			lastItemstart:lastItemstartTime||1473066364,  
 			//lastItemstart:lastItemstartTime,   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:2 //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
 		};
+		//console.log(lastItemstartTime);
 		const {dispatch}=this.props;
 
 		dispatch(fetchItemPageIfNeeded(requestParams));
@@ -124,9 +128,10 @@ let lastItemstartTime=null;
 			proof :'111',
 			userID:1,
 			page:3,
-			pageSize:3,
-			lastUpdate:this.props.itemList.lastUpdate,
-			lastItemstart:null,  //这个是点击加载更多获取的数据集合中，最早开始的项目集合
+			pageSize:15,
+			lastUpdate:this.props.itemList.lastUpdate || 3778487747,
+			//lastUpdate:5785758588,
+			lastItemstart:89839884,  //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:1 //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
 		};
 
