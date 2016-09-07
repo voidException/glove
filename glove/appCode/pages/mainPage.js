@@ -27,7 +27,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	constructor(props){
 		super(props);
 		this.state={
-			selectedTab:'tuiwen'
+			selectedTab:'zhuye'
 		}	
 		//console.log(this.props)
 	}
@@ -44,8 +44,9 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	render(){
 		return(	
 				
-				<TabBarIOS tintColor="white" barTintColor="darkslateblue">
+				<TabBarIOS tintColor="green" barTintColor="#fff" translucent= {false} style={styles.container}>
 					<TabBarIOS.Item
+					    badge="" 
 						title="项目"
 						icon={require('./imgs/Public_btn_02_nor_.png')}
 						selected={this.state.selectedTab==='zhuye'}
@@ -54,6 +55,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						}}>
 						<ItemPageWrapper  {...this.props} />
 					</TabBarIOS.Item>
+
 					<TabBarIOS.Item
 						title="推文"
 						icon={require('./imgs/Public_btn_01_nor_.png')}
@@ -106,8 +108,9 @@ export default MyMainPage;
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
-		marginTop:100
-	}
+		backgroundColor:'#fff',
+		
+	},
 });
 
 

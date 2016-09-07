@@ -56,15 +56,45 @@ export default class HelpPage extends Component{
 					<View style={styles.topper}>			    
 					    <Text style={{fontSize:18,color:'#fff'}}>资助</Text>
 					</View>
-					<View>
-					    <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
-			           		<Image source={{uri:this.state.wheelImageOne}} resizeMode={'cover'} style={{width:width,height:0.2*height}}/>
-			            </TouchableOpacity>
+					<View style={styles.shanWater}>		    
+			           	<Image source={require('./image/earth.png')} resizeMode={'cover'} style={styles.helpImg}/>
+			           	<View style={styles.shanTxt}>
+			           		<Text style={{color:'#4EB160'}}>越过，</Text>
+			           		<Text style={{color:'#4EB160',marginLeft:-15}}>千山万水</Text>
+			           		<Text style={{color:'#4EB160',marginLeft:-20}}>连接每一座城市的</Text>
+			           		<Text style={{color:'#4EB160',marginLeft:-25}}>每一个爱心社</Text>
+			           		<Text style={{color:'#4EB160',marginLeft:-30}}>只为温暖世界的每个角落。</Text>
+			           	</View>			  
+			        </View>
+			        <View style={styles.clubInfo}>
+			        	<View style={styles.yong}>
+			        		<Image source={require('./image/plants_003.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
+			        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>爱心社、</Text>
+			        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>青年志愿者协会</Text>
+			        		<View style={styles.join}><Text style={{fontSize:12,color:'#fff'}}>现在加入></Text></View>
+			        	</View>
+			        	<View style={styles.clubDetailInfo}>
+			        		<View>
+			        			<Text style={styles.upTxt}>已有社团</Text>
+			        			<Text style={styles.midTxt}>10000<Text style={{fontSize:14}}>个</Text></Text>
+			        			<Text style={styles.bottomTxt}>今日↑10个</Text>
+			        		</View>
+			        		<View style={styles.midWrapper}>
+			        			<Text style={styles.upTxt}>成员</Text>
+			        			<Text style={styles.midTxt}>10000<Text style={{fontSize:14}}>人</Text></Text>
+			        			<Text style={styles.bottomTxt}>今日↑10人</Text>
+			        		</View>
+			        		<View>
+			        			<Text style={styles.upTxt}>覆盖城市</Text>
+			        			<Text style={styles.midTxt}>1000<Text style={{fontSize:14}}>座</Text></Text>
+			        			<Text style={styles.bottomTxt}>今日↑10座</Text>
+			        		</View>
+			        	</View>
 			        </View>
 				    <View style={styles.itemWrapperTop}>
 				        <View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text>发布项目</Text>	
+					    	<Text style={{fontWeight:'bold'}}>发布项目</Text>	
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'contain'} style={styles.rightImage}/>
 
@@ -72,43 +102,112 @@ export default class HelpPage extends Component{
 				     <View style={styles.itemWrapper}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text>资助一个人</Text>	
+					    	<Text style={{fontWeight:'bold'}}>资助一个人</Text>	
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 				    </View>
 				     <View style={styles.itemWrapperTop}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text>资助我们</Text>
+					    	<Text style={{fontWeight:'bold'}}>资助我们</Text>
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
 				    </View>
 				     <View style={styles.itemWrapper}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text>赞助爱心社</Text>	
+					    	<Text style={{fontWeight:'bold'}}>赞助爱心社</Text>	
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 				    </View>
-				   
-		      </View>
-		    );
+				   	<View style={styles.upRightImgWrapper}>
+				   		<Image source={require('./image/water.png')} resizeMode={'contain'} style={styles.upRightImg}/>	
+				   	</View>
+
+		        </View>
+	   );
 	}
 }
 
 let styles=StyleSheet.create({
 	 wrapper: {
 	 	flex:1 ,
-	 	backgroundColor:'#F9F9F9'	
+	 	backgroundColor:'#F9FFFC'	
 	 },
 	topper:{
 	 	paddingTop:statusBarHeight,
 	 	height:60,
 	 	justifyContent:'center',
 	 	alignItems:'center',
-	 	backgroundColor:'#FF555A'
+	 	backgroundColor:'#43AC43'
 	 	
 	 },
+	 helpImg:{
+	 	width:128,
+	 	height:128,
+	 	marginLeft:5
+	 },
+	shanWater:{
+		borderBottomWidth:1/ratio,
+		borderBottomColor:'#9D9D9D',
+		flexDirection:'row',
+		backgroundColor:'#E5F8E5',
+	},
+	shanTxt:{
+		alignItems:'flex-start',
+		justifyContent:'center',
+		marginLeft:80
+	},
+	yong:{
+		flexDirection:'row',
+		backgroundColor:'#EBFAEE',
+		alignItems:'center',
+		justifyContent:'flex-start'
+	},
+	join:{
+		position:'absolute',
+		top:1,
+		right:10,
+		height:20,
+		width:70,
+		borderRadius:35,
+		backgroundColor:'#00A85A',
+		alignItems:'center',
+		justifyContent:'center'
+	},
+	midWrapper:{
+		borderRightColor:'#D2D3D4',
+		borderRightWidth:1/ratio,
+		borderLeftColor:'#D2D3D4',
+		borderLeftWidth:1/ratio,
+		width:0.3*width,
+		alignItems:'center',
+		justifyContent:'center'
+	},
+	upTxt:{
+		fontWeight:'bold',
+		fontSize:16,
+		color:'#AEB6B0',
+		marginTop:5
+	},
+	midTxt:{
+		fontSize:18,
+		color:'#4EB160',
+		marginTop:5
+	},
+	bottomTxt:{
+		fontSize:13,
+		color:'#D2D3D4',
+		marginTop:5
+	},
+	clubInfo:{
+
+	},
+	clubDetailInfo:{
+		backgroundColor:'#EFFBEF',
+		flexDirection:'row',
+		justifyContent:'space-around'
+	},
 	swiper:{
 	 	height:0.3*height,
 	 	marginTop:1,
@@ -132,9 +231,8 @@ let styles=StyleSheet.create({
 	   
 	},
 	itemWrapperTop:{
-		borderTopWidth:1/ratio,
-		
-		borderTopColor:'#9D9D9D',
+		//borderTopWidth:1/ratio,		
+		//borderTopColor:'#9D9D9D',
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',
@@ -144,8 +242,6 @@ let styles=StyleSheet.create({
 	itemWrapper:{
 		borderTopWidth:1/ratio,
 		borderTopColor:'#9D9D9D',
-		borderBottomWidth:1/ratio,
-		borderBottomColor:'#9D9D9D',
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',
@@ -172,7 +268,16 @@ let styles=StyleSheet.create({
 	    fontSize: 16,
 	  
 	    alignSelf:'center'
-	  }
+	},
+	upRightImgWrapper:{
+		position:'absolute',
+		right:10,
+		top:60
+	},
+	upRightImg:{
+		width:60,
+		height:60
+	}
 });
 
 

@@ -93,7 +93,7 @@ class TuiWenPage extends Component{
 		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
-					<View style={{backgroundColor:'#AEDDE3',height:60,paddingTop:24,justifyContent:'center',alignItems:'center'}}>
+					<View style={{backgroundColor:'#43AC43',height:60,paddingTop:24,justifyContent:'center',alignItems:'center'}}>
 						<Text style={styles.toper}>给点爱，一起温暖世界</Text>
 					</View>
 				    <ListView 
@@ -151,7 +151,7 @@ export default TuiWenPageWrapper
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
-		backgroundColor:'#ffffff'
+		backgroundColor:'#F9FFFC'
 	},
 	toper:{
 		flexDirection:'row',

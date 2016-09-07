@@ -17,8 +17,8 @@ import{
 	Platform
 } from 'react-native';
 import React,{Component} from 'react';
-let backBtnImg = require('../imgs/bar_btn_back_ico.png');
-let rightBtn=require('../imgs/right_btn.png');
+//let backBtnImg = require('./image/bar_btn_back_ico.png');
+
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -42,14 +42,14 @@ export default class WoPage extends Component{
                 	<View  style={styles.topleft}>
 	                	<Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
 	                	<View style={styles.topperMiddle}>
-	                	    <Text style={styles.nickName}>昵称ABC</Text>
-	                		<Text>你是我的眼</Text>
+	                	    <Text style={styles.nickName}>小神经很Ok</Text>
+	                		<Text>这个家伙的业余产品，想拯救世界</Text>
 	                	</View>
                 	</View>
 
                     <View style={styles.topRight}>
-                        <Text>普通用户</Text>
-                    	<Image source={rightBtn} style={styles.setImage} />
+                        <Text>已认证</Text>
+                    	<Image source={require('./image/setImg.png')} style={styles.setImage} />
                     </View>
                 </View>
                 <View style={styles.tuiwenWrapper}>
@@ -67,18 +67,35 @@ export default class WoPage extends Component{
                             <Text style={styles.txt}>粉丝</Text>
                         </View>               	
                 </View>
+                <View style={styles.loveWrapper}>
+                    
+                        <View style={styles.loveLeft}></View>
+                        <View style={styles.loveMiddle}>
+                             <Image source={require('./image/hearts.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
+                        </View>
+                        <View style={styles.loveRight}></View>                
+                </View>
+                <View style={styles.helpWrapper}>
+                    <View>
+                        <Text>我帮助</Text>
+                    </View>
+                    <View>
+                        <Text>帮助我</Text>
+                    </View>
+                </View>
+                <View style={styles.helpInfo}>
+                    <View style={styles.helpInfoLeft}>
+                        <Text>500人</Text>
+                        <Text>400元</Text>
+                    </View>
+                    <View style={styles.helpInfoRight}>
+                        <Text>500人</Text>
+                        <Text>400元</Text>
+                    </View>
+                </View>
 
-                <View style={styles.help}>
-                	<Text>帮助人数</Text>
-                	<Text>500（人）</Text>
-                	<Text>3000（元）</Text>
-                </View>
-                <View style={styles.behelp}>
-                	<Text>接受帮助</Text>
-                	<Text>500（人）</Text>
-                	<Text>7000（元）</Text>
-                </View>
-                <View style={styles.tuiwenWrapper}>
+
+                <View style={styles.itenInfoWrapper}>
                     
                         <View style={styles.txtWrapper}>
                             <Text style={styles.tuiwenWrapperTxt}>100</Text>
@@ -93,7 +110,7 @@ export default class WoPage extends Component{
                             <Text style={styles.txt}>关注的项目</Text>
                         </View>                 
                 </View>
-                <View style={styles.itemWrapper}>                  
+                <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/personal_navibar_icon_message.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                     <Text style={styles.texts}>加入的基金</Text>
                     <View style={{width:40}}></View>
@@ -103,7 +120,7 @@ export default class WoPage extends Component{
                     <Text style={styles.texts}>捐钱帮助他</Text>
                     <View style={{width:40}}></View>
                 </View>
-                <View style={styles.itemWrapper}>                  
+                <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                     <Text style={styles.texts}>关注</Text>
                     <View style={{width:40}}></View>
@@ -121,7 +138,7 @@ export default class WoPage extends Component{
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
-        backgroundColor:'#F9F9F9',
+        backgroundColor:'#F9FFFC',
 	},
 	head: {
         flexDirection:'row',
@@ -132,7 +149,7 @@ let styles=StyleSheet.create({
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#69B94C'
+        backgroundColor:'#43AC43'
     },
     topWrapper:{
     	flexDirection:'row',
@@ -167,13 +184,13 @@ let styles=StyleSheet.create({
     nickName:{
         fontSize:16,
         fontWeight: 'bold',
-        color:'red'
+        color:'green'
     },
     setImage:{
-        height:18,
-        width:18,
+        height:22,
+        width:22,
         alignSelf:'center',
-        marginLeft:10
+        marginRight:20
     },
     backBtn: {
         flexDirection:'row',
@@ -185,7 +202,7 @@ let styles=StyleSheet.create({
         marginLeft:5,
         height:40
     },
-    tuiwenWrapper:{
+     tuiwenWrapper:{
         flexDirection:'row',
         height:60,
         marginTop:5,
@@ -194,7 +211,16 @@ let styles=StyleSheet.create({
         backgroundColor:'#ffffff',
         justifyContent:'space-around',
         alignItems:'center'
-
+    },
+     itenInfoWrapper:{
+        flexDirection:'row',
+        height:60,
+        marginTop:5,
+        borderBottomWidth:1/ratio,
+        borderBottomColor:'red',
+        backgroundColor:'#ffffff',
+        justifyContent:'space-around',
+        alignItems:'center'
     },
     tuiwenWrapperTxt:{
         fontWeight:'bold',
@@ -214,28 +240,50 @@ let styles=StyleSheet.create({
         alignItems:'flex-end'
     },
    
-    help:{
-    	height:45,
-        marginTop:20,
-        borderTopWidth:1/ratio,
+    loveWrapper:{
+    	height:40,
     	flexDirection:'row',
-    	justifyContent:'space-between',
+    	justifyContent:'center',
         alignItems:'center',
-        backgroundColor:'#ffffff'
-       
+               
     },
-    behelp:{
-    	height:45,
-    	flexDirection:'row',
-    	justifyContent:'space-between',
-        alignItems:'center',
-        //marginTop:10,
-        //marginRight:7,
-        borderBottomWidth:1/ratio,
-        //borderBottomColor:'#F9F9F9',
+    loveLeft:{
+        height:20,
+        width:0.3*width,
         borderTopWidth:1/ratio,
-        //borderTopColor:'#F9F9F9',
-        backgroundColor:'#ffffff'
+        borderTopColor:'red'
+    },
+    loveRight:{
+        height:20,
+        width:0.3*width,
+        borderTopWidth:1/ratio,
+        borderTopColor:'red'
+    },
+    loveMiddle:{
+        marginTop:-15,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    loveImg:{
+        width:30,
+        height:20
+    },
+    helpWrapper:{
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems:'center'
+    },
+    helpInfo:{
+        flexDirection:'row',
+        justifyContent:'space-around'
+    },
+    helpInfoLeft:{
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    helpInfoRight:{
+        flexDirection:'row',
+        justifyContent:'space-between'
     },
     myItem:{
         height:45,
@@ -249,7 +297,18 @@ let styles=StyleSheet.create({
         //borderTopColor:'#F9F9F9',
         backgroundColor:'#ffffff'
     },
-    
+     fundWrapper:{
+        //borderTopWidth:1/ratio,
+        //borderTopColor:'#9D9D9D',
+        //borderBottomWidth:1/ratio,
+        //borderBottomColor:'#9D9D9D',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        backgroundColor:'#ffffff',
+        marginTop:20,
+        height:45
+    },
     itemWrapper:{
         borderTopWidth:1/ratio,
         borderTopColor:'#9D9D9D',

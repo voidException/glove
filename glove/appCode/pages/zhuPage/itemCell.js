@@ -46,13 +46,14 @@ export default class ItemCell extends Component{
 		// console.log(this.props.row.circleidsupervise);
 	}
     goItemContent(){
-    	console.log(Text)
+    	console.log('ss')
     }
 	
 	componentDidMount(){
 		//计算百分比和时间转换
 		//console.log(this.props.row.itemstart);
-		let timeNeedHandle=this.props.row.item.itemend;
+		// let timeNeedHandle=this.props.row.item.itemend;
+		let timeNeedHandle=this.props.row.item.itemstart;
 		var date = new Date(timeNeedHandle);
 		Y = date.getFullYear() + '-';
 		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
@@ -97,13 +98,14 @@ export default class ItemCell extends Component{
 						<Image source={require('./image/topperImgUrl.png')} style={styles.topperimg} />
 					</View>
 				</View>
-				
-				<View style={styles.titleWrapper} onPress={this.test.bind(this)}>
+			<View>
+				<View style={styles.titleWrapper}>
 					<Text style={styles.title}>{this.state.itemname}</Text>
 				</View>
 				<View style={styles.viceTitleWrapper}>
 					<Text style={styles.viceTitle}>{this.state.backupthree}</Text>
 				</View>
+			</View>
 				<ScrollView style={styles.images} horizontal={true}>
 					<Image  source={{uri:this.state.imgurlone}} style={styles.image}/>
 					<Image  source={{uri:this.state.imgurltwo}} style={styles.image}/>
@@ -131,10 +133,10 @@ export default class ItemCell extends Component{
 
 			    <View style={styles.checkWrapper}>
 			    	<Image source={require('./image/authorize_ico.png')} style={{width:10,height:10}} resizeMode={'contain'}/>
-					<Text style={styles.checkTxt}>{this.state.circleidsuperviseNickName}<Text onPress={this.goItemContent.bind(this)} style={{color:'blue'}}>(负责监督)</Text></Text>
+					<Text style={styles.checkTxt}>{this.state.circleidsuperviseNickName}<Text onPress={this.goItemContent.bind(this)} style={{color:'#7D7D7D'}}>(负责监督)</Text></Text>
 				</View><View style={styles.checkWrapper}>
 			    	<Image source={require('./image/authorize_ico.png')} style={{width:10,height:10}} resizeMode={'contain'}/>
-					<Text style={styles.checkTxt}> @{this.state.useridprincipalNickName}<Text style={{color:'blue'}}>(负责具体执行)</Text></Text>
+					<Text style={styles.checkTxt}> @{this.state.useridprincipalNickName}<Text style={{color:'#7D7D7D'}}>(负责具体执行)</Text></Text>
 				</View>
 
 			    <View style={styles.bottomWrapper}>
@@ -160,7 +162,9 @@ export default class ItemCell extends Component{
 let styles=StyleSheet.create({
 	container:{
 		marginLeft:3,
-		marginRight:3
+		marginRight:3,
+		marginTop:5,
+		borderTopColor:'#000'
 	},
 	topper:{
 		flexDirection:'row',
@@ -186,7 +190,7 @@ let styles=StyleSheet.create({
 	},
 	topperMiddle:{
 		fontSize:14,
-		color:'#0092C3',
+		color:'#7D7D7D'
 	},
 	topperleftimg:{
 		height:24,
@@ -231,12 +235,12 @@ let styles=StyleSheet.create({
 		borderRadius:5,
 		flexDirection:'row',
 		borderWidth:1,
-		borderColor:'green',
+		borderColor:'#7D7D7D',
 		alignItems:'center',
 		justifyContent:'center'
 	},
 	category:{
-		color:'green'
+		color:'#7D7D7D'
 	},
 	checkWrapper:{
 		marginTop:5,
@@ -244,11 +248,12 @@ let styles=StyleSheet.create({
 		alignItems:'center'
 	},
 	checkTxt:{
-		color:'red'
+		color:'#43AC43'
 	},
 	bottomWrapper:{
 		height:40,
 		backgroundColor:'#F9F9F9',
+		//borderBottomWidth:1,
 		marginTop:5,
 		flexDirection:'row',
 		justifyContent:'space-around',
@@ -267,15 +272,15 @@ let styles=StyleSheet.create({
 		color:'#7D7D7D'
 	},
 	redTxt:{
-		color:'red',
-		fontSize:15
+		color:'#000',
+		fontSize:16
 	},
 	yellowTxt:{
-		color:'#050BFA',
-		fontSize:15
+		color:'#000',
+		fontSize:16
 	},
 	purpleTxt:{
-		color:'purple',
+		color:'#000',
 		fontSize:15
 	}
 });

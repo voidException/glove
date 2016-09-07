@@ -17,7 +17,7 @@ export function itemList(state={
 	   let  rp=action.param;
        //根据请求的参数决定如何合并 
 	   let combinels=state.itemList.concat(ls);//合并两个数据，如果是刷新就是ls.concat(state.itemList)
-      if (ls==null) {
+      if (ls==null) { //必须在这里进行，真是坑
       	 return state;
       };
 		switch (action.type){

@@ -54,55 +54,87 @@ export default class FaxianPage extends Component{
 				<View style={styles.topper}>			    
 				    <Text style={{fontSize:18,color:'#fff'}}>发现</Text>
 				</View>
+				<View style={styles.ad}>
+					<View style={styles.superUs}>
+						<Text style={{color:'green'}}>谁来监督我们?</Text>
+					</View>
+					<View style={styles.addown}>
+						<Image source={require('./image/telescope.png')} resizeMode={'cover'} style={{width:80,height:80}}/>
+						<View style={styles.sunTxt}>
+							<Text style={{fontSize:18,fontWeight:'bold',color:'#43AC43'}}>oO_监督处_Oo</Text>
+							<Text style={{fontSize:18,fontWeight:'bold',color:'#43AC43',fontFamily:'Georgia-Bold'}}>让公益在阳光下运行。</Text>
+						</View>
+					</View>
+				</View>
+				<View style={styles.welcomeJoin}>
+					<Image source={require('./image/superMan.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
+					<Text style={{color:'#31A75B',marginLeft:-44}}>政府官员、企业家、明星等</Text>
+					<View style={styles.welcomeJoinUs}>
+						<Text style={{fontSize:12,color:'white'}}>欢迎加入></Text>
+						{/*<Image source={require('./image/rightArrow.png')} resizeMode={'cover'} style={{width:13,height:13}}/>*/}				
+					</View>
+				</View>
 
-				<View>
-				    <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
-		           		<Image source={{uri:this.state.wheelImageOne}} resizeMode={'cover'} style={{width:width,height:0.2*height}}/>
-		            </TouchableOpacity>
-		        </View>
-			       
-			    <View style={styles.itemWrapperTop}>
-			        <View style={styles.leftWrapper}>
-				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>慈善排行榜</Text>	
+			    <View style={styles.Supervision}>
+			    	<View>
+			    		<Image source={require('./image/bell.png')} resizeMode={'contain'} style={styles.eyeTop}/>
 			    	</View>
-			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
-
+			    	<View style={styles.superText}>
+			    		<Text style={{fontSize:17,color:'black'}}>监督处</Text>
+			    	</View>
+			    	<View style={styles.eyes}>
+			    		<Image source={require('./image/eyeRight.png')} resizeMode={'contain'} style={styles.eyeLeft}/>
+			    		<Image source={require('./image/eyeRight.png')}resizeMode={'contain'}  style={styles.eyeRight}/>
+			    	</View>
 			    </View>
-			     <View style={styles.itemWrapper}>
-			     	<View style={styles.leftWrapper}>
-				    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>明星与大V基金</Text>	
-			    	</View>
-			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
+
+			    <View style={styles.gloveWrapper}>
+				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}
+			     	<TouchableOpacity>
+				     	<View style={styles.gloveMiddle}>
+					    	<Text style={styles.loveCubtxt}>大学爱心社</Text>	
+					    	<Text style={styles.volunteer}>青年志愿者协会</Text>		    	
+				    	</View>
+			    	</TouchableOpacity>
+				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}	    	
+			    </View>
+
+			    
+			     <View style={styles.itemWrapperSociety}>
+			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>
+			        <View style={styles.shehui}>
+				        
+					    <Text style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>
+					    
+					    <View style={styles.shehuidown}>
+					    	<Text style={{marginRight:70,color:'#00BCED'}}>已入住300</Text>
+					    	<Text style={{marginLeft:80,color:'#00BCED'}}>申请加入</Text>
+					    </View>
+					</View>	    	
 			    </View>
 			     <View style={styles.itemWrapperTop}>
-			     	<View style={styles.leftWrapper}>
-				    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>大学爱心社</Text>
-			    	</View>
-			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
-			    </View>
-			     <View style={styles.itemWrapper}>
-			     	<View style={styles.leftWrapper}>
-				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>社会公益机构</Text>	
-			    	</View>
-			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
+			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
+			        <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>
+				        <View style={styles.rightWrapper}>
+					    	<Text style={styles.volunteer}>慈善排行榜</Text>	
+					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
+				    	</View>	
+			    	</TouchableOpacity>	    	
 			    </View>
 			    <View style={styles.itemWrapperTop}>
-			    	<View style={styles.leftWrapper}>
-				    	<Image source={require('./image/find_more_friend_shake.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text style={styles.texts}>加入我们</Text>
-			    	</View>
-			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
+			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
+			        <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>
+				        <View style={styles.aboutUsWrapper}>
+					    	<Text style={styles.volunteer}>关于我们</Text>	
+					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
+				    	</View>	
+			    	</TouchableOpacity>	    	
 			    </View>
-			    <View style={styles.itemWrapper}>
-			     	<View style={styles.leftWrapper}>
-				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-				    	<Text>更多</Text>	
-			    	</View>
-			    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
+			    <View  style={styles.sunShine}>
+			    	<Image source={require('./image/sunShine.png')} resizeMode={'cover'} style={{width:40,height:40}}/>
+			    </View>
+			    <View style={styles.sound}>
+			    	 <Image source={require('./image/sound.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
 			    </View>
 	      </View>
 		);
@@ -112,7 +144,7 @@ export default class FaxianPage extends Component{
 let styles=StyleSheet.create({
 	 wrapper: {
 	 	flex:1 ,
-	 	backgroundColor:'#F9F9F9',
+	 	backgroundColor:'#F9FFFC',
 	
 	 },
 	topper:{
@@ -120,8 +152,45 @@ let styles=StyleSheet.create({
 	 	height:60,
 	 	justifyContent:'center',
 	 	alignItems:'center',
-	 	backgroundColor:'#FF555A'
+	 	backgroundColor:'#43AC43'
 	 	
+	 },
+	 ad:{
+	 	paddingTop:15,
+	 	flexDirection:'column',
+	 	backgroundColor:'#EFFBEF'
+	 },
+	 superUs:{
+	 	flexDirection:'row',
+	 	alignItems:'center',
+	 	justifyContent:'center',
+	 	height:30
+	 },
+	 addown:{
+	 	//marginTop:10,
+	 	flexDirection:'row',
+	 	justifyContent:'space-around',
+	 	
+	 },
+	 sunTxt:{
+	 	alignItems:'center',
+	 	justifyContent:'center'
+	 },
+	 welcomeJoin:{
+	 	flexDirection:'row',
+	 	justifyContent:'space-around',
+	 	alignItems:'center',
+	 	height:35,
+	 	backgroundColor:'#EFFBEF'
+	 },
+	 welcomeJoinUs:{
+	 	height:24,
+	 	width:80,
+	 	borderRadius:12,
+	 	backgroundColor:'#31A75B',
+	 	flexDirection:'row',
+	 	alignItems:'center',
+	 	justifyContent:'center'
 	 },
 	swiper:{
 	 	height:0.3*height,
@@ -146,45 +215,186 @@ let styles=StyleSheet.create({
 	   
 	},
 	itemWrapperTop:{
-		borderTopWidth:1/ratio,
-		
-		borderTopColor:'#9D9D9D',
 		flexDirection:'row',
-		justifyContent:'space-between',
+		justifyContent:'flex-start',
 		alignItems:'center',
-		marginTop:20,
+		//marginTop:15,
 		backgroundColor:'#ffffff'
 	},
-	itemWrapper:{
-		borderTopWidth:1/ratio,
-		borderTopColor:'#9D9D9D',
-		borderBottomWidth:1/ratio,
+	itemWrapperSociety:{
+		flexDirection:'row',
+		justifyContent:'center',
+		alignItems:'center',
+		//marginTop:20,
+		// borderBottomWidth:1/ratio,		
+		// borderBottomColor:'#9D9D9D',
+		backgroundColor:'#ffffff',
+		marginBottom:10
+	},
+    societyImg:{
+    	height:60,
+    	width:60,
+    	position:'absolute',
+    	top:0,
+    	left:0
+    },
+	shehui:{
+		width:width,
+		alignItems:'center',
+		justifyContent:'center',
+		height:60
+	},
+	shehuidown:{
+		flexDirection:'row',
+		justifyContent:'space-between',
+		marginTop:10,
+	},
+	rightWrapper:{
+		// borderTopWidth:1/ratio,		
+		// borderTopColor:'#9D9D9D',
+		borderBottomWidth:1/ratio,		
 		borderBottomColor:'#9D9D9D',
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',
-
-		backgroundColor:'#ffffff'
+		height:40,
+		width:width-40
 	},
-	leftWrapper:{
+	aboutUsWrapper:{
+		// borderTopWidth:1/ratio,		
+		// // borderTopColor:'#9D9D9D',
+		// borderBottomWidth:1/ratio,		
+		// borderBottomColor:'#9D9D9D',
 		flexDirection:'row',
-		justifyContent:'flex-start',
+		justifyContent:'space-between',
 		alignItems:'center',
+		height:40,
+		width:width-40
 	},
+	rightWrapperSociety:{
+		borderTopWidth:1/ratio,		
+		borderTopColor:'#9D9D9D',
+		// borderBottomWidth:1/ratio,		
+		// borderBottomColor:'#9D9D9D',
+		flexDirection:'row',
+		justifyContent:'space-between',
+		alignItems:'center',
+		height:40,
+		width:width-40
+	},
+	textSociety:{
+		// borderBottomWidth:1/ratio,		
+		// borderBottomColor:'red',
+		height:40,
+		alignItems:'center',
+		justifyContent:'center',
+		width:200
+	},
+	
 	leftWrapperImage:{
 		width:40,
-		height:40,
-		marginRight:40
+		height:40,		
+	},
+	rightWrapperImage:{
+		width:40,
+		height:40,		
 	},
 	rightImage:{
 		height:15,
 		width:15,
 		marginRight:10
 	},
-	texts: {
-	   
+	gloveImage:{
+		height:20,
+		width:20
+	},
+	Supervision:{
+		flexDirection:'column',
+		alignItems:'center',
+		justifyContent:'center',
+        borderTopWidth:1/ratio,		
+		borderTopColor:'#9D9D9D',
+	},
+	superText:{
+		flexDirection:'row',
+		justifyContent:'center',
+		alignItems:'center',
+		height:35
+	},
+	eyes:{
+		flexDirection:'row',
+		justifyContent:'space-between',
+		alignItems:'flex-end'
+	},
+	eyeTop:{
+		width:15,
+		height:15,
+		
+	},
+	eyeRight:{
+		width:20,
+		height:20,
+		marginLeft:40,
+		marginBottom:-8
+	},
+	eyeLeft:{
+		width:20,
+		height:20,
+		marginRight:40,
+		marginBottom:-8
+	},
+	gloveWrapper:{
+		flexDirection:'row',
+		justifyContent:'space-around',
+		alignItems:'center',
+		//borderBottomWidth:1/ratio,
+		//borderBottomColor:'red',
+		marginBottom:15
+	},
+	gloveMiddle:{
+		flexDirection:'row',
+		justifyContent:'center',
+		alignItems:'flex-end',
+		borderTopWidth:1/ratio,		
+		borderTopColor:'#CCCCCC',
+		height:40
+	},
+	loveCubtxt:{
+		marginRight:25,
+		fontWeight:'bold'
+	},
+	loveCubtxt:{
+		marginRight:25,
+		fontWeight:'bold'
+	},
+	volunteer:{
+		marginLeft:25,
+		fontWeight:'bold'
+	},
+	texts: {	   
 	    fontSize: 16,
-	  
 	    alignSelf:'center'
-	  }
+	},
+	sunShine:{
+		position:'absolute',
+		top:60,
+		right:10
+	},
+	sound:{
+		position:'absolute',
+		left:40,
+		top:78
+	}
 });
+
+
+
+
+
+
+
+
+
+
+
+

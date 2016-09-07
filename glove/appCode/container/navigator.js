@@ -22,6 +22,9 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 import ItemPage from '../pages/zhuPage/itemPage';
 import ItemCell from '../pages/zhuPage/itemCell';
 import WeiBoContent from '../pages/tuiwenPage/weiboContent';
+import WoPage from '../pages/woPage/woPage';
+import FaxianPage from '../pages/faxianPage/faxianPage';
+import HelpPage  from '../pages/messagePage/helpPage';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -45,7 +48,7 @@ class INavigator extends Component{
 	render(){
 		let defaultName='TheLoginPage';
 		let defaultComponent=Login;
-		//let defaultComponent=ItemPage;
+		//let defaultComponent=WoPage;
 		//let defaultComponent=ItemCell;
 
 		return(

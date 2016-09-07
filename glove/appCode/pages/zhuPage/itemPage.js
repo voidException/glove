@@ -58,37 +58,38 @@ let lastItemstartTime=null;
 		let requestParams={
 			proof :'111',
 			userID:1,
-			page:1,
-			pageSize:3,
-			lastUpdate:1272203183,
-			lastItemstart:1272203183,   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
+			page:0,
+			pageSize:2,
+			lastUpdate:'2015-01-09',
+			lastItemstart:'2015-01-09',   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:1
 		};
 
 		let wheelImgRequestParam={
 			tag:1,
 			page:0,
-			pageSize:3
+			pageSize:15
 		};
 		const {dispatch}=this.props;
-		dispatch(fetchItemPageIfNeeded(requestParams));
+		setTimeout(()=>{
+			dispatch(fetchItemPageIfNeeded(requestParams));
 
-		dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
+			dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
+		},500);
+		// dispatch(fetchItemPageIfNeeded(requestParams));
+
+		// dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
 	}
 	componentWillReceiveProps(nextProps) {
 		//必须确保cloneWithRows是一个数组！！
 		//这里获取nextProps.itemList.itemLis[length].item.itemstart的值，赋给全局变量
-		let itemLength=nextProps.itemList.itemList.length-1;
-		lastItemstartTime=nextProps.itemList.itemList[itemLength].item.itemstart
-        //console.log(nextProps.itemList.itemList.length);
+		
         //console.log(nextProps.itemList.itemList);
 
     	this.setState({
 			dataSource: DS.cloneWithRows(nextProps.itemList.itemList)
 		});
-       
-		
-        
+               
 		if (nextProps.wheelImg.wheelImg.length!==0) {
 			this.setState({
 				wheelImageOne:nextProps.wheelImg.wheelImg[0].photopath,
@@ -99,18 +100,26 @@ let lastItemstartTime=null;
 				wheelImageThreeURL:nextProps.wheelImg.wheelImg[2].backupone
 			});
 		}
-			
+
+		let itemLength=nextProps.itemList.itemList.length-1;
+		let rowLastItemStart=nextProps.itemList.itemList[itemLength].item.itemstart
+		var date = new Date(rowLastItemStart);
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		D = date.getDate() + ' ';
+        lastItemstartTime=Y+M+D;
 	}
+
 	loadMore(){
 		 //使用全局变量加载更多数据，
 		 //加载完数据后调用这个方法，定位到合适的地方
 		 let requestParams={
 			proof :'111',
 			userID:1,
-			page:3,
-			pageSize:3,
-			lastUpdate:6666666,
-			lastItemstart:lastItemstartTime||1473066364,  
+			page:0,
+			pageSize:15,
+			lastUpdate:'2015-01-09',
+			lastItemstart:lastItemstartTime||'2015-01-09',  
 			//lastItemstart:lastItemstartTime,   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:2 //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
 		};
@@ -124,14 +133,27 @@ let lastItemstartTime=null;
 	_onRefresh() {
 		// console.log('onRefresh');
 		// //每次都更新,这里用receivedAt:Date.now()这个时间作为请求参数
+		let receivedAt=this.props.itemList.lastUpdate;
+		var date = new Date(receivedAt);
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		D = date.getDate() + ' ';
+
+        var   hour=date.getHours();     
+        var   minute=date.getMinutes();     
+        var   second=date.getSeconds(); 
+
+		let lastUpdateTime=Y+M+D+' '+hour+':'+minute; 
+        console.log(lastUpdateTime);
+
 		let requestParams={
 			proof :'111',
 			userID:1,
-			page:3,
-			pageSize:15,
-			lastUpdate:this.props.itemList.lastUpdate || 3778487747,
-			//lastUpdate:5785758588,
-			lastItemstart:89839884,  //这个是点击加载更多获取的数据集合中，最早开始的项目集合
+			page:1,
+			pageSize:4,
+			//lastUpdate:this.props.itemList.lastUpdate || 3778487747,
+			lastUpdate:lastUpdateTime,
+			lastItemstart:'2016-07-09',  //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:1 //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
 		};
 
@@ -140,7 +162,7 @@ let lastItemstartTime=null;
 
 	}
 	_onScroll(e){
-		// console.log('onScroll')
+		console.log('onScroll')
 		// console.log(e.nativeEvent);
         /**
          //这个方法不能用
@@ -183,8 +205,7 @@ let lastItemstartTime=null;
 			            colors={['#ff0000', '#00ff00', '#0000ff']}
 			            progressBackgroundColor="#ffff00"/>
 			     }
-			    onScroll={this._onScroll.bind(this)}
-			    scrollEventThrottle={200}> 
+			    onEndReached={this._onScroll.bind(this)}> 
 
 				<View style={styles.wrapper}>
 					<StatusBar backgroundColor='#3B3738' barStyle="default"/>
@@ -216,10 +237,11 @@ let lastItemstartTime=null;
 			             pageSize={2} 
 			             scrollRenderAheadDistance={300}
 			             enableEmptySections={true}/>	
-			   <View style={styles.loadMore}>
-			        <Text onPress={this.loadMore.bind(this)} style={styles.loadMoreTxt}>加载更多</Text>
-			   </View>
+			   
 		    </ScrollView> 
+		    <View style={styles.loadMore}>
+			        <Text onPress={this.loadMore.bind(this)} style={styles.loadMoreTxt}>加载>></Text>
+			 </View>
 	        </View>
 		);
 	}
@@ -244,17 +266,18 @@ export default ItemPageWrapper
 
 let styles=StyleSheet.create({
 	container:{
-		flex:1
+		flex:1,
+		backgroundColor:'#F9FFFC'
 	},
 	 wrapper: {
 	 	//flex:1 	
 	 },
 	 topper:{
-	 	height:64,
+	 	height:60,
 	 	justifyContent:'center',
 	 	alignItems:'center',
-	 	backgroundColor:'#FF555A'
-	 	
+	 	backgroundColor:'#43AC43',
+	 	paddingTop:24
 	 },
 	 swiper:{
 	 	height:150
@@ -289,13 +312,21 @@ let styles=StyleSheet.create({
 	    flex:1
   	},
   	loadMore:{
-  		height:40,
+  		height:34,
+  		width:70,
+  		borderRadius:15,
+  		position:'absolute',
+  		right:0,
+  		bottom:70,
+  		backgroundColor:'#7D7D7D',
   		justifyContent:'center',
   		alignItems:'center',
-  		flexDirection:'row'
+  		flexDirection:'row',
+  		
   	},
   	loadMoreTxt:{
-  		fontSize:16
+  		fontSize:16,
+  		color:'#fff'
   	}
 
 });

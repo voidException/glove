@@ -15,7 +15,8 @@ export function  receiveItemPage(requestParams,json){
 		type:types.Get_itemPage,
 		param:requestParams,   
 		posts:json.lp,
-		receivedAt: Math.floor(Date.now()/1000)
+		//receivedAt: Math.floor(Date.now()/1000)
+		receivedAt:Date.now()
 	}
 }
 
