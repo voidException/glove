@@ -61,7 +61,7 @@ export default class FaxianPage extends Component{
 					<View style={styles.addown}>
 						<Image source={require('./image/telescope.png')} resizeMode={'cover'} style={{width:80,height:80}}/>
 						<View style={styles.sunTxt}>
-							<Text style={{fontSize:18,fontWeight:'bold',color:'#43AC43'}}>oO_监督处_Oo</Text>
+							<Text style={{fontSize:14,fontWeight:'bold',color:'#43AC43'}}>oO_<Text style={{fontSize:18,fontWeight:'bold',color:'#43AC43'}}>监督处</Text>_Oo</Text>
 							<Text style={{fontSize:18,fontWeight:'bold',color:'#43AC43',fontFamily:'Georgia-Bold'}}>让公益在阳光下运行。</Text>
 						</View>
 					</View>
@@ -100,19 +100,29 @@ export default class FaxianPage extends Component{
 			    </View>
 
 			    
-			     <View style={styles.itemWrapperSociety}>
-			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>
-			        <View style={styles.shehui}>
-				        
-					    <Text style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>
-					    
+			    <View style={styles.itemWrapperSociety}>
+			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
+			        <View style={styles.shehui}>				        
+					    <Text style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
 					    <View style={styles.shehuidown}>
-					    	<Text style={{marginRight:70,color:'#00BCED'}}>已入住300</Text>
-					    	<Text style={{marginLeft:80,color:'#00BCED'}}>申请加入</Text>
+					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已入住300家</Text>
+					    	<Text style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>
 					    </View>
 					</View>	    	
 			    </View>
-			     <View style={styles.itemWrapperTop}>
+
+				<View style={styles.itemWrapperSociety}>
+			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
+			        <View style={styles.shehui}>				        
+					    <Text style={{fontSize:16,fontWeight:'bold'}}>虚拟基金</Text>					    
+					    <View style={styles.shehuidown}>
+					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已有300家</Text>
+					    	<Text style={{marginLeft:80, color:'#9D9D9D'}}>立即创办</Text>
+					    </View>
+					</View>	    	
+			    </View>
+
+			    <View style={styles.itemWrapperTop}>
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
 			        <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>
 				        <View style={styles.rightWrapper}>

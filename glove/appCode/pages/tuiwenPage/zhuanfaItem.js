@@ -20,6 +20,7 @@ let {width,height}=Dimensions.get('window');
 export default class ZhuanfaItem extends Component{
 	constructor(props){
 		super(props);
+		console.log(props)
 		this.state={
 			tweetid:this.props.row.ok || 0,
 			useridtweet: this.props.row.useridtweet || 0,

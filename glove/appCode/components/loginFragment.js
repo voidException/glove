@@ -23,6 +23,7 @@ export default class DengLuFragment extends Component{
 	}
 	componentDidMount(){
 		//console.log();
+		this.startLogin();
 
 	}
 	//一旦该组件的某个props属性改变了，就会执行这个方法，真是太好了

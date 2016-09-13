@@ -15,37 +15,38 @@ import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
+import TuiwenItem from './tuiwenItem';
 
 let {width,height}=Dimensions.get('window');
 
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props)
+		//console.log(this.props.row)
 		this.state={
-			tweetid:this.props.row.ok || 0,
-			useridtweet: this.props.row.useridtweet || 0,
-			useridtweet: this.props.row.useridtweet || 0,
-			sourcemsgid: this.props.row.sourcemsgid || 0,
-			msgcontent: this.props.row.msgcontent || null,
-			boxtimes: this.props.row.boxtimes || null,
-			commenttimes: this.props.row.commenttimes || 0,
-			deletetag: this.props.row.deletetag || 0,
-			ok: this.props.row.ok || 0,
-			publicsee: this.props.row.publicsee || 0,
-			publishtime: this.props.row.publishtime || null,
-			reportedtimes: this.props.row.reportedtimes || 0,
-			sourcemsgid:this.props.row.sourcemsgid || 0,
-			tagid: this.props.row.tagid || 1,
-			topic:this.props.row.topic || 1,
-			tweetbackupone: this.props.row.tweetbackupone || null,
-			tweetbackuptwo: this.props.row.tweetbackuptwo || null,
-			tweetbackupthree: this.props.row.tweetbackupthree ||null,
-			tweetbackupfour: this.props.row.tweetbackupfour || null,
-			tweetbackupfive: this.props.row.tweetbackupfive ||0,
-			tweetbackupsix: this.props.row.tweetbackupsix ||0,
-			videoaddress: this.props.row.videoaddress ||null,
-			sourcemsgContent:null //这个是原创内容，稍后获取
+			tweetid:this.props.row.tuiwen.tweet.tweetid || 0,
+			useridtweet: this.props.row.tuiwen.tweet.useridtweet || 0,
+			sourcemsgid: this.props.row.tuiwen.tweet.sourcemsgid || 0,
+			msgcontent: this.props.row.tuiwen.tweet.msgcontent || null,
+			boxtimes: this.props.row.tuiwen.tweet.boxtimes || null,
+			commenttimes: this.props.row.tuiwen.tweet.commenttimes || 0,
+			deletetag: this.props.row.tuiwen.tweet.deletetag || 0,
+			ok: this.props.row.tuiwen.tweet.ok || 0,
+			publicsee: this.props.row.tuiwen.tweet.publicsee || 0,
+			publishtime: this.props.row.tuiwen.tweet.publishtime || null,
+			reportedtimes: this.props.row.tuiwen.tweet.reportedtimes || 0,
+			sourcemsgid:this.props.row.tuiwen.tweet.sourcemsgid || 0,
+			tagid: this.props.row.tuiwen.tweet.tagid || 1,
+			topic:this.props.row.tuiwen.tweet.topic || 1,
+			tweetbackupone: this.props.row.tuiwen.tweet.tweetbackupone || null,
+			tweetbackuptwo: this.props.row.tuiwen.tweet.tweetbackuptwo || null,
+			tweetbackupthree: this.props.row.tuiwen.tweet.tweetbackupthree ||null,
+			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour || null,
+			tweetbackupfive: this.props.row.tuiwen.tweet.tweetbackupfive ||0,
+			tweetbackupsix: this.props.row.tuiwen.tweet.tweetbackupsix ||0,
+			videoaddress: this.props.row.tuiwen.tweet.videoaddress ||null,
+			sourcemsgContent:null, //这个是原创内容，稍后获取
+			tagid:2,
 		}
 		//console.log(this.state.tweetid)
 	}//应该提供个获取一条推文的API，当发现有转发的推文存在时，应该单独获取，服务器组装太麻烦了
@@ -57,27 +58,7 @@ export default class WeiBoItem extends Component{
 	// 	//console.log(this.state.aTuiWenData.tweetbackupfive===null);
 	// }
 	componentWillMount(){
-		//在这里，会根据tagid判断，决定dispatch取原创微博，
-		//然后获取到原创微博存储到store中的一个特定的数组中，但不知道这样是否造成显示卡顿，因为这个weiboItem
-		//存储了太多原创内容props，所以还是存储到本地的storage中，然后根据健取出来，this.setState({sourcemsgConet:aaa})
-		
-		// fetch('http://127.0.0.1:8080/glove/weibos/getTweetLists',{
-		// 			method:'POST',
-		// 			headers:{
-		// 				'Accept': 'application/json',
-  //   					'Content-Type': 'application/json',
-  //   				},
-  //   				body: JSON.stringify({
-		// 			    userID: 1,
-		// 			    page: 1,
-		// 			    pageSize:1
-		// 			})
-		//        })
-		// 	   .then(response=>response.json())
-		// 	   .then(json=>this.getJson(json))
-		// 	   .catch(function(e){
-		// 	   		console.log('请求推文出错了')
-		// 	   })
+
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
@@ -125,64 +106,58 @@ export default class WeiBoItem extends Component{
 			<View style={{flex:1 }}>
 								
 				<View style={styles.headerWrapper}>
-					<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>
-						<View  style={styles.header}>
+					<View  style={styles.header}>
+						<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>						
 							{	
 								 this.state.tweetbackuptwo ===null ?
 								  <Image source={require('../../image/default.jpg')} style={styles.image}/>
 								: <Image source={{uri:this.state.tweetbackuptwo}} resizeMode={'contain'} style={styles.image}/>	
 							}
-							
-							<View style={styles.nameV}>
-								<Text>{this.state.tweetbackupone}</Text>
-								{ 
-									this.state.tweetbackupfive===3 ?
-									<Text>大v</Text> 
-								   : <Text>大v</Text> 
-								}								
-							</View>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>
-						{
-						 this.state.tweetbackupsix ?
-							<View style={{marginRight:4}}>
-								<Text>求助人</Text>
-								<Text>@{this.state.tweetbackupthree}</Text>
-							</View>
-						: null
-						}
-					</TouchableOpacity>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.nameV}>
+						<View style={styles.nicknameWrapper}>
+							<Text style={styles.nicknameTxt}>用户的昵称</Text>
+							<Image source={require('./image/VV.png')} style={styles.vTag} />
+						</View>							
+						<Text style={{color:'#B1B1B1',marginTop:3}}>2016-10-12 9:30:10</Text> 							
+					</View>
 				</View>
 				<TouchableOpacity onPress={this.goWeiBoContent.bind(this)}>			
-					<View style={styles.upContent}>
+					<Text style={styles.upContent}>
 						<AutoLink
 				          text={this.state.msgcontent}
 				          hashtag="instagram"
 				          twitter={true}
 				          phone={true}
 				          onPress={this.goBeatRenMainPage.bind(this)} />
-					</View>
+					</Text>
 				</TouchableOpacity>
+	            { 
+	            	this.state.tagid!==2 ?
+						<View style={styles.imageList}>
+		       				<View style={styles.imageWrapper}>
+			       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
+			       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
+			       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
+		       				</View>
+		       				<View style={styles.imageWrapper}>
+			       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
+			       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
+			       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
+		       				</View>
+		       			</View>
+	       			:null
+	       		}
 				{
 					this.state.tagid===2 ? 
-						<TouchableOpacity onPress={this.goOriginWeiBoContent.bind(this)}>	
-							<View style={styles.downContent}>
-								<Text>如果为2,根据sourcemsgid，异步获取原创消息的内容展示在这里</Text>
-							</View>
-						</TouchableOpacity>
+					<TuiwenItem  row={this.props.row.zhuanfaTuiwen}/>
 					: null
 				}			
 				<View style={styles.footer}>
-					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>	
-						<Text style={styles.footerText}>传播</Text>
-					</TouchableOpacity>
-					<TouchableOpacity	 onPress={this.goWeiBoContent.bind(this)}>
-						<Text style={styles.footerText}>留言</Text>
-					</TouchableOpacity>
-					<TouchableOpacity	 onPress={this.reportMe.bind(this)}>
-						<Text style={styles.footerText}>举报</Text>
-					</TouchableOpacity>					
+					<Text onPress={this.goWeiBoContent.bind(this)} style={styles.footerText}>传播</Text>					
+					<Text onPress={this.goWeiBoContent.bind(this)} style={styles.footerText}>留言</Text>					
+					<Text onPress={this.goWeiBoContent.bind(this)}style={styles.footerText}>举报</Text>									
 				</View>
 				
 			</View>
@@ -197,33 +172,55 @@ let styles=StyleSheet.create({
 		height:40,	
 		borderRadius:20	
 	},
-	header:{
+   	header:{
 		flexDirection:'row',
-
+		alignItems:'center',
+		justifyContent:'center'
 	},
 	headerWrapper:{
 		flexDirection:'row',
 		width:width,
 		height:50,
-		justifyContent:'space-between'
-		
+		justifyContent:'flex-start',
+		paddingTop:10,
+		paddingLeft:5,
+		paddingRight:5,
+		//backgroundColor:'#F7F7F7',			
+	},
+	nicknameWrapper:{
+		flexDirection:'row',
+	},
+	nicknameTxt:{
+		fontSize:16,
+		color:'red'
 	},
 	nameV:{
 		flexDirection:'column',
-
+		alignItems:'center',
+		justifyContent:'center'
+	},
+	vTag:{
+		width:15,
+		height:15
 	},
 	upContent:{
+		marginTop:8,
 		marginLeft:10,
 		marginRight:10,
-		marginBottom:6
+		marginBottom:6,
+		fontSize:16
 	},
-	downContent:{
-		marginTop:2,
-		paddingTop:8,
-		marginLeft:10,
-		marginRight:10,
-		backgroundColor:'#f6f6f6',
-		paddingBottom:8
+	imageList:{
+		flexDirection:'column',
+	},
+	imageListImg:{
+		height:0.3*width,
+		width:0.3*width,
+		margin:3
+	},
+	imageWrapper:{
+		flexDirection:'row',
+		justifyContent:'center'
 	},
 	footer:{
 		flexDirection:'row',

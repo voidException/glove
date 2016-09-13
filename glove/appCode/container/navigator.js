@@ -22,6 +22,8 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 import ItemPage from '../pages/zhuPage/itemPage';
 import ItemCell from '../pages/zhuPage/itemCell';
 import WeiBoContent from '../pages/tuiwenPage/weiboContent';
+import TuiwenItem from '../pages/tuiwenPage/tuiwenItem';
+
 import WoPage from '../pages/woPage/woPage';
 import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
@@ -48,20 +50,20 @@ class INavigator extends Component{
 	render(){
 		let defaultName='TheLoginPage';
 		let defaultComponent=Login;
-		//let defaultComponent=WoPage;
+		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=ItemCell;
 
 		return(
 			
-				<Navigator
-					initialRoute={{name:defaultName,component:defaultComponent,index:0}}
-					renderScene={(route,navigator)=>{
-						let Component=route.component; //这个就是defaultComponent
-						//route.params 未定义这个得好好研究
-						//console.log(this.props)
-						return <Component {...route.params} navigator={navigator}  />
-					}
-				}/>	
+			<Navigator
+				initialRoute={{name:defaultName,component:defaultComponent,index:0}}
+				renderScene={(route,navigator)=>{
+					let Component=route.component; //这个就是defaultComponent
+					//route.params 未定义这个得好好研究
+					//console.log(this.props)
+					return <Component {...route.params} navigator={navigator}  />
+				}
+			}/>	
 		);
 	}
 }

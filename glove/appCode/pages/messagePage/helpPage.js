@@ -63,7 +63,7 @@ export default class HelpPage extends Component{
 			           		<Text style={{color:'#4EB160',marginLeft:-15}}>千山万水</Text>
 			           		<Text style={{color:'#4EB160',marginLeft:-20}}>连接每一座城市的</Text>
 			           		<Text style={{color:'#4EB160',marginLeft:-25}}>每一个爱心社</Text>
-			           		<Text style={{color:'#4EB160',marginLeft:-30}}>只为温暖世界的每个角落。</Text>
+			           		<Text style={{color:'#4EB160',marginLeft:-30}}>只为温暖世界的每一处角落。</Text>
 			           	</View>			  
 			        </View>
 			        <View style={styles.clubInfo}>
@@ -106,14 +106,16 @@ export default class HelpPage extends Component{
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 				    </View>
-				     <View style={styles.itemWrapperTop}>
+
+				    <View style={styles.itemWrapperTop}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
 					    	<Text style={{fontWeight:'bold'}}>资助我们</Text>
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
 				    </View>
-				     <View style={styles.itemWrapper}>
+
+				    <View style={styles.itemWrapper}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
 					    	<Text style={{fontWeight:'bold'}}>赞助爱心社</Text>	
@@ -123,7 +125,6 @@ export default class HelpPage extends Component{
 				   	<View style={styles.upRightImgWrapper}>
 				   		<Image source={require('./image/water.png')} resizeMode={'contain'} style={styles.upRightImg}/>	
 				   	</View>
-
 		        </View>
 	   );
 	}

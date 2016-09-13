@@ -43,7 +43,7 @@ class TuiWenPage extends Component{
 		let requestParams={
 			userID:1,
 			page:1,
-			pageSize:6
+			pageSize:10
 		};
 
 		const {dispatch}=this.props;
@@ -58,7 +58,7 @@ class TuiWenPage extends Component{
 	//异步获取数据后，更新的是store，connect会感知到，将会执行这个方法，这样weiboItem就有数据了
 	componentWillReceiveProps(nextProps) {
 		//必须确保cloneWithRows是一个数组！！
-		//console.log(nextProps);	
+		//console.log(nextProps.weiboList.tuiwenList);	
 		this.setState({
 			dataSource: DS.cloneWithRows(nextProps.weiboList.tuiwenList)
 		});
@@ -81,38 +81,43 @@ class TuiWenPage extends Component{
 		// },10000);
 		let requestParams={
 			userID:1,
-			page:7,
-			pageSize:4
+			page:1,
+			pageSize:10
 		};
 
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
-
+    onEndReached(){
+    	//这里面实现列表到达底部时自动加载更多
+    	console.log('onEndReached');
+    }
 	render(){
 		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
-					<View style={{backgroundColor:'#43AC43',height:60,paddingTop:24,justifyContent:'center',alignItems:'center'}}>
-						<Text style={styles.toper}>给点爱，一起温暖世界</Text>
-					</View>
-				    <ListView 
-				    	refreshControl={
-					        <RefreshControl
-					            refreshing={this.state.isRefreshing}
-					            onRefresh={this._onRefresh.bind(this)}
-					            tintColor="#ff0000"
-					            title="Loading..."
-					            titleColor="#00ff00"
-					            colors={['#ff0000', '#00ff00', '#0000ff']}
-					            progressBackgroundColor="#ffff00"/>}
-				    	 contentContainerStyle={styles.list}
-			             dataSource={this.state.dataSource}
-			             renderRow={this.renderRow.bind(this)}
-			             initialListSize={21}       
-			             pageSize={2} 
-			             scrollRenderAheadDistance={300}
-			             enableEmptySections={true}/>		
+				<View style={{backgroundColor:'#43AC43',height:60,paddingTop:24,justifyContent:'center',alignItems:'center'}}>
+					<Text style={styles.toper}>传播温暖</Text>
+				</View>
+			    <ListView 
+			    	refreshControl={
+				        <RefreshControl
+				            refreshing={this.state.isRefreshing}
+				            onRefresh={this._onRefresh.bind(this)}
+				            tintColor="#ff0000"
+				            title="Loading..."
+				            titleColor="#00ff00"
+				            colors={['#ff0000', '#00ff00', '#0000ff']}
+				            progressBackgroundColor="#ffff00"/>}
+			    	 contentContainerStyle={styles.list}
+		             dataSource={this.state.dataSource}
+		             renderRow={this.renderRow.bind(this)}
+		             initialListSize={21}       
+		             pageSize={2}
+		             onEndReached={this.onEndReached.bind(this)} 
+		             onEndReachedThreshold={20}
+		             scrollRenderAheadDistance={300}
+		             enableEmptySections={true}/>		
 			</View>
 		);
 	}
