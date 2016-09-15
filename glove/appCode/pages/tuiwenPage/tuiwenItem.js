@@ -21,28 +21,36 @@ let {width,height}=Dimensions.get('window');
 export default class TuiwenItem extends Component{
 	constructor(props){
 		super(props);
-		console.log(this.props)
+		//console.log(this.props)
 		this.state={
-			tweetid: 0, //推文的id
-			useridtweet:  0, //发布人的id
-			userNickName:'无名氏',
-			userPhoto:'../../image/default.jpg', //用户的头像地址
-			publishtime: '1970-1-1 12:20:10', //发表时间
-			msgcontent: '@xiaoshenjing 张一山喝多了，@玩男男亲吻 】近日张一山与盛冠森等好友们相聚，几人喝了不少酒，深夜一起来到河边上厕所，甚至还玩男男亲吻，有人认为没素质，有网友表示喝醉了表示理解。',
-			commenttimes:  0, //评论次数
-			deletetag: 0, //是否删除标记
-			reportedtimes:0, //被举报次数
-			tweetbackupone: null,   //附带的图片地址
-			tweetbackuptwo: null,   //附带的图片地址
-			tweetbackupthree: null, //附带的图片地址
-			tweetbackupfour: null,  //附带的图片地址
-			videoaddress: null,     //附带的图片地址 
-			tagid:2,
+			photoupload:this.props.row.photoupload || 1, //1 代表未上传头像
+			selfintroduce: this.props.row.selfintroduce ||'什么也没有介绍自己',
+			userphoto:this.props.row.userphoto ||'../../image/default.jpg',
+			usernickname:this.props.row.usernickname || '无名氏',
+			tweetid:this.props.row.tweet.tweetid || 0, //推文的id
+			useridtweet: this.props.row.tweet.useridtweet || 0, //发布推文的用户id
+			sourcemsgid: this.props.row.tweet.sourcemsgid || 0, // 被转发的微博的id
+			msgcontent: this.props.row.tweet.msgcontent || null, //微博的内容
+			boxtimes: this.props.row.tweet.boxtimes || null, //被收藏的次数
+			commenttimes: this.props.row.tweet.commenttimes || 0, //微博被评论的次数
+			deletetag: this.props.row.tweet.deletetag || 0, //是否删除标志 1默认没删除。2 代表删除
+			ok: this.props.row.tweet.ok || 0, //微博被赞的次数
+			publicsee: this.props.row.tweet.publicsee || 0, //是否可见
+			publishtime: this.props.row.tweet.publishtime || null, //微博发布的时间
+			reportedtimes: this.props.row.tweet.reportedtimes || 0, //被举报的次数
+			tagid: this.props.row.tweet.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
+			//topic:this.props.row.tweet.topic || 1, //话题的主键
+			tweetbackupone: this.props.row.tweet.tweetbackupone || null, //推文附带的图片地址
+			tweetbackuptwo: this.props.row.tweet.tweetbackuptwo || null, //推文附带的图片地址
+			tweetbackupthree: this.props.row.tweet.tweetbackupthree ||null, //推文附带的图片地址
+			tweetbackupfour: this.props.row.tweet.tweetbackupfour || null,//推文附带的图片地址
+			videoaddress: this.props.row.tweet.videoaddress ||null, //推文附带的图片地址
+			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
 			/*转发的内容封装成一个组件，传props*/
 		}
 	}
 	componentWillMount(){
-	
+		
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
@@ -103,18 +111,34 @@ export default class TuiwenItem extends Component{
 					</View>
 				</TouchableOpacity>
 				{/*推文附带的照片*/}	
-       			<View style={styles.imageList}>
-       				<View style={styles.imageWrapper}>
-	       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
-	       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
-	       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
-       				</View>
-       				<View style={styles.imageWrapper}>
-	       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
-	       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
-	       				 <Image source={require('../../image/default.jpg')} style={styles.imageListImg} />
-       				</View>
-       			</View>
+       			{ 
+	            	this.state.tagid!==2 ?	       				       			
+	       		    <View style={styles.imageList}>
+		       			<View style={styles.imageWrapper}>
+	       				   
+	       				   { this.state.tweetbackupone !==null ?
+	       				   		<Image source={{uri:this.state.tweetbackupone}} resizeMode={'contain'} style={styles.imageListImg} />
+	       				   		:null
+	       				   }
+		       			   { this.state.tweetbackuptwo !==null ?
+		       				<Image source={{uri:this.state.tweetbackuptwo}} resizeMode={'contain'}  style={styles.imageListImg} />
+		       				:null
+		       			   }
+		       			   { this.state.tweetbackupthree !==null ?
+		       			    <Image source={{uri:this.state.tweetbackupthree}}resizeMode={'contain'}  style={styles.imageListImg}  />
+		       			    :null
+		       			   } 
+		       			</View>
+		       			<View style={styles.imageWrapper}>
+		       			   {/*  <Image source={{uri:this.state.tweetbackupfour}} style={styles.imageListImg} /> */}
+		       			   { this.state.videoaddress !==null ?
+			       			   <Image source={{uri:this.state.videoaddress}}  style={styles.imageListImg} /> 	
+			       			   :null
+		       			   }		       			
+		       			</View>
+		       	    </View>
+		       	    : null
+	       		}
 			   			
 			</View>
 		);
@@ -169,7 +193,7 @@ let styles=StyleSheet.create({
 	},
 	imageWrapper:{
 		flexDirection:'row',
-		justifyContent:'center'
+		justifyContent:'flex-start'
 	},
 	upContent:{
 		marginLeft:10,

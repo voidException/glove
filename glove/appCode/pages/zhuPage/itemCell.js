@@ -46,7 +46,7 @@ export default class ItemCell extends Component{
 		// console.log(this.props.row.circleidsupervise);
 	}
     goItemContent(){
-    	console.log('ss')
+    	//console.log('ss')
     }
 	
 	componentDidMount(){
@@ -81,7 +81,7 @@ export default class ItemCell extends Component{
 			// });
 	}
 	test(){
-		console.log('aa');
+		//console.log('aa');
 	}
 
 	render(){

@@ -90,7 +90,7 @@ class TuiWenPage extends Component{
 	}
     onEndReached(){
     	//这里面实现列表到达底部时自动加载更多
-    	console.log('onEndReached');
+    	//console.log('onEndReached');
     }
 	render(){
 		//console.log(this.state.dataSource)

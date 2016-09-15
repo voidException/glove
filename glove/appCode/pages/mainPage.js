@@ -44,7 +44,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	render(){
 		return(	
 				
-				<TabBarIOS tintColor="green" barTintColor="#fff" translucent= {false} style={styles.container}>
+				<TabBarIOS tintColor="green" barTintColor="#FBFBFB" translucent= {false} style={styles.container}>
 					<TabBarIOS.Item
 					    badge="" 
 						title="项目"
