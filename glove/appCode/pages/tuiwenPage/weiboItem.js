@@ -177,6 +177,10 @@ export default class WeiBoItem extends Component{
 					: null
 				}
 
+				<View style={styles.promise}>
+					<Image  source={require('./image/chengnuo.png')} resizeMode={'contain'} style={styles.promiseico} />
+					<Text style={styles.txt}>对方承诺：20年内归还恩人的善款</Text>
+			    </View>
 			    <View style={styles.bottomWrapper}>
 			    	<View style={styles.bottomItem}>
 			       		 <Image  source={require('./image/total.png')} resizeMode={'contain'} style={styles.bottomico} />
@@ -289,6 +293,15 @@ let styles=StyleSheet.create({
 		// color:'#7D7D7D'
 		color:'red'
 	},
+	promise:{
+		flexDirection:'row',
+		justifyContent:'flex-start',
+		alignItems:'center'
+	},
+	promiseico:{
+		height:60,
+		width:60
+	}
 
 });
 

@@ -51,7 +51,7 @@ class INavigator extends Component{
 		let defaultName='TheLoginPage';
 		let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
-		//let defaultComponent=ItemCell;
+		//let defaultComponent=WeiBoContent;
 
 		return(
 			
