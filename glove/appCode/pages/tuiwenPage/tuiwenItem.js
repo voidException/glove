@@ -163,6 +163,13 @@ let styles=StyleSheet.create({
 		height:40,	
 		borderRadius:20	
 	},
+	zhengmingImgArrow:{
+		position:'absolute',
+		right:-7,
+		top:0,
+		width:40,
+		height:40,	
+	},
 	header:{
 		flexDirection:'row',
 		alignItems:'center',

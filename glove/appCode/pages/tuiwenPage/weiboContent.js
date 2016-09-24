@@ -22,6 +22,8 @@ import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
 import TuiwenItem from './tuiwenItem';
+import Prove from '../components/prove';
+import CashNeed from '../components/cashNeed';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -30,32 +32,57 @@ let height=Dimensions.get('window').height;
 export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
-
+		//console.log(this.props.row);
 		this.state={
-			photoupload: 1, //1 代表未上传头像
-			selfintroduce: '什么也没有介绍自己',
-			userphoto:'../../image/default.jpg',
-			usernickname: '无名氏',
-			tweetid: 0, //推文的id
-			useridtweet:  0, //发布推文的用户id
-			sourcemsgid:  0, // 被转发的微博的id
-			msgcontent:  '你是好好的关于阿里月饼事件，俺不评论曲直，只是讲讲正规的公司会怎么做。一句话，开除无商量，Google和腾讯都是这么做的，我看到不止一个人因为更小的事情从这两家公司被开除的。Facebook里有员工带人参观，一小时收了25美元，不仅开除，而且FBI还卷入调查，生怕参观者有什么背景。大公司管人其实很松，但是进', //微博的内容
-			boxtimes:  null, //被收藏的次数
-			commenttimes:  0, //微博被评论的次数
-			deletetag:  0, //是否删除标志 1默认没删除。2 代表删除
+			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
+			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
+			userphoto: this.props.row.tuiwen.userphoto ||'../../image/default.jpg',
+			usernickname: this.props.row.tuiwen.usernickname ||'无名氏',
+			tweetid: this.props.row.tuiwen.tweet.tweetid||0, //推文的id
+			useridtweet: this.props.row.tuiwen.tweet.useridtweet || 0, //发布推文的用户id
+			sourcemsgid: this.props.row.tuiwen.tweet.sourcemsgid|| 0, // 被转发的微博的id
+			msgcontent: this.props.row.tuiwen.tweet.msgcontent|| null,
+			boxtimes:  this.props.row.tuiwen.tweet.boxtimes ||null, //被收藏的次数
+			commenttimes: this.props.row.tuiwen.tweet.commenttimes || 0, //微博被评论的次数
+			deletetag: this.props.row.tuiwen.tweet.deletetag|| 0, //是否删除标志 1默认没删除。2 代表删除
 			ok:  0, //微博被赞的次数
 			publicsee:  0, //是否可见
-			publishtime:  null, //微博发布的时间
-			reportedtimes: 0, //被举报的次数
-			tagid:  1, // 1 代表没有转发的微博。2代表有被转发的微博
-			topic: 1, //话题的主键
-			tweetbackupone:  null, //推文附带的图片地址
-			tweetbackuptwo:  null, //推文附带的图片地址
-			tweetbackupthree: null, //推文附带的图片地址
-			tweetbackupfour:  null,//推文附带的图片地址
-			videoaddress: null, //推文附带的图片地址
+			publishtime:  this.props.row.tuiwen.tweet.publishtime|| null, //微博发布的时间
+			reportedtimes: this.props.row.tuiwen.tweet.reportedtimes || 0, //被举报的次数
+			tagid: this.props.row.tuiwen.tweet.tagid|| 1, // 1 代表没有转发的微博。2代表有被转发的微博
+			topic:this.props.row.tuiwen.tweet.topic|| 1, //话题的主键
+			tweetbackupone:this.props.row.tuiwen.tweet.tweetbackupone||  null, //推文附带的图片地址
+			tweetbackuptwo: this.props.row.tuiwen.tweet.tweetbackuptwo ||null, //推文附带的图片地址
+			tweetbackupthree: this.props.row.tuiwen.tweet.tweetbackupthree||null, //推文附带的图片地址
+			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//推文附带的图片地址
+			videoaddress:this.props.row.tuiwen.tweet.videoaddress|| null, //推文附带的图片地址
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
+			cash:null
 		}		
+	}
+	componentDidMount(){
+		fetch('http://127.0.0.1:8080/glove/cash/getcashrecord',{
+			method:'POST',
+			headers:{
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			    "proof" :"111",
+			    "cashid": this.props.row.tuiwen.tweet.tweetbackupfive
+			})
+       })
+	   .then(response=>response.json())
+	   .then(json=>this.getJson(json))
+	   .catch(function(e){
+	   		console.log(e)
+	   })
+	}
+	getJson(json){
+	    console.log(json);		
+		this.setState({
+			cash:json
+		});
 	}
 	backUp(){
 		this.props.navigator.pop();
@@ -133,23 +160,10 @@ export default class WeiBoContent extends Component{
 						</View>
 					</View>
 				    {/* 需要捐钱的金额等等*/}
-				    <View style={styles.endTime}>
-				    	<Text>结束时间:2017-10-12</Text>
-				    </View>
-					<View style={styles.bottomWrapper}>
-				    	<View style={styles.bottomItem}>
-				       		 <Text style={{color:'red'}}>60000元</Text>
-				       		 <Text style={{color:'#BEBEBE'}}>目标金额</Text>
-				        </View>
-				        <View style={styles.bottomItemMid}>
-				       		 <Text style={{color:'red'}}>38000元</Text>
-				       		 <Text style={{color:'#BEBEBE'}}>已筹金额</Text>
-				        </View>
-				        <View style={styles.bottomItem}>
-				       		  <Text style={{color:'red'}}>8082次</Text>
-				       		 <Text style={{color:'#BEBEBE'}}>支持次数</Text>
-				        </View>
-				    </View>
+				    {this.state.tweetbackupfour===2 && this.state.tagid===1?
+				    	 <CashNeed  cash={this.state.cash}/>
+				    	 :null
+				    }
 				    {/* 救助文案*/}
 					<Text style={styles.upContent}>
 						<AutoLink
@@ -159,9 +173,8 @@ export default class WeiBoContent extends Component{
 				          phone={true}
 				          onPress={this.goBeatRenMainPage.bind(this)} />
 					</Text>
-				    {/* 文案附带的图片*/}
-		            { 
-		            	this.state.tagid!==2 ?	       				       			
+				    {/* 文案附带的图片this.state.tagid!==2 ?*/}
+		            {   this.state.tagid!==2 ?	       				       			
 		       		    <View style={styles.imageList}>
 			       			<View style={styles.imageWrapper}>
 		       				   
@@ -194,73 +207,11 @@ export default class WeiBoContent extends Component{
 						<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>
 						: null
 					}
-					<View style={styles.zhengmingWrapper}>
-						<View style={styles.zhengmingProfile}>
-							<Text style={styles.txt}>证明信息</Text>
-						</View>
-						<View style={styles.authentication}>
-							<Text>认证机构</Text>
-							<Text style={styles.auth}>北京大学爱心社</Text>
-						</View>
-						<View style={styles.jiandu}>
-							<Text>监督小组</Text>
-							<Text style={styles.auth}>北京大学监督处</Text>
-						</View>
-						<View style={styles.authentication}>
-							<Text>具体负责人</Text>
-							<Text style={styles.auth}>北京大学光华管理学院李梦琪<Text>@李猴子</Text></Text>
-						</View>
-
-						<View style={styles.behelpWrapper}>
-						    <View style={styles.profile}>
-								<Text>受助人：</Text>
-								<Text style={{color:'#2893C3',fontSize:15}}>@张三</Text>
-							</View>
-							
-							<View style={styles.profileInner}>
-							 	<Image source={require('./image/gouzi.png')} style={styles.gouziImg}/>
-								<Text style={styles.behelpTxt}>身份证明已提交</Text>
-							</View>
-							<View style={styles.profileInner}>
-							 	<Image source={require('./image/gouzi.png')} style={styles.gouziImg}/>
-								<Text style={styles.behelpTxt}>医院证明已提交</Text>
-							</View>
-							<View style={styles.profileInner}>
-							 	<Image source={require('./image/gouzi.png')} style={styles.gouziImg}/>
-								<Text style={styles.behelpTxt}>居委会证明已提交</Text>
-							</View>						
-						</View>
-						<View style={styles.zhengmingOuter}>
-							<View style={styles.zhengshi}>
-								<Text style={{fontSize:16}}>已有<Text style={{fontSize:16,color:'red'}}>100</Text>人证实</Text>
-								<Text style={{color:'green',fontWeight:'bold',fontSize:16}}>我要证实</Text>
-							</View>
-							<View  style={styles.zhengshiImg}>
-								 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-								 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-								 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-								 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-								 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-								 <Image source={require('./image/moreArrow.png')} style={styles.zhengmingImgArrow}/>
-								 <Image source={require('./image/more.png')} style={styles.zhengmingImgMore}/>
-							</View>
-							<View style={styles.zhengshiTxt}>
-								<Text style={{color:'#B1B1B1'}}>张三是重庆市的优秀学子，可惜了，这个是真是的张三是重庆市的优秀学子。</Text>
-							</View>
-						</View>
-					</View>
-					<View style={styles.chengnuoWrapper}>
-						<View>
-							<View style={styles.chengnuo}>
-								<Text style={styles.txt}>受助人承诺</Text>
-							</View>
-							<View>
-								<Text>承诺类型(A)</Text>
-								<Text style={{color:'red',marginTop:3}}>将于20年内把善款一一归还给帮助我的人</Text>
-							</View>
-						</View>
-					</View>
-
+				    {/* 证明有关的信息*/}
+				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
+                       <Prove cash={this.state.cash} />
+                       :null
+                    }
 					<View style={styles.progress}>
 						<Text style={styles.txt}>进度更新</Text>
 					</View>
