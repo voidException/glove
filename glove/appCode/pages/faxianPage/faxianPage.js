@@ -90,12 +90,10 @@ export default class FaxianPage extends Component{
 
 			    <View style={styles.gloveWrapper}>
 				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}
-			     	<TouchableOpacity>
 				     	<View style={styles.gloveMiddle}>
 					    	<Text style={styles.loveCubtxt}>大学爱心社</Text>	
 					    	<Text style={styles.volunteer}>青年志愿者协会</Text>		    	
 				    	</View>
-			    	</TouchableOpacity>
 				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}	    	
 			    </View>
 
@@ -364,7 +362,7 @@ let styles=StyleSheet.create({
 	gloveMiddle:{
 		flexDirection:'row',
 		justifyContent:'center',
-		alignItems:'flex-end',
+		alignItems:'center',
 		borderTopWidth:1/ratio,		
 		borderTopColor:'#CCCCCC',
 		height:40

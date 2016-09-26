@@ -24,6 +24,7 @@ import Hyperlink from 'react-native-hyperlink';
 import TuiwenItem from './tuiwenItem';
 import Prove from '../components/prove';
 import CashNeed from '../components/cashNeed';
+import Comment from '../components/comment';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -77,6 +78,7 @@ export default class WeiBoContent extends Component{
 	   .catch(function(e){
 	   		console.log(e)
 	   })
+
 	}
 	getJson(json){
 	    console.log(json);		
@@ -136,7 +138,7 @@ export default class WeiBoContent extends Component{
 					</TouchableOpacity>
 					
 					<View style={{marginRight:8}}>
-						<Text style={styles.broad}>留言</Text>
+						<Text style={styles.broad}>转发</Text>
 					</View>
 				</View>
 
@@ -213,9 +215,11 @@ export default class WeiBoContent extends Component{
                        :null
                     }
 					<View style={styles.progress}>
-						<Text style={styles.txt}>进度更新</Text>
+						<Text style={styles.txt}>留言<Text style={{fontSize:14}}>(736)</Text></Text>
+						<Text style={styles.txt}>去评论</Text>
 					</View>
-					<Text style={{color:'black'}}>如果是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当中国真的是一个劳动人民当家作主的国家，各级员工都有着自己的工会，我现在要做的就是买一张火车票，去鼓动阿里安全部门的人全体大罢工。我不跟你们讲他妈逼的道理。我去采取行动。</Text>
+					{/*<Comment /> */}
+					
 				</ScrollView>
 				<View style={{height:95}}></View>
                 {/* 这个是底部*/}
@@ -556,7 +560,7 @@ let styles=StyleSheet.create({
 	},
 	progress:{
 		flexDirection:'row',
-		justifyContent:'center'
+		justifyContent:'space-around'
 	}
 });
 

@@ -14,6 +14,7 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{ Component } from 'react';
+import Affirm from './affirm';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -90,24 +91,9 @@ export default class Prove extends Component{
 							<Text style={styles.behelpTxt}>居委会证明已提交</Text>
 						</View>						
 					</View>
-					<View style={styles.zhengmingOuter}>
-						<View style={styles.zhengshi}>
-							<Text style={{fontSize:16}}>已有<Text style={{fontSize:16,color:'red'}}>100</Text>人证实</Text>
-							<Text style={{color:'green',fontWeight:'bold',fontSize:16}}>我要证实</Text>
-						</View>
-						<View  style={styles.zhengshiImg}>
-							 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-							 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-							 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-							 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-							 <Image source={require('../../image/default.jpg')} style={styles.image}/>
-							 <Image source={require('./image/moreArrow.png')} style={styles.zhengmingImgArrow}/>
-							 <Image source={require('./image/more.png')} style={styles.zhengmingImgMore}/>
-						</View>
-						<View style={styles.zhengshiTxt}>
-							<Text style={{color:'#B1B1B1'}}>张三是重庆市的优秀学子，可惜了，这个是真是的张三是重庆市的优秀学子。</Text>
-						</View>
-					</View>
+
+					<Affirm />
+
 				</View>
 			
 				<View style={styles.chengnuoWrapper}>

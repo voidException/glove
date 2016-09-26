@@ -28,6 +28,8 @@ import WoPage from '../pages/woPage/woPage';
 import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
 import Prove  from '../pages/components/prove';
+import Affirm  from '../pages/components/affirm';
+
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -53,7 +55,7 @@ class INavigator extends Component{
 		let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=WeiBoContent;
-        //let defaultComponent=Prove;
+        //let defaultComponent=Affirm;
 		return(
 			
 			<Navigator
