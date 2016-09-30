@@ -17,6 +17,7 @@ import Login from './login';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MyMainPage from '../pages/mainPage';
+import DoComment from  '../components/doComment';
 import WeiBoItem from '../pages/tuiwenPage/weiboItem';
 import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 import ItemPage from '../pages/zhuPage/itemPage';
@@ -29,6 +30,7 @@ import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
 import Prove  from '../pages/components/prove';
 import Affirm  from '../pages/components/affirm';
+import PostAffirm from '../pages/components/postAffirm';
 
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
@@ -54,8 +56,8 @@ class INavigator extends Component{
 		let defaultName='TheLoginPage';
 		let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
-		//let defaultComponent=WeiBoContent;
-        //let defaultComponent=Affirm;
+		//let defaultComponent=DoComment;
+        //let defaultComponent=PostAffirm;
 		return(
 			
 			<Navigator

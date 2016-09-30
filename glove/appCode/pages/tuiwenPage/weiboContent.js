@@ -24,7 +24,11 @@ import Hyperlink from 'react-native-hyperlink';
 import TuiwenItem from './tuiwenItem';
 import Prove from '../components/prove';
 import CashNeed from '../components/cashNeed';
+import DoZhuanFa  from '../components/doZhuanFa';
 import Comment from '../components/comment';
+import PostAffirm from '../components/postAffirm';
+import DoComment from '../../components/doComment';
+import  Report  from  '../components/report';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -33,7 +37,7 @@ let height=Dimensions.get('window').height;
 export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props.row);
+		console.log(this.props);
 		this.state={
 			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
@@ -97,6 +101,21 @@ export default class WeiBoContent extends Component{
 
 		});
 	}
+	doComment(){
+		this.props.navigator.push({
+			component:DoComment,
+		});
+	}
+	goCommentList(){
+		this.props.navigator.push({
+			component:Comment
+		});
+	}
+	goZhuanFa(){
+		this.props.navigator.push({
+			component:DoZhuanFa,
+		});
+	}
 	//函数根绝props中的值，传递给下一个页面
 	goOriginWeiBoContent(){
 		this.props.navigator.push({
@@ -111,6 +130,11 @@ export default class WeiBoContent extends Component{
 				row:this.state
 			}
 		});
+	}
+	goReport(){
+		this.props.navigator.push({
+			component:Report,
+		})
 	}
 	reportMe(){
 		//这里实现举报次数增加
@@ -138,7 +162,7 @@ export default class WeiBoContent extends Component{
 					</TouchableOpacity>
 					
 					<View style={{marginRight:8}}>
-						<Text style={styles.broad}>转发</Text>
+						<Text style={styles.broad}  onPress={this.goZhuanFa.bind(this)}>转发</Text>
 					</View>
 				</View>
 
@@ -211,12 +235,12 @@ export default class WeiBoContent extends Component{
 					}
 				    {/* 证明有关的信息*/}
 				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
-                       <Prove cash={this.state.cash} />
+                       <Prove cash={this.state.cash}  navigator={this.props.navigator}/>
                        :null
                     }
 					<View style={styles.progress}>
-						<Text style={styles.txt}>留言<Text style={{fontSize:14}}>(736)</Text></Text>
-						<Text style={styles.txt}>去评论</Text>
+						<Text style={styles.txt}  onPress={this.goCommentList.bind(this)}>留言<Text style={{fontSize:14}}>(736)</Text></Text>
+						<Text style={styles.txt} onPress={this.doComment.bind(this)}>去评论</Text>
 					</View>
 					{/*<Comment /> */}
 					
@@ -229,7 +253,7 @@ export default class WeiBoContent extends Component{
 						<View style={styles.donateMoney}>
 							<Text style={{fontSize:20,color:'#fff'}}>我要捐钱</Text>
 						</View>
-						<Text>举报他</Text>
+						<Text  onPress={this.goReport.bind(this)}>举报他</Text>
 					</View>	
 					<View style={styles.shareWrapper}>	
 						<View style={styles.shareItemWrapper}>

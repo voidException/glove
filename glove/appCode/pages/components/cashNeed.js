@@ -40,7 +40,7 @@ export default  class CashNeed extends Component{
 				realcash:nextProps.cash.realcash
 			}
 		});
-        console.log(nextProps.cash);
+        //console.log(nextProps.cash);
 	}
 	render(){
 		return(

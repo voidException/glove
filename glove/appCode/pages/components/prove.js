@@ -92,7 +92,7 @@ export default class Prove extends Component{
 						</View>						
 					</View>
 
-					<Affirm />
+					<Affirm   navigator={this.props.navigator}/>
 
 				</View>
 			

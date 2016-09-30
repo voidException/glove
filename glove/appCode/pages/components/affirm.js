@@ -19,6 +19,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
+import  PostAffirm  from './postAffirm';
 export default class Affirm extends Component{
 	constructor(props){
 		super(props);
@@ -53,6 +54,11 @@ export default class Affirm extends Component{
 		// 	cash:json
 		// });
 	}
+	postAffirm(){
+		this.props.navigator.push({
+			component:PostAffirm
+		});
+	}
 
 	render(){
 		//let img=<Image source={require('../../image/default.jpg')} style={styles.image}/>;
@@ -66,7 +72,7 @@ export default class Affirm extends Component{
 			<View style={styles.zhengmingOuter}>
 				<View style={styles.zhengshi}>
 					<Text style={{fontSize:16,fontWeight:'bold'}}>已有<Text style={{fontSize:16,color:'red'}}>100</Text>人证实</Text>
-					<Text style={{color:'red',fontWeight:'bold',fontSize:16}}>我要证实</Text>
+					<Text style={{color:'red',fontWeight:'bold',fontSize:16}}  onPress={this.postAffirm.bind(this)}>我要证实</Text>
 				</View>
 				<View  style={styles.zhengshiImg}>
 				     {/*img*/}
