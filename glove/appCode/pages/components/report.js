@@ -34,7 +34,7 @@ export default class Report extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text  onPress={this.cancel.bind(this)}>《 返回</Text>
+					<Text style={{color:'#ffffff',fontSize:18}} onPress={this.cancel.bind(this)}>取消</Text>
 				</View>
 
 				<View style={styles.commonStyle}>
@@ -64,6 +64,7 @@ let  styles=StyleSheet.create({
 		flexDirection:'row',
         height: 40+statusBarHeight,
         paddingTop: statusBarHeight,
+        paddingLeft:4,
         width:width,    
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
@@ -114,7 +115,7 @@ let  styles=StyleSheet.create({
 		alignItems:'center',
 		justifyContent:'center',
 		height:40,
-		backgroundColor:'green',
+		backgroundColor:'#43AC43',
 		marginRight:20,
 		marginLeft:20,
 		marginTop:10,

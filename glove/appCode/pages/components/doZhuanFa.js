@@ -35,8 +35,8 @@ export default class DoZhuanFa extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text onPress={this.cancel.bind(this)}> 取消 </Text>
-					<Text style={{color:'#ffffff'}}>发送</Text>
+					<Text  style={{color:'#ffffff',fontSize:18}} onPress={this.cancel.bind(this)}> 取消 </Text>
+					<Text style={{color:'#ffffff',fontSize:18}}>发送</Text>
 				</View>
 
 				<View style={styles.commonStyle}>

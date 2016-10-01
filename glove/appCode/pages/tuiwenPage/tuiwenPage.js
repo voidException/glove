@@ -96,8 +96,9 @@ class TuiWenPage extends Component{
 		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
-				<View style={{backgroundColor:'#43AC43',height:60,paddingTop:24,justifyContent:'center',alignItems:'center'}}>
-					<Text style={styles.toper}>传播温暖</Text>
+				<View style={{ flexDirection:'row',backgroundColor:'#43AC43',height:60,paddingTop:24,justifyContent:'space-around',alignItems:'center'}}>
+					<Text style={styles.toper}>传播温暖</Text>					
+		            <Text style={styles.toper}>发布</Text>		            
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -118,6 +119,7 @@ class TuiWenPage extends Component{
 		             onEndReachedThreshold={20}
 		             scrollRenderAheadDistance={300}
 		             enableEmptySections={true}/>		
+		       
 			</View>
 		);
 	}
@@ -163,12 +165,15 @@ let styles=StyleSheet.create({
 		justifyContent:'center',
 		alignSelf:'center',
 		color:'white',
-		fontSize:18
+		fontSize:18,
+		paddingLeft:3,
+		paddingRight:3
 	},
 	list: {
 	    justifyContent: 'flex-start',
 	    flexDirection: 'column',
 	    flexWrap: 'wrap'
-  	}
+  	},
+
 });
 

@@ -34,7 +34,7 @@ export default class PostAffirm extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text  onPress={this.cancel.bind(this)}>《 返回</Text>
+					<Text style={{color:'white',fontSize:18}} onPress={this.cancel.bind(this)}>取消</Text>
 				</View>
 
 				<View style={styles.commonStyle}>
@@ -80,6 +80,7 @@ let  styles=StyleSheet.create({
 		flexDirection:'row',
         height: 40+statusBarHeight,
         paddingTop: statusBarHeight,
+        paddingLeft:4,
         width:width,    
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
