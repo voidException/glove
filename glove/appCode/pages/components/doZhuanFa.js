@@ -47,7 +47,6 @@ export default class DoZhuanFa extends Component{
 						multiline={true}
 						maxLength={200}
 					    placeholderTextColor='#DBDBDB'
-
 					 />
 				</View>
 				<View style={styles.post}>
