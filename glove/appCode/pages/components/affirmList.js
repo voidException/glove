@@ -35,13 +35,13 @@ export default class AffirmList extends Component{
 	}
  // <Image source={require('../image/talk.png')} resizeMode={'contain'} style={styles.img} />
 	componentDidMount(){
-		console.log(this.props.row.lp);
+		//console.log(this.props.row.lp);
 		this.setState({
 			dataSource: DS.cloneWithRows(this.props.row.lp)
 		});
 	}
 	renderRow(row,sectionID){
-		console.log(row)
+		//console.log(row)
 		return( <AffirmListItem  row={row} {...this.props}/>);
 	}
 	back(){
