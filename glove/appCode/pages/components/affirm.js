@@ -20,9 +20,15 @@ let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 import  PostAffirm  from './postAffirm';
+import AffirmList from './affirmList';
 export default class Affirm extends Component{
 	constructor(props){
 		super(props);
+		this.state={
+			count:0,
+			affirmInfo:"还没有人证实哦",
+			affirm:null
+		}
 	}
 
     componentDidMount(){
@@ -33,10 +39,10 @@ export default class Affirm extends Component{
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-			    'id':1,
+			    'id':5,
 			    'tag': 2,
-			    'page':1,
-			    'pageSize':2
+			    'page':0,
+			    'pageSize':3
 			})
        })
 	   .then(response=>response.json())
@@ -50,9 +56,11 @@ export default class Affirm extends Component{
 
 	getJson(json){
 	    console.log(json);		
-		// this.setState({
-		// 	cash:json
-		// });
+		 this.setState({
+		 	affirm:json,
+		 	count:json.count,
+		 	affirmInfo:json.lp[0].content
+		 });
 	}
 	postAffirm(){
 		this.props.navigator.push({
@@ -60,29 +68,45 @@ export default class Affirm extends Component{
 		});
 	}
 
+    goAffirmList(){
+		this.props.navigator.push({
+			component:AffirmList,
+			params:{
+				row:this.state.affirm
+			}
+		});
+	}
 	render(){
 		//let img=<Image source={require('../../image/default.jpg')} style={styles.image}/>;
 		var items = [];
-        for (var i = 0; i < 3; i++) {
-            items.push(<Image key={i} source={require('../../image/default.jpg')} style={styles.image}/>);
+        for (var i = 0; i < this.state.count; i++) {
+            if (this.state.count===0) {
+            	items.push(<Image key={i} source={require('../../image/default.jpg')} style={styles.image}/>);
+            }else{
+            	let imgurl=this.state.affirm.lp[i].confirmbackuptwo;
+            	
+            	items.push(<Image key={i} source={{uri:imgurl}} style={styles.image}/>);
+            }
+           
         }
 
         let imgsrc=require('../../image/default.jpg');
 		return(
 			<View style={styles.zhengmingOuter}>
 				<View style={styles.zhengshi}>
-					<Text style={{fontSize:16,fontWeight:'bold'}}>已有<Text style={{fontSize:16,color:'red'}}>100</Text>人证实</Text>
+					<Text style={{fontSize:16,fontWeight:'bold'}}>已有<Text style={{fontSize:16,color:'red'}}>{this.state.count}</Text>人证实</Text>
 					<Text style={{color:'red',fontWeight:'bold',fontSize:16}}  onPress={this.postAffirm.bind(this)}>我要证实</Text>
 				</View>
 				<View  style={styles.zhengshiImg}>
 				     {/*img*/}
 				     {items}
 					 <Image source={imgsrc} style={styles.image}/>
-					 <Image source={require('./image/moreArrow2.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>
-					 
+					 <TouchableOpacity onPress={this.goAffirmList.bind(this)}  style={styles.zhengmingImgArrow}>
+					 	<Image source={require('./image/moreArrow2.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>					 
+					 </TouchableOpacity>
 				</View>
 				<View style={styles.zhengshiTxt}>
-					<Text style={{color:'#B1B1B1'}}>张三是重庆市的优秀学子，可惜了，这个是真是的张三是重庆市的优秀学子。</Text>
+					<Text style={{color:'#B1B1B1'}}>{this.state.affirmInfo}</Text>
 				</View>
 			</View>
 		);

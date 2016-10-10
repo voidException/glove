@@ -70,6 +70,7 @@ class TuiWenPage extends Component{
 	}
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
+		//console.log(row);
 		return( <WeiBoItem  row={row} {...this.props}/>);
 	}
 	_onRefresh() {

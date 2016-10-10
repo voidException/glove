@@ -85,7 +85,7 @@ export default class WeiBoContent extends Component{
 
 	}
 	getJson(json){
-	    console.log(json);		
+	    //console.log(json);		
 		this.setState({
 			cash:json
 		});

@@ -31,7 +31,7 @@ import HelpPage  from '../pages/messagePage/helpPage';
 import Prove  from '../pages/components/prove';
 import Affirm  from '../pages/components/affirm';
 import PostAffirm from '../pages/components/postAffirm';
-
+import AffirmListItem from '../pages/components/affirmListItem';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -57,7 +57,7 @@ class INavigator extends Component{
 		let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=DoComment;
-        //let defaultComponent=PostAffirm;
+        //let defaultComponent=AffirmListItem;
 		return(
 			
 			<Navigator
