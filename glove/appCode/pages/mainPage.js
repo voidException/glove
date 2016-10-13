@@ -27,7 +27,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	constructor(props){
 		super(props);
 		this.state={
-			selectedTab:'tuiwen'
+			selectedTab:'zhuye'
 		}	
 		//console.log(this.props)
 	}

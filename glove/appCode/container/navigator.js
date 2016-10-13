@@ -58,7 +58,7 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
+		let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=WoPage;
 		//let defaultComponent=UserPage;
@@ -66,7 +66,7 @@ class INavigator extends Component{
         //let defaultComponent=SuperviseListItem;
         //let  defaultComponent=ListViewBasics;
         //let defaultComponent=CarList;
-        let  defaultComponent=ProductView;
+        //let  defaultComponent=ProductView;
 		return(
 			
 			<Navigator

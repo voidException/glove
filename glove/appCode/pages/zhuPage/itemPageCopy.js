@@ -49,7 +49,8 @@ let lastItemstartTime=null;
 			isRefreshing: false, //
 			dataSource:DS.cloneWithRows([]),
 		}
-			
+		
+		
 	}
 	componentDidMount(){
 		//console.log(this.props);
@@ -192,6 +193,42 @@ let lastItemstartTime=null;
 				<View style={styles.topper}>			    
 					    <Text style={{fontSize:18,color:'#fff'}}>项目</Text>
 				</View>
+			<ScrollView
+				ref='scroll'
+				refreshControl={
+			        <RefreshControl
+			            refreshing={this.state.isRefreshing}
+			            onRefresh={this._onRefresh.bind(this)}
+			            tintColor="#ff0000"
+			            title="Loading..."
+			            titleColor="#00ff00"
+			            colors={['#ff0000', '#00ff00', '#0000ff']}
+			            progressBackgroundColor="#ffff00"/>
+			     }
+			    onEndReached={this._onScroll.bind(this)}> 
+
+				<View style={styles.wrapper}>
+					<StatusBar backgroundColor='#3B3738' barStyle="default"/>
+				
+
+				    <Swiper style={styles.swiper} autoplay={true} showsButtons={false} height={0.3*height}>
+				        <View style={styles.slide1}>
+						    <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
+				           		<Image source={{uri:this.state.wheelImageOne}} resizeMode={'cover'} style={{width:width,height:0.3*height}}/>
+				            </TouchableOpacity>
+				        </View>
+				        <View style={styles.slide2}>
+				            <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
+				           		<Image source={{uri:this.state.wheelImageTwo}} resizeMode={'cover'} style={{width:width,height:0.3*height}}/>
+				            </TouchableOpacity>
+				        </View>
+				        <View style={styles.slide3}>
+				        	<TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>	
+				           		<Image source={{uri:this.state.wheelImageThree}} resizeMode={'cover'} style={{width:width,height:0.3*height}}/>
+				            </TouchableOpacity>
+				        </View>
+				    </Swiper>
+		        </View>
 		        <ListView 
 				    	 contentContainerStyle={styles.list}
 			             dataSource={this.state.dataSource}
@@ -200,6 +237,11 @@ let lastItemstartTime=null;
 			             pageSize={2} 
 			             scrollRenderAheadDistance={300}
 			             enableEmptySections={true}/>	
+			   
+		    </ScrollView> 
+		    <View style={styles.loadMore}>
+			        <Text onPress={this.loadMore.bind(this)} style={styles.loadMoreTxt}>>></Text>
+			 </View>
 	        </View>
 		);
 	}

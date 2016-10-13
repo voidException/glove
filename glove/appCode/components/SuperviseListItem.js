@@ -41,11 +41,11 @@ export default class SuperviseListtItem extends Component{
     onImgError(event){
          this.imagesrc=require('../image/25.jpg');
     }
-    goUserPage(){
+    goUserPage(){ //把用户所有的数据都传输过去
     	this.props.navigator.push({
     		component:UserPage,
     		params:{
-    			userID:1
+    			data:this.props.row
     		}
     	});
     }

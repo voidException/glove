@@ -103,7 +103,7 @@ export default class Prove extends Component{
 						</View>
 						<View>
 							<Text>承诺类型({this.state.cash.promisetype})</Text>
-							<Text style={{color:'red',marginTop:3}}>{this.state.cash.promisemiaoshu}</Text>
+							<Text style={{color:'black',marginTop:3}}>{this.state.cash.promisemiaoshu}</Text>
 						</View>
 					</View>
 				</View>
