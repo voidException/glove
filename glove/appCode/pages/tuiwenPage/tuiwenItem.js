@@ -10,6 +10,7 @@ import{
 	PixelRatio
 } from 'react-native';
 import React,{ Component } from 'react';
+import UserPage from '../../components/userPage';
 import OtherWoPage from '../woPage/otherWoPage';
 import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
@@ -21,7 +22,7 @@ let {width,height}=Dimensions.get('window');
 export default class TuiwenItem extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props)
+		//console.log(this.props.row)
 		this.state={
 			photoupload:this.props.row.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.selfintroduce ||'什么也没有介绍自己',
@@ -61,7 +62,7 @@ export default class TuiwenItem extends Component{
 	goOtherWoPage(){
 		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
 		this.props.navigator.push({
-			component:OtherWoPage
+			component:UserPage
 		});
 	}
 	//函数根绝props中的值，传递给下一个页面
@@ -82,7 +83,7 @@ export default class TuiwenItem extends Component{
 		//console.log(url);//成功了，哈哈
 		// //在这里把url(用户昵称)传递给主页
 		this.props.navigator.push({
-			component:OtherWoPage,
+			component:UserPage,
 			params:{
 				nickname:url
 			}

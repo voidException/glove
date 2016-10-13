@@ -14,7 +14,7 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{ Component } from 'react';
-import CommentItem from './commentItem';
+import PeopleListItem from './PeopleListItem';
 
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
@@ -23,9 +23,10 @@ let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 
 let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
-export default class Comment extends Component{
+export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
+
 		this.state={
 			dataSource:DS.cloneWithRows([]),
 			isRefreshing: false,
@@ -35,14 +36,17 @@ export default class Comment extends Component{
 	}
 
     componentDidMount(){
-		fetch('http://127.0.0.1:8080/glove/tweetcomment/listcomments',{
+    	//根据props传过来的tag 确定是什么列表，然后调用不同的接口
+    	//
+		fetch('http://127.0.0.1:8080/glove/peoplelist/lsmen',{
 			method:'POST',
 			headers:{
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-			    'tweetid':5,
+				'proof':'eee',
+			    'tag':1,
 			    'page':0,
 			    'pageSize':3
 			})
@@ -51,21 +55,22 @@ export default class Comment extends Component{
 	   .then(json=>this.getJson(json))
 	   .catch(function(e){
 	   		console.log(e);
-	   		console.log('推文评论列表请求出错');
+	   		console.log('people列表获取出错');
 	   })
 	   
 	}
     getJson(json){
     	console.log(json);
      	this.setState({
-		 	dataSource: DS.cloneWithRows(json.data)
+		 	dataSource: DS.cloneWithRows(json.lp)
 		 });
     }
 
 
     renderRow(row,sectionID){
 		//console.log(row)
-		return( <CommentItem  row={row} {...this.props}/>);
+		//根据props传过来的tag 确定是什么列表，然后调用不同的Item
+		return( <PeopleListItem  row={row} {...this.props}/>);
 	}
 
 	back(){

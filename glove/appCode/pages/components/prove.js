@@ -50,7 +50,7 @@ export default class Prove extends Component{
 
 			}
 		});
-        console.log(nextProps.cash);
+       // console.log(nextProps.cash);
 	}
 	render(){
         return(	

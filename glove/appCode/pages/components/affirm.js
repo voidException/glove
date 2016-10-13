@@ -48,14 +48,14 @@ export default class Affirm extends Component{
 	   .then(response=>response.json())
 	   .then(json=>this.getJson(json))
 	   .catch(function(e){
-	   		console.log(e);
+	   		//console.log(e);
 	   		console.log('证实人信息请求出错');
 	   })
 	   
 	}
 
 	getJson(json){
-	    console.log(json);		
+	     //console.log(json);		
 		 this.setState({
 		 	affirm:json,
 		 	count:json.count,
@@ -72,7 +72,7 @@ export default class Affirm extends Component{
 		this.props.navigator.push({
 			component:AffirmList,
 			params:{
-				row:this.state.affirm
+				data:this.state.affirm
 			}
 		});
 	}

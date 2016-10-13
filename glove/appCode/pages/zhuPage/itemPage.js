@@ -75,7 +75,7 @@ let lastItemstartTime=null;
 			dispatch(fetchItemPageIfNeeded(requestParams));
 
 			dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
-		},500);
+		},10);
 		// dispatch(fetchItemPageIfNeeded(requestParams));
 
 		// dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
@@ -240,7 +240,7 @@ let lastItemstartTime=null;
 			   
 		    </ScrollView> 
 		    <View style={styles.loadMore}>
-			        <Text onPress={this.loadMore.bind(this)} style={styles.loadMoreTxt}>加载>></Text>
+			        <Text onPress={this.loadMore.bind(this)} style={styles.loadMoreTxt}>>></Text>
 			 </View>
 	        </View>
 		);
@@ -312,9 +312,9 @@ let styles=StyleSheet.create({
 	    flex:1
   	},
   	loadMore:{
-  		height:34,
-  		width:70,
-  		borderRadius:15,
+  		height:40,
+  		width:40,
+  		borderRadius:20,
   		position:'absolute',
   		right:0,
   		bottom:70,

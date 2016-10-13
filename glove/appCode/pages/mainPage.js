@@ -85,7 +85,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						onPress={()=>{
 							this.setState({selectedTab:'find'});
 						}}>
-						<FaxianPage />
+						<FaxianPage  {...this.props}/>
 					</TabBarIOS.Item>
 					<TabBarIOS.Item
 						title="我"
@@ -94,7 +94,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						onPress={()=>{
 							this.setState({selectedTab:'wo'});
 						}}>
-						<WoPage />
+						<WoPage  {...this.props} />
 					</TabBarIOS.Item>
 				</TabBarIOS>
 				

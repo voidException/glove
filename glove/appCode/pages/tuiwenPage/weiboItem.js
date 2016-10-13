@@ -11,6 +11,7 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 import OtherWoPage from '../woPage/otherWoPage';
+import UserPage from '../../components/userPage';
 import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
 import AutoLink from 'react-native-autolink';
@@ -72,7 +73,7 @@ export default class WeiBoItem extends Component{
 	goOtherWoPage(){
 		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
 		this.props.navigator.push({
-			component:OtherWoPage,
+			component:UserPage,
 
 		});
 	}
@@ -100,7 +101,7 @@ export default class WeiBoItem extends Component{
 		//console.log(url);//成功了，哈哈
 		// //在这里把url(用户昵称)传递给主页
 		this.props.navigator.push({
-			component:OtherWoPage,
+			component:UserPage,
 			params:{
 				nickname:url
 			}

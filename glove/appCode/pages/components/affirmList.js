@@ -37,12 +37,12 @@ export default class AffirmList extends Component{
 	componentDidMount(){
 		//console.log(this.props.row.lp);
 		this.setState({
-			dataSource: DS.cloneWithRows(this.props.row.lp)
+			dataSource: DS.cloneWithRows(this.props.data.lp)
 		});
 	}
 	renderRow(row,sectionID){
 		//console.log(row)
-		return( <AffirmListItem  row={row} {...this.props}/>);
+		return( <AffirmListItem  row={row} />);
 	}
 	back(){
 		this.props.navigator.pop();

@@ -20,6 +20,7 @@ import{
 import React,{ Component } from 'react';
 import Swiper from 'react-native-swiper2';
 import WheelContent  from './findWheelContent';
+import PeopleListPage  from  '../../components/PeopleListPage';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -31,19 +32,17 @@ export default class FaxianPage extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			wheelImageOne:'http://7xihgc.com1.z0.glb.clouddn.com/lunbo1.jpg',
-			wheelImageTwo:'http://7xihgc.com1.z0.glb.clouddn.com/lunbo2.jpg',
-			wheelImageThree:'http://7xihgc.com1.z0.glb.clouddn.com/lunbo3.jpg',
-			wheelImageOneURL:'http://www.jianshu.com/p/55b586de943d',
-			wheelImageTwoURL:'http://www.jianshu.com/p/55b586de943d',
-			wheelImageThreeURL:'http://www.jianshu.com/p/55b586de943d'
+			
 		}
 		
 	}
-	wheelImageTouch(url){
-		
+	goMenList(userType){
+	    //console.log(userType);		
 		this.props.navigator.push({
-            component: WheelContent
+            component: PeopleListPage,
+            params:{
+            	userType:userType
+            }
         });
 	}
 	render(){
@@ -52,7 +51,7 @@ export default class FaxianPage extends Component{
 			<View style={styles.wrapper}>
 				<StatusBar backgroundColor='#3B3738' barStyle="default"/>
 				<View style={styles.topper}>			    
-				    <Text style={{fontSize:18,color:'#fff'}}>发现</Text>
+				    <Text style={{fontSize:18,color:'#fff'}}>监督处</Text>
 				</View>
 				<View style={styles.ad}>
 					<View style={styles.superUs}>
@@ -80,7 +79,7 @@ export default class FaxianPage extends Component{
 			    		<Image source={require('./image/bell.png')} resizeMode={'contain'} style={styles.eyeTop}/>
 			    	</View>
 			    	<View style={styles.superText}>
-			    		<Text style={{fontSize:17,color:'black'}}>监督处</Text>
+			    		<Text  onPress={this.goMenList.bind(this,3)} style={{fontSize:17,color:'black'}}>监督处</Text>
 			    	</View>
 			    	<View style={styles.eyes}>
 			    		<Image source={require('./image/eyeRight.png')} resizeMode={'contain'} style={styles.eyeLeft}/>
@@ -91,8 +90,8 @@ export default class FaxianPage extends Component{
 			    <View style={styles.gloveWrapper}>
 				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}
 				     	<View style={styles.gloveMiddle}>
-					    	<Text style={styles.loveCubtxt}>大学爱心社</Text>	
-					    	<Text style={styles.volunteer}>青年志愿者协会</Text>		    	
+					    	<Text onPress={this.goMenList.bind(this,2)} style={styles.loveCubtxt}>大学爱心社</Text>	
+					    	<Text onPress={this.goMenList.bind(this,2)} style={styles.volunteer}>青年志愿者协会</Text>		    	
 				    	</View>
 				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}	    	
 			    </View>
@@ -101,16 +100,16 @@ export default class FaxianPage extends Component{
 			    <View style={styles.itemWrapperSociety}>
 			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
 			        <View style={styles.shehui}>				        
-					    <Text style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
+					    <Text  onPress={this.goMenList.bind(this,5)} style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
 					    <View style={styles.shehuidown}>
 					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已入住300家</Text>
 					    	<Text style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>
 					    </View>
 					</View>	    	
 			    </View>
-
+                {/*
 				<View style={styles.itemWrapperSociety}>
-			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
+			    	
 			        <View style={styles.shehui}>				        
 					    <Text style={{fontSize:16,fontWeight:'bold'}}>虚拟基金</Text>					    
 					    <View style={styles.shehuidown}>
@@ -119,19 +118,20 @@ export default class FaxianPage extends Component{
 					    </View>
 					</View>	    	
 			    </View>
+			    */}
 
 			    <View style={styles.itemWrapperTop}>
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-			        <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>
+			        <TouchableOpacity  onPress={this.goMenList.bind(this,7)}>
 				        <View style={styles.rightWrapper}>
-					    	<Text style={styles.volunteer}>慈善排行榜</Text>	
+					    	<Text  style={styles.volunteer}>慈善排行榜</Text>	
 					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
 				    	</View>	
 			    	</TouchableOpacity>	    	
 			    </View>
 			    <View style={styles.itemWrapperTop}>
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-			        <TouchableOpacity  onPress={this.wheelImageTouch.bind(this,urlone)}>
+			        <TouchableOpacity>
 				        <View style={styles.aboutUsWrapper}>
 					    	<Text style={styles.volunteer}>关于我们</Text>	
 					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>

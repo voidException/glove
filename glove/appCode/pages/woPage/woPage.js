@@ -18,7 +18,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 //let backBtnImg = require('./image/bar_btn_back_ico.png');
-
+import PeopleListPage  from  '../../components/PeopleListPage';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -31,6 +31,12 @@ export default class WoPage extends Component{
 	}
 	_back() {
         this.props.navigator.pop();
+    }
+
+    goSupervise(){      
+        this.props.navigator.push({
+            component: PeopleListPage
+        });
     }
 	render(){
 		return(
@@ -52,47 +58,51 @@ export default class WoPage extends Component{
                     	<Image source={require('./image/setImg.png')} style={styles.setImage} />
                     </View>
                 </View>
-                <View style={styles.tuiwenWrapper}>
-                	
-                		<View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>100</Text>
-                            <Text style={styles.txt}>推文</Text>                           
+
+              
+                <View style={styles.helpInfo}>
+                    <View style={styles.helpInfoLeft}>
+                        <View style={styles.ihelp}>
+                            <Text onPress={this.goSupervise.bind(this)}>我帮助</Text>
                         </View>
-                		<View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>9000</Text>
-                            <Text style={styles.txt}>关注</Text>
+                        <View style={styles.helpInfoMoney}>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>400元</Text>
                         </View>
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>120</Text>
-                            <Text style={styles.txt}>粉丝</Text>
-                        </View>               	
+                    </View>
+                    <View style={styles.helpInfoRight}>
+                        <Text onPress={this.goSupervise.bind(this)} style={{marginBottom:5}}>帮助我</Text>
+                        <View  style={styles.helpInfoMoney}>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>400元</Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.loveWrapper}>
-                    
+
+                <View style={styles.loveWrapper}>                  
                         <View style={styles.loveLeft}></View>
                         <View style={styles.loveMiddle}>
                              <Image source={require('./image/hearts.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                         </View>
                         <View style={styles.loveRight}></View>                
                 </View>
-                <View style={styles.helpWrapper}>
-                    <View>
-                        <Text>我帮助</Text>
-                    </View>
-                    <View>
-                        <Text>帮助我</Text>
-                    </View>
+                <View style={styles.tuiwenWrapper}>
+                    
+                        <View style={styles.txtWrapper}>
+                            <Text style={styles.tuiwenWrapperTxt}>100</Text>
+                            <Text style={styles.txt}>推文</Text>                           
+                        </View>
+                        <View style={styles.txtWrapper}>
+                            <Text style={styles.tuiwenWrapperTxt}>9000</Text>
+                            <Text  onPress={this.goSupervise.bind(this)} style={styles.txt}>关注</Text>
+                        </View>
+                        <View style={styles.txtWrapper}>
+                            <Text style={styles.tuiwenWrapperTxt}>120</Text>
+                            <Text onPress={this.goSupervise.bind(this)} style={styles.txt}>粉丝</Text>
+                        </View>                 
                 </View>
-                <View style={styles.helpInfo}>
-                    <View style={styles.helpInfoLeft}>
-                        <Text>500人</Text>
-                        <Text>400元</Text>
-                    </View>
-                    <View style={styles.helpInfoRight}>
-                        <Text>500人</Text>
-                        <Text>400元</Text>
-                    </View>
-                </View>
+
+          
 
 
                 <View style={styles.itenInfoWrapper}>
@@ -110,11 +120,13 @@ export default class WoPage extends Component{
                             <Text style={styles.txt}>关注的项目</Text>
                         </View>                 
                 </View>
+            {/*
                 <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/personal_navibar_icon_message.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                     <Text style={styles.texts}>加入的基金</Text>
                     <View style={{width:40}}></View>
                 </View>
+            */}
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/zhifubao_btn.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                     <Text style={styles.texts}>捐钱帮助他</Text>
@@ -204,18 +216,20 @@ let styles=StyleSheet.create({
     },
      tuiwenWrapper:{
         flexDirection:'row',
-        height:60,
-        marginTop:5,
+        height:50,
+        marginTop:0,
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         backgroundColor:'#ffffff',
         justifyContent:'space-around',
-        alignItems:'center'
+        alignItems:'center',
+        marginLeft:20,
+        marginRight:20
     },
      itenInfoWrapper:{
         flexDirection:'row',
-        height:60,
-        marginTop:5,
+        height:50,
+        marginTop:0,
         borderBottomWidth:1/ratio,
         borderBottomColor:'red',
         backgroundColor:'#ffffff',
@@ -270,20 +284,33 @@ let styles=StyleSheet.create({
     },
     helpWrapper:{
         flexDirection:'row',
-        justifyContent:'space-around',
-        alignItems:'center'
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:8
     },
     helpInfo:{
         flexDirection:'row',
-        justifyContent:'space-around'
+        justifyContent:'center',
+        marginTop:12,
+        marginBottom:12
+    },
+    ihelp:{
+        flexDirection:'row',
+        justifyContent:'flex-end',
+        marginBottom:5
     },
     helpInfoLeft:{
-        flexDirection:'row',
-        justifyContent:'space-between'
+        flexDirection:'column',
+        justifyContent:'flex-end',
+        marginRight:8
     },
     helpInfoRight:{
-        flexDirection:'row',
-        justifyContent:'space-between'
+        flexDirection:'column',
+        justifyContent:'flex-start',
+        marginLeft:8
+    },
+    helpInfoMoney:{
+        flexDirection:'row'
     },
     myItem:{
         height:45,

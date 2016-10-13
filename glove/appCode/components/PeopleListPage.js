@@ -14,18 +14,19 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{ Component } from 'react';
-import CommentItem from './commentItem';
-
+import SuperviseListItem from './SuperviseListItem';
+import CharityListItem  from './CharityListItem';
+import { UrlSuperMenList } from '../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-
 let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
-export default class Comment extends Component{
+export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
+        //console.log(this.props)
 		this.state={
 			dataSource:DS.cloneWithRows([]),
 			isRefreshing: false,
@@ -35,14 +36,51 @@ export default class Comment extends Component{
 	}
 
     componentDidMount(){
-		fetch('http://127.0.0.1:8080/glove/tweetcomment/listcomments',{
+    	//根据props传过来的tag 确定是什么列表，传入不同的url
+    	if (this.props.userType==3) { //监督处
+            let  param={
+            	url:UrlSuperMenList, //当是我关注的人和我我帮助的人时这里需要改变url
+            	tag:1  //此处应换成param.tag，数据库不足
+            };
+            this.fetchWrapper(param);
+        }else if (this.props.userType==2) { //社团青协
+        	let  param={
+            	url:UrlSuperMenList,
+            	tag:1  
+            };
+            this.fetchWrapper(param);
+        }else  if (this.props.userType==5) { //社会公益机构
+        	let  param={
+            	url:UrlSuperMenList,  
+            	tag:1  
+            };
+            this.fetchWrapper(param);
+        }else if (this.props.userType==7) { //公益排行榜
+        	let  param={
+            	url:UrlSuperMenList,  
+            	tag:1  
+            };
+            this.fetchWrapper(param);
+        }else{
+        	let  param={
+            	url:UrlSuperMenList,  
+            	tag:1  
+            };
+            this.fetchWrapper(param);
+        }
+	   
+	}
+
+    fetchWrapper(param){
+    	fetch(param.url,{
 			method:'POST',
 			headers:{
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-			    'tweetid':5,
+				'proof':'eee',
+			    'tag':param.tag,
 			    'page':0,
 			    'pageSize':3
 			})
@@ -50,22 +88,33 @@ export default class Comment extends Component{
 	   .then(response=>response.json())
 	   .then(json=>this.getJson(json))
 	   .catch(function(e){
-	   		console.log(e);
-	   		console.log('推文评论列表请求出错');
+	   		console.log('people列表获取出错');
 	   })
-	   
-	}
+    }
+
     getJson(json){
-    	console.log(json);
+    	//console.log(json);
      	this.setState({
-		 	dataSource: DS.cloneWithRows(json.data)
+		 	dataSource: DS.cloneWithRows(json.lp)
 		 });
     }
 
 
     renderRow(row,sectionID){
-		//console.log(row)
-		return( <CommentItem  row={row} {...this.props}/>);
+		//console.log(sectionID);
+		//根据props传过来的tag 确定是什么列表，然后调用不同的Item
+		if (this.props.userType==3) {
+			return( <SuperviseListItem  row={row} {...this.props} sectionID={sectionID}/>);
+		}else if (this.props.userType==7) {
+			return( <CharityListItem row={row} {...this.props}/>);
+		}else if (this.props.userType==5) {
+			return( <SuperviseListItem  row={row} {...this.props}/>);
+		}else if (this.props.userType==2 ||this.props.userType==4) {
+			return( <SuperviseListItem  row={row} {...this.props}/>);
+		}else{
+			return( <SuperviseListItem  row={row} {...this.props}/>);
+		}
+		
 	}
 
 	back(){

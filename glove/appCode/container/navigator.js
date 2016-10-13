@@ -24,7 +24,6 @@ import ItemPage from '../pages/zhuPage/itemPage';
 import ItemCell from '../pages/zhuPage/itemCell';
 import WeiBoContent from '../pages/tuiwenPage/weiboContent';
 import TuiwenItem from '../pages/tuiwenPage/tuiwenItem';
-
 import WoPage from '../pages/woPage/woPage';
 import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
@@ -32,6 +31,11 @@ import Prove  from '../pages/components/prove';
 import Affirm  from '../pages/components/affirm';
 import PostAffirm from '../pages/components/postAffirm';
 import AffirmListItem from '../pages/components/affirmListItem';
+import SuperviseListItem from '../components/SuperviseListItem';
+import UserPage from '../components/userPage';
+import ListViewBasics from './listviewSection';
+import CarList from './carList';
+import ProductView  from './listViewDemo';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -54,10 +58,15 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		let defaultComponent=Login;
+		//let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
-		//let defaultComponent=DoComment;
+		//let defaultComponent=WoPage;
+		//let defaultComponent=UserPage;
         //let defaultComponent=AffirmListItem;
+        //let defaultComponent=SuperviseListItem;
+        //let  defaultComponent=ListViewBasics;
+        //let defaultComponent=CarList;
+        let  defaultComponent=ProductView;
 		return(
 			
 			<Navigator

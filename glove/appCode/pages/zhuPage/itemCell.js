@@ -16,6 +16,7 @@ let itemphoto= 'http://7xihgc.com1.z0.glb.clouddn.com/15.jpg'
 export default class ItemCell extends Component{
 	constructor(props){
 		super(props);
+		//console.log(this.props.row);
 		this.state={
 			itemid: this.props.row.item.itemid || 0,
 			itemname:this.props.row.item.itemname ||null,
