@@ -28,6 +28,8 @@ import WoPage from '../pages/woPage/woPage';
 import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
 import Prove  from '../pages/components/prove';
+import Report  from '../pages/components/report';
+import ReportTuiwen from  '../pages/components/reportTuiwen';
 import Affirm  from '../pages/components/affirm';
 import PostAffirm from '../pages/components/postAffirm';
 import AffirmListItem from '../pages/components/affirmListItem';
@@ -58,7 +60,7 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		let defaultComponent=Login;
+		//let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=WoPage;
 		//let defaultComponent=UserPage;
@@ -67,6 +69,8 @@ class INavigator extends Component{
         //let  defaultComponent=ListViewBasics;
         //let defaultComponent=CarList;
         //let  defaultComponent=ProductView;
+        //let defaultComponent=Report;
+        let defaultComponent=ReportTuiwen;
 		return(
 			
 			<Navigator

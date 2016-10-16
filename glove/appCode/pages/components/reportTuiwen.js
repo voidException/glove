@@ -23,7 +23,7 @@ let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 
-export default class Report extends Component{
+export default class ReportTuiwen extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -47,17 +47,7 @@ export default class Report extends Component{
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
 					<Text style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>
-			<ScrollView>
-				<View style={styles.inputNameView}>
-					<TextInput 
-						style={styles.inputName}
-						placeholder={'您的真实姓名'}/>
-				</View>
-				<View style={styles.inputNameView}>
-					<TextInput 
-						style={styles.inputName}
-						placeholder={'您的身份证号'}/>
-				</View>
+			
 				<View style={styles.commonStyle}>
 					<TextInput 
 						style={styles.affirmStyle}
@@ -67,12 +57,7 @@ export default class Report extends Component{
 						maxLength={200}/>
 				</View>
 
-				<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传举报相关的图片</Text>
-				<View style={styles.uploadimgView}>				
-					{this.state.imgs}
-					<Image source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
-				</View>
-			</ScrollView>
+			
 			</View>
 		);
 	}
@@ -107,57 +92,6 @@ let  styles=StyleSheet.create({
 		paddingLeft:10
 		
 	},
-
-	inputNameView:{
-		borderBottomWidth:1/ratio,
-		borderBottomColor:'#CCCCCC'
-	},
-	inputName:{
-		height:40,
-		width:width,
-		paddingLeft:10
-	},
-	inputStyle:{
-		height:30,	
-		paddingLeft:3,		
-		marginRight:1,
-		borderWidth:1,
-		borderColor:'gray',
-		marginRight:20,
-		marginLeft:20,
-		borderColor:'#4EB160',
-	},
-	mobileInputStyle:{
-		height:30,	
-		paddingLeft:3,		
-		marginRight:1,
-		borderWidth:1,
-		borderColor:'gray',
-		marginRight:20,
-		marginLeft:20,
-		borderColor:'#4EB160',
-	},
-	submmit:{
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent:'center',
-		height:40,
-		backgroundColor:'#43AC43',
-		marginRight:20,
-		marginLeft:20,
-		marginTop:10,
-		borderRadius:20
-	},
-	uploadimgView:{
-		flexWrap :'wrap',
-		marginTop:10,
-		flexDirection:'row',
-		paddingLeft:5
-	},
-	uploadImg:{
-		width:80,
-		height:80
-	}
 
 });
 
