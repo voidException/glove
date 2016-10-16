@@ -29,6 +29,11 @@ import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
 import Prove  from '../pages/components/prove';
 import Report  from '../pages/components/report';
+import JoinLoveClub from '../pages/components/joinLoveClub';
+import JoinSuperVise from '../pages/components/joinSupervise';
+import AddHelpMan from '../pages/components/addHelpMan';
+import WelfareAuth from '../pages/components/welfareAuth';
+import PersonVerify from '../pages/components/personVerify';
 import ReportTuiwen from  '../pages/components/reportTuiwen';
 import Affirm  from '../pages/components/affirm';
 import PostAffirm from '../pages/components/postAffirm';
@@ -70,7 +75,12 @@ class INavigator extends Component{
         //let defaultComponent=CarList;
         //let  defaultComponent=ProductView;
         //let defaultComponent=Report;
-        let defaultComponent=ReportTuiwen;
+        //let defaultComponent=ReportTuiwen;
+        //let  defaultComponent=JoinLoveClub;
+        //let  defaultComponent=PersonVerify;
+        //let  defaultComponent=WelfareAuth;
+        //let  defaultComponent=JoinSuperVise;
+          let  defaultComponent=AddHelpMan;
 		return(
 			
 			<Navigator
