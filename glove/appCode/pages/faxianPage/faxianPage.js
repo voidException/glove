@@ -21,6 +21,8 @@ import React,{ Component } from 'react';
 import Swiper from 'react-native-swiper2';
 import WheelContent  from './findWheelContent';
 import PeopleListPage  from  '../../components/PeopleListPage';
+import AboutUs from './aboutUs';
+
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -43,6 +45,11 @@ export default class FaxianPage extends Component{
             params:{
             	userType:userType
             }
+        });
+	}
+	goAboutUs(){
+		this.props.navigator.push({
+            component: AboutUs
         });
 	}
 	render(){
@@ -133,7 +140,7 @@ export default class FaxianPage extends Component{
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
 			        <TouchableOpacity>
 				        <View style={styles.aboutUsWrapper}>
-					    	<Text style={styles.volunteer}>关于我们</Text>	
+					    	<Text onPress={this.goAboutUs.bind(this)} style={styles.volunteer}>关于我们</Text>	
 					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
 				    	</View>	
 			    	</TouchableOpacity>	    	

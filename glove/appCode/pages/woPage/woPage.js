@@ -19,6 +19,9 @@ import{
 import React,{Component} from 'react';
 //let backBtnImg = require('./image/bar_btn_back_ico.png');
 import PeopleListPage  from  '../../components/PeopleListPage';
+import FAQ from './FAQ';
+import FeedBack from './feedBack';
+import Setting from './setting';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -38,11 +41,29 @@ export default class WoPage extends Component{
             component: PeopleListPage
         });
     }
+    goSetting(){
+        this.props.navigator.push({
+            component: Setting
+        });
+    }
+
+    goFAQ(){
+        this.props.navigator.push({
+            component: FAQ
+        });
+    }
+
+    goFeedBack(){
+        this.props.navigator.push({
+            component: FeedBack
+        });
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>
-                     <Text style={{fontSize:18,color:'#ffffff'}}>我</Text>                                 
+                    <Text style={{fontSize:18,color:'#ffffff'}}>我</Text> 
+                    <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                  
                 </View>
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
@@ -52,11 +73,13 @@ export default class WoPage extends Component{
 	                		<Text>这个家伙的业余产品，想拯救世界</Text>
 	                	</View>
                 	</View>
-
-                    <View style={styles.topRight}>
+                   {/*
+                        <View style={styles.topRight}>
                         <Text>已认证</Text>
-                    	<Image source={require('./image/setImg.png')} style={styles.setImage} />
+                        <Image source={require('./image/setImg.png')} style={styles.setImage} />
                     </View>
+                   */}
+                    
                 </View>
 
               
@@ -104,7 +127,7 @@ export default class WoPage extends Component{
 
           
 
-
+             {/*
                 <View style={styles.itenInfoWrapper}>
                     
                         <View style={styles.txtWrapper}>
@@ -120,6 +143,8 @@ export default class WoPage extends Component{
                             <Text style={styles.txt}>关注的项目</Text>
                         </View>                 
                 </View>
+             */}
+               
             {/*
                 <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/personal_navibar_icon_message.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
@@ -129,17 +154,23 @@ export default class WoPage extends Component{
             */}
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/zhifubao_btn.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>捐钱帮助他</Text>
+                    <Text style={styles.texts}>去认证</Text>
                     <View style={{width:40}}></View>
                 </View>
+               
                 <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>关注</Text>
+                    <Text onPress={this.goFeedBack.bind(this)} style={styles.texts}>意见反馈</Text>
                     <View style={{width:40}}></View>
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/nav_zhoubianyou.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>我的积分</Text>
+                    <Text  onPress={this.goFAQ.bind(this)} style={styles.texts}>常见问题</Text>
+                    <View style={{width:40}}></View>
+                </View>
+                 <View style={styles.fundWrapper}>                  
+                    <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
+                    <Text style={styles.texts}>我的爱心积分300</Text>
                     <View style={{width:40}}></View>
                 </View>
 			</View>
@@ -160,8 +191,10 @@ let styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'center',
-        backgroundColor:'#43AC43'
+        justifyContent:'space-between',
+        backgroundColor:'#43AC43',
+        paddingLeft:10,
+        paddingRight:10
     },
     topWrapper:{
     	flexDirection:'row',

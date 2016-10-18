@@ -12,11 +12,15 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Picker,
+	Switch,
+	Slider
 } from 'react-native';
 /*这个是加V认证的*/
 import React,{ Component } from 'react';
 import Affirm from './affirm';
+var Region = require('rn-china-region-picker');
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -27,17 +31,31 @@ export default class AddHelpMan extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			imgs:[]
+			imgs:[],
+			switchTrue:true,
+			switchFalse:false,
+		 	trueSwitchIsOn: true,
+            falseSwitchIsOn: false,
+            pickerValue:'java'
 		}
 	}
 
    cancel(){
    	 this.props.navigator.pop();
    }
+
+   switchFun(e){
+   	 console.log(e);
+   	 this.setState({
+   	 	switchTrue:true,
+   	 });
+   }
+   componentDidMount(){
+   }
 	render(){
-		for (var i =5; i >= 0; i--) {
+		for (var i =0; i <2; i++) {
 			//let  src=require('./image/uploadimg.jpg');
-			let src=<Image key={i} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
+			let src=<Image  key ={i} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
             this.state.imgs.push(src)
 		};
 		return(
@@ -47,98 +65,155 @@ export default class AddHelpMan extends Component{
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
 					<Text style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>
+			
 				<ScrollView>
-					  <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>目标金额:</Text>
+					<View style={styles.headerDesp}>
+					  		<Text>证明信息</Text>
+					</View>
+					<View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>认证机构:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
+	                         
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'如10000元'}/>
+	                        placeholder={'填写所在地大学爱心社'}/>
 	                </View>
-	                  <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>资金用途:</Text>
+	                <View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>监督小组:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
+	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'手术费，医疗费，上学'}/>
+	                        placeholder={'与大学对应的监督处'}/>
 	                </View>
-	                  <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>截止时间 2016-11-30</Text>
-	                  
-	                </View>
-	                  <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>救助类型:</Text>
+	             
+	                <View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>具体负责爱心社成员:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
+	                       
+	                        placeholderTextColor={'#CCCCCC'}
+	                        underlineColorAndroid={'rgba(0,0,0,0)'}
+	                        keyboardType={'default'}
+	                        placeholder={'由爱心社决定'}/>
+	                </View>
+	                  <View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>受助人:</Text>
+	                    <TextInput 
+	                        style={styles.authCode}
+	                       
+	                        placeholderTextColor={'#CCCCCC'}
+	                        underlineColorAndroid={'rgba(0,0,0,0)'}
+	                        keyboardType={'default'}
+	                        placeholder={'填写受助人昵称'}/>
+	                </View>
+					<View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>发起人:</Text>
+	                    <TextInput 
+	                        style={styles.authCode}
+	                        
+	                        placeholderTextColor={'#CCCCCC'}
+	                        underlineColorAndroid={'rgba(0,0,0,0)'}
+	                        keyboardType={'default'}
+	                        placeholder={'发起人昵称'}/>
+	                </View>
+	              
+	               <View style={styles.onclose}>
+	               		<Text>是否有身份证明？</Text>
+	                	<Switch 
+	                	    disabled={false}
+	                	    style={styles.switchStyle}
+	                		onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
+	                		value={this.state.falseSwitchIsOn}/>
+	                </View>
+	                <View style={styles.onclose}>
+	               		<Text>是否有居委会证明？</Text>
+	                	<Switch 
+	                	    disabled={false}
+	                	    style={styles.switchStyle}
+	                		onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
+	                		value={this.state.falseSwitchIsOn}/>
+	                </View>
+	                <View style={styles.onclose}>
+	               		<Text>是否有医院证明？</Text>
+	                	<Switch 
+	                	    disabled={false}
+	                	    style={styles.switchStyle}
+	                		onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
+	                		value={this.state.falseSwitchIsOn}/>
+	                </View>
+	                <View style={styles.onclose}>
+	               		<Text>是否有其它权威证明？</Text>
+	                	<Switch 
+	                	    disabled={false}
+	                	    style={styles.switchStyle}
+	                		onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
+	                		value={this.state.falseSwitchIsOn}/>
+	                </View>
+	                <View style={styles.headerDesp}>
+					  		<Text>受助人承诺</Text>
+					</View>
+	                <View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>承诺类型:</Text>
+	                    <TextInput 
+	                        style={styles.authCode}
+	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
 	                        placeholder={'1或者2或者3'}/>
 	                </View>
-	                  <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>承诺语句:</Text>
+	                <View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>承诺的话:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
+	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'20年后归还善款'}/>
+	                        placeholder={'写上要承诺的话'}/>
 	                </View>
-					<View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>姓名:</Text>
+	                <View style={styles.headerDesp}>
+					  		<Text>捐款信息</Text>
+					</View>
+	                <View style={styles.commonInputWrapper}>
+	                    <Text style={styles.authoText}>目标金额</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
+	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'与身份证保持一致'}/>
+	                        placeholder={'如10000元'}/>
 	                </View>
-	              
 
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>手机号:</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入受助人的手机号'}/>
-	                </View>
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>身份证号</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入受助人的身份证号'}/>
-	                </View>
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>被救助人ID</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'到对方主页可查看ID'}/>
-	                </View>
+	              
+	                <View>
+		                <View style={styles.totalTime}>
+		                	<Text>截止日期</Text>
+		                	<Text style={{marginLeft:15}}>2016-10-25</Text>
+		                	<Text>共3天</Text>
+		                </View>
+	                	
+	                	<View style={styles.sliderWrapper}>
+	                		<Text>7天</Text>
+						    <Slider
+						    	 style={{width:width-80,height:30}}
+						    	 maximumValue={30}
+						    	 minimumValue={7}
+						    	 minimumTrackTintColor={'green'}/>
+						    <Text>30天</Text>
+					     </View>
+					</View>
 	                <View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>筹款标题</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
+	                       
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
@@ -155,11 +230,13 @@ export default class AddHelpMan extends Component{
 					</View>      
 					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传身份证有关信息</Text>
 					<View style={styles.uploadimgView}>				
-						{this.state.imgs}
-						<Image source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
+						<Image key={1} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
+						<Image key={2} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
+						<Image key={7} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
 					</View>
 					<View style={{height:300}}></View>
 				</ScrollView>
+				
 			</View>
 		);
 	}
@@ -170,6 +247,35 @@ let  styles=StyleSheet.create({
 	container:{
 		flex:1,
 		backgroundColor:'#F4F4F4',
+	},
+	
+	onclose:{
+		flexDirection:'row',
+		justifyContent:'space-between',
+		alignItems:'center',
+		paddingLeft:18,
+		paddingRight:18,
+		backgroundColor:'#fff'
+	},
+	totalTime:{
+		flexDirection:'row',
+		justifyContent:'flex-start',
+		paddingLeft:18,
+		paddingRight:5
+	},
+	sliderWrapper:{
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'space-between',
+		height:30,
+		width:width,
+		paddingLeft:18,
+		paddingRight:10,
+		marginTop:5
+	},
+	switchStyle:{
+		height:30,
+		width:40
 	},
 	header:{
 		flexDirection:'row',
@@ -182,6 +288,11 @@ let  styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43'
+	},
+	headerDesp:{
+		flexDirection:'row',
+		justifyContent:'center',
+		alignItems:'center'
 	},
 	commonStyle:{
 		borderBottomWidth:1/ratio,

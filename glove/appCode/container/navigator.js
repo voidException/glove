@@ -43,6 +43,7 @@ import UserPage from '../components/userPage';
 import ListViewBasics from './listviewSection';
 import CarList from './carList';
 import ProductView  from './listViewDemo';
+import Setting from '../pages/woPage/setting';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -65,7 +66,7 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
+		let defaultComponent=Login;
 		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=WoPage;
 		//let defaultComponent=UserPage;
@@ -80,7 +81,8 @@ class INavigator extends Component{
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;
         //let  defaultComponent=JoinSuperVise;
-          let  defaultComponent=AddHelpMan;
+        //let  defaultComponent=AddHelpMan;
+        //let defaultComponent=Setting;
 		return(
 			
 			<Navigator

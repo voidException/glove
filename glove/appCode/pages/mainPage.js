@@ -27,7 +27,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	constructor(props){
 		super(props);
 		this.state={
-			selectedTab:'zhuye'
+			selectedTab:'tuiwen'
 		}	
 		//console.log(this.props)
 	}
@@ -45,6 +45,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 		return(	
 				
 				<TabBarIOS tintColor="green" barTintColor="#FBFBFB" translucent= {false} style={styles.container}>
+					{/*
 					<TabBarIOS.Item
 					    badge="" 
 						title="项目"
@@ -55,6 +56,8 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						}}>
 						<ItemPageWrapper  {...this.props} />
 					</TabBarIOS.Item>
+					*/}
+				
 
 					<TabBarIOS.Item
 						title="推文"

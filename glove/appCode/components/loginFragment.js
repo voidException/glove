@@ -1,7 +1,7 @@
 //该组件用于实现登陆的
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
-import { NativeAppEventEmitter ,ScrollView,Text,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
+import { NativeAppEventEmitter ,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
 import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
@@ -26,6 +26,12 @@ export default class DengLuFragment extends Component{
 		this.startLogin();
 
 	}
+	pickerFun(e){
+   	    console.log(e);
+   	    this.setState({
+   	    	pickerValue:e
+   	    });
+   }
 	//一旦该组件的某个props属性改变了，就会执行这个方法，真是太好了
 	componentWillReceiveProps(nextProps) {
 		
@@ -126,6 +132,7 @@ export default class DengLuFragment extends Component{
 		let errTip=this.state.onoff ? <ErrorTips />: null;
 		//console.log(errTip);
 		return(
+			<View>
 			    <ScrollView>
 				<View style={styles.email}>
 					<Text>邮箱</Text>
@@ -165,15 +172,37 @@ export default class DengLuFragment extends Component{
 				</View>
 				{/**<KeyboardSpacer/> **}
 			{/**  这里根据登录校验进行提示**/}
-				 <View style={styles.err}>{errTip}</View>
+				<View style={styles.err}>{errTip}</View>
 				<TouchableOpacity 
 					style={styles.loginwrap}
 					onPress={this.startLogin.bind(this)}>					
-					<Text style={styles.login}>登陆</Text>
-				
+					<Text style={styles.login}>登陆</Text>				
 				</TouchableOpacity>
-				
 			</ScrollView>
+			<View>
+					<View style={styles.pickerOk}>
+						<Text>取消</Text>
+						<Text>确定</Text>
+					</View>
+					<View style={styles.pickerWrapper}>
+						<Picker
+							  style={{width:100}}
+							  selectedValue={this.state.pickerValue}
+							  onValueChange={this.pickerFun.bind(this)}>
+							  <Picker.Item label="Java" value="java" />
+							  <Picker.Item label="JavaScript" value="js" />
+						</Picker>
+						<Picker
+							  style={{width:100}}
+							  selectedValue={this.state.pickerValue}
+							  onValueChange={this.pickerFun.bind(this)}>
+							  <Picker.Item label="Java" value="java" />
+							  <Picker.Item label="JavaScript" value="js" />
+						</Picker>
+					</View>
+
+			</View>
+		</View>
 		);
 	}
 }
@@ -249,7 +278,19 @@ let styles=StyleSheet.create({
 		lineHeight:20,
 		marginRight:13
 
-	}
+	},
+	pickerOk:{
+		flexDirection:'row',
+		justifyContent:'space-between',
+		paddingRight:10,
+		paddingLeft:10,
+		paddingTop:10
+	},
+	pickerWrapper:{
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'center'
+	},
 
 });
 
