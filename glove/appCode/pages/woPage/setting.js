@@ -20,7 +20,7 @@ import{
 
 import React,{ Component } from 'react';
 import ResetPassword from './resetPassword';
-//import CompleteProfile from './completeProfile';
+import CompleteProfile from './completeProfile';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -30,19 +30,33 @@ export  default  class Setting extends Component{
 	constructor(props){
 		super(props);
 	}
+
+    goCompleteProfile(){
+        this.props.navigator.push({
+            component: CompleteProfile
+        });
+    }
+     goResetPassword(){
+        this.props.navigator.push({
+            component: ResetPassword
+        });
+    }
+    goBack(){
+        this.props.navigator.pop();
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
-                    <Text style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                  
+					<Text onPress={this.goBack.bind(this)}  style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
+                                                   
                 </View>
                 <View style={styles.commonStyle}>
-                	<Text>完善资料</Text>
+                	<Text onPress={this.goCompleteProfile.bind(this)}>完善资料</Text>
                 	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                 </View>
                 <View style={styles.commonStyle}>
-                	<Text>修改密码</Text> 
+                	<Text onPress={this.goResetPassword.bind(this)}>修改密码</Text> 
                 	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                               	
                 </View>

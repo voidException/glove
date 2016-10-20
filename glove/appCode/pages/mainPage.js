@@ -78,7 +78,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 						onPress={()=>{
 							this.setState({selectedTab:'message'});
 						}}>
-						<HelpPage />
+						<HelpPage {...this.props}/>
 					</TabBarIOS.Item>
 					
 					<TabBarIOS.Item

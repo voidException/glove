@@ -22,7 +22,8 @@ import Swiper from 'react-native-swiper2';
 import WheelContent  from './findWheelContent';
 import PeopleListPage  from  '../../components/PeopleListPage';
 import AboutUs from './aboutUs';
-
+import JoinSupervise from '../components/joinSupervise';
+import WelfareAuth from '../components/welfareAuth';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -52,6 +53,17 @@ export default class FaxianPage extends Component{
             component: AboutUs
         });
 	}
+	goJoinSupervise(){
+		this.props.navigator.push({
+            component: JoinSupervise
+        });
+	}
+   goWelfareAuth(){
+		this.props.navigator.push({
+            component: WelfareAuth
+        });
+	}
+
 	render(){
 		let urlone='aaa'
 		return(
@@ -76,7 +88,7 @@ export default class FaxianPage extends Component{
 					<Image source={require('./image/superMan.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
 					<Text style={{color:'#31A75B',marginLeft:-44}}>政府官员、企业家、明星等</Text>
 					<View style={styles.welcomeJoinUs}>
-						<Text style={{fontSize:12,color:'white'}}>欢迎加入></Text>
+						<Text onPress={this.goJoinSupervise.bind(this)}  style={{fontSize:12,color:'white'}}>欢迎加入></Text>
 						{/*<Image source={require('./image/rightArrow.png')} resizeMode={'cover'} style={{width:13,height:13}}/>*/}				
 					</View>
 				</View>
@@ -110,7 +122,7 @@ export default class FaxianPage extends Component{
 					    <Text  onPress={this.goMenList.bind(this,5)} style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
 					    <View style={styles.shehuidown}>
 					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已入住300家</Text>
-					    	<Text style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>
+					    	<Text onPress={this.goWelfareAuth.bind(this)} style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>
 					    </View>
 					</View>	    	
 			    </View>

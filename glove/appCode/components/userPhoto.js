@@ -10,7 +10,7 @@ export default class UserPhoto extends Component{
 	render(){
 		return(
 			<View style={styles.container} >
-				<Image source={require('../image/default.jpg')} resizeMode={'contain'} style={styles.image}/>		
+				<Image source={require('../image/default.jpg')} resizeMode={'cover'} style={styles.image}/>		
 			</View>
 		);
 	}
@@ -20,8 +20,7 @@ export default class UserPhoto extends Component{
 
 let styles=StyleSheet.create({
 	container:{
-		width:80,
-		height:80,
+		
 		
 	},
 	image:{

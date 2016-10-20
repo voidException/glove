@@ -31,11 +31,15 @@ export  default  class FeedBack extends Component{
 	constructor(props){
 		super(props);
 	}
+
+    goBack(){
+        this.props.navigator.pop();
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text style={{fontSize:18,color:'#ffffff'}}>输入您要反馈的问题</Text>                                         
+					<Text  onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
                 </View>              
             </View>
         );
@@ -56,7 +60,7 @@ let styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'space-between',
+        justifyContent:'flex-start',
         backgroundColor:'#43AC43',
         paddingLeft:10,
         paddingRight:10

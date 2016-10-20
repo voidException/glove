@@ -31,12 +31,15 @@ export  default  class AboutUs extends Component{
 	constructor(props){
 		super(props);
 	}
+
+    goBack(){
+        this.props.navigator.pop();
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
-                    <Text style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                  
+					<Text  onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
                 </View>
                 <View style={styles.commonStyle}>
                 	<Text>作者</Text>

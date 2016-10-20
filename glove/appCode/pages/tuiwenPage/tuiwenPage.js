@@ -97,9 +97,12 @@ class TuiWenPage extends Component{
 		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
-				<View style={{ flexDirection:'row',backgroundColor:'#43AC43',height:60,paddingTop:24,justifyContent:'space-around',alignItems:'center'}}>
+				<View style={{ flexDirection:'row',backgroundColor:'#43AC43',height:60,paddingTop:24, paddingLeft:15,paddingRight:15,justifyContent:'center',alignItems:'center'}}>
 					<Text style={styles.toper}>传播温暖</Text>					
-		            <Text style={styles.toper}>发布</Text>		            
+		           
+		            <View  style={styles.setting}>
+                        <Text style={{fontSize:18,color:'#ffffff'}}>发布</Text>     
+                    </View>		            
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -175,6 +178,10 @@ let styles=StyleSheet.create({
 	    flexDirection: 'column',
 	    flexWrap: 'wrap'
   	},
-
+  	setting:{
+        position:'absolute',
+        right:15,
+        top:30
+    }
 });
 

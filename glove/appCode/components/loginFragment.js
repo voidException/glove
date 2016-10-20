@@ -1,7 +1,7 @@
 //该组件用于实现登陆的
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
-import { NativeAppEventEmitter ,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
+import { NativeAppEventEmitter, PixelRatio,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
 import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
 //var KeyboardSpacer = require('react-native-keyboard-spacer');
-
+let ratio = PixelRatio.get();
 
 export default class DengLuFragment extends Component{
 	constructor(props){
@@ -133,53 +133,58 @@ export default class DengLuFragment extends Component{
 		//console.log(errTip);
 		return(
 			<View>
-			    <ScrollView>
+			    
 				<View style={styles.email}>
-					<Text>邮箱</Text>
-					<TextInput 
-						style={styles.emailinput}
-						placeholder='请输入您的邮箱'
-						placeholderTextColor='red'
-						keyboardType='email-address'
-						maxLength={30}	
-						ref='refemail'	
-						textAlign='center'	
-						autoCapitalize='none'	
-						clearButtonMode='always'
-						clearTextOnFocus={false}	
-						keyboardAppearance='dark'
-						autoCorrect={false}	
-						onChange={this.handleEmailChange.bind(this)}						
-						onSubmitEditing={() => this.focusNextField('refpass')}
-						onFocus={this.focusToclean.bind(this)}
-					/>
+				    <View style={styles.labelWrap}>
+						<Text style={styles.emailText}>邮箱</Text>
+					</View>
+					<View style={styles.inputWrap}>
+						<TextInput 
+							style={styles.passwordinput}
+							placeholder='请输入您的邮箱'
+							
+							keyboardType='email-address'
+							maxLength={30}	
+							ref='refemail'	
+								
+							autoCapitalize='none'	
+							clearButtonMode='always'
+							clearTextOnFocus={false}	
+							keyboardAppearance='dark'
+							autoCorrect={false}	
+							onChange={this.handleEmailChange.bind(this)}						
+							onSubmitEditing={() => this.focusNextField('refpass')}
+							onFocus={this.focusToclean.bind(this)}/>
+						</View>
 				</View>
 				<View style={styles.password}>
-					<Text>密码</Text>
-					<TextInput
-						 style={styles.passwordinput}
-						 ref='refpass'
-						 placeholder='只能是字母数字和一些特殊符号'
-						 maxLength={30}
-						 textAlign='center'
-						 autoCapitalize='none'
-						 clearButtonMode='always'
-						 autoCorrect={false}
-						 onChange={this.handlePassChange.bind(this)}
-						 onSubmitEditing={this.verify.bind(this)}
-						 onFocus={this.focusTocleanPass.bind(this)}
-					/>
+					<View style={styles.labelWrap}>
+                        <Text style={styles.label}>密码</Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+						<TextInput
+							 style={styles.passwordinput}
+							 ref='refpass'
+							 placeholder='只能是字母数字和一些特殊符号'
+							 maxLength={30}
+							
+							 autoCapitalize='none'
+							 clearButtonMode='always'
+							 autoCorrect={false}
+							 onChange={this.handlePassChange.bind(this)}
+							 onSubmitEditing={this.verify.bind(this)}
+							 onFocus={this.focusTocleanPass.bind(this)}/>
+					</View>
 				</View>
-				{/**<KeyboardSpacer/> **}
-			{/**  这里根据登录校验进行提示**/}
+					    
 				<View style={styles.err}>{errTip}</View>
-				<TouchableOpacity 
-					style={styles.loginwrap}
-					onPress={this.startLogin.bind(this)}>					
-					<Text style={styles.login}>登陆</Text>				
-				</TouchableOpacity>
-			</ScrollView>
-			<View>
+
+				<View  style={styles.loginwrap}>					
+					<Text onPress={this.startLogin.bind(this)} style={styles.login}> 登陆 </Text>				
+				</View>
+
+			
+		        <View>
 					<View style={styles.pickerOk}>
 						<Text>取消</Text>
 						<Text>确定</Text>
@@ -200,9 +205,8 @@ export default class DengLuFragment extends Component{
 							  <Picker.Item label="JavaScript" value="js" />
 						</Picker>
 					</View>
-
-			</View>
-		</View>
+			    </View>
+		    </View>
 		);
 	}
 }
@@ -235,29 +239,55 @@ let styles=StyleSheet.create({
 	  },
 	email:{
 		flexDirection:'row',
-		marginBottom:4,
-		alignItems:'center',
-		justifyContent:'space-around',
+        alignItems:'center',
+        backgroundColor:'#FFFFFF',
+      
+       
+        height:44
 	},
+	 emailText:{
+        fontSize: 16,
+        marginLeft: 10,
+        borderWidth: 1,
+        borderColor: 'transparent',
+        color:'#666666'
+    },
 	emailinput:{
-		height:30,
-		width: width-50,
-		marginRight:10,
-		borderWidth:1,
-		borderColor:'gray'
+		width:width-60,
+        height:44,
+        fontSize:14,     
+        paddingLeft:10,
+        color:'#666666'
 
 	},
 	password:{
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent:'space-around'
+		flexDirection: 'row',
+        borderTopWidth: 1/ratio,
+        borderBottomWidth: 1/ratio,
+        borderColor: '#ccc',
+        backgroundColor:'#FFFFFF'
 	},
+	 labelWrap: {
+        height: 45,
+        justifyContent: 'center',
+    },
+     label: {
+        fontSize: 16,
+        marginLeft: 10,
+        borderWidth: 1,
+        borderColor: 'transparent',
+        color:'#666666'
+    },
+      inputWrap: {
+        height: 45,
+        justifyContent: 'center'
+    },
 	passwordinput:{
-		height:30,
-		width: width-50,
-		marginRight:10,
-		borderWidth:1,
-		borderColor:'gray'
+		 height: 45,
+        width: 320,
+        fontSize: 16,
+        paddingLeft: 10,
+        color:'#333333'
 	},
 	err:{
 		flexDirection:'row',
@@ -266,17 +296,20 @@ let styles=StyleSheet.create({
 		marginTop:10
 	},
 	loginwrap:{
-		marginTop:40,
-		alignItems:'flex-end',
-		width:width
+		flexDirection:'row',
+		marginTop:20,
+		alignItems:'center',
+		justifyContent:'center',
+		width:width,
+		height:30,
+		backgroundColor:'#8FDF5A'
 	},
 	login:{
-		backgroundColor:'#018cca',		
-		height:30,
-		width:width-50,
+				
+		fontSize:16,
+		width:width,
 		textAlign:'center',
-		lineHeight:20,
-		marginRight:13
+		
 
 	},
 	pickerOk:{

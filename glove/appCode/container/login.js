@@ -18,6 +18,7 @@ import React,{ Component, } from 'react';
 
 import UserPhoto from '../components/userPhoto';
 import RegisterPage from '../pages/registerPage';
+import FindPasswordPage  from '../pages/findPasswordPage';
 import LoginFragment from '../components/loginFragment';
 
 var Platform = require('react-native').Platform;
@@ -129,6 +130,17 @@ export default class Login extends Component{
 		
 		
     }
+    goZhuCe(){
+    	this.props.navigator.push({
+            component: RegisterPage
+        });
+    }
+
+    goFindPasswordPage(){
+    	this.props.navigator.push({
+            component: FindPasswordPage
+        });
+    }
 
 	render(){
 		//把这里的根View 换成ScrollView应该可以在弹出键盘的时候上移
@@ -147,12 +159,8 @@ export default class Login extends Component{
 
 
 				<View style={styles.bottom}>
-					<TouchableOpacity onPress={this.goRegisterPage.bind(this)} underlayColor='#E1F6FF'>
-		         		 <Text>还没注册？</Text>          
-		        	</TouchableOpacity>
-		        	<TouchableOpacity>
-						<Text>忘记密码</Text>
-					</TouchableOpacity>
+		         	 <Text  onPress={this.goZhuCe.bind(this)}>还没注册？</Text>          
+		        	<Text onPress={this.goFindPasswordPage.bind(this)}>忘记密码</Text>					
 				</View>
 			</View>
 

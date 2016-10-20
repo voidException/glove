@@ -22,6 +22,7 @@ import PeopleListPage  from  '../../components/PeopleListPage';
 import FAQ from './FAQ';
 import FeedBack from './feedBack';
 import Setting from './setting';
+import PersonVerify from'../components/personVerify'
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -58,12 +59,20 @@ export default class WoPage extends Component{
             component: FeedBack
         });
     }
+    goPersonVerify(){
+         this.props.navigator.push({
+            component: PersonVerify
+        });
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>
                     <Text style={{fontSize:18,color:'#ffffff'}}>我</Text> 
-                    <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                  
+                    <View  style={styles.setting}>
+                        <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>     
+                    </View>
+                             
                 </View>
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
@@ -74,7 +83,7 @@ export default class WoPage extends Component{
 	                	</View>
                 	</View>
                    {/*
-                        <View style={styles.topRight}>
+                    <View style={styles.topRight}>
                         <Text>已认证</Text>
                         <Image source={require('./image/setImg.png')} style={styles.setImage} />
                     </View>
@@ -154,25 +163,26 @@ export default class WoPage extends Component{
             */}
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/zhifubao_btn.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>去认证</Text>
+                    <Text  onPress={this.goPersonVerify.bind(this)} style={styles.texts}>去认证</Text>
                     <View style={{width:40}}></View>
                 </View>
                
                 <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text onPress={this.goFeedBack.bind(this)} style={styles.texts}>意见反馈</Text>
+                    <Text  style={styles.texts}>给爱保险:300</Text>
                     <View style={{width:40}}></View>
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/nav_zhoubianyou.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text  onPress={this.goFAQ.bind(this)} style={styles.texts}>常见问题</Text>
+                    <Text  onPress={this.goFAQ.bind(this)} style={styles.texts}>人过留名</Text>
                     <View style={{width:40}}></View>
                 </View>
                  <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>我的爱心积分300</Text>
+                    <Text onPress={this.goFeedBack.bind(this)} style={styles.texts}>意见反馈</Text>
                     <View style={{width:40}}></View>
                 </View>
+
 			</View>
 		);
 	}
@@ -191,7 +201,7 @@ let styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'space-between',
+        justifyContent:'center',
         backgroundColor:'#43AC43',
         paddingLeft:10,
         paddingRight:10
@@ -401,7 +411,12 @@ let styles=StyleSheet.create({
         fontSize: 16,     
         alignSelf:'center',
         fontWeight:'bold'
-      }
+    },
+    setting:{
+        position:'absolute',
+        right:15,
+        top:30
+    }
 });
 
 

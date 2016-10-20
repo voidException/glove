@@ -15,6 +15,7 @@ import{
 	Platform,
 	Dimensions,
 	TextInput,
+    WebView,
 	Picker,
 	Switch,
 	Slider
@@ -31,12 +32,16 @@ export  default  class FAQ extends Component{
 	constructor(props){
 		super(props);
 	}
+
+    goBack(){
+        this.props.navigator.pop();
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
-                    <Text style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                  
+					<Text onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
+                                                      
                 </View>
                 <View style={styles.commonStyle}>
                 	<Text>如何申请</Text>
@@ -51,6 +56,9 @@ export  default  class FAQ extends Component{
                 	<Text>申请条件是什么</Text>
                 	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                 </View>
+                <WebView 
+                    source={{uri: 'https://m.baidu.com/'}}
+                />
             </View>
         );
 	}

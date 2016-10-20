@@ -44,6 +44,8 @@ import ListViewBasics from './listviewSection';
 import CarList from './carList';
 import ProductView  from './listViewDemo';
 import Setting from '../pages/woPage/setting';
+import CompleteProfile from '../pages/woPage/completeProfile';
+import ResetPassword from '../pages/woPage/resetPassword';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -83,6 +85,8 @@ class INavigator extends Component{
         //let  defaultComponent=JoinSuperVise;
         //let  defaultComponent=AddHelpMan;
         //let defaultComponent=Setting;
+        //let defaultComponent=CompleteProfile;
+        //let defaultComponent=ResetPassword;
 		return(
 			
 			<Navigator

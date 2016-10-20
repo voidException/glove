@@ -26,7 +26,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export  default  class HelpAixinShe extends Component{
+export  default  class DonateMe extends Component{
 	constructor(props){
 		super(props);
 	}
@@ -38,7 +38,7 @@ export  default  class HelpAixinShe extends Component{
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
+					<Text onPress={this.goBack.bind(this)}  style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
                 </View>              
             </View>
         );

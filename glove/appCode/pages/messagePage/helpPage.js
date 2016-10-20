@@ -22,6 +22,10 @@ import{
 import React,{ Component } from 'react';
 import Swiper from 'react-native-swiper2';
 import WheelContent  from './findWheelContent';
+import AddHelpMan  from '../components/addHelpMan';
+import HelpAixinShe from './helpAixinShe';
+import DonateMe from './donateMe';
+import JoinLoveClub from '../components/joinLoveClub';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -41,13 +45,32 @@ export default class HelpPage extends Component{
 		}	
 	}
 
-	wheelImageTouch(url){
-		
+	wheelImageTouch(url){	
 		this.props.navigator.push({
             component: WheelContent
         });
 	}
+    goAddHelpMan(){
+    	this.props.navigator.push({
+            component: AddHelpMan
+        });
+    }
+    goHelpAixinShe(){
+    	this.props.navigator.push({
+            component: HelpAixinShe
+        });
+    }
+    goJoinLoveClub(){
+    	this.props.navigator.push({
+            component: JoinLoveClub
+        });
+    }
 
+    goDonateMe(){
+    	this.props.navigator.push({
+            component: DonateMe
+        });
+    }
 	render(){
 			let urlone='aaa'
 			return(
@@ -71,7 +94,7 @@ export default class HelpPage extends Component{
 			        		<Image source={require('./image/plants_003.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
 			        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>爱心社、</Text>
 			        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>青年志愿者协会</Text>
-			        		<View style={styles.join}><Text style={{fontSize:12,color:'#fff'}}>现在加入></Text></View>
+			        		<View style={styles.join}><Text onPress={this.goJoinLoveClub.bind(this)}  style={{fontSize:12,color:'#fff'}}>现在加入></Text></View>
 			        	</View>
 			        	<View style={styles.clubDetailInfo}>
 			        		<View>
@@ -94,7 +117,7 @@ export default class HelpPage extends Component{
 				    <View style={styles.itemWrapperTop}>
 				        <View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text style={{fontWeight:'bold'}}>发布项目</Text>	
+					    	<Text  onPress={this.goAddHelpMan.bind(this)}  style={{fontWeight:'bold'}}>发布项目</Text>	
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'contain'} style={styles.rightImage}/>
 
@@ -113,7 +136,7 @@ export default class HelpPage extends Component{
 				    <View style={styles.itemWrapperTop}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text style={{fontWeight:'bold'}}>资助我们</Text>
+					    	<Text  onPress={this.goDonateMe.bind(this)}  style={{fontWeight:'bold'}}>资助我们</Text>
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
 				    </View>
@@ -121,7 +144,7 @@ export default class HelpPage extends Component{
 				    <View style={styles.itemWrapper}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text style={{fontWeight:'bold'}}>赞助爱心社</Text>	
+					    	<Text onPress={this.goHelpAixinShe.bind(this)}  style={{fontWeight:'bold'}}>赞助爱心社</Text>	
 				    	</View>
 				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
 				    </View>
