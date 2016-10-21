@@ -16,6 +16,7 @@ import{
 	TabBarIOS
 } from 'react-native';
 import React,{Component} from 'react';
+import Loading from '../loading/loading';
 import FaxianPage from './faxianPage/faxianPage';
 import HelpPage from './messagePage/helpPage';
 import TuiWenPageWrapper from './tuiwenPage/tuiwenPage';
@@ -27,7 +28,8 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	constructor(props){
 		super(props);
 		this.state={
-			selectedTab:'tuiwen'
+			selectedTab:'tuiwen',
+			
 		}	
 		//console.log(this.props)
 	}
@@ -43,7 +45,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	}
 	render(){
 		return(	
-				
+			
 				<TabBarIOS tintColor="green" barTintColor="#FBFBFB" translucent= {false} style={styles.container}>
 					{/*
 					<TabBarIOS.Item
@@ -101,6 +103,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 					</TabBarIOS.Item>
 				</TabBarIOS>
 				
+			
 		);
 	}
 }

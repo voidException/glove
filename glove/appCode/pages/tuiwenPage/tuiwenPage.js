@@ -19,6 +19,7 @@ import WeiBoContent  from './weiboContent';
 import { fetchTuiwenPageIfNeeded } from '../../actions/tuiwenPageAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Loading from '../../loading/loading';
 //import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
 import WeiBoItem from './weiboItem';
 let { width,height}=Dimensions.get('window');
@@ -33,7 +34,8 @@ class TuiWenPage extends Component{
 			dataSource:DS.cloneWithRows([]),
 			isRefreshing: false,
 			page:1,
-			pageSize:6
+			pageSize:6,
+			visible:false
 		}
 		//console.log(this.props)
 	}
@@ -123,7 +125,7 @@ class TuiWenPage extends Component{
 		             onEndReachedThreshold={20}
 		             scrollRenderAheadDistance={300}
 		             enableEmptySections={true}/>		
-		       
+		       <Loading visible={this.state.visible} />
 			</View>
 		);
 	}

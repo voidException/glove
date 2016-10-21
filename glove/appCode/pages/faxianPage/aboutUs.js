@@ -21,6 +21,7 @@ import{
 } from 'react-native';
 
 import React,{ Component } from 'react';
+import fetchTool  from '../../utils/fetchTool';
 
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
@@ -31,7 +32,21 @@ export  default  class AboutUs extends Component{
 	constructor(props){
 		super(props);
 	}
+    componentDidMount(){      
+        let options={
+            url:'http://172.16.33.212:8080/glove/user/login',
+            body: JSON.stringify({
+                userEmail: 'alooge@126.com',
+                userPassword: '123456'
+            })
+         };
+         let  response=fetchTool(options);
+         response.then(resp=>{
+              console.log(resp);
+         })
+        
 
+    }
     goBack(){
         this.props.navigator.pop();
     }

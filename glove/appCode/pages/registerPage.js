@@ -132,10 +132,13 @@ export default class RegisterPage extends Component{
 		//let errTip=this.state.onoff ? <ErrorTips />: null;
 		//console.log(errTip);
 		return(
-			<View style={{marginTop:60}}>
-				<View>
-					<Text>给点爱，一起温暖世界</Text>
-					<Text>捐助即保险</Text>
+			<View>
+			    <View style={styles.header}>
+			    	<View style={styles.returnMe}><Text style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
+					<Text style={{color:'#FFFFFF',fontSize:16}}>捐助即保险</Text>
+				</View>
+				<View style={styles.glove}>
+					<Text style={{color:'green',fontSize:16}}>给点爱，一起温暖世界</Text>
 				</View>
 
 				<View style={styles.email}>
@@ -205,7 +208,27 @@ export default class RegisterPage extends Component{
 				</View>
 					    
 				{/*<View style={styles.err}>{errTip}</View>*/}
-
+                <View>
+					<View style={styles.pickerOk}>
+						<Text>一定要正确选择所在地</Text>
+					</View>
+					<View style={styles.pickerWrapper}>
+						<Picker
+							  style={{width:100}}
+							  selectedValue={this.state.pickerValue}
+							  onValueChange={this.pickerFun.bind(this)}>
+							  <Picker.Item label="Java" value="java" />
+							  <Picker.Item label="JavaScript" value="js" />
+						</Picker>
+						<Picker
+							  style={{width:100}}
+							  selectedValue={this.state.pickerValue}
+							  onValueChange={this.pickerFun.bind(this)}>
+							  <Picker.Item label="Java" value="java" />
+							  <Picker.Item label="JavaScript" value="js" />
+						</Picker>
+					</View>
+			    </View>
 				<View  style={styles.loginwrap}>					
 					<Text onPress={this.startLogin.bind(this)} style={styles.login}> 注 册</Text>				
 				</View>
@@ -223,6 +246,26 @@ let styles=StyleSheet.create({
 	container:{
 		flex:1,
 		flexDirection:'column'
+	},
+	header:{
+		height:60,
+		flexDirection:'row',
+		justifyContent:'center',
+		paddingTop:20,
+		alignItems:'center',
+		backgroundColor:'#61B972'
+	},
+	returnMe:{
+		position:'absolute',
+		left:5,
+		top:34,
+		
+	},
+	glove:{
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'center',
+		marginTop:20
 	},
 	containerScroll: {
 	    flex: 1,
@@ -304,7 +347,7 @@ let styles=StyleSheet.create({
 	},
 	pickerOk:{
 		flexDirection:'row',
-		justifyContent:'space-between',
+		justifyContent:'flex-start',
 		paddingRight:10,
 		paddingLeft:10,
 		paddingTop:10

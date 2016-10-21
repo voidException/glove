@@ -133,9 +133,16 @@ export default class RegisterPage extends Component{
 		//let errTip=this.state.onoff ? <ErrorTips />: null;
 		//console.log(errTip);
 		return(
-			<View style={{marginTop:60}}>
+			<View>
 				
-				
+				<View style={styles.header}>
+			    	<View style={styles.returnMe}><Text style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
+					<Text style={{color:'#FFFFFF',fontSize:16}}>人过留名</Text>
+				</View>
+				<View style={styles.glove}>
+					<Text style={{color:'green',fontSize:16}}>密码会发送到您的邮箱📮</Text>
+				</View>
+
 				<View style={styles.email}>
 				    <View style={styles.labelWrap}>
 						<Text style={styles.emailText}>邮箱</Text>
@@ -181,6 +188,25 @@ let styles=StyleSheet.create({
 	container:{
 		flex:1,
 		flexDirection:'column'
+	},
+	header:{
+		height:60,
+		flexDirection:'row',
+		justifyContent:'center',
+		paddingTop:20,
+		alignItems:'center',
+		backgroundColor:'#61B972'
+	},
+	returnMe:{
+		position:'absolute',
+		left:5,
+		top:34,	
+	},
+	glove:{
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'center',
+		marginTop:20
 	},
 	containerScroll: {
 	    flex: 1,

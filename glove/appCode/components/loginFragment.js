@@ -23,7 +23,7 @@ export default class DengLuFragment extends Component{
 	}
 	componentDidMount(){
 		//console.log();
-		this.startLogin();
+		//this.startLogin();
 
 	}
 	pickerFun(e){
@@ -181,31 +181,7 @@ export default class DengLuFragment extends Component{
 
 				<View  style={styles.loginwrap}>					
 					<Text onPress={this.startLogin.bind(this)} style={styles.login}> 登陆 </Text>				
-				</View>
-
-			
-		        <View>
-					<View style={styles.pickerOk}>
-						<Text>取消</Text>
-						<Text>确定</Text>
-					</View>
-					<View style={styles.pickerWrapper}>
-						<Picker
-							  style={{width:100}}
-							  selectedValue={this.state.pickerValue}
-							  onValueChange={this.pickerFun.bind(this)}>
-							  <Picker.Item label="Java" value="java" />
-							  <Picker.Item label="JavaScript" value="js" />
-						</Picker>
-						<Picker
-							  style={{width:100}}
-							  selectedValue={this.state.pickerValue}
-							  onValueChange={this.pickerFun.bind(this)}>
-							  <Picker.Item label="Java" value="java" />
-							  <Picker.Item label="JavaScript" value="js" />
-						</Picker>
-					</View>
-			    </View>
+				</View>		        
 		    </View>
 		);
 	}
@@ -240,9 +216,7 @@ let styles=StyleSheet.create({
 	email:{
 		flexDirection:'row',
         alignItems:'center',
-        backgroundColor:'#FFFFFF',
-      
-       
+        backgroundColor:'#FFFFFF',      
         height:44
 	},
 	 emailText:{
@@ -301,29 +275,15 @@ let styles=StyleSheet.create({
 		alignItems:'center',
 		justifyContent:'center',
 		width:width,
-		height:30,
+		height:36,
 		backgroundColor:'#8FDF5A'
 	},
-	login:{
-				
+	login:{				
 		fontSize:16,
 		width:width,
 		textAlign:'center',
-		
-
 	},
-	pickerOk:{
-		flexDirection:'row',
-		justifyContent:'space-between',
-		paddingRight:10,
-		paddingLeft:10,
-		paddingTop:10
-	},
-	pickerWrapper:{
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent:'center'
-	},
+	
 
 });
 
