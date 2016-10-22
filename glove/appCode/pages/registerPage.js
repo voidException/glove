@@ -100,6 +100,7 @@ export default class RegisterPage extends Component{
     	let email=this.state.userEmail;
     	let password=this.state.userPassword;
     	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
+    	//let regexps=^[a-zA-Z]\w{5,17}$; //以字母开头，长度在6~18之间，只能包含字母、数字和下划线
     	if(email===null ||password===null ||email.length<10  || password<6 || regx.test(email)){
     		//控制'您输入的邮箱或密码有误'
     		this.setState({
@@ -127,14 +128,16 @@ export default class RegisterPage extends Component{
     		onoff:null
     	});
     }
-
+    goBack(){
+    	this.props.navigator.pop()
+    }
 	render(){
 		//let errTip=this.state.onoff ? <ErrorTips />: null;
 		//console.log(errTip);
 		return(
 			<View>
 			    <View style={styles.header}>
-			    	<View style={styles.returnMe}><Text style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
+			    	<View style={styles.returnMe}><Text onPress={this.goBack.bind(this)} style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
 					<Text style={{color:'#FFFFFF',fontSize:16}}>捐助即保险</Text>
 				</View>
 				<View style={styles.glove}>
@@ -148,7 +151,7 @@ export default class RegisterPage extends Component{
 					<View style={styles.inputWrap}>
 						<TextInput 
 							style={styles.passwordinput}
-							placeholder='请输入您的邮箱'
+							placeholder='邮箱长度不得大于30字符'
 							
 							keyboardType='email-address'
 							maxLength={30}	
@@ -171,7 +174,7 @@ export default class RegisterPage extends Component{
 					<View style={styles.inputWrap}>
 						<TextInput 
 							style={styles.passwordinput}
-							placeholder='请输入您的邮箱'
+							placeholder='6到16位数字字母和常用符号，区分大小写'
 							
 							keyboardType='email-address'
 							maxLength={30}	
@@ -195,7 +198,7 @@ export default class RegisterPage extends Component{
 						<TextInput
 							 style={styles.passwordinput}
 							 ref='refpass'
-							 placeholder='只能是字母数字和一些特殊符号'
+							 placeholder='6到16数字字母特殊字符组合'
 							 maxLength={30}
 							
 							 autoCapitalize='none'

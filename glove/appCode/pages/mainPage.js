@@ -45,7 +45,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 	}
 	render(){
 		return(	
-			
+			   <View style={{backgroundColor:'#ffffff',flex:1}}>
 				<TabBarIOS tintColor="green" barTintColor="#FBFBFB" translucent= {false} style={styles.container}>
 					{/*
 					<TabBarIOS.Item
@@ -103,7 +103,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 					</TabBarIOS.Item>
 				</TabBarIOS>
 				
-			
+			</View>
 		);
 	}
 }

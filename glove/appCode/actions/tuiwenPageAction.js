@@ -21,6 +21,7 @@ export function  receiveTuiwenPage(requestParams,json){
 
 
 export  function fetchTuiWenPage(requestParams){
+	//console.log(URLTuiwenPage);
    //在这里判断传入的请求时间和当前时间的差值，如果相差太大，可认为用户是重新登录，而不是短时间内连续的请求
 	return dispatch=>{
 		return fetch(URLTuiwenPage,{

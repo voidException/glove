@@ -1,15 +1,24 @@
 //该组件用于实现登陆的
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
-import { NativeAppEventEmitter, PixelRatio,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
+import { Modal,NativeAppEventEmitter, PixelRatio,ScrollView,
+	Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,
+	TouchableWithoutFeedback,Dimensions,DeviceEventEmitter,
+	AsyncStorage
+}from 'react-native';
+
 import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
 import { connect } from 'react-redux';
+import ModalTips from './modalTips';
+
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
 //var KeyboardSpacer = require('react-native-keyboard-spacer');
 let ratio = PixelRatio.get();
+//对于包含多个输入域的
+
 
 export default class DengLuFragment extends Component{
 	constructor(props){
@@ -17,58 +26,70 @@ export default class DengLuFragment extends Component{
 		this.state={
 			userEmail:null,
 			userPassword:null,
-			onoff:null 
+			onoff:null,
+			animationType: 'none',
+      		modalVisible: false,
+      		transparent: true,
+      		content: 'hello world',
 		}
 
 	}
-	componentDidMount(){
-		//console.log();
-		//this.startLogin();
-
-	}
-	pickerFun(e){
-   	    console.log(e);
+	pickerFun(e){    
    	    this.setState({
    	    	pickerValue:e
    	    });
-   }
+    }
 	//一旦该组件的某个props属性改变了，就会执行这个方法，真是太好了
-	componentWillReceiveProps(nextProps) {
-		
-		//console.log(nextProps.userProfile.logined); //true
-		//console.log(this.props.userProfile.logined); //false
+	componentWillReceiveProps(nextProps) {		
 		if(nextProps.userProfile.logined!==this.props.userProfile.logined){
 			this.goMainPage();
 		}
-
-
 	}
 	goMainPage(){
-		
-	    this.props.navigator.push({
-		    component:MyMainPage,
-		    // params:{
-		    //     navigator:this.props.navigator,
-		    // }
-	    });
+		 let Route={component:MyMainPage,index:1}
+		 this.props.navigator.replace(Route);
+	    // this.props.navigator.push({
+		   //  component:MyMainPage,
+		   //  // params:{
+		   //  //     navigator:this.props.navigator,
+		   //  // }
+	    // });
     }
-    
+    componentDidMount(){
+		//this.startLogin();
+		this.autoLogin()
+	}
+	autoLogin(){
+		AsyncStorage.multiGet(['userid','userpassword','useremail'] ,(err, result) => {   
+            if (result!==null) {
+                //console.log(result);
+                //获取result中的数据，设置state ,调用startLogin，发起请求              
+            }else{
+            	 console.log('没有数据');
+            	return;
+            }
 
+        }); //AsyncStorage
+                
+	}
 	startLogin(){ 
-		dismissKeyboard(); //先隐藏键盘
-		//dispatch从父组件一层层传递下来，
-		//为了开发方便先注释掉
+		dismissKeyboard(); //先隐藏键盘		
 		/*
 		 if(!this.verify()){
 		 	return ;
-		 }//校验
+		 }//校验邮箱和密码是否合法
 		 */
+		this.setState({
+			modalVisible:false
+		});
+ 
 		let userAccount={
 			userEmail:this.state.userEmail,
 			userPassword:this.state.userPassword
 		};
+
 		const  {dispatch} =this.props;
-		dispatch(fetchUserProfileIfNeeded( userAccount));	
+		dispatch(fetchUserProfileIfNeeded(userAccount));	
 		//DeviceEventEmitter.emit('loginSuccess', { });
 		//this.goMainPage();
 		// this.goMainPage();
@@ -81,25 +102,15 @@ export default class DengLuFragment extends Component{
 				     this.goMainPage();
 			     }
 			}, 3000);
-		 */
+		*/
 	}
-	handleEmailChange(event){
-	  	this.setState({
-	  		userEmail:event.nativeEvent.text
-	  	});	
-	  	//console.log(event.nativeEvent.text);
-    }
-    handlePassChange(event){
-    	this.setState({
-    		userPassword:event.nativeEvent.text
-    	});
-    }
-    verify(){
+	verify(){
     	//输入完密码，点击return时，校验邮箱和密码是否合法 
     	//console.log('verify');
     	let email=this.state.userEmail;
     	let password=this.state.userPassword;
     	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
+
     	if(email===null ||password===null ||email.length<10  || password<6 || regx.test(email)){
     		//控制'您输入的邮箱或密码有误'
     		this.setState({
@@ -110,6 +121,19 @@ export default class DengLuFragment extends Component{
     	}
     	return true;
     }
+	handleEmailChange(event){
+	  	this.setState({
+	  		userEmail:event.nativeEvent.text
+	  	});	
+	  	console.log(event.nativeEvent.text);
+    }
+    handlePassChange(event){
+    	this.setState({
+    		userPassword:event.nativeEvent.text
+    	});
+    	console.log(event.nativeEvent.text);
+    }
+
     focusNextField(nextField){
     	//点击return时，密码框自动获得焦点
     	this.refs[nextField].focus();
@@ -127,13 +151,24 @@ export default class DengLuFragment extends Component{
     		onoff:null
     	});
     }
-
+  
+    _setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
 	render(){
 		let errTip=this.state.onoff ? <ErrorTips />: null;
+
+			
+		  let modalBackgroundStyle = {
+            backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+        };
+        let innerContainerTransparentStyle = this.state.transparent ? {backgroundColor: '#fff', padding: 10}: null;
+    	let activeButtonStyle = {
+      		backgroundColor: '#ddd'
+    	};
 		//console.log(errTip);
 		return(
 			<View>
-			    
 				<View style={styles.email}>
 				    <View style={styles.labelWrap}>
 						<Text style={styles.emailText}>邮箱</Text>
@@ -141,19 +176,16 @@ export default class DengLuFragment extends Component{
 					<View style={styles.inputWrap}>
 						<TextInput 
 							style={styles.passwordinput}
-							placeholder='请输入您的邮箱'
-							
+							placeholder='输入您注册的邮箱'						
 							keyboardType='email-address'
 							maxLength={30}	
-							ref='refemail'	
-								
+							ref='refemail'									
 							autoCapitalize='none'	
 							clearButtonMode='always'
 							clearTextOnFocus={false}	
 							keyboardAppearance='dark'
 							autoCorrect={false}	
 							onChange={this.handleEmailChange.bind(this)}						
-							onSubmitEditing={() => this.focusNextField('refpass')}
 							onFocus={this.focusToclean.bind(this)}/>
 						</View>
 				</View>
@@ -165,9 +197,9 @@ export default class DengLuFragment extends Component{
 						<TextInput
 							 style={styles.passwordinput}
 							 ref='refpass'
-							 placeholder='只能是字母数字和一些特殊符号'
-							 maxLength={30}
-							
+							 placeholder=''
+							 maxLength={18}
+							 placeholder={'6到18密码'}
 							 autoCapitalize='none'
 							 clearButtonMode='always'
 							 autoCorrect={false}
@@ -175,13 +207,32 @@ export default class DengLuFragment extends Component{
 							 onSubmitEditing={this.verify.bind(this)}
 							 onFocus={this.focusTocleanPass.bind(this)}/>
 					</View>
-				</View>
-					    
+				</View>					    
 				<View style={styles.err}>{errTip}</View>
 
+			    <View>
+	  				<Modal			       
+	  			    	animationType={this.state.animationType}
+	            		transparent={this.state.transparent}
+	           			visible={this.state.modalVisible}
+	            		onRequestClose={this._setModalVisible.bind(this,false)}>
+
+	            		<View style={[styles.modalContainer, modalBackgroundStyle]}>
+	  	          			<View style={[styles.innerContainer, innerContainerTransparentStyle]}>
+	  	          				<Text>{this.state.content}</Text>
+	  		          			<View style={styles.close}>
+	  		          				<Text style={styles.txt} onPress={this._setModalVisible.bind(this,false)}>关闭</Text>
+	  	          			    </View>
+	            			</View>            			    
+	  	          		</View>
+	  			    </Modal>
+				</View>	 
+
 				<View  style={styles.loginwrap}>					
-					<Text onPress={this.startLogin.bind(this)} style={styles.login}> 登陆 </Text>				
-				</View>		        
+					<Text onPress={this.startLogin.bind(this)} style={styles.login}>登  录</Text>
+
+				</View>	
+	           
 		    </View>
 		);
 	}
@@ -205,10 +256,7 @@ let styles=StyleSheet.create({
 		flex:1,
 		flexDirection:'column'
 	},
-	containerScroll: {
-	    flex: 1,
-	    backgroundColor: '#F5FCFF',
-	  },
+	
 	content: {
 	    justifyContent: 'center',
 	    alignItems: 'center'
@@ -283,7 +331,31 @@ let styles=StyleSheet.create({
 		width:width,
 		textAlign:'center',
 	},
-	
+
+	modalContainer:{
+		flex:1,
+		flexDirection:'column',
+		alignItems:'center',
+		justifyContent:'center'
+	},
+	innerContainer: {
+		 flexDirection:'column',
+		 justifyContent:'center',
+         borderRadius: 10,
+         alignItems: 'center',
+         backgroundColor:'#FFFFFF',
+         height:100,
+         width:200,
+    },
+    close:{
+    	marginTop:10,
+    	flexDirection:'row',
+    	alignItems:'center',
+    	justifyContent:'center',
+    },
+    txt:{
+       color:'red'
+    }
 
 });
 

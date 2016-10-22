@@ -1,9 +1,15 @@
 import * as types from './actionTypes';
 import {URLLogin} from '../utils/url';
-
+import { Alert,NativeAppEventEmitter} from 'react-native';
 //userAccount 包含邮箱和密码，外部传入
 export function  receiveUserProfile(userAccount,json){
-	
+	//console.log(json.data)
+	NativeAppEventEmitter.emit('loginSuccess', {
+		type:1,
+        userpassword:json.data.userpassword,
+        useremail:json.data.useremail,
+        userid:json.data.userid.toString()
+    });
 	return{
 		type:types.Login_userProfile,
 		userAccount,
@@ -14,7 +20,10 @@ export function  receiveUserProfile(userAccount,json){
 
 
 export  function fetchUserProfile(userAccount){
-   
+	NativeAppEventEmitter.emit('loadingStart', {
+         code: 0
+    });
+
 	return dispatch=>{
 		return fetch(URLLogin,{
 					method:'POST',
@@ -30,8 +39,17 @@ export  function fetchUserProfile(userAccount){
 			   .then(response=>response.json())
 			   .then(json=>dispatch(receiveUserProfile(userAccount,json)))
 			   .catch(function(e){
-			   		console.log('没有连接网络')
-			   })
+			   		 console.log(e);
+			   		NativeAppEventEmitter.emit('loginSuccess', {
+                        code: 0
+                    })
+
+                    Alert.alert(
+                     	"出现异常",
+                     	"稍后再试",
+                     	[{text:'好的',onPress: () => {}}]
+                     )
+			   });
 	}
 }
 

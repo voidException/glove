@@ -21,7 +21,6 @@ let  fetchTool=function(options){
     	headers:opt.headers,
     	body:opt.body || ''
     };
-    console.log()
    return new Promise((reslove,reject)=>{   
           
         fetch(opt.url, sentData)

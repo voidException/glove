@@ -10,12 +10,14 @@ import{
 	NavigatorIOS,
 	Navigator,
 	RefreshControl,
+	NativeAppEventEmitter,
+	AsyncStorage,
 	View,
 	ListView,
 	Dimensions,
 } from 'react-native';
 import React,{ Component, } from 'react';
-
+import Loading from '../loading/loading';
 import UserPhoto from '../components/userPhoto';
 import RegisterPage from '../pages/registerPage';
 import FindPasswordPage  from '../pages/findPasswordPage';
@@ -43,93 +45,46 @@ export default class Login extends Component{
 
 		this.state={
 			avatarSource:{},
-			off:2
+			off:2,
+			showLoading:false
 		};
 	}
 	componentWillMount(){
-		//console.log(this.props);
-		// ImagePicker.launchCamera(options, (response)  => {
-        // console.log(response);
-        //});
+
+        NativeAppEventEmitter.addListener('loadingStart', () => {
+           
+            this.setState({showLoading: true});
+        });
+
+		NativeAppEventEmitter.addListener('loginSuccess', (emitData) => {
+		 	this.setState({
+		 		showLoading:false
+		 	});
+            //根据emitData的值判断是否应该存储
+            //console.log(emitData);
+            if (emitData.type==1) {
+            	const storageFun =async ()=>{
+                    let removeCodeIDResult=await AsyncStorage.multiRemove(['userid','userpassword','useremail'],(error)=>{
+                        //console.log(error);
+                    });
+                    //值必须是字符串                  
+                    let saveDateResult=await AsyncStorage.multiSet([['userid',emitData.userid],['userpassword',emitData.userpassword],['useremail',emitData.useremail]],(errors)=>{
+
+                    });
+                
+                    return saveDateResult;
+                }
+                storageFun().then((result)=>{
+                    //console.log(result);
+                }).catch(err=>{
+                	console.log(err);
+                    console.log('存储登录信息出错')
+                })
+            };
+
+		});		
      }
 	
-	//私有方法
-    goRegisterPage(){
-	    // this.props.navigator.push({
-		   //  component:RegisterPage
-	    // });
-	        
-		ImagePicker.showImagePicker(options, (response) => {
-				  //console.log(response);
-				 let url;
-				  if (response.didCancel) {
-				      console.log('User cancelled image picker');
-				  }
-				  else if (response.error) {
-				      console.log('ImagePicker Error: ', response.error);
-				  }
-				  else if (response.customButton) {
-				      console.log('User tapped custom button: ', response.customButton);
-				  }
-				  else {
-				  	  // debugger
-					    // You can display the image using either data... 
-					   // const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-					  //debugger
-					    // or a reference to the platform specific asset location 
-					    // if (Platform.OS === 'ios') {
-
-					    //   const source = {uri: response.uri.replace('file://', ''), isStatic: true};
-					    //   url=source.uri;
-					    // } 
-					    // else {
-
-					    //   const source = {uri: response.uri, isStatic: true};
-
-					    // }	
-					    //console.log('avatarSource');
-					    let uri = response.uri;
-						if(uri.indexOf('file://') < 0){
-							uri = 'file://' + uri;
-						}else{
-							uri = uri.replace('file://', '')
-						}
-						const source = {uri: uri, isStatic: true};
-		          		let type = 'image/jpg';
-		          		let formData = new FormData();
-		          		
-		          		formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
-		          		formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
-		          		formData.append("hello", {uri: uri, type: 'image/jpeg'});
-		          		formData.append("abc", 'dddd');
-		          		formData.append("key",'key');
-					    this.setState({
-					      off:1,
-					      avatarSource: source
-					    });
-          				
-          				//let httpurl='http://172.16.11.80:8080/glove/demo/upload/firstUpload';
-          				//let httpurl='http://172.16.11.80:8080/glove/demo/upload/multiUploadTest';
-          				let httpurl='http://172.16.11.80:8080/glove/demo/upload/multiUpload';
-          				fetch(httpurl,{
-								method:'POST',
-								headers:{
-			    					//'Content-Type': 'application/x-www-form-urlencoded'
-			    					'Content-Type': 'multipart/form-data'
-			    				},
-			    				body: formData
-					    })
-						.then(response=>response.json())
-						.then(json=>{console.log(json)})
-						.catch(function(e){
-						   		console.log('请求推文列表出错了')
-					    })
-				  }
-		});
-
-		
-		
-    }
     goZhuCe(){
     	this.props.navigator.push({
             component: RegisterPage
@@ -155,9 +110,7 @@ export default class Login extends Component{
 					<LoginFragment  {...this.props}/>
 
 				</View>
-
-
-
+				<Loading visible={this.state.showLoading} />
 				<View style={styles.bottom}>
 		         	 <Text  onPress={this.goZhuCe.bind(this)}>还没注册？</Text>          
 		        	<Text onPress={this.goFindPasswordPage.bind(this)}>忘记密码</Text>					

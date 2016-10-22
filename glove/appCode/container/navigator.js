@@ -47,7 +47,7 @@ import Setting from '../pages/woPage/setting';
 import CompleteProfile from '../pages/woPage/completeProfile';
 import ResetPassword from '../pages/woPage/resetPassword';
 import AboutUs from '../pages/faxianPage/aboutUs';
-
+import ModalTips from '../components/modalTips';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -71,6 +71,7 @@ class INavigator extends Component{
 	render(){
 		let defaultName='TheLoginPage';
 		let defaultComponent=Login;
+		//let defaultComponent=ModalTips;
 		//let defaultComponent=AboutUs;
 		//let defaultComponent=TuiwenItem ;
 		//let defaultComponent=WoPage;
