@@ -101,6 +101,7 @@ export default class RegisterPage extends Component{
     	let password=this.state.userPassword;
     	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
     	//let regexps=^[a-zA-Z]\w{5,17}$; //以字母开头，长度在6~18之间，只能包含字母、数字和下划线
+    	//let regexps=^[a-zA-Z]w{5,17}$ ; //”正确格式为：以字母开头，长度在6-18之间
     	if(email===null ||password===null ||email.length<10  || password<6 || regx.test(email)){
     		//控制'您输入的邮箱或密码有误'
     		this.setState({

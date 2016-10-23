@@ -61,9 +61,16 @@ export default class DengLuFragment extends Component{
 	}
 	autoLogin(){
 		AsyncStorage.multiGet(['userid','userpassword','useremail'] ,(err, result) => {   
-            if (result!==null) {
-                //console.log(result);
-                //获取result中的数据，设置state ,调用startLogin，发起请求              
+            if (result.length==3) {
+            	//console.log(result.length);
+                //console.log(result[1][1]);
+                let userpassword=result[1][1];
+                let useremail=result[2][1];
+                this.setState({
+                	userEmail:useremail,
+                	userPassword:userpassword
+                });              
+                this.startLogin();             
             }else{
             	 console.log('没有数据');
             	return;
@@ -74,11 +81,10 @@ export default class DengLuFragment extends Component{
 	}
 	startLogin(){ 
 		dismissKeyboard(); //先隐藏键盘		
-		/*
+		
 		 if(!this.verify()){
 		 	return ;
 		 }//校验邮箱和密码是否合法
-		 */
 		this.setState({
 			modalVisible:false
 		});
@@ -109,12 +115,16 @@ export default class DengLuFragment extends Component{
     	//console.log('verify');
     	let email=this.state.userEmail;
     	let password=this.state.userPassword;
-    	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
+    	let regx=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/; 
+        let regP=/^[0-9|a-z|A-Z]\w{5,17}$/; //6-18w位数字和字母组成的密码      
+        //let testEm='@567890qwertyui';
+        //console.log(regP.test(testEm));
 
-    	if(email===null ||password===null ||email.length<10  || password<6 || regx.test(email)){
+    	if(email===null ||password===null ||email.length<10 || email.length>30 || password.length<6 ||password.length>18|| !regx.test(email) || !regP.test(password)){
     		//控制'您输入的邮箱或密码有误'
     		this.setState({
-    			onoff:1
+    			modalVisible:true,
+    			content:'邮箱或者密码有误'
     		});
     		return false;
     		//console.log(this.state.onoff);
@@ -199,7 +209,7 @@ export default class DengLuFragment extends Component{
 							 ref='refpass'
 							 placeholder=''
 							 maxLength={18}
-							 placeholder={'6到18密码'}
+							 placeholder={'6到18数字和字符密码'}
 							 autoCapitalize='none'
 							 clearButtonMode='always'
 							 autoCorrect={false}

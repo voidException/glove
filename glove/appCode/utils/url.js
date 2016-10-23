@@ -1,4 +1,4 @@
-let commonUrl='http://172.16.32.67:8080/glove';
+let commonUrl='http://172.16.11.13:8080/glove';
 
 export const URLLogin=commonUrl+'/user/login';
 export const URLTuiwenPage =commonUrl+'/weibos/gettweetbyuserid';
