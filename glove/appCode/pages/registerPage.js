@@ -6,6 +6,8 @@ import { NativeAppEventEmitter, PixelRatio,ScrollView,Text,Picker,View,StyleShee
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
 import { connect } from 'react-redux';
+import fetchTool from '../utils/fetchTool';
+
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
 //var KeyboardSpacer = require('react-native-keyboard-spacer');
@@ -17,118 +19,114 @@ export default class RegisterPage extends Component{
 		this.state={
 			userEmail:null,
 			userPassword:null,
+			nickName:null,
 			onoff:null 
 		}
 
 	}
 	componentDidMount(){
-		//console.log();
-		this.startLogin();
-
+		
 	}
+
 	pickerFun(e){
-   	    console.log(e);
+   	    //console.log(e);
    	    this.setState({
    	    	pickerValue:e
    	    });
    }
-	//一旦该组件的某个props属性改变了，就会执行这个方法，真是太好了
-	componentWillReceiveProps(nextProps) {
-		
-		//console.log(nextProps.userProfile.logined); //true
-		//console.log(this.props.userProfile.logined); //false
-		if(nextProps.userProfile.logined!==this.props.userProfile.logined){
-			this.goMainPage();
-		}
-
-
-	}
-	goMainPage(){
-		
-	    this.props.navigator.push({
-		    component:MyMainPage,
-		    // params:{
-		    //     navigator:this.props.navigator,
-		    // }
-	    });
-    }
-    
-
-	startLogin(){ 
+	startRegister(){ 
 		dismissKeyboard(); //先隐藏键盘
 		//dispatch从父组件一层层传递下来，
-		//为了开发方便先注释掉
-		/*
+		//为了开发方便先注释掉	
 		 if(!this.verify()){
 		 	return ;
 		 }//校验
-		 */
 		let userAccount={
 			userEmail:this.state.userEmail,
-			userPassword:this.state.userPassword
+			userPassword:this.state.userPassword,
+			nickName:this.state.nickName
 		};
-		const  {dispatch} =this.props;
-		//dispatch(fetchUserProfileIfNeeded( userAccount));	
-		//DeviceEventEmitter.emit('loginSuccess', { });
-		//this.goMainPage();
-		// this.goMainPage();
-		//使用以下两种方法都可以
-		/*
-		DeviceEventEmitter.emit('loginSuccess', { });
-		
-		setTimeout(() => {
-			    if(this.props.userProfile.logined){
-				     this.goMainPage();
-			     }
-			}, 3000);
-		 */
+		//发起网络请求
+		let options={
+            url:'http://172.16.33.212:8080/glove/user/login',
+            body: JSON.stringify({
+                userEmail: 'alooge@126.com',
+                userPassword: '123456'
+            })
+        };
+        let  response=fetchTool(options);
+        response.then(resp=>{
+              console.log(resp);
+        });
+
+
 	}
+	verify(){
+    	//输入完密码，点击return时，校验邮箱和密码是否合法
+    	//设置3个布尔变量，校验通过为true，否则false 
+    	let email=this.state.userEmail;
+    	let password=this.state.userPassword;
+    	let nickName=this.state.nickName;
+    	let regx=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/; 
+        let regP=/^[0-9|a-z|A-Z]\w{5,17}$/; //6-18w位数字和字母组成的密码      
+        //let testEm='@567890qwertyui';
+        //console.log(regP.test(testEm));
+        let Vemail=false;
+        let Vpass=false;
+        let VnickName=false;
+
+    	if(email!==null && email.length<31 && email.length>9 && regx.test(email)){
+    		Vemail=true;
+    	}
+    	if (password!==null && password.length>5 && password.length<19 && regP.test(password)) {
+    		Vpass=true;
+    	};
+    	if (nickName.length>2 && nickName.length<31) {
+    		VnickName=true;
+    	};
+    	if (Vpass && Vemail && VnickName) {
+    		return true;
+    	}else{
+    		return false;
+    	}
+    	
+    }
+
 	handleEmailChange(event){
 	  	this.setState({
 	  		userEmail:event.nativeEvent.text
 	  	});	
 	  	//console.log(event.nativeEvent.text);
     }
+    handleNickNameChange(event){
+    	this.setState({
+    		nickName:event.nativeEvent.text
+    	});
+    }
     handlePassChange(event){
     	this.setState({
     		userPassword:event.nativeEvent.text
     	});
     }
-    verify(){
-    	//输入完密码，点击return时，校验邮箱和密码是否合法 
-    	//console.log('verify');
-    	let email=this.state.userEmail;
-    	let password=this.state.userPassword;
-    	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
-    	//let regexps=^[a-zA-Z]\w{5,17}$; //以字母开头，长度在6~18之间，只能包含字母、数字和下划线
-    	//let regexps=^[a-zA-Z]w{5,17}$ ; //”正确格式为：以字母开头，长度在6-18之间
-    	if(email===null ||password===null ||email.length<10  || password<6 || regx.test(email)){
-    		//控制'您输入的邮箱或密码有误'
-    		this.setState({
-    			onoff:1
-    		});
-    		return false;
-    		//console.log(this.state.onoff);
-    	}
-    	return true;
-    }
-    focusNextField(nextField){
-    	//点击return时，密码框自动获得焦点
-    	this.refs[nextField].focus();
-    }
-    //如果弹出提示错误，那么用户点击邮箱或者密码输入框的时候，提示错误应该消失
-    focusToclean(){
-    	this.refs.refemail.focus();
-    	this.setState({
-    		onoff:null
-    	});
-    }
-    focusTocleanPass(){
-    	this.refs.refpass.focus();
-    	this.setState({
-    		onoff:null
-    	});
-    }
+
+    // focusNextField(nextField){
+    // 	//点击return时，密码框自动获得焦点
+    // 	this.refs[nextField].focus();
+    // }
+    // //如果弹出提示错误，那么用户点击邮箱或者密码输入框的时候，提示错误应该消失
+    // focusToclean(){
+    // 	//this.refs.refemail.focus();
+    // 	this.setState({
+    // 		onoff:null
+    // 	});
+    // }
+    // focusTocleanPass(){
+    // 	this.refs.refpass.focus();
+    // 	this.setState({
+    // 		onoff:null
+    // 	});
+    // }
+
     goBack(){
     	this.props.navigator.pop()
     }
@@ -152,21 +150,17 @@ export default class RegisterPage extends Component{
 					<View style={styles.inputWrap}>
 						<TextInput 
 							style={styles.passwordinput}
-							placeholder='邮箱长度不得大于30字符'
-							
+							placeholder='邮箱长度不得大于30字符'						
 							keyboardType='email-address'
 							maxLength={30}	
-							ref='refemail'	
-								
+							ref='refemail'									
 							autoCapitalize='none'	
 							clearButtonMode='always'
 							clearTextOnFocus={false}	
 							keyboardAppearance='dark'
 							autoCorrect={false}	
-							onChange={this.handleEmailChange.bind(this)}						
-							onSubmitEditing={() => this.focusNextField('refpass')}
-							onFocus={this.focusToclean.bind(this)}/>
-						</View>
+							onChange={this.handleEmailChange.bind(this)}/>
+					</View>
 				</View>
 				<View style={styles.email}>
 				    <View style={styles.labelWrap}>
@@ -175,20 +169,18 @@ export default class RegisterPage extends Component{
 					<View style={styles.inputWrap}>
 						<TextInput 
 							style={styles.passwordinput}
-							placeholder='6到16位数字字母和常用符号，区分大小写'
+							placeholder='3至30字符'
 							
 							keyboardType='email-address'
 							maxLength={30}	
-							ref='refemail'	
+							ref='refnickName'	
 								
 							autoCapitalize='none'	
 							clearButtonMode='always'
 							clearTextOnFocus={false}	
 							keyboardAppearance='dark'
 							autoCorrect={false}	
-							onChange={this.handleEmailChange.bind(this)}						
-							onSubmitEditing={() => this.focusNextField('refpass')}
-							onFocus={this.focusToclean.bind(this)}/>
+							onChange={this.handleNickNameChange.bind(this)}/>
 						</View>
 				</View>
 				<View style={styles.password}>
@@ -199,46 +191,42 @@ export default class RegisterPage extends Component{
 						<TextInput
 							 style={styles.passwordinput}
 							 ref='refpass'
-							 placeholder='6到16数字字母特殊字符组合'
-							 maxLength={30}
-							
+							 placeholder='6到18数字和字符'
+							 maxLength={30}							
 							 autoCapitalize='none'
 							 clearButtonMode='always'
 							 autoCorrect={false}
-							 onChange={this.handlePassChange.bind(this)}
-							 onSubmitEditing={this.verify.bind(this)}
-							 onFocus={this.focusTocleanPass.bind(this)}/>
+							 onChange={this.handlePassChange.bind(this)}/>
 					</View>
 				</View>
 					    
 				{/*<View style={styles.err}>{errTip}</View>*/}
-                <View>
-					<View style={styles.pickerOk}>
-						<Text>一定要正确选择所在地</Text>
-					</View>
-					<View style={styles.pickerWrapper}>
-						<Picker
-							  style={{width:100}}
-							  selectedValue={this.state.pickerValue}
-							  onValueChange={this.pickerFun.bind(this)}>
-							  <Picker.Item label="Java" value="java" />
-							  <Picker.Item label="JavaScript" value="js" />
-						</Picker>
-						<Picker
-							  style={{width:100}}
-							  selectedValue={this.state.pickerValue}
-							  onValueChange={this.pickerFun.bind(this)}>
-							  <Picker.Item label="Java" value="java" />
-							  <Picker.Item label="JavaScript" value="js" />
-						</Picker>
-					</View>
-			    </View>
+				{/* 
+	                <View>
+						<View style={styles.pickerOk}>
+							<Text>一定要正确选择所在地</Text>
+						</View>
+						<View style={styles.pickerWrapper}>
+							<Picker
+								  style={{width:100}}
+								  selectedValue={this.state.pickerValue}
+								  onValueChange={this.pickerFun.bind(this)}>
+								  <Picker.Item label="Java" value="java" />
+								  <Picker.Item label="JavaScript" value="js" />
+							</Picker>
+							<Picker
+								  style={{width:100}}
+								  selectedValue={this.state.pickerValue}
+								  onValueChange={this.pickerFun.bind(this)}>
+								  <Picker.Item label="Java" value="java" />
+								  <Picker.Item label="JavaScript" value="js" />
+							</Picker>
+						</View>
+				    </View>
+				*/}
 				<View  style={styles.loginwrap}>					
-					<Text onPress={this.startLogin.bind(this)} style={styles.login}> 注 册</Text>				
-				</View>
-
-			
-		        
+					<Text onPress={this.startRegister.bind(this)} style={styles.login}> 注 册</Text>				
+				</View>		        
 		    </View>
 		);
 	}
@@ -262,8 +250,7 @@ let styles=StyleSheet.create({
 	returnMe:{
 		position:'absolute',
 		left:5,
-		top:34,
-		
+		top:34,	
 	},
 	glove:{
 		flexDirection:'row',
@@ -298,7 +285,6 @@ let styles=StyleSheet.create({
         fontSize:14,     
         paddingLeft:10,
         color:'#666666'
-
 	},
 	password:{
 		flexDirection: 'row',
@@ -307,11 +293,11 @@ let styles=StyleSheet.create({
         borderColor: '#ccc',
         backgroundColor:'#FFFFFF'
 	},
-	 labelWrap: {
+	labelWrap: {
         height: 45,
         justifyContent: 'center',
     },
-     label: {
+    label: {
         fontSize: 16,
         marginLeft: 10,
         borderWidth: 1,
