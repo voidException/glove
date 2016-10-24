@@ -3,10 +3,10 @@ import {URLLogin} from '../utils/url';
 import { Alert,NativeAppEventEmitter} from 'react-native';
 //userAccount 包含邮箱和密码，外部传入
 export function  receiveUserProfile(userAccount,json){
-	//console.log(json.data)
+	console.log(userAccount)
 	NativeAppEventEmitter.emit('loginSuccess', {
 		type:1,
-        userpassword:json.data.userpassword,
+        userpassword:userAccount.userPassword,
         useremail:json.data.useremail,
         userid:json.data.userid.toString()
     });

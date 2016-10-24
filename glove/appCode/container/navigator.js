@@ -71,8 +71,8 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
-		let defaultComponent=RegisterPage;
+		let defaultComponent=Login;
+		//let defaultComponent=RegisterPage;
 		//let defaultComponent=ModalTips;
 		//let defaultComponent=AboutUs;
 		//let defaultComponent=TuiwenItem ;

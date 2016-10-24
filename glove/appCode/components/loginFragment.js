@@ -69,7 +69,8 @@ export default class DengLuFragment extends Component{
                 this.setState({
                 	userEmail:useremail,
                 	userPassword:userpassword
-                });              
+                }); 
+                //debugger             
                 this.startLogin();             
             }else{
             	 console.log('没有数据');
@@ -93,7 +94,7 @@ export default class DengLuFragment extends Component{
 			userEmail:this.state.userEmail,
 			userPassword:this.state.userPassword
 		};
-
+        console.log(userAccount);
 		const  {dispatch} =this.props;
 		dispatch(fetchUserProfileIfNeeded(userAccount));	
 		//DeviceEventEmitter.emit('loginSuccess', { });
@@ -119,7 +120,7 @@ export default class DengLuFragment extends Component{
         let regP=/^[0-9|a-z|A-Z]\w{5,17}$/; //6-18w位数字和字母组成的密码      
         //let testEm='@567890qwertyui';
         //console.log(regP.test(testEm));
-
+       
     	if(email===null ||password===null ||email.length<10 || email.length>30 || password.length<6 ||password.length>18|| !regx.test(email) || !regP.test(password)){
     		//控制'您输入的邮箱或密码有误'
     		this.setState({

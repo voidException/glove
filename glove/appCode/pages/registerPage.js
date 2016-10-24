@@ -170,11 +170,9 @@ export default class RegisterPage extends Component{
 						<TextInput 
 							style={styles.passwordinput}
 							placeholder='3至30字符'
-							
 							keyboardType='email-address'
 							maxLength={30}	
-							ref='refnickName'	
-								
+							ref='refnickName'		
 							autoCapitalize='none'	
 							clearButtonMode='always'
 							clearTextOnFocus={false}	
