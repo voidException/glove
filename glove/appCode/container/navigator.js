@@ -36,6 +36,7 @@ import WelfareAuth from '../pages/components/welfareAuth';
 import PersonVerify from '../pages/components/personVerify';
 import ReportTuiwen from  '../pages/components/reportTuiwen';
 import Affirm  from '../pages/components/affirm';
+import PublishTuiwen from  '../pages/components/publishTuiwen';
 import PostAffirm from '../pages/components/postAffirm';
 import AffirmListItem from '../pages/components/affirmListItem';
 import SuperviseListItem from '../components/SuperviseListItem';
@@ -73,7 +74,7 @@ class INavigator extends Component{
 	render(){
 		let defaultName='TheLoginPage';
 		//let defaultComponent=Login;
-		let defaultComponent=FindPasswordPage;
+		//let defaultComponent=FindPasswordPage;
 		//let defaultComponent=RegisterPage;
 		//let defaultComponent=ModalTips;
 		//let defaultComponent=AboutUs;
@@ -87,6 +88,7 @@ class INavigator extends Component{
         //let  defaultComponent=ProductView;
         //let defaultComponent=Report;
         //let defaultComponent=ReportTuiwen;
+        let defaultComponent=PublishTuiwen;
         //let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;

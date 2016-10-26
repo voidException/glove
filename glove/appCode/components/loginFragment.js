@@ -136,7 +136,7 @@ export default class DengLuFragment extends Component{
 	  	this.setState({
 	  		userEmail:event.nativeEvent.text
 	  	});	
-	  	console.log(event.nativeEvent.text);
+	  	//console.log(event.nativeEvent.text);
     }
     handlePassChange(event){
     	this.setState({
