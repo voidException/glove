@@ -60,15 +60,15 @@ export default class Login extends Component{
 		 	this.setState({
 		 		showLoading:false
 		 	});
-            //根据emitData的值判断是否应该存储
+            //根据emitData的值判断是否应该存储,应该检查本次登录是否成功
             //console.log(emitData);
             if (emitData.type==1) {
             	const storageFun =async ()=>{
-                    let removeCodeIDResult=await AsyncStorage.multiRemove(['userid','userpassword','useremail'],(error)=>{
+                    let removeCodeIDResult=await AsyncStorage.multiRemove(['userid','userpassword','useremail','token'],(error)=>{
                         //console.log(error);
                     });
                     //值必须是字符串                  
-                    let saveDateResult=await AsyncStorage.multiSet([['userid',emitData.userid],['userpassword',emitData.userpassword],['useremail',emitData.useremail]],(errors)=>{
+                    let saveDateResult=await AsyncStorage.multiSet([['userid',emitData.userid],['userpassword',emitData.userpassword],['useremail',emitData.useremail],['token',emitData.token]],(errors)=>{
 
                     });
                 

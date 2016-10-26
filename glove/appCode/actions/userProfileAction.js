@@ -3,11 +3,12 @@ import {URLLogin} from '../utils/url';
 import { Alert,NativeAppEventEmitter} from 'react-native';
 //userAccount 包含邮箱和密码，外部传入
 export function  receiveUserProfile(userAccount,json){
-	console.log(userAccount)
+	//console.log(userAccount)应该多存一个数据域
 	NativeAppEventEmitter.emit('loginSuccess', {
 		type:1,
         userpassword:userAccount.userPassword,
         useremail:json.data.useremail,
+        token:json.data.backupfour,
         userid:json.data.userid.toString()
     });
 	return{
@@ -32,8 +33,8 @@ export  function fetchUserProfile(userAccount){
     					'Content-Type': 'application/json',
     				},
     				body: JSON.stringify({
-					    userEmail: 'alooge@126.com',
-					    userPassword: '123456'
+					    userEmail: userAccount.userEmail,
+					    userPassword: userAccount.userPassword
 					})
 		       })
 			   .then(response=>response.json())

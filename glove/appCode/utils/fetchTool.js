@@ -27,27 +27,28 @@ let  fetchTool=function(options){
         .then(response=> response.json())
         .then(responseText=>{  
             let resp = typeof responseText === 'string' ? JSON.parse(responseText) : responseText;
+            //console.log(resp);
             reslove(resp); //这个resp会被外部接收
         }).catch(err=>{        
             console.log(err);
             reject(err);
         });
-    })
-    .catch(err => {
-        //发送请求结束通知
-        //NativeAppEventEmitter.emit('loadingEnd');
-        Alert.alert(
-            '请求失败',
-            '请检查网络设置确定是否联网',
-            [
-                {
-                    text: '好的'
-                }
-            ]
-        );
+    });
+    // .catch(err => {
+    //     //发送请求结束通知
+    //     //NativeAppEventEmitter.emit('loadingEnd');
+    //     // Alert.alert(
+    //     //     '请求失败',
+    //     //     '请检查网络设置确定是否联网',
+    //     //     [
+    //     //         {
+    //     //             text: '好的'
+    //     //         }
+    //     //     ]
+    //     // );
         
     
-    });
+    // });
 }
 export default fetchTool; 
 

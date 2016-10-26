@@ -57,10 +57,10 @@ export default class DengLuFragment extends Component{
     }
     componentDidMount(){
 		//this.startLogin();
-		this.autoLogin()
+		//this.autoLogin() //暂时注释掉
 	}
 	autoLogin(){
-		AsyncStorage.multiGet(['userid','userpassword','useremail'] ,(err, result) => {   
+		AsyncStorage.multiGet(['userid','userpassword','useremail','token'] ,(err, result) => {   
             if (result.length==3) {
             	//console.log(result.length);
                 //console.log(result[1][1]);
@@ -94,7 +94,7 @@ export default class DengLuFragment extends Component{
 			userEmail:this.state.userEmail,
 			userPassword:this.state.userPassword
 		};
-        console.log(userAccount);
+        //console.log(userAccount);
 		const  {dispatch} =this.props;
 		dispatch(fetchUserProfileIfNeeded(userAccount));	
 		//DeviceEventEmitter.emit('loginSuccess', { });

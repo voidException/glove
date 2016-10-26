@@ -7,7 +7,8 @@ import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
 import { connect } from 'react-redux';
 import fetchTool from '../utils/fetchTool';
-
+import { URLRegister } from '../utils/url';
+import Loading from '../loading/loading';
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
 //var KeyboardSpacer = require('react-native-keyboard-spacer');
@@ -20,7 +21,8 @@ export default class RegisterPage extends Component{
 			userEmail:null,
 			userPassword:null,
 			nickName:null,
-			onoff:null 
+			onoff:null,
+			visible:false
 		}
 
 	}
@@ -44,19 +46,42 @@ export default class RegisterPage extends Component{
 		let userAccount={
 			userEmail:this.state.userEmail,
 			userPassword:this.state.userPassword,
-			nickName:this.state.nickName
+			userNickName:this.state.nickName
 		};
+		//console.log(userAccount);
 		//发起网络请求
 		let options={
-            url:'http://172.16.33.212:8080/glove/user/login',
-            body: JSON.stringify({
-                userEmail: 'alooge@126.com',
-                userPassword: '123456'
-            })
+            url:URLRegister,
+            body: JSON.stringify(userAccount)
         };
+        //显示转圈圈
+        this.setState({
+        	visible:true
+        });
         let  response=fetchTool(options);
         response.then(resp=>{
-              console.log(resp);
+        	  //停止转圈圈
+        	  this.setState({
+        	  	visible:false
+        	  });
+             if (resp.retcode===2000) {
+              	  this.goBack();
+              }else{
+              	    Alert.alert(
+                        '出错了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('注册出错了')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+        	//停止转圈圈
+        	this.setState({
+        		visible:false
+        	});
+
         });
 
 
@@ -134,7 +159,7 @@ export default class RegisterPage extends Component{
 		//let errTip=this.state.onoff ? <ErrorTips />: null;
 		//console.log(errTip);
 		return(
-			<View>
+			<View style={{flex:1,backgroundColor:'#FFFFFF'}}>
 			    <View style={styles.header}>
 			    	<View style={styles.returnMe}><Text onPress={this.goBack.bind(this)} style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
 					<Text style={{color:'#FFFFFF',fontSize:16}}>捐助即保险</Text>
@@ -224,7 +249,8 @@ export default class RegisterPage extends Component{
 				*/}
 				<View  style={styles.loginwrap}>					
 					<Text onPress={this.startRegister.bind(this)} style={styles.login}> 注 册</Text>				
-				</View>		        
+				</View>	
+				<Loading  visible={this.state.visible}/>	        
 		    </View>
 		);
 	}

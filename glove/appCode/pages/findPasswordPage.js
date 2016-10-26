@@ -2,11 +2,14 @@
 //该组件用于实现登陆的
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
-import { NativeAppEventEmitter, PixelRatio,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
+import { NativeAppEventEmitter,Alert, PixelRatio,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
 //import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
 import { connect } from 'react-redux';
+import fetchTool from '../utils/fetchTool';
+import Loading from '../loading/loading';
+import { URLFindPasswd } from '../utils/url';
 let { width,height}=Dimensions.get('window');
 var dismissKeyboard = require('dismissKeyboard');
 //var KeyboardSpacer = require('react-native-keyboard-spacer');
@@ -17,72 +20,70 @@ export default class RegisterPage extends Component{
 		super(props);
 		this.state={
 			userEmail:null,
-			userPassword:null,
-			onoff:null 
+			visible:false
 		}
-
 	}
 	componentDidMount(){
-		//console.log();
-		this.startLogin();
-
-	}
-	pickerFun(e){
-   	    console.log(e);
-   	    this.setState({
-   	    	pickerValue:e
-   	    });
-   }
-	//一旦该组件的某个props属性改变了，就会执行这个方法，真是太好了
-	componentWillReceiveProps(nextProps) {
 		
-		//console.log(nextProps.userProfile.logined); //true
-		//console.log(this.props.userProfile.logined); //false
-		if(nextProps.userProfile.logined!==this.props.userProfile.logined){
-			this.goMainPage();
-		}
-
-
 	}
-	goMainPage(){
-		
-	    this.props.navigator.push({
-		    component:MyMainPage,
-		    // params:{
-		    //     navigator:this.props.navigator,
-		    // }
-	    });
+	goBack(){
+    	this.props.navigator.pop()
     }
-    
 
-	startLogin(){ 
+	startFindPassword(){ 
 		dismissKeyboard(); //先隐藏键盘
 		//dispatch从父组件一层层传递下来，
 		//为了开发方便先注释掉
-		/*
-		 if(!this.verify()){
-		 	return ;
-		 }//校验
-		 */
+		if(!this.verify()){
+		 	return Alert.alert(
+                        '邮箱有误',
+                        '请检查格式',
+                        [
+                            { text:'好的',onPress:() =>console.log('检查邮箱')}
+
+                        ]
+                    );
+		}
 		let userAccount={
 			userEmail:this.state.userEmail,
-			userPassword:this.state.userPassword
+		}
+		let options={
+			url:URLFindPasswd,
+			body:JSON.stringify(userAccount)
 		};
-		const  {dispatch} =this.props;
-		//dispatch(fetchUserProfileIfNeeded( userAccount));	
-		//DeviceEventEmitter.emit('loginSuccess', { });
-		//this.goMainPage();
-		// this.goMainPage();
-		//使用以下两种方法都可以
-		/*
-		DeviceEventEmitter.emit('loginSuccess', { });
-		
-		setTimeout(() => {
-			    if(this.props.userProfile.logined){
-				     this.goMainPage();
-			     }
-			}, 3000);
-		 */
+		//发送请求
+		this.setState({
+        	visible:true
+        });
+
+        let  response=fetchTool(options);
+        response.then(resp=>{
+        	  //停止转圈圈
+        	  this.setState({
+        	  	visible:false
+        	  });
+              console.log(resp);
+              //如果注册成功就返回，失败就显示提示
+              if (resp.retcode===2000) {
+              	  this.goBack();
+              }else{
+              	    Alert.alert(
+                        '出错了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('找回密码出问题')}
+
+                        ]
+                    );
+              }
+             
+        }).catch(err=>{
+        	//停止转圈圈
+        	this.setState({
+        		visible:false
+        	});
+
+        });
 	}
 	handleEmailChange(event){
 	  	this.setState({
@@ -90,53 +91,23 @@ export default class RegisterPage extends Component{
 	  	});	
 	  	//console.log(event.nativeEvent.text);
     }
-    handlePassChange(event){
-    	this.setState({
-    		userPassword:event.nativeEvent.text
-    	});
-    }
     verify(){
     	//输入完密码，点击return时，校验邮箱和密码是否合法 
     	//console.log('verify');
     	let email=this.state.userEmail;
-    	let password=this.state.userPassword;
     	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
-    	if(email===null ||password===null ||email.length<10  || password<6 || regx.test(email)){
-    		//控制'您输入的邮箱或密码有误'
-    		this.setState({
-    			onoff:1
-    		});
+    	if(email===null  ||email.length<10 ||email.length>30 || regx.test(email)){   		
     		return false;
-    		//console.log(this.state.onoff);
     	}
     	return true;
     }
-    focusNextField(nextField){
-    	//点击return时，密码框自动获得焦点
-    	this.refs[nextField].focus();
-    }
-    //如果弹出提示错误，那么用户点击邮箱或者密码输入框的时候，提示错误应该消失
-    focusToclean(){
-    	this.refs.refemail.focus();
-    	this.setState({
-    		onoff:null
-    	});
-    }
-    focusTocleanPass(){
-    	this.refs.refpass.focus();
-    	this.setState({
-    		onoff:null
-    	});
-    }
 
 	render(){
-		//let errTip=this.state.onoff ? <ErrorTips />: null;
-		//console.log(errTip);
+
 		return(
-			<View>
-				
+			<View style={{backgroundColor:'#FFFFFF',flex:1}}>			
 				<View style={styles.header}>
-			    	<View style={styles.returnMe}><Text style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
+			    	<View style={styles.returnMe}><Text onPress={this.goBack.bind(this)}  style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
 					<Text style={{color:'#FFFFFF',fontSize:16}}>人过留名</Text>
 				</View>
 				<View style={styles.glove}>
@@ -150,39 +121,27 @@ export default class RegisterPage extends Component{
 					<View style={styles.inputWrap}>
 						<TextInput 
 							style={styles.passwordinput}
-							placeholder='请输入您的邮箱'
-							
+							placeholder='请输入您的邮箱'							
 							keyboardType='email-address'
 							maxLength={30}	
-							ref='refemail'	
-								
+							ref='refemail'									
 							autoCapitalize='none'	
 							clearButtonMode='always'
 							clearTextOnFocus={false}	
 							keyboardAppearance='dark'
 							autoCorrect={false}	
-							onChange={this.handleEmailChange.bind(this)}						
-							onSubmitEditing={() => this.focusNextField('refpass')}
-							onFocus={this.focusToclean.bind(this)}/>
-						</View>
-				</View>
-				
-				
-					    
+							onChange={this.handleEmailChange.bind(this)}/>
+					</View>
+				</View>					    
 				{/*<View style={styles.err}>{errTip}</View>*/}
-
 				<View  style={styles.loginwrap}>					
-					<Text onPress={this.startLogin.bind(this)} style={styles.login}> 确认</Text>				
-				</View>
-
-			
-		        
+					<Text onPress={this.startFindPassword.bind(this)} style={styles.login}>确认</Text>				
+				</View>	
+				<Loading  visible={this.state.visible}/>		        
 		    </View>
 		);
 	}
 }
-
-
 
 let styles=StyleSheet.create({
 	container:{
@@ -285,6 +244,7 @@ let styles=StyleSheet.create({
 		fontSize:16,
 		width:width,
 		textAlign:'center',
+		color:'#FFFFFF'
 	},
 	pickerOk:{
 		flexDirection:'row',

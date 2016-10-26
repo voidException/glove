@@ -46,6 +46,7 @@ import ProductView  from './listViewDemo';
 import Setting from '../pages/woPage/setting';
 import CompleteProfile from '../pages/woPage/completeProfile';
 import ResetPassword from '../pages/woPage/resetPassword';
+import FindPasswordPage from '../pages/findPasswordPage';
 import AboutUs from '../pages/faxianPage/aboutUs';
 import ModalTips from '../components/modalTips';
 import RegisterPage from '../pages/registerPage';
@@ -71,7 +72,8 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		let defaultComponent=Login;
+		//let defaultComponent=Login;
+		let defaultComponent=FindPasswordPage;
 		//let defaultComponent=RegisterPage;
 		//let defaultComponent=ModalTips;
 		//let defaultComponent=AboutUs;
