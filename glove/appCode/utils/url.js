@@ -8,5 +8,7 @@ export const URLItemPage=commonUrl+'/item/list';
 export const URLWheelImg=commonUrl+'/picture/getpicture';
 export const UrlSuperMenList=commonUrl+'/peoplelist/lsmen';
 
+export const UrlUploadFile=commonUrl+'/demo/upload/multiUpload'; //发表推文
+
 
 

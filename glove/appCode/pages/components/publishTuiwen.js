@@ -15,101 +15,110 @@ import{
 	TextInput
 } from 'react-native';
 import React,{ Component } from 'react';
-
+import UploadFile from '../../utils/uploadFile';
+import { UrlUploadFile } from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-var ImagePicker = require('react-native-image-picker');
-var options = {
-	title: 'Select Avatar',
-	customButtons: {
-		'Choose Photo from Facebook': 'fb',
-	},
-	storageOptions: {
-		skipBackup: true,
-		path: 'images'
-	}
-};
+let ImagePicker = require('react-native-image-picker');
+let formData = new FormData();	//推文内容以及三张图片要共用这个formData，所以要全局
+
 export default class PublishTuiwen extends Component{
 	constructor(props){
 		super(props);
 		this.state={
+			content:null,
 			avatarSource:{},
-			off:2
+			imgOneUrl:{},
+			imgTwoUrl:{},
+			imgThreeUrl:{},
+			onoffone:false,
+			onofftwo:false,
+			onoffthree:false
 		};
 	}
 
 	cancel(){
 		this.props.navigator.pop();
 	}
-    selectPicture(){
+	getTuiwenContent(event){
+		//在formData里面加上推文的内容
+		this.setState({
+			content:event.nativeEvent.text
+		});
+	}
+	doFeedTuiwen(){
+		//提交数据的时候，应该吧数据放入到formData里面
+		formData.append("content",this.state.content); 
+
+		let option={
+			url:UrlUploadFile,
+			body:formData
+		};
+		let response=UploadFile(option);
+		response.then(resp=>{
+			console.log(resp);
+		}).catch(err=>{			
+			console.log(err);
+		});
+	}
+    selectPicture(tag){
+    	//options是对ImagePicker的定制
+    	let options = {
+			title: 'Select Avatar',
+			customButtons: {
+				'Choose Photo from Facebook': 'fb',
+			},
+			storageOptions: {
+				skipBackup: true,
+				path: 'images'
+			}
+		};
     	ImagePicker.showImagePicker(options, (response) => {
-			  //let url;
-			  if (response.didCancel) {
+			  
+			  //console.log(response);
+			if (response.didCancel) {
 			      console.log('User cancelled image picker');
-			  }
-			  else if (response.error) {
+			}else if (response.error) {
 			      console.log('ImagePicker Error:',response.error);
-			  }
-			  else if (response.customButton) {
+			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
-			  }
-			  else {
-			  	  // debugger
-				    // You can display the image using either data... 
-				   // const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-				  //debugger
-				    // or a reference to the platform specific asset location 
-				    // if (Platform.OS === 'ios') {
-
-				    //   const source = {uri: response.uri.replace('file://', ''), isStatic: true};
-				    //   url=source.uri;
-				    // } 
-				    // else {
-
-				    //   const source = {uri: response.uri, isStatic: true};
-
-				    // }	
-				    //console.log('avatarSource');
+			}else {
 				    let uri = response.uri;
 					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;
 					}else{
 						uri = uri.replace('file://', '')
 					}
-					const source = {uri: uri, isStatic: true};
+					//这个source 是控制图片显示在手机上的
+					let source = {uri: uri, isStatic: true};
+					//console.log(source);
 	          		let type = 'image/jpg';
-	          		let formData = new FormData();
-	          		
 	          		formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
 	          		formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
 	          		formData.append("hello", {uri: uri, type: 'image/jpeg'});
 	          		formData.append("abc", 'dddd');
 	          		formData.append("key",'key');
-				    this.setState({
-				      off:1,
-				      avatarSource: source
-				    });
-      				
-      				//let httpurl='http://172.16.11.80:8080/glove/demo/upload/firstUpload';
-      				//let httpurl='http://172.16.11.80:8080/glove/demo/upload/multiUploadTest';
-      				let httpurl='http://172.16.11.80:8080/glove/demo/upload/multiUpload';
-      				fetch(httpurl,{
-							method:'POST',
-							headers:{
-		    					//'Content-Type': 'application/x-www-form-urlencoded'
-		    					'Content-Type': 'multipart/form-data'
-		    				},
-		    				body: formData
-				    })
-					.then(response=>response.json())
-					.then(json=>{console.log(json)})
-					.catch(function(e){
-					   		console.log('请求推文列表出错了')
-				    })
-			  }
+	          		//console.log(formData);
+	          		if (tag===1) {
+	          			 this.setState({
+				            onoffone:true,
+				            avatarSource: source
+				        });
+	          		}else if (tag===2) {
+	          			this.setState({
+				            onofftwo:true,
+				            imgTwoUrl: source
+				        });
+	          		}else{
+	          			this.setState({
+				            onoffthree:true,
+				            imgThreeUrl: source
+				        });
+	          		}
+			}
 		});	
     }
 	render(){
@@ -119,7 +128,7 @@ export default class PublishTuiwen extends Component{
 					<Text  style={{color:'#ffffff',fontSize:16}} onPress={this.cancel.bind(this)}> 取消 </Text>
 					<Text style={{fontSize:18,marginTop:-3,color:'#ffffff'}}>发推文</Text>
 					<View style={styles.fasong}>
-						<Text style={{color:'#ffffff',fontSize:16}}>发送</Text>
+						<Text onPress={this.doFeedTuiwen.bind(this)}  style={{color:'#ffffff',fontSize:16}}>发送</Text>
 					</View>
 				</View>
 
@@ -127,9 +136,11 @@ export default class PublishTuiwen extends Component{
 					<TextInput
 						style={styles.affirmStyle}
 						placeholder="发表推文..."
+						ref='refcontent'	
 						multiline={true}
 						maxLength={200}
-					    placeholderTextColor='#DBDBDB'/>
+					    placeholderTextColor='#DBDBDB'
+					    onChange={this.getTuiwenContent.bind(this)}/>
 				</View>
 				<View style={styles.publishMid}>
 					<View style={styles.publishMidIn}>
@@ -142,20 +153,29 @@ export default class PublishTuiwen extends Component{
 					</View>
 				</View>
                 <View style={styles.threePic}>
-                	<TouchableOpacity onPress={this.selectPicture.bind(this)}>
+                	<TouchableOpacity onPress={this.selectPicture.bind(this,1)}>
 				    	<Image source={require('./image/tu1.png')} resizeMode={'contain'} style={styles.image} />               		
                 	</TouchableOpacity>
-                	<TouchableOpacity  onPress={this.selectPicture.bind(this)}>
+                	<TouchableOpacity  onPress={this.selectPicture.bind(this,2)}>
 				    	<Image source={require('./image/tu2.png')} resizeMode={'contain'} style={styles.image} />               		
                 	</TouchableOpacity>
-                	<TouchableOpacity  onPress={this.selectPicture.bind(this)} activeOpacity={1}>
+                	<TouchableOpacity  onPress={this.selectPicture.bind(this,3)} activeOpacity={1}>
 				    	<Image source={require('./image/tu3.png')} resizeMode={'contain'} style={styles.image} />               		
                 	</TouchableOpacity>
                 </View>
 				<View style={styles.post}>
-				    <Image source={require('./image/photo.png')} resizeMode={'contain'} style={{width:80,height:80}} />
-				    <Image source={require('./image/photo.png')} resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />
-				    <Image source={require('./image/photo.png')} resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />
+				{   this.state.onoffone===true ?
+				    <Image source={this.state.avatarSource} resizeMode={'contain'} style={{width:80,height:80}} />
+					: null
+				}
+				{  this.state.onofftwo===true ?
+					<Image source={this.state.imgTwoUrl} resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />
+					:null
+				}
+				{  this.state.onoffthree===true ?
+				    <Image source={this.state.imgThreeUrl} resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />
+				    :null
+				}
 				</View>
 				{/*<Image source={this.state.avatarSource} style={styles.uploadAvatar} />*/}
 			</View>
