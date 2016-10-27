@@ -29,6 +29,8 @@ export default class PublishTuiwen extends Component{
 	constructor(props){
 		super(props);
 		this.state={
+			token:'sdkhajdsdssdksjnssdb',
+			notSay:1, //1默认可以发表
 			content:null,
 			avatarSource:{},
 			imgOneUrl:{},
@@ -38,6 +40,7 @@ export default class PublishTuiwen extends Component{
 			onofftwo:false,
 			onoffthree:false
 		};
+	
 	}
 
 	cancel(){
@@ -51,8 +54,10 @@ export default class PublishTuiwen extends Component{
 	}
 	doFeedTuiwen(){
 		//提交数据的时候，应该吧数据放入到formData里面
-		formData.append("content",this.state.content); 
-
+		formData.append("token",this.state.token); 
+		formData.append("content", this.state.content);
+	    formData.append("notSay",this.state.notSay);
+        //console.log(formData);
 		let option={
 			url:UrlUploadFile,
 			body:formData
@@ -98,10 +103,7 @@ export default class PublishTuiwen extends Component{
 	          		let type = 'image/jpg';
 	          		formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
 	          		formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
-	          		formData.append("hello", {uri: uri, type: 'image/jpeg'});
-	          		formData.append("abc", 'dddd');
-	          		formData.append("key",'key');
-	          		//console.log(formData);
+	          		//formData.append("hello", {uri: uri, type: 'image/jpeg'});
 	          		if (tag===1) {
 	          			 this.setState({
 				            onoffone:true,

@@ -17,6 +17,7 @@ let defaultOptions = {
 let  fetchTool=function(options){
 	let opt = Object.assign({}, defaultOptions, options); //将默认的参数和传过来的合并在一起
     let sentData={
+        credentials:"include",
     	method:opt.method,
     	headers:opt.headers,
     	body:opt.body || ''

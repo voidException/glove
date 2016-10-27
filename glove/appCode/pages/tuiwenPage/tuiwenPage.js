@@ -20,6 +20,7 @@ import { fetchTuiwenPageIfNeeded } from '../../actions/tuiwenPageAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Loading from '../../loading/loading';
+import PublishTuiwen from '../components/publishTuiwen';
 //import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
 import WeiBoItem from './weiboItem';
 let { width,height}=Dimensions.get('window');
@@ -95,6 +96,11 @@ class TuiWenPage extends Component{
     	//这里面实现列表到达底部时自动加载更多
     	//console.log('onEndReached');
     }
+    goTuiwen(){
+    	this.props.navigator.push({
+    		component:PublishTuiwen
+    	})
+    }
 	render(){
 		//console.log(this.state.dataSource)
 		return(
@@ -103,7 +109,7 @@ class TuiWenPage extends Component{
 					<Text style={styles.toper}>传播温暖</Text>					
 		           
 		            <View  style={styles.setting}>
-                        <Text style={{fontSize:18,color:'#ffffff'}}>发布</Text>     
+                        <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:18,color:'#ffffff'}}>发布</Text>     
                     </View>		            
 				</View>
 			    <ListView 
