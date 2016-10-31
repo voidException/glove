@@ -88,12 +88,12 @@ class INavigator extends Component{
         //let  defaultComponent=ProductView;
         //let defaultComponent=Report;
         //let defaultComponent=ReportTuiwen;
-        let defaultComponent=PublishTuiwen;
+       // let defaultComponent=PublishTuiwen;
         //let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;
         //let  defaultComponent=JoinSuperVise;
-        //let  defaultComponent=AddHelpMan;
+        let  defaultComponent=AddHelpMan;
         //let defaultComponent=Setting;
         //let defaultComponent=CompleteProfile;
         //let defaultComponent=ResetPassword;

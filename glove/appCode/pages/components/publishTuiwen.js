@@ -12,11 +12,13 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import UploadFile from '../../utils/uploadFile';
 import { UrlUploadFile } from '../../utils/url';
+import Loading from '../../loading/loading';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -25,20 +27,19 @@ let height=Dimensions.get('window').height;
 let ImagePicker = require('react-native-image-picker');
 let formData = new FormData();	//推文内容以及三张图片要共用这个formData，所以要全局
 
+let nullImg=require('../../image/tupianzhanwei.jpeg')
 export default class PublishTuiwen extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			token:'sdkhajdsdssdksjnssdb',
+			token:"e10adc3949ba59abbe56e057f20f883e1",
 			notSay:1, //1默认可以发表
 			content:null,
-			avatarSource:{},
-			imgOneUrl:{},
-			imgTwoUrl:{},
-			imgThreeUrl:{},
-			onoffone:false,
-			onofftwo:false,
-			onoffthree:false
+			avatarSource:nullImg,
+			imgOneUrl:nullImg,
+			imgTwoUrl:nullImg,
+			imgThreeUrl:nullImg,
+			visible:false
 		};
 	
 	}
@@ -54,19 +55,62 @@ export default class PublishTuiwen extends Component{
 	}
 	doFeedTuiwen(){
 		//提交数据的时候，应该吧数据放入到formData里面
+		if(this.state.token.length<32 || this.state.content===null ||this.state.notSay===2){
+			return 
+		}
 		formData.append("token",this.state.token); 
 		formData.append("content", this.state.content);
 	    formData.append("notSay",this.state.notSay);
-        //console.log(formData);
+        console.log(formData);
 		let option={
 			url:UrlUploadFile,
 			body:formData
 		};
+		this.setState({
+			visible:true
+		});
 		let response=UploadFile(option);
 		response.then(resp=>{
+			this.setState({
+				visible:false
+			});
 			console.log(resp);
+			if (resp.retcode===2000) {
+				formData=new FormData(); //要清空formData的数据，防止重复提交
+				this.setState({  
+					avatarSource:nullImg,
+					imgOneUrl:nullImg,
+					imgTwoUrl:nullImg,
+					imgThreeUrl:nullImg,
+				});//图片要清空
+				this.props.navigator.pop();
+			}else{
+				 formData=new FormData();
+				 Alert.alert(
+            		'出问题了',
+            		resp.msg,
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+       			 );
+			}
 		}).catch(err=>{			
 			console.log(err);
+			formData=new FormData();
+			this.setState({
+				visible:false
+			});
+			Alert.alert(
+            		'出问题了',
+            		resp.msg,
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+       	    );
 		});
 	}
     selectPicture(tag){
@@ -101,24 +145,25 @@ export default class PublishTuiwen extends Component{
 					let source = {uri: uri, isStatic: true};
 					//console.log(source);
 	          		let type = 'image/jpg';
-	          		formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
-	          		formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
+	          		// formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
+	          		// formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
+	          		// formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
 	          		//formData.append("hello", {uri: uri, type: 'image/jpeg'});
 	          		if (tag===1) {
 	          			 this.setState({
-				            onoffone:true,
 				            avatarSource: source
 				        });
+	          			formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
 	          		}else if (tag===2) {
 	          			this.setState({
-				            onofftwo:true,
 				            imgTwoUrl: source
 				        });
+				        formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
 	          		}else{
 	          			this.setState({
-				            onoffthree:true,
 				            imgThreeUrl: source
 				        });
+				        formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
 	          		}
 			}
 		});	
@@ -140,7 +185,7 @@ export default class PublishTuiwen extends Component{
 						placeholder="发表推文..."
 						ref='refcontent'	
 						multiline={true}
-						maxLength={200}
+						maxLength={140}
 					    placeholderTextColor='#DBDBDB'
 					    onChange={this.getTuiwenContent.bind(this)}/>
 				</View>
@@ -165,21 +210,13 @@ export default class PublishTuiwen extends Component{
 				    	<Image source={require('./image/tu3.png')} resizeMode={'contain'} style={styles.image} />               		
                 	</TouchableOpacity>
                 </View>
-				<View style={styles.post}>
-				{   this.state.onoffone===true ?
-				    <Image source={this.state.avatarSource} resizeMode={'contain'} style={{width:80,height:80}} />
-					: null
-				}
-				{  this.state.onofftwo===true ?
-					<Image source={this.state.imgTwoUrl} resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />
-					:null
-				}
-				{  this.state.onoffthree===true ?
+				<View style={styles.post}>				
+				    <Image source={this.state.avatarSource} resizeMode={'contain'} style={{width:80,height:80}} />	
+				    <Image source={this.state.imgTwoUrl }resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />			
 				    <Image source={this.state.imgThreeUrl} resizeMode={'contain'} style={{width:80,height:80,marginLeft:3}} />
-				    :null
-				}
 				</View>
 				{/*<Image source={this.state.avatarSource} style={styles.uploadAvatar} />*/}
+				<Loading visible={this.state.visible} />
 			</View>
 		);
 	}
