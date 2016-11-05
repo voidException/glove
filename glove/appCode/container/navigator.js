@@ -90,7 +90,7 @@ class INavigator extends Component{
         //let defaultComponent=CarList;
         //let  defaultComponent=ProductView;
         //let defaultComponent=Report;
-        //let defaultComponent=ReportTuiwen;
+        let defaultComponent=ReportTuiwen;
         //let defaultComponent=PublishTuiwen;
         //let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
@@ -100,7 +100,7 @@ class INavigator extends Component{
         //let defaultComponent=Setting;
         //let defaultComponent=CompleteProfile;
         //let defaultComponent=ResetPassword;
-        let defaultComponent=PostAffirm;
+        //let defaultComponent=PostAffirm;
 		return(
 			
 			<Navigator

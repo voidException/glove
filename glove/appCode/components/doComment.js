@@ -12,10 +12,15 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
-
+import fetchTool from '../utils/fetchTool';
+import {UrladdCommont} from '../utils/url';
+import Loading from '../loading/loading';
+import formDate from '../utils/formDate';
+import formTime from  '../utils/formTime';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -25,11 +30,26 @@ let height=Dimensions.get('window').height;
 export default class DoComment extends Component{
 	constructor(props){
 		super(props);
+		this.state={
+			visible:false,
+			content:null||'',			
+		}
 	}
-
 	cancel(){
 		this.props.navigator.pop();
 	}
+	verify(){
+
+	}
+
+	doCommit(){
+
+	}
+	getContent(event){
+    	this.setState({
+			content:event.nativeEvent.text
+		});
+    }
 
 	render(){
 		return(
@@ -39,15 +59,16 @@ export default class DoComment extends Component{
 					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>评价</Text>
 					<Text style={{color:'#ffffff',fontSize:16}}>发送</Text>
 				</View>
-
 				<View style={styles.commonStyle}>					
 					<TextInput
 						style={styles.affirmStyle}
 						placeholder="说说您的评价..."
 						multiline={true}
 						maxLength={200}
-					    placeholderTextColor='#DBDBDB'/>
+					    placeholderTextColor='#DBDBDB'
+					    onChange={this.getContent.bind(this)}/>
 				</View>
+				<Loading  visible={this.state.visible}/>
 			</View>
 		);
 	}
@@ -79,20 +100,7 @@ let  styles=StyleSheet.create({
 		color:'red',
 		padding:10		
 	},
-	img:{
-		height:20,
-		width:20,
-		marginRight:2
-	},
-	post:{
-		flexDirection:'row',
-		justifyContent:'flex-start',
-		alignItems:'center',
-		marginTop:4,
-		marginLeft:0,
-		marginRight:0,
-		height:20
-	}
+
 });
 
 

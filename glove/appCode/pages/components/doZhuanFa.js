@@ -15,7 +15,11 @@ import{
 	TextInput
 } from 'react-native';
 import React,{ Component } from 'react';
-
+import {UrldoZhuanfa} from '../../utils/url';
+import Loading from '../../loading/loading';
+import formDate from '../../utils/formDate';
+import formTime from  '../../utils/formTime';
+import fetchTool from '../../utils/fetchTool';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -25,18 +29,30 @@ let height=Dimensions.get('window').height;
 export default class DoZhuanFa extends Component{
 	constructor(props){
 		super(props);
+		this.state={
+			visible:false,
+			content:''
+		}
 	}
 
 	cancel(){
 		this.props.navigator.pop();
 	}
+	doCommit(){
+
+	}
+    getContent(event){
+    	this.setState({
+			content:event.nativeEvent.text
+		});
+    }
 
 	render(){
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
 					<Text  style={{color:'#ffffff',fontSize:16}} onPress={this.cancel.bind(this)}> 取消 </Text>
-					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>评论</Text>
+					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>转发</Text>
 					<Text style={{color:'#ffffff',fontSize:16}}>发送</Text>
 				</View>
 				<View style={styles.commonStyle}>					
@@ -45,8 +61,10 @@ export default class DoZhuanFa extends Component{
 						placeholder="要不要顺便说点什么..."
 						multiline={true}
 						maxLength={500}
-					    placeholderTextColor='#DBDBDB'/>
-				</View>				
+					    placeholderTextColor='#DBDBDB'
+					    onChange={this.getContent.bind(this)}/>
+				</View>	
+			<Loading  visible={this.state.visible}/>			
 			</View>
 		);
 	}

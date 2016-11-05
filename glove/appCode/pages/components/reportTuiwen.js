@@ -16,7 +16,11 @@ import{
 } from 'react-native';
 /*这个是举报项目有关的*/
 import React,{ Component } from 'react';
-import Affirm from './affirm';
+import {UrlreportTuiwen} from '../../utils/url';
+import Loading from '../../loading/loading';
+import formDate from '../../utils/formDate';
+import formTime from  '../../utils/formTime';
+import fetchTool from '../../utils/fetchTool';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -27,25 +31,27 @@ export default class ReportTuiwen extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			imgs:[]
+			visible:false
 		}
 	}
-
    cancel(){
    	 this.props.navigator.pop();
    }
+   doCommit(){
+
+   }
+   getContent(event){
+    	this.setState({
+			content:event.nativeEvent.text
+		});
+    }
 	render(){
-		for (var i =5; i >= 0; i--) {
-			//let  src=require('./image/uploadimg.jpg');
-			let src=<Image key={i} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
-            this.state.imgs.push(src)
-		};
 		return(
 			<View style={styles.container}>
 		
 			    <View  style={styles.header}>
 					<Text style={{color:'#ffffff',fontSize:16,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>转发</Text>
+					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>举报</Text>
 					<Text style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
 				</View>
 			
@@ -55,10 +61,10 @@ export default class ReportTuiwen extends Component{
 						placeholder={'您举报的具体原因'}
 						placeholderTextColor={'#CCCCCC'}
 						multiline={true}
-						maxLength={200}/>
+						maxLength={200}
+						onChange={this.getContent.bind(this)}/>
 				</View>
-
-			
+				<Loading  visible={this.state.visible}/>			
 			</View>
 		);
 	}

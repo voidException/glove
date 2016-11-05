@@ -12,10 +12,17 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import Affirm from './affirm';
+import UploadFile from '../../utils/uploadFile';
+import fetchTool from '../../utils/fetchTool';
+import {UrlpostAffirm} from '../../utils/url';
+import Loading from '../../loading/loading';
+import formDate from '../../utils/formDate';
+import formTime from  '../../utils/formTime';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -25,11 +32,38 @@ let height=Dimensions.get('window').height;
 export default class PostAffirm extends Component{
 	constructor(props){
 		super(props);
+		this.state={
+			visible:false,
+			relation:null||'',
+			phone:'',
+			affirmDesp:'',
+		}
 	}
 
    cancel(){
    	 this.props.navigator.pop();
    }
+   verify(){
+   
+   }
+   doCommit(){
+
+   }
+    getRelation(event){
+    	this.setState({
+			relation:event.nativeEvent.text
+		});
+    }
+     getPhone(event){
+    	this.setState({
+			phone:event.nativeEvent.text
+		});
+    }
+     getAffirmDesp(event){
+    	this.setState({
+			affirmDesp:event.nativeEvent.text
+		});
+    }
 	render(){
 		return(
 			<View style={styles.container}>
@@ -45,7 +79,8 @@ export default class PostAffirm extends Component{
                         placeholderTextColor={'#CCCCCC'}
                         underlineColorAndroid={'rgba(0,0,0,0)'}
                         keyboardType={'default'}
-                        placeholder={'您与受助者的关系'}/>
+                        placeholder={'您与受助者的关系'}
+                        onChange={this.getRelation.bind(this)}/>
 	            </View>
 	            <View style={styles.commonInputWrapper}>
                     <Text style={styles.authoText}>手机号:</Text>
@@ -54,7 +89,8 @@ export default class PostAffirm extends Component{
                         placeholderTextColor={'#CCCCCC'}
                         underlineColorAndroid={'rgba(0,0,0,0)'}
                         keyboardType={'default'}
-                        placeholder={'您的手机号'}/>
+                        placeholder={'您的手机号'}
+                        onChange={this.getPhone.bind(this)}/>
 	            </View>
 	            <View style={styles.commonStyle}>
                     <Text style={{fontSize:14,marginLeft:20}}>证实内容:</Text>
@@ -63,9 +99,10 @@ export default class PostAffirm extends Component{
 						placeholder={'描述下您知道的情况吧'}
 						placeholderTextColor={'#CCCCCC'}
 						multiline={true}
-						maxLength={400}/>
+						maxLength={400}
+						onChange={this.getAffirmDesp.bind(this)}/>
 				</View> 
-				
+		    <Loading  visible={this.state.visible}/>
 			</View>
 		);
 	}
