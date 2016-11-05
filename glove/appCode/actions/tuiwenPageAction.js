@@ -10,7 +10,7 @@ import { URLTuiwenPage } from '../utils/url';
 	
 */
 export function  receiveTuiwenPage(requestParams,json){
-	
+	console.log(json);
 	return{
 		type:types.Get_tuiwenPage,
 		requestParams,

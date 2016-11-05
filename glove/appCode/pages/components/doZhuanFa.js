@@ -35,24 +35,18 @@ export default class DoZhuanFa extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text  style={{color:'#ffffff',fontSize:18}} onPress={this.cancel.bind(this)}> 取消 </Text>
-					<Text style={{color:'#ffffff',fontSize:18}}>发送</Text>
+					<Text  style={{color:'#ffffff',fontSize:16}} onPress={this.cancel.bind(this)}> 取消 </Text>
+					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>评论</Text>
+					<Text style={{color:'#ffffff',fontSize:16}}>发送</Text>
 				</View>
-
-				<View style={styles.commonStyle}>
-					
+				<View style={styles.commonStyle}>					
 					<TextInput
 						style={styles.affirmStyle}
-						placeholder="说说您的评价..."
+						placeholder="要不要顺便说点什么..."
 						multiline={true}
-						maxLength={200}
-					    placeholderTextColor='#DBDBDB'
-					 />
-				</View>
-				<View style={styles.post}>
-				    <Image source={require('../../image/talk.png')} resizeMode={'contain'} style={styles.img} />
-					<Text style={{color:'#DBDBDB'}}>请遵守国家政治法律</Text>
-				</View>
+						maxLength={500}
+					    placeholderTextColor='#DBDBDB'/>
+				</View>				
 			</View>
 		);
 	}
@@ -66,9 +60,8 @@ let  styles=StyleSheet.create({
 		flexDirection:'row',
         height: 40+statusBarHeight,
         paddingTop: statusBarHeight,
-        width:width,    
-        borderBottomWidth:1/ratio,
-        borderBottomColor:'#F9F9F9',
+        width:width,          
+        //borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
@@ -79,14 +72,11 @@ let  styles=StyleSheet.create({
 		marginTop:0,
 	},
 	affirmStyle:{
-		height:150,
+		height:height-40-statusBarHeight,
 		paddingLeft:3,		
-		borderWidth:1,
-		borderColor:'#DBDBDB',
-		borderColor:'gray',
 		marginRight:0,
 		marginLeft:0,
-		borderColor:'#4EB160',
+		//borderColor:'#4EB160',
 		color:'red',
 		padding:10
 		

@@ -22,7 +22,7 @@ import{
 import React,{ Component } from 'react';
 import Affirm from './affirm';
 import UploadFile from '../../utils/uploadFile';
-import { UrlUploadFile } from '../../utils/url';
+import {UrlAddNeedMan} from '../../utils/url';
 import Loading from '../../loading/loading';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
@@ -41,22 +41,22 @@ export default class AddHelpMan extends Component{
 		this.state={
 			token:"e10adc3949ba59abbe56e057f20f883e1",
 			notSay:1, //1默认可以发表
-			AXSnickName:null,
-			JDnickName:null,
-			JTFZnickName:null,
-			SZRnickName:null,
-			FQRnickName:null,
+			AXSnickName:null||'putaozhuose',
+			JDnickName:null||" ",
+			JTFZnickName:null||'你好啊',
+			SZRnickName:null||" ",
+			FQRnickName:null||" ",
 			visible:false,
 			idZhangming:false,
 			jwZhengming:false,
 			yyZhengming:false,
 		 	qtZhengming: false,
 		 	chengnuoType:1,
-		 	chengnuoContent:null,
+		 	chengnuoContent:null||" ",
 		 	targetMoney:0,
-		 	moneyTitle:null,
-		 	description:null, //具体描述
-            pickerValue:'java',
+		 	moneyTitle:null||" ",
+		 	description:null||" ", //具体描述
+            pickerValue:'java', 
             endDate:formDate(nowDate,7),
             sliderValue:7,
 			imgOneUrl:imgUrl,
@@ -70,7 +70,7 @@ export default class AddHelpMan extends Component{
 	}
 
    cancel(){
-   	 this.props.navigator.pop();
+   	   this.props.navigator.pop();
    }
    verify(){
 
@@ -78,9 +78,9 @@ export default class AddHelpMan extends Component{
    doCommit(){
    	    let startDate=formTime();
 		//提交数据的时候，应该吧数据放入到formData里面
-		if(this.state.token.length<32 ||this.state.notSay===2){
-			return 
-		}
+		// if(this.state.token.length<32 ||this.state.notSay===2){
+		// 	return 
+		// }
 		formData.append("token",this.state.token); 
 		formData.append("content", this.state.content);
 	    formData.append("notSay",this.state.notSay);
@@ -100,11 +100,10 @@ export default class AddHelpMan extends Component{
 	    formData.append("endDate",this.state.endDate); //截止时间
 	    formData.append("duration",this.state.sliderValue); //持续时长
 	    formData.append("moneyTitle",this.state.moneyTitle);
-	    formData.append("needMoney",this.state.needMoney);
-	    formData.append("description",this.state.description);
+	    formData.append("content",this.state.description);
         //console.log(formData);
 		let option={
-			url:UrlUploadFile,
+			url:UrlAddNeedMan,
 			body:formData
 		};
 		this.setState({
@@ -112,21 +111,14 @@ export default class AddHelpMan extends Component{
 		});
 		let response=UploadFile(option);
 		response.then(resp=>{
+			formData=new FormData(); 
 			this.setState({
 				visible:false
 			});
-			console.log(resp);
+			//console.log(resp);
 			if (resp.retcode===2000) {
-				formData=new FormData(); //要清空formData的数据，防止重复提交
-				this.setState({  
-					avatarSource:nullImg,
-					imgOneUrl:nullImg,
-					imgTwoUrl:nullImg,
-					imgThreeUrl:nullImg,
-				});//图片要清空
 				this.props.navigator.pop();
 			}else{
-				 formData=new FormData();
 				 Alert.alert(
             		'出问题了',
             		resp.msg,
@@ -139,7 +131,6 @@ export default class AddHelpMan extends Component{
 			}
 		}).catch(err=>{			
 			console.log(err);
-			formData=new FormData(); //仅仅为了清除数据，防止重复提交数据累计
 			this.setState({
 				visible:false
 			});
@@ -221,7 +212,7 @@ export default class AddHelpMan extends Component{
    	}
    componentDidMount(){
        let startDate=formTime();
-   	   console.log(startDate);
+   	   //console.log(startDate);
 	 
 	}
 	/* 选择上传图片处理函数*/
@@ -307,7 +298,7 @@ export default class AddHelpMan extends Component{
 		
 			    <View  style={styles.header}>
 					<Text style={{color:'#ffffff',fontSize:16,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
 				</View>
 			
 				<ScrollView>

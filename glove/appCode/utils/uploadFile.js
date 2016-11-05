@@ -30,7 +30,7 @@ let  UploadFile=function(options){
             //console.log(resp);
             reslove(resp); //这个resp会被外部接收
         }).catch(err=>{        
-            console.log(err);
+            //console.log(err);
             reject(err);
         });
     })

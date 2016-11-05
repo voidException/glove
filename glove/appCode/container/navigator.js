@@ -51,6 +51,7 @@ import FindPasswordPage from '../pages/findPasswordPage';
 import AboutUs from '../pages/faxianPage/aboutUs';
 import ModalTips from '../components/modalTips';
 import RegisterPage from '../pages/registerPage';
+import DoZhuanFa from '../pages/components/doZhuanFa';
 //Inavigator 是最外层的容器，所有的state 和dispatch都要从这里往子组件分发
 class INavigator extends Component{
 	constructor(props){
@@ -74,6 +75,8 @@ class INavigator extends Component{
 	render(){
 		let defaultName='TheLoginPage';
 		//let defaultComponent=Login;
+		//let defaultComponent=DoZhuanFa;
+		//let defaultComponent=DoComment;
 		//let defaultComponent=FindPasswordPage;
 		//let defaultComponent=RegisterPage;
 		//let defaultComponent=ModalTips;
@@ -88,15 +91,16 @@ class INavigator extends Component{
         //let  defaultComponent=ProductView;
         //let defaultComponent=Report;
         //let defaultComponent=ReportTuiwen;
-       // let defaultComponent=PublishTuiwen;
+        //let defaultComponent=PublishTuiwen;
         //let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;
         //let  defaultComponent=JoinSuperVise;
-        let  defaultComponent=AddHelpMan;
+        //let  defaultComponent=AddHelpMan;
         //let defaultComponent=Setting;
         //let defaultComponent=CompleteProfile;
         //let defaultComponent=ResetPassword;
+        let defaultComponent=PostAffirm;
 		return(
 			
 			<Navigator

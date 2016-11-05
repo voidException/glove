@@ -17,29 +17,143 @@ import{
 /*这个是加V认证的*/
 import React,{ Component } from 'react';
 import Affirm from './affirm';
+import UploadFile from '../../utils/uploadFile';
+import {UrlAddNeedMan} from '../../utils/url';
+import Loading from '../../loading/loading';
+import formDate from '../../utils/formDate';
+import formTime from  '../../utils/formTime';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-
+let ImagePicker = require('react-native-image-picker');
+let formData = new FormData();
+let nowDate = new Date(); //这个仅仅用于初始值
+let imgUrl=require('./image/uploadimg.jpg');
 export default class PersonVerify extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			imgs:[]
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			notSay:1, //1默认可以发表
+			realName:null||" ",
+			phoneNo:null||" ",
+			idno:null||" ",
+			post:null||" ", //认证的内容
+			status:null||" ",//现状
+			imgOneUrl:imgUrl,
+			imgTwoUrl:imgUrl,
+			imgThreeUrl:imgUrl,
+			imgFourUrl:imgUrl,
+			imgFiveUrl:imgUrl,
+			imgSixUrl:imgUrl,
+			imgSevenUrl:imgUrl
 		}
 	}
 
    cancel(){
    	 this.props.navigator.pop();
    }
-	render(){
-		for (var i =5; i >= 0; i--) {
-			//let  src=require('./image/uploadimg.jpg');
-			let src=<Image key={i} source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
-            this.state.imgs.push(src)
+    componentDidMount(){
+       let startDate=formTime();
+   	   //console.log(startDate);
+	 
+	}
+   getRealName(event){
+   		this.setState({
+			realName:event.nativeEvent.text
+		});
+   }
+   getPhoneNo(event){
+   		this.setState({
+			phoneNo:event.nativeEvent.text
+		});
+   }
+   getIdentiNo(event){
+   	     this.setState({
+			idno:event.nativeEvent.text
+		});
+   }
+ 
+   getPost(event){ //认证的内容
+   	    this.setState({
+			post:event.nativeEvent.text
+		});
+   }
+   selectPicture(tag){
+    	//options是对ImagePicker的定制
+    	let options = {
+			title: 'Select Avatar',
+			customButtons: {
+				'Choose Photo from Facebook': 'fb',
+			},
+			storageOptions: {
+				skipBackup: true,
+				path: 'images'
+			}
 		};
+    	ImagePicker.showImagePicker(options, (response) => {
+			  
+			  //console.log(response);
+			if (response.didCancel) {
+			      console.log('User cancelled image picker');
+			}else if (response.error) {
+			      console.log('ImagePicker Error:',response.error);
+			}else if (response.customButton) {
+			      console.log('User tapped custom button:',response.customButton);
+			}else {
+				    let uri = response.uri;
+					if(uri.indexOf('file://') < 0){
+						uri = 'file://' + uri;
+					}else{
+						uri = uri.replace('file://', '')
+					}
+					//这个source 是控制图片显示在手机上的
+					let source = {uri: uri, isStatic: true};
+					//console.log(source);
+	          		let type = 'image/jpg';
+	          		if (tag===1) {
+	          			 this.setState({
+				            imgOneUrl: source
+				        });
+	          			formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
+	          		}else if (tag===2) {
+	          			this.setState({
+				            imgTwoUrl: source
+				        });
+				        formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
+	          		}else if (tag===3) {
+	          			this.setState({
+				            imgThreeUrl: source
+				        });
+				        formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
+	          		}else if (tag===4) {
+	          			this.setState({
+				            imgFourUrl: source
+				        });
+				        formData.append("filefoure", {uri: uri, type: 'image/jpeg',name:'filetfoure'});
+	          		}else if (tag===5) {
+	          			this.setState({
+				            imgFiveUrl: source
+				        });
+				        formData.append("filefive", {uri: uri, type: 'image/jpeg',name:'filefive'});
+	          		}else if (tag===6) {
+	          			this.setState({
+				            imgSixUrl: source
+				        });
+				        formData.append("filesix", {uri: uri, type: 'image/jpeg',name:'filesix'});
+	          		}else if (tag===7) {
+	          			this.setState({
+				            imgSevenUrl: source
+				        });
+				        formData.append("fileseven", {uri: uri, type: 'image/jpeg',name:'fileseven'});
+	          		}
+			}
+		});	
+    }
+	render(){
+		
 		return(
 			<View style={styles.container}>
 		
@@ -57,7 +171,8 @@ export default class PersonVerify extends Component{
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'与身份证保持一致'}/>
+	                        placeholder={'与身份证保持一致'}
+	                        onChange={this.getRealName.bind(this)}/>
 	                </View>
 
 	                <View style={styles.commonInputWrapper}>
@@ -68,7 +183,8 @@ export default class PersonVerify extends Component{
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'请输入您的手机号'}/>
+	                        placeholder={'请输入您的手机号'}
+	                        onChange={this.getPhoneNo.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>身份证号</Text>
@@ -78,7 +194,8 @@ export default class PersonVerify extends Component{
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'请输入您的身份证号'}/>
+	                        placeholder={'请输入您的身份证号'}
+	                        onChange={this.getIdentiNo.bind(this)}/>
 	                </View>
 	                 <View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>一句话简介</Text>
@@ -88,13 +205,39 @@ export default class PersonVerify extends Component{
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'要显示的认证内容'}/>
+	                        placeholder={'要显示的认证内容'}
+	                        onChange={this.getPost.bind(this)}/>
 	                </View>
 	                	               
 					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传身份证有关信息</Text>
-					<View style={styles.uploadimgView}>				
-						{this.state.imgs}
-						<Image source={require('./image/uploadimg.jpg')} style={styles.uploadImg}  resizeMode={'contain'}/>
+			        <View style={styles.uploadimgView}>	
+						<TouchableOpacity onPress={this.selectPicture.bind(this,1)}>			
+							<Image key={1} source={this.state.imgOneUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={this.selectPicture.bind(this,2)}>
+							<Image key={2} source={this.state.imgTwoUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={this.selectPicture.bind(this,3)}>
+							<Image key={3} source={this.state.imgThreeUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={this.selectPicture.bind(this,4)}>
+							<Image key={4} source={this.state.imgFourUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={this.selectPicture.bind(this,5)}>
+							<Image key={5} source={this.state.imgFiveUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={this.selectPicture.bind(this,6)}>
+							<Image key={6} source={this.state.imgSixUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={this.selectPicture.bind(this,7)}>
+							<Image key={7} source={this.state.imgSevenUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
+						</TouchableOpacity>
 					</View>
 					<View style={{height:300}}></View>
 				</ScrollView>

@@ -34,37 +34,38 @@ export default class PostAffirm extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text style={{color:'white',fontSize:18}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text style={{color:'white',fontSize:16}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>证实</Text>
+					<Text style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
 				</View>
-
-				<View style={styles.commonStyle}>
-					<Text>您与受助者关系</Text>
-					<TextInput
-						style={styles.inputStyle}
-						
-					 />
-				</View>
-
-				<View style={styles.commonStyle}>
-					<Text>手机号</Text>
-					<TextInput
-						style={styles.mobileInputStyle}
-						keyboardType={'numeric'}
-						maxLength={11}
-					 />
-				</View>
-				<View style={styles.commonStyle}>
-					<Text>证实的内容</Text>
+				<View style={styles.commonInputWrapper}>
+                    <Text style={styles.authoText}>关系:</Text>
+                    <TextInput 
+                        style={styles.authCode}	                        
+                        placeholderTextColor={'#CCCCCC'}
+                        underlineColorAndroid={'rgba(0,0,0,0)'}
+                        keyboardType={'default'}
+                        placeholder={'您与受助者的关系'}/>
+	            </View>
+	            <View style={styles.commonInputWrapper}>
+                    <Text style={styles.authoText}>手机号:</Text>
+                    <TextInput 
+                        style={styles.authCode}	                        
+                        placeholderTextColor={'#CCCCCC'}
+                        underlineColorAndroid={'rgba(0,0,0,0)'}
+                        keyboardType={'default'}
+                        placeholder={'您的手机号'}/>
+	            </View>
+	            <View style={styles.commonStyle}>
+                    <Text style={{fontSize:14,marginLeft:20}}>证实内容:</Text>
 					<TextInput 
 						style={styles.affirmStyle}
+						placeholder={'描述下您知道的情况吧'}
+						placeholderTextColor={'#CCCCCC'}
 						multiline={true}
-						maxLength={200}
-					/>
-				</View>
+						maxLength={400}/>
+				</View> 
 				
-				<View style={styles.submmit}>
-					<Text style={{color:'#fff'}}>提交</Text>
-				</View>
 			</View>
 		);
 	}
@@ -76,68 +77,49 @@ let  styles=StyleSheet.create({
 		flex:1,
 		backgroundColor:'#F9FFFC',
 	},
+	commonStyle:{
+		borderBottomWidth:1/ratio,
+		borderBottomColor:'#CCCCCC',
+		backgroundColor:'#FFFFFF',
+		marginTop:10
+	},
+	affirmStyle:{
+		height:120,
+		width:width,
+		paddingLeft:10,
+		fontSize:14, 		
+	},
 	header:{
 		flexDirection:'row',
         height: 40+statusBarHeight,
         paddingTop: statusBarHeight,
-        paddingLeft:4,
         width:width,    
-        borderBottomWidth:1/ratio,
-        borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'flex-start',
-        backgroundColor:'#43AC43'
+        justifyContent:'space-between',
+        backgroundColor:'#43AC43',
+        paddingLeft:10,
+        paddingRight:10
 	},
-	commonStyle:{
-		marginTop:20,
-		flexDirection:'column',
-		justifyContent:'center',
-		alignItems:'center',
-
-	},
-	affirmStyle:{
-		height:80,
-		paddingLeft:3,		
-		borderWidth:1,
-		borderColor:'#DBDBDB',
-		borderColor:'gray',
-		marginRight:20,
-		marginLeft:20,
-		borderColor:'#4EB160',
-		
-	},
-	inputStyle:{
-		height:30,	
-		paddingLeft:3,		
-		marginRight:1,
-		borderWidth:1,
-		borderColor:'gray',
-		marginRight:20,
-		marginLeft:20,
-		borderColor:'#4EB160',
-	},
-	mobileInputStyle:{
-		height:30,	
-		paddingLeft:3,		
-		marginRight:1,
-		borderWidth:1,
-		borderColor:'gray',
-		marginRight:20,
-		marginLeft:20,
-		borderColor:'#4EB160',
-	},
-	submmit:{
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent:'center',
-		height:40,
-		backgroundColor:'green',
-		marginRight:20,
-		marginLeft:20,
-		marginTop:10,
-		borderRadius:20
-	}
-
+	 commonInputWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        backgroundColor:'#FFFFFF',
+        marginTop:1,
+        paddingLeft:20,
+        height:44
+    },
+      authoText:{
+        fontSize:14,
+        color:'#333333'
+    },
+     authCode:{
+        width:width-60,
+        height:44,
+        fontSize:14,     
+        paddingLeft:10,
+        color:'#666666',
+        paddingTop:1
+    },
 });
 
 
