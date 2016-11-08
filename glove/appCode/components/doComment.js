@@ -21,6 +21,7 @@ import {UrladdCommont} from '../utils/url';
 import Loading from '../loading/loading';
 import formDate from '../utils/formDate';
 import formTime from  '../utils/formTime';
+import UploadFile from '../utils/uploadFile';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -32,7 +33,10 @@ export default class DoComment extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			content:null||'',			
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			notSay:1, //1默认可以发表
+			content:" ", //评论内容
+            tuiwenid:1,  //被评论的推文id            			
 		}
 	}
 	cancel(){
@@ -43,8 +47,44 @@ export default class DoComment extends Component{
 	}
 
 	doCommit(){
-
-	}
+   	    let formData = new FormData();
+   	    formData.append("token",this.state.token); 
+		formData.append("content", this.state.content);
+		formData.append("notSay",this.state.notSay); 
+		formData.append("tuiwenid",this.state.tuiwenid); 
+		let option={
+			url:UrladdCommont,
+			body:formData
+		};
+		this.setState({
+			visible:true
+		});
+		let response=UploadFile(option);
+	
+		response.then(resp=>{
+			this.setState({
+				visible:false
+			});
+			console.log(resp);
+			if (resp.retcode===2000) {
+				this.props.navigator.pop();
+			}else{
+				 Alert.alert(
+	        		'出问题了',
+	        		'评论推文出错',
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+	   			 );
+			}
+		}).catch(err=>{			
+			this.setState({
+				visible:false
+			});
+		});		
+   }
 	getContent(event){
     	this.setState({
 			content:event.nativeEvent.text
@@ -57,7 +97,7 @@ export default class DoComment extends Component{
 			    <View  style={styles.header}>
 					<Text onPress={this.cancel.bind(this)} style={{color:'#ffffff',fontSize:16}}>取消</Text>
 					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>评价</Text>
-					<Text style={{color:'#ffffff',fontSize:16}}>发送</Text>
+					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:16}}>发送</Text>
 				</View>
 				<View style={styles.commonStyle}>					
 					<TextInput

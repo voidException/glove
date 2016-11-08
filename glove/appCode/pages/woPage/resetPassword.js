@@ -18,11 +18,13 @@ import{
 	TextInput,
 	Picker,
 	Switch,
-	Slider
+	Slider,Alert
 } from 'react-native';
 
 import React,{ Component } from 'react';
-
+import UploadFile from '../../utils/uploadFile';
+import {UrldoZhuanfa} from '../../utils/url';
+import Loading from '../../loading/loading';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -33,27 +35,73 @@ export default class ResetPassword extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			imgs:[],
-			switchTrue:true,
-			switchFalse:false,
-		 	trueSwitchIsOn: true,
-            falseSwitchIsOn: false,
-            pickerValue:'java'
+			visible:false,
+			notSay:1, 
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			originPass:'', 
+            newPass:'', 
+            againPass:''
 		}
 	}
 
    cancel(){
    	 this.props.navigator.pop();
    }
-
-   switchFun(e){
-   	 console.log(e);
-   	 this.setState({
-   	 	switchTrue:true,
-   	 });
-   }
-   componentDidMount(){
-   }
+   doCommit(){
+   	    let formData = new FormData();
+   	    formData.append("token",this.state.token); 
+		formData.append("notSay",this.state.notSay); 
+		formData.append("originPass", this.state.originPass);
+		formData.append("newPass",this.state.newPass);
+		formData.append("againPass",this.state.againPass);
+		 
+		let option={
+			url:UrldoZhuanfa,
+			body:formData
+		};
+		this.setState({
+			visible:true
+		});
+		let response=UploadFile(option);	
+		response.then(resp=>{
+			this.setState({
+				visible:false
+			});
+			console.log(resp);
+			if (resp.retcode===2000) {
+				this.props.navigator.pop();
+			}else{
+				 Alert.alert(
+	        		'出问题了',
+	        		resp.msg,
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+	   			 );
+			}
+		}).catch(err=>{			
+			this.setState({
+				visible:false
+			});
+		});		
+    }
+    getOrginPass(event){
+    	this.setState({
+			originPass:event.nativeEvent.text
+		});
+    }
+    getNewPass(event){
+    	this.setState({
+			newPass:event.nativeEvent.text
+		});
+    }
+    getAgainPass(event){
+    	this.setState({
+			againPass:event.nativeEvent.text
+		});
+    }
 	render(){
 	
 		return(
@@ -70,32 +118,32 @@ export default class ResetPassword extends Component{
 					<View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>原始密码:</Text>
 	                    <TextInput 
-	                        style={styles.authCode}
-	                         
+	                        style={styles.authCode}	                         
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={''}/>
+	                        placeholder={''}
+	                        onChange={this.getOrginPass.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>新密码:</Text>
 	                    <TextInput 
-	                        style={styles.authCode}
-	                        
+	                        style={styles.authCode}	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'输入新密码'}/>
+	                        placeholder={'输入新密码'}
+	                        onChange={this.getNewPass.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>再次输入新密码:</Text>
 	                    <TextInput 
-	                        style={styles.authCode}
-	                        
+	                        style={styles.authCode}	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'再次输入新密码'}/>
+	                        placeholder={'再次输入新密码'}
+	                        onChange={this.getAgainPass.bind(this)}/>
 	                </View>
 			
 			</View>
@@ -123,9 +171,10 @@ let  styles=StyleSheet.create({
 	},
 	headerDesp:{
 		flexDirection:'row',
-		justifyContent:'flex-start',
+		justifyContent:'center',
 		alignItems:'center',
-		paddingLeft:15
+		paddingLeft:15,
+		height:20
 	},
 	commonStyle:{
 		borderBottomWidth:1/ratio,

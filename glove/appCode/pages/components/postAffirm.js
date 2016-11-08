@@ -16,10 +16,9 @@ import{
 	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
-import Affirm from './affirm';
 import UploadFile from '../../utils/uploadFile';
 import fetchTool from '../../utils/fetchTool';
-import {UrlpostAffirm} from '../../utils/url';
+import {UrlConfirmReport} from '../../utils/url';
 import Loading from '../../loading/loading';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
@@ -34,21 +33,64 @@ export default class PostAffirm extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			relation:null||'',
-			phone:'',
-			affirmDesp:'',
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			notSay:1, //1默认可以发表
+			content:" ",
+            relation:" ",
+            tag:1,
+            mobile:" ",
+            tuiwenid:1,
 		}
 	}
 
-   cancel(){
+    cancel(){
    	 this.props.navigator.pop();
-   }
-   verify(){
+    }
+    verify(){
    
-   }
-   doCommit(){
-
-   }
+    }
+    doCommit(){
+   	    let formData = new FormData();
+   	    formData.append("token",this.state.token); 
+		formData.append("content", this.state.content);
+		formData.append("notSay",this.state.notSay); 
+		formData.append("relation", this.state.relation);
+		formData.append("tag",this.state.tag); 
+		formData.append("mobile", this.state.mobile);
+		formData.append("tuiwenid",this.state.tuiwenid); 
+		let option={
+			url:UrlConfirmReport,
+			body:formData
+		};
+		this.setState({
+			visible:true
+		});
+		let response=UploadFile(option);
+	
+		response.then(resp=>{
+			console.log(resp);
+			this.setState({
+				visible:false
+			});
+			if (resp.retcode===2000) {
+				this.props.navigator.pop();
+			}else{
+				 Alert.alert(
+	        		'出问题了',
+	        		resp.msg,
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+	   			 );
+			}
+		}).catch(err=>{			
+			this.setState({
+				visible:false
+			});
+		});		
+    }
     getRelation(event){
     	this.setState({
 			relation:event.nativeEvent.text
@@ -61,7 +103,7 @@ export default class PostAffirm extends Component{
     }
      getAffirmDesp(event){
     	this.setState({
-			affirmDesp:event.nativeEvent.text
+			content:event.nativeEvent.text
 		});
     }
 	render(){
@@ -70,7 +112,7 @@ export default class PostAffirm extends Component{
 			    <View  style={styles.header}>
 					<Text style={{color:'white',fontSize:16}} onPress={this.cancel.bind(this)}>取消</Text>
 					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>证实</Text>
-					<Text style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
 				</View>
 				<View style={styles.commonInputWrapper}>
                     <Text style={styles.authoText}>关系:</Text>

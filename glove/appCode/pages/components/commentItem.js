@@ -24,7 +24,7 @@ let height=Dimensions.get('window').height;
 export default class CommentItem extends Component{
 	constructor(props){
 		super(props);
-		console.log(this.props.row);
+		//console.log(this.props.row);
 		this.state={
 			url: this.props.row.backuptwo ||null,
 			relation:this.props.row.confirmbackuptwo || '../../image/25.jpg',

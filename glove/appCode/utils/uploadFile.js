@@ -36,7 +36,6 @@ let  UploadFile=function(options){
     })
     .catch(err => {
         //发送请求结束通知
-        console.log('错误了')
         //NativeAppEventEmitter.emit('loadingEnd');
         Alert.alert(
             '出问题了',

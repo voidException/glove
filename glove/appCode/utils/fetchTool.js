@@ -22,13 +22,14 @@ let  fetchTool=function(options){
     	headers:opt.headers,
     	body:opt.body || ''
     };
+    console.log(sentData);
    return new Promise((reslove,reject)=>{   
           
         fetch(opt.url, sentData)
         .then(response=> response.json())
         .then(responseText=>{  
             let resp = typeof responseText === 'string' ? JSON.parse(responseText) : responseText;
-            //console.log(resp);
+            console.log(resp);
             reslove(resp); //这个resp会被外部接收
         }).catch(err=>{        
             console.log(err);
