@@ -82,7 +82,7 @@ class INavigator extends Component{
 		//let defaultComponent=ModalTips;
 		//let defaultComponent=AboutUs;
 		//let defaultComponent=TuiwenItem ;
-		//let defaultComponent=WoPage;
+		let defaultComponent=WoPage;
 		//let defaultComponent=UserPage;
         //let defaultComponent=AffirmListItem;
         //let defaultComponent=SuperviseListItem;
@@ -99,7 +99,7 @@ class INavigator extends Component{
         //let  defaultComponent=AddHelpMan;
         //let defaultComponent=Setting;
         //let defaultComponent=CompleteProfile;
-        let defaultComponent=ResetPassword;
+        //let defaultComponent=ResetPassword;
         //let defaultComponent=PostAffirm;
 		return(
 			

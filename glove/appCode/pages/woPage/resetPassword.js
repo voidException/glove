@@ -23,7 +23,7 @@ import{
 
 import React,{ Component } from 'react';
 import UploadFile from '../../utils/uploadFile';
-import {UrldoZhuanfa} from '../../utils/url';
+import {Urlresetpass} from '../../utils/url';
 import Loading from '../../loading/loading';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
@@ -56,7 +56,7 @@ export default class ResetPassword extends Component{
 		formData.append("againPass",this.state.againPass);
 		 
 		let option={
-			url:UrldoZhuanfa,
+			url:Urlresetpass,
 			body:formData
 		};
 		this.setState({
@@ -109,7 +109,7 @@ export default class ResetPassword extends Component{
 		
 			    <View  style={styles.header}>
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>
 		
 					<View style={styles.headerDesp}>

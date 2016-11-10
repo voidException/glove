@@ -14,7 +14,8 @@ import{
 	View,
 	ListView,
 	PixelRatio,
-	Platform
+	Platform,
+    Alert
 } from 'react-native';
 import React,{Component} from 'react';
 //let backBtnImg = require('./image/bar_btn_back_ico.png');
@@ -23,20 +24,34 @@ import FAQ from './FAQ';
 import FeedBack from './feedBack';
 import Setting from './setting';
 import PersonVerify from'../components/personVerify'
+import {UrluploadPhoto} from '../../utils/url';
+import Loading from '../../loading/loading';
+import formDate from '../../utils/formDate';
+import formTime from  '../../utils/formTime';
+import UploadFile from '../../utils/uploadFile';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
+
+let ImagePicker = require('react-native-image-picker');
+let formData = new FormData();
+let nowDate = new Date();
+let imgUrl=require('./123.png');
+console.log(UrluploadPhoto);
 export default class WoPage extends Component{
 	constructor(props){
 		super(props);
-		//console.log(props);
+		this.state={
+            token:"e10adc3949ba59abbe56e057f20f883e1",
+            notSay:1,
+            imgOneUrl:imgUrl,
+        }
 	}
 	_back() {
         this.props.navigator.pop();
     }
-
     goSupervise(){      
         this.props.navigator.push({
             component: PeopleListPage
@@ -64,6 +79,79 @@ export default class WoPage extends Component{
             component: PersonVerify
         });
     }
+    /* 选择上传图片处理函数*/
+    selectPicture(tag){
+        //options是对ImagePicker的定制
+        let options = {
+            title: 'Select Avatar',
+            customButtons: {
+                'Choose Photo from Facebook': 'fb',
+            },
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+              
+              //console.log(response);
+            if (response.didCancel) {
+                  console.log('User cancelled image picker');
+            }else if (response.error) {
+                  console.log('ImagePicker Error:',response.error);
+            }else if (response.customButton) {
+                  console.log('User tapped custom button:',response.customButton);
+            }else{
+                   let uri = response.uri;
+                   console.log(uri)
+                    if(uri.indexOf('file://') < 0){
+                        uri = 'file://' + uri;
+                    }else{
+                        uri = uri.replace('file://', '')
+                    }           
+                    formData.append("photo", {uri: uri, type: 'image/jpeg',name:'photo'});
+                    formData.append("token",this.state.token); 
+                    formData.append("notSay",this.state.notSay);  
+                    this.doCommit();  
+                }               
+        }); 
+    }
+    doCommit(){
+        
+        let option={
+            url:UrluploadPhoto,
+            body:formData
+        };
+        this.setState({
+            visible:true
+        });
+        let response=UploadFile(option);
+        response.then(resp=>{
+            //formData=new FormData(); 
+            this.setState({
+                visible:false
+            });
+            //console.log(resp);
+            if (resp.retcode===2000) {
+            }else{
+                 Alert.alert(
+                    '出问题了',
+                    resp.msg,
+                    [
+                        {
+                            text: '好的'
+                        }
+                    ]
+                 );
+            }
+        }).catch(err=>{         
+            console.log(err);
+            this.setState({
+                visible:false
+            });
+        });                               
+
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
@@ -76,7 +164,9 @@ export default class WoPage extends Component{
                 </View>
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
-	                	<Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
+                        <TouchableOpacity onPress={this.selectPicture.bind(this,2)}>
+    	                	<Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
+                        </TouchableOpacity>
 	                	<View style={styles.topperMiddle}>
 	                	    <Text style={styles.nickName}>小神经很Ok</Text>
 	                		<Text>这个家伙的业余产品，想拯救世界</Text>
@@ -174,7 +264,7 @@ export default class WoPage extends Component{
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/nav_zhoubianyou.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text  onPress={this.goFAQ.bind(this)} style={styles.texts}>人过留名</Text>
+                    <Text  onPress={this.goFAQ.bind(this)} style={styles.texts}>常见问题</Text>
                     <View style={{width:40}}></View>
                 </View>
                  <View style={styles.fundWrapper}>                  

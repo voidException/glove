@@ -16,6 +16,11 @@ export const UrladdCommont=commonUrl+'/tweetcomment/addcomment'; //这个是增�
 export const UrlConfirmReport=commonUrl+'/confirm/report'; //举报推文
 export const UrldoZhuanfa=commonUrl+'/weibos/zhuanfaTweet';
 
+export const Urlresetpass=commonUrl+'/user/resetpass'; //重置密码
+export const UrlcompleteProfile=commonUrl+'/profile/completeProfile';
+export const UrluploadPhoto=commonUrl+'/photo/upload';
+
+
 
 
 

@@ -22,7 +22,7 @@ import{
 
 import React,{ Component } from 'react';
 import UploadFile from '../../utils/uploadFile';
-import {UrldoZhuanfa} from '../../utils/url';
+import {UrlcompleteProfile} from '../../utils/url';
 import Loading from '../../loading/loading';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
@@ -36,7 +36,7 @@ export default class CompleteProfile extends Component{
 		this.state={
 		    visible:false,
 			notSay:1, 
-			token:"e10adc3949ba59abbe56e057f20f883e1",
+			token:"fcea920f7412b5da7be0cf42b8c937591",
 			content:'', 
             sex:1, 
             label:''
@@ -55,7 +55,7 @@ export default class CompleteProfile extends Component{
 		formData.append("sex",this.state.sex);
 		 
 		let option={
-			url:UrldoZhuanfa,
+			url:UrlcompleteProfile,
 			body:formData
 		};
 		this.setState({
@@ -109,7 +109,7 @@ export default class CompleteProfile extends Component{
 		
 			    <View  style={styles.header}>
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>		
 					<View style={styles.headerDesp}>
 					  	<Text style={{fontSize:16}}>基本信息</Text>
