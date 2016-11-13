@@ -23,7 +23,7 @@ let {width,height}=Dimensions.get('window');
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		// console.log(this.props.row)
+		 //console.log(this.props.row)
 
 		this.state={
 			photoupload:this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
@@ -78,11 +78,7 @@ export default class WeiBoItem extends Component{
 		});
 	}
 	//函数根绝props中的值，传递给下一个页面
-	goOriginWeiBoContent(){
-		this.props.navigator.push({
-			component:WeiBoContent,
-		});
-	}
+
 	goWeiBoContent(){
 		this.props.navigator.push({
 			component:WeiBoContent,
@@ -171,17 +167,21 @@ export default class WeiBoItem extends Component{
 		       	    </View>
 		       	    : null
 	       		}
-
+                {/*直接从父组件取得数据*/}
 				{
 					this.state.tagid===2 ? 
 					<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>
 					: null
 				}
-
-				<View style={styles.promise}>
-					<Image  source={require('./image/chengnuo.png')} resizeMode={'contain'} style={styles.promiseico} />
-					<Text style={styles.txt}>对方承诺：20年内归还恩人的善款</Text>
-			    </View>
+				{
+					this.state.tweetbackupfour===2 ?
+					<View style={styles.promise}>
+						<Image  source={require('./image/chengnuo.png')} resizeMode={'contain'} style={styles.promiseico} />
+						<Text style={styles.txt}>对方承诺：20年内归还恩人的善款</Text>
+			    	</View>
+			    	:null
+				}
+				
 			    <View style={styles.bottomWrapper}>
 			    	<View style={styles.bottomItem}>
 			       		 <Image  source={require('./image/total.png')} resizeMode={'contain'} style={styles.bottomico} />

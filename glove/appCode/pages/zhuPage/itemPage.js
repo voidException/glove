@@ -33,19 +33,19 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 
+let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 let lastItemstartTime=null;
  class ItemPage extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			wheelImageOne:null,
-			wheelImageTwo:null,
-			wheelImageThree:null,
-			wheelImageOneURL:'http://www.jianshu.com/p/55b586de943d',
-			wheelImageTwoURL:'http://www.jianshu.com/p/55b586de943d',
-			wheelImageThreeURL:'http://www.jianshu.com/p/55b586de943d',
+			// wheelImageOne:null,
+			// wheelImageTwo:null,
+			// wheelImageThree:null,
+			// wheelImageOneURL:'http://www.jianshu.com/p/55b586de943d',
+			// wheelImageTwoURL:'http://www.jianshu.com/p/55b586de943d',
+			// wheelImageThreeURL:'http://www.jianshu.com/p/55b586de943d',
 			isRefreshing: false, //
 			dataSource:DS.cloneWithRows([]),
 		}
@@ -58,7 +58,7 @@ let lastItemstartTime=null;
 			proof :'111',
 			userID:1,
 			page:0,
-			pageSize:2,
+			pageSize:6,
 			lastUpdate:'2015-01-09',
 			lastItemstart:'2015-01-09',   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
 			flag:1
@@ -70,11 +70,11 @@ let lastItemstartTime=null;
 			pageSize:15
 		};
 		const {dispatch}=this.props;
-		setTimeout(()=>{
-			dispatch(fetchItemPageIfNeeded(requestParams));
+		
+		dispatch(fetchItemPageIfNeeded(requestParams));
 
-			dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
-		},10);
+			//dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
+		
 		// dispatch(fetchItemPageIfNeeded(requestParams));
 
 		// dispatch(fetchWheelImgIfNeeded(wheelImgRequestParam));
@@ -82,23 +82,23 @@ let lastItemstartTime=null;
 	componentWillReceiveProps(nextProps) {
 		//必须确保cloneWithRows是一个数组！！
 		//这里获取nextProps.itemList.itemLis[length].item.itemstart的值，赋给全局变量
-		
-        //console.log(nextProps.itemList.itemList);
-
+		console.log("componentWillReceiveProps");
+        console.log(nextProps.itemList.itemList);
+       
     	this.setState({
 			dataSource: DS.cloneWithRows(nextProps.itemList.itemList)
 		});
                
-		if (nextProps.wheelImg.wheelImg.length!==0) {
-			this.setState({
-				wheelImageOne:nextProps.wheelImg.wheelImg[0].photopath,
-				wheelImageTwo:nextProps.wheelImg.wheelImg[1].photopath,
-				wheelImageThree:nextProps.wheelImg.wheelImg[2].photopath,
-				wheelImageOneURL:nextProps.wheelImg.wheelImg[0].backupone,
-				wheelImageTwoURL:nextProps.wheelImg.wheelImg[1].backupone,
-				wheelImageThreeURL:nextProps.wheelImg.wheelImg[2].backupone
-			});
-		}
+		// if (nextProps.wheelImg.wheelImg.length!==0) {
+		// 	this.setState({
+		// 		wheelImageOne:nextProps.wheelImg.wheelImg[0].photopath,
+		// 		wheelImageTwo:nextProps.wheelImg.wheelImg[1].photopath,
+		// 		wheelImageThree:nextProps.wheelImg.wheelImg[2].photopath,
+		// 		wheelImageOneURL:nextProps.wheelImg.wheelImg[0].backupone,
+		// 		wheelImageTwoURL:nextProps.wheelImg.wheelImg[1].backupone,
+		// 		wheelImageThreeURL:nextProps.wheelImg.wheelImg[2].backupone
+		// 	});
+		// }
 
 		let itemLength=nextProps.itemList.itemList.length-1;
 		let rowLastItemStart=nextProps.itemList.itemList[itemLength].item.itemstart
@@ -112,6 +112,7 @@ let lastItemstartTime=null;
 	loadMore(){
 		 //使用全局变量加载更多数据，
 		 //加载完数据后调用这个方法，定位到合适的地方
+		 console.log("loadMore");
 		 let requestParams={
 			proof :'111',
 			userID:1,
@@ -143,7 +144,7 @@ let lastItemstartTime=null;
         var   second=date.getSeconds(); 
 
 		let lastUpdateTime=Y+M+D+' '+hour+':'+minute; 
-        console.log(lastUpdateTime);
+        //console.log(lastUpdateTime);
 
 		let requestParams={
 			proof :'111',
@@ -179,27 +180,38 @@ let lastItemstartTime=null;
 	renderRow(row,sectionID){
 		return( <ItemCell  row={row}  />);
 	}
-	wheelImageTouch(url){
+	// wheelImageTouch(url){
 		
-		this.props.navigator.push({
-            component: WheelContent
-        });
-	}
+	// 	this.props.navigator.push({
+ //            component: WheelContent
+ //        });
+	// }
 	render(){
-		let urlone='aaa'
+		
 		return(
 			<View style={styles.container}>
 				<View style={styles.topper}>			    
 					    <Text style={{fontSize:18,color:'#fff'}}>项目</Text>
 				</View>
 		        <ListView 
-				    	 contentContainerStyle={styles.list}
-			             dataSource={this.state.dataSource}
-			             renderRow={this.renderRow.bind(this)}
-			             initialListSize={21}       
-			             pageSize={2} 
-			             scrollRenderAheadDistance={300}
-			             enableEmptySections={true}/>	
+		        	refreshControl={
+		       			<RefreshControl
+				            refreshing={this.state.isRefreshing}
+				            onRefresh={this._onRefresh.bind(this)}
+				            tintColor="#ff0000"
+				            title="Loading..."
+				            titleColor="#00ff00"
+				            colors={['#ff0000', '#00ff00', '#0000ff']}
+				            progressBackgroundColor="#ffff00"/>}
+
+			    	 contentContainerStyle={styles.list}
+		             dataSource={this.state.dataSource}
+		             renderRow={this.renderRow.bind(this)}
+		             initialListSize={21}       
+		             pageSize={10} 
+		            
+		             scrollRenderAheadDistance={300}
+		             enableEmptySections={true}/>	
 	        </View>
 		);
 	}

@@ -1,5 +1,4 @@
-//该页面是5大页面的容器，
-
+//转发列表第一版被废弃
 import{
 	StyleSheet,
 	Text,

@@ -13,7 +13,7 @@ import React,{ Component } from 'react';
 import UserPage from '../../components/userPage';
 import OtherWoPage from '../woPage/otherWoPage';
 import WoPage from '../woPage/woPage';
-import WeiBoContent from './weiboContent';
+import TuiwenContent from './tuiwenContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
 
@@ -66,14 +66,13 @@ export default class TuiwenItem extends Component{
 		});
 	}
 	//函数根绝props中的值，传递给下一个页面
-	goOriginWeiBoContent(){
+	goTuiwenContent(){
+		
 		this.props.navigator.push({
-			component:WeiBoContent
-		});
-	}
-	goWeiBoContent(){
-		this.props.navigator.push({
-			component:WeiBoContent
+			component:TuiwenContent,
+			params:{
+				row:this.props.row
+			}
 		});
 	}
 	reportMe(){
@@ -98,7 +97,7 @@ export default class TuiwenItem extends Component{
 			<View style={styles.container}>
 
 			   {/*推文内容*/}	
-				<TouchableOpacity onPress={this.goWeiBoContent.bind(this)}>			
+				<TouchableOpacity onPress={this.goTuiwenContent.bind(this)}>			
 					<View style={styles.upContent}>
 					    <Text style={{fontSize:16}}>
 							<AutoLink

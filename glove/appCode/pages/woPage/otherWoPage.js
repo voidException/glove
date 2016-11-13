@@ -24,7 +24,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class WoPage extends Component{
+export default class OtherWoPage extends Component{
     constructor(props){
         super(props);
         console.log(props);

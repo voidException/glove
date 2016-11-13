@@ -20,6 +20,9 @@ export const Urlresetpass=commonUrl+'/user/resetpass'; //重置密码
 export const UrlcompleteProfile=commonUrl+'/profile/completeProfile';
 export const UrluploadPhoto=commonUrl+'/photo/upload';
 
+export const UrldoWatch=commonUrl+'/watch/dowatch'; //关注一个人
+export const UrlcancelWatch=commonUrl+'/watch/cancelwatch'; //取消关注一个人
+
 
 
 

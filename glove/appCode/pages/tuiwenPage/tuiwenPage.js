@@ -1,4 +1,4 @@
-//该页面是5大页面的容器，
+//改页面适合查看
 
 import{
 	StyleSheet,
@@ -26,7 +26,7 @@ import WeiBoItem from './weiboItem';
 let { width,height}=Dimensions.get('window');
 
 let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
-
+let lastItemstartTime=null;
 class TuiWenPage extends Component{
 	constructor(props){
 		super(props);
@@ -44,9 +44,12 @@ class TuiWenPage extends Component{
 		//console.log(this.props);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
 		let requestParams={
-			userID:1,
-			page:1,
-			pageSize:10
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			page:0,
+			pageSize:2,
+			lastUpdate:'2015-01-09',
+			lastItemstart:'2015-01-09',   //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
+			flag:1
 		};
 
 		const {dispatch}=this.props;
@@ -62,39 +65,67 @@ class TuiWenPage extends Component{
 	componentWillReceiveProps(nextProps) {
 		//必须确保cloneWithRows是一个数组！！
 		//console.log(nextProps.weiboList.tuiwenList);	
+
 		this.setState({
 			dataSource: DS.cloneWithRows(nextProps.weiboList.tuiwenList)
 		});
+		let weiboLength=nextProps.weiboList.tuiwenList.length-1;
+		let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.tweet.publishtime;
+		//console.log(rowLastItemStart);
+		var date = new Date(rowLastItemStart);
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		D = date.getDate() + ' ';
+        lastItemstartTime=Y+M+D;
 		
 	}
-	componentWillUpdate(nextProps,nextState){
-		//console.log(nextProps);
-		//console.log(nextState);
-	}
+	componentWillUpdate(nextProps,nextState){}
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
 		//console.log(row);
 		return( <WeiBoItem  row={row} {...this.props}/>);
 	}
 	_onRefresh() {
-		// setTimeout(()=>{
-		// 	console.log('测试下拉刷新');
-		// 	this.setState({
-		// 		isRefreshing: false,
-		// 	});
-		// },10000);
-		let requestParams={
-			userID:1,
-			page:1,
-			pageSize:10
-		};
+	
+		let receivedAt=this.props.weiboList.lastUpdate ;
+		var date = new Date(receivedAt);
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		D = date.getDate() + ' ';
 
+        var   hour=date.getHours();     
+        var   minute=date.getMinutes();     
+        var   second=date.getSeconds(); 
+
+		let lastUpdateTime=Y+M+D+' '+hour+':'+minute; 
+		let requestParams={
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			page:0,
+			pageSize:10,
+			lastUpdate:lastUpdateTime,
+			lastItemstart:'2015-01-09',   //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
+			flag:1  //1代表刷新，2代表loadMore
+		};
+       
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
     onEndReached(){
     	//这里面实现列表到达底部时自动加载更多
     	//console.log('onEndReached');
+    	let requestParams={
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			page:0,
+			pageSize:10,
+			lastUpdate:'2015-01-09',
+			lastItemstart:lastItemstartTime||'2015-01-09',  
+			//lastItemstart:lastItemstartTime,   //这个是点击加载更多获取的数据集合中，最早开始的项目集合
+			flag:2 //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
+		};
+		//console.log(lastItemstartTime);
+		const {dispatch}=this.props;
+
+		dispatch(fetchTuiwenPageIfNeeded(requestParams));
     }
     goTuiwen(){
     	this.props.navigator.push({
@@ -142,8 +173,9 @@ function mapStateToProps(state,ownProps){
 	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
 	const { userProfile,weiboList }= state;	 
-	//console.log(weiboList);
+
 	return {
+		token:userProfile.items.token,
 		userid:userProfile.items.userid,
 		weiboList:weiboList
 	}

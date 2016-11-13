@@ -40,7 +40,7 @@ export  function fetchUserProfile(userAccount){
 			   .then(response=>response.json())
 			   .then(json=>dispatch(receiveUserProfile(userAccount,json)))
 			   .catch(function(e){
-			   		 console.log(e);
+			   		 //console.log(e);
 			   		NativeAppEventEmitter.emit('loginSuccess', {
                         code: 0
                     })

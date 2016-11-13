@@ -19,6 +19,9 @@ import{
 import React,{Component} from 'react';
 // let backBtnImg = require('../imgs/bar_btn_back_ico.png');
 // let rightBtn=require('../imgs/right_btn.png');
+import {UrldoWatch,UrlcancelWatch} from '../utils/url';
+import fetchTool from '../utils/fetchTool';
+
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -29,6 +32,8 @@ export default class UserPage extends Component{
         super(props);
         console.log(props);
         this.state={
+            token:"e10adc3949ba59abbe56e057f20f883e1",
+            notSay:1, //1默认可以发表
             mainOrmore:2, 
             usertype:this.props.data.usertype ||1,
             usertag:this.props.data.usertag ||1,
@@ -54,8 +59,14 @@ export default class UserPage extends Component{
             certificatetype:this.props.data.certificatetype ||0,
             behelptime:this.props.data.behelptime ||null,
             backupone:this.props.data.backupone ||null,
-            backupthree:this.props.data.backupthree ||null
+            backupthree:this.props.data.backupthree ||null,
+            watchornot:2 ,//是否关注,1 未关注，2已关注
+            userIDFollow:1,
+            userIDBeFocus:2
         };
+    }
+    componentDidMount(){
+        
     }
     _back() {
         this.props.navigator.pop();
@@ -70,7 +81,91 @@ export default class UserPage extends Component{
             mainOrmore:2
         })
     }
- 
+    doWatch(){
+        let watchData={
+            token:this.state.token,
+            userIDFollow:this.state.userIDFollow,
+            userIDBeFocus:this.state.userIDBeFocus
+        };
+        //console.log(userAccount);
+        //发起网络请求
+        let options={
+            url:UrldoWatch,
+            body: JSON.stringify(watchData)
+        };
+        //显示转圈圈
+        // this.setState({
+        //     visible:true
+        // });
+        let  response=fetchTool(options);
+        response.then(resp=>{
+              //停止转圈圈
+              this.setState({
+                visible:false
+              });
+              console.log(resp)
+             if (resp.retcode===2000) {
+                  
+              }else{
+                    Alert.alert(
+                        '出错了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('关注出错了')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+            //停止转圈圈
+            this.setState({
+                visible:false
+            });
+
+        });
+    }
+    cancelWatch(){
+        let cancelWatchData={
+            token:this.state.token,
+            beCancel:2
+        };
+        //console.log(userAccount);
+        //发起网络请求
+        let options={
+            url:UrlcancelWatch,
+            body: JSON.stringify(cancelWatchData)
+        };
+        //显示转圈圈
+        // this.setState({
+        //     visible:true
+        // });
+        let  response=fetchTool(options);
+        response.then(resp=>{
+              //停止转圈圈
+              this.setState({
+                visible:false
+              });
+              console.log(resp)
+             if (resp.retcode===2000) {
+                  
+              }else{
+                    Alert.alert(
+                        '出错了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('关注出错了')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+            //停止转圈圈
+            this.setState({
+                visible:false
+            });
+
+        });
+    }
     render(){
         return(
             <View style={styles.container}> 
@@ -179,7 +274,12 @@ export default class UserPage extends Component{
                 </ScrollView>
                 }
                 <View style={styles.bottom}>
-                    <Text>+关注</Text>
+                    {this.state.watchornot===1 ?
+                         <Text onPress={this.doWatch.bind(this)}>+关注</Text>
+                         :
+                         <Text onPress={this.cancelWatch.bind(this)}>√已关注</Text>
+                    }
+                   
                 </View>
 
             </View>

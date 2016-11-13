@@ -60,8 +60,9 @@ export default class DengLuFragment extends Component{
 		this.autoLogin() //暂时注释掉
 	}
 	autoLogin(){
-		AsyncStorage.multiGet(['userid','userpassword','useremail','token'] ,(err, result) => {   
-            if (result.length==3) {
+		AsyncStorage.multiGet(['userid','userpassword','useremail','token'] ,(err, result) => { 
+		   //console.log(result)  
+            if (result.length==4) {
             	//console.log(result.length);
                 //console.log(result);
                 let userpassword=result[1][1];
@@ -142,7 +143,7 @@ export default class DengLuFragment extends Component{
     	this.setState({
     		userPassword:event.nativeEvent.text
     	});
-    	console.log(event.nativeEvent.text);
+    	//console.log(event.nativeEvent.text);
     }
 
     focusNextField(nextField){

@@ -61,7 +61,7 @@ export default class Login extends Component{
 		 		showLoading:false
 		 	});
             //根据emitData的值判断是否应该存储,应该检查本次登录是否成功
-            console.log(emitData);
+            //console.log(emitData);
             if (emitData.type==1) {
             	const storageFun =async ()=>{
                     let removeCodeIDResult=await AsyncStorage.multiRemove(['userid','userpassword','useremail','token'],(error)=>{

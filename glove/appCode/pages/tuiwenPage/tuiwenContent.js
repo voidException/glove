@@ -21,7 +21,6 @@ import OtherWoPage from '../woPage/otherWoPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
-import TuiwenItem from './tuiwenItem';
 import Prove from '../components/prove';
 import CashNeed from '../components/cashNeed';
 import DoZhuanFa  from '../components/doZhuanFa';
@@ -34,33 +33,33 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class WeiBoContent extends Component{
+export default class TuiwenContent extends Component{
 	constructor(props){
 		super(props);
 		console.log(this.props);
 		this.state={
-			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
-			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
-			userphoto: this.props.row.tuiwen.userphoto ||'../../image/default.jpg',
-			usernickname: this.props.row.tuiwen.usernickname ||'无名氏',
-			tweetid: this.props.row.tuiwen.tweet.tweetid||0, //推文的id
-			useridtweet: this.props.row.tuiwen.tweet.useridtweet || 0, //发布推文的用户id
-			sourcemsgid: this.props.row.tuiwen.tweet.sourcemsgid|| 0, // 被转发的微博的id
-			msgcontent: this.props.row.tuiwen.tweet.msgcontent|| null,
-			boxtimes:  this.props.row.tuiwen.tweet.boxtimes ||null, //被收藏的次数
-			commenttimes: this.props.row.tuiwen.tweet.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.tuiwen.tweet.deletetag|| 0, //是否删除标志 1默认没删除。2 代表删除
-			ok:  0, //微博被赞的次数
-			publicsee:  0, //是否可见
-			publishtime:  this.props.row.tuiwen.tweet.publishtime|| null, //微博发布的时间
-			reportedtimes: this.props.row.tuiwen.tweet.reportedtimes || 0, //被举报的次数
-			tagid: this.props.row.tuiwen.tweet.tagid|| 1, // 1 代表没有转发的微博。2代表有被转发的微博
-			topic:this.props.row.tuiwen.tweet.topic|| 1, //话题的主键
-			tweetbackupone:this.props.row.tuiwen.tweet.tweetbackupone||  null, //推文附带的图片地址
-			tweetbackuptwo: this.props.row.tuiwen.tweet.tweetbackuptwo ||null, //推文附带的图片地址
-			tweetbackupthree: this.props.row.tuiwen.tweet.tweetbackupthree||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//推文附带的图片地址
-			videoaddress:this.props.row.tuiwen.tweet.videoaddress|| null, //推文附带的图片地址
+			photoupload:this.props.row.photoupload || 1, //1 代表未上传头像
+			selfintroduce: this.props.row.selfintroduce ||'什么也没有介绍自己',
+			userphoto:this.props.row.userphoto ||'../../image/default.jpg',
+			usernickname:this.props.row.usernickname || '无名氏',
+			tweetid:this.props.row.tweet.tweetid || 0, //推文的id
+			useridtweet: this.props.row.tweet.useridtweet || 0, //发布推文的用户id
+			sourcemsgid: this.props.row.tweet.sourcemsgid || 0, // 被转发的微博的id
+			msgcontent: this.props.row.tweet.msgcontent || null, //微博的内容
+			boxtimes: this.props.row.tweet.boxtimes || null, //被收藏的次数
+			commenttimes: this.props.row.tweet.commenttimes || 0, //微博被评论的次数
+			deletetag: this.props.row.tweet.deletetag || 0, //是否删除标志 1默认没删除。2 代表删除
+			ok: this.props.row.tweet.ok || 0, //微博被赞的次数
+			publicsee: this.props.row.tweet.publicsee || 0, //是否可见
+			publishtime: this.props.row.tweet.publishtime || null, //微博发布的时间
+			reportedtimes: this.props.row.tweet.reportedtimes || 0, //被举报的次数
+			tagid: this.props.row.tweet.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
+			//topic:this.props.row.tweet.topic || 1, //话题的主键
+			tweetbackupone: this.props.row.tweet.tweetbackupone || null, //推文附带的图片地址
+			tweetbackuptwo: this.props.row.tweet.tweetbackuptwo || null, //推文附带的图片地址
+			tweetbackupthree: this.props.row.tweet.tweetbackupthree ||null, //推文附带的图片地址
+			tweetbackupfour: this.props.row.tweet.tweetbackupfour || null,//推文附带的图片地址
+			videoaddress: this.props.row.tweet.videoaddress ||null, //推文附带的图片地址
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
 			cash:null
 		}		
@@ -74,7 +73,7 @@ export default class WeiBoContent extends Component{
 			},
 			body: JSON.stringify({
 			    "proof" :"111",
-			    "cashid": this.props.row.tuiwen.tweet.tweetbackupfive
+			    "cashid": this.props.row.tweet.tweetbackupfive
 			})
        })
 	   .then(response=>response.json())
@@ -214,11 +213,6 @@ export default class WeiBoContent extends Component{
 			       	    : null
 		       		}
 
-					{
-						this.state.tagid===2 ? 
-						<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>
-						: null
-					}
 				    {/* 证明有关的信息*/}
 				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
                        <Prove cash={this.state.cash}  navigator={this.props.navigator}/>

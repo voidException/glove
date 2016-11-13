@@ -46,6 +46,7 @@ import CarList from './carList';
 import ProductView  from './listViewDemo';
 import Setting from '../pages/woPage/setting';
 import CompleteProfile from '../pages/woPage/completeProfile';
+import OtherWoPage from '../pages/woPage/otherWoPage';
 import ResetPassword from '../pages/woPage/resetPassword';
 import FindPasswordPage from '../pages/findPasswordPage';
 import AboutUs from '../pages/faxianPage/aboutUs';
@@ -74,7 +75,7 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
+		let defaultComponent=Login;
 		//let defaultComponent=DoZhuanFa;
 		//let defaultComponent=DoComment;
 		//let defaultComponent=FindPasswordPage;
@@ -82,7 +83,7 @@ class INavigator extends Component{
 		//let defaultComponent=ModalTips;
 		//let defaultComponent=AboutUs;
 		//let defaultComponent=TuiwenItem ;
-		let defaultComponent=WoPage;
+		//let defaultComponent=WoPage;
 		//let defaultComponent=UserPage;
         //let defaultComponent=AffirmListItem;
         //let defaultComponent=SuperviseListItem;

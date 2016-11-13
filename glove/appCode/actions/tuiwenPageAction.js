@@ -10,10 +10,10 @@ import { URLTuiwenPage } from '../utils/url';
 	
 */
 export function  receiveTuiwenPage(requestParams,json){
-	console.log(json);
+  
 	return{
 		type:types.Get_tuiwenPage,
-		requestParams,
+		param:requestParams,
 		posts:json.data,
 		receivedAt:Date.now()
 	}
@@ -30,11 +30,7 @@ export  function fetchTuiWenPage(requestParams){
 						'Accept': 'application/json',
     					'Content-Type': 'application/json',
     				},
-    				body: JSON.stringify({
-					    userID: requestParams.userID,
-					    page: requestParams.page,
-					    pageSize:requestParams.pageSize
-					})
+    				body: JSON.stringify(requestParams)
 		       })
 			   .then(response=>response.json())
 			   .then(json=>dispatch(receiveTuiwenPage(requestParams,json)))
