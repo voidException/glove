@@ -19,9 +19,9 @@ import{
 import React,{Component} from 'react';
 // let backBtnImg = require('../imgs/bar_btn_back_ico.png');
 // let rightBtn=require('../imgs/right_btn.png');
-import {UrldoWatch,UrlcancelWatch} from '../utils/url';
+import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile} from '../utils/url';
 import fetchTool from '../utils/fetchTool';
-
+import UploadFile from '../utils/uploadFile';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -30,43 +30,134 @@ let height=Dimensions.get('window').height;
 export default class UserPage extends Component{
     constructor(props){
         super(props);
-        console.log(props);
-        this.state={
-            token:"e10adc3949ba59abbe56e057f20f883e1",
-            notSay:1, //1默认可以发表
-            mainOrmore:2, 
-            usertype:this.props.data.usertype ||1,
-            usertag:this.props.data.usertag ||1,
-            userphoto:this.props.data.userphoto,
-            usernickname:this.props.data.usernickname ||'无名氏',
-            userid:this.props.data.userid||0,
-            userhelpsman:this.props.data.userhelpsman ||0,
-            userdonate:this.props.data.userdonate ||0,
-            acceptmoney:this.props.data.acceptmoney ||0, //用户接受到的捐钱总数
-            amountaccept:this.props.data.amountaccept ||0, //帮助用户人的数量
-            useremail:this.props.data.useremail||null,
-            university:this.props.data.university ||null,
-            sex:this.props.data.sex ||0,
-            selfintroduce:this.props.data.selfintroduce ||'暂无简介',
-            registerdate:this.props.data.registerdate ||null,
-            photoupload:this.props.data.photoupload,
-            msgpubcount:this.props.data.msgpubcount ||0,
-            followcount:this.props.data.followcount ||0,
-            fanscount:this.props.data.fanscount ||0,
-            country:this.props.data.country ||'无',
-            company:this.props.data.company ||'中国',
-            address:this.props.data.address ||null,
-            certificatetype:this.props.data.certificatetype ||0,
-            behelptime:this.props.data.behelptime ||null,
-            backupone:this.props.data.backupone ||null,
-            backupthree:this.props.data.backupthree ||null,
-            watchornot:2 ,//是否关注,1 未关注，2已关注
-            userIDFollow:1,
-            userIDBeFocus:2
-        };
-    }
+        //console.log(this.props.data);
+        if (!!this.props.data) {
+            this.state={
+                token:"e10adc3949ba59abbe56e057f20f883e1",
+                notSay:1, //1默认可以发表
+                mainOrmore:2, 
+                usertype:this.props.data.usertype ||1,
+                usertag:this.props.data.usertag ||1,
+                userphoto:this.props.data.userphoto,
+                usernickname:this.props.data.usernickname ||'无名氏',
+                userid:this.props.data.userid||0,
+                userhelpsman:this.props.data.userhelpsman ||0,
+                userdonate:this.props.data.userdonate ||0,
+                acceptmoney:this.props.data.acceptmoney ||0, //用户接受到的捐钱总数
+                amountaccept:this.props.data.amountaccept ||0, //帮助用户人的数量
+                useremail:this.props.data.useremail||null,
+                university:this.props.data.university ||null,
+                sex:this.props.data.sex ||0,
+                selfintroduce:this.props.data.selfintroduce ||'暂无简介',
+                registerdate:this.props.data.registerdate ||null,
+                photoupload:this.props.data.photoupload,
+                msgpubcount:this.props.data.msgpubcount ||0,
+                followcount:this.props.data.followcount ||0,
+                fanscount:this.props.data.fanscount ||0,
+                country:this.props.data.country ||'无',
+                company:this.props.data.company ||'中国',
+                address:this.props.data.address ||null,
+                certificatetype:this.props.data.certificatetype ||0,
+                behelptime:this.props.data.behelptime ||null,
+                backupone:this.props.data.backupone ||null,
+                backupthree:this.props.data.backupthree ||null,
+                watchornot:2,//是否关注,1 未关注，2已关注
+                userIDFollow:1,
+                userIDBeFocus:2
+            }
+        }else{
+            this.state={
+                token:"e10adc3949ba59abbe56e057f20f883e1",
+                notSay:1, //1默认可以发表
+                mainOrmore:2, 
+                usertype:1,
+                usertag:1,
+                userphoto:null,
+                usernickname:'无名氏',
+                userid:0,
+                userhelpsman:0,
+                userdonate:0,
+                acceptmoney:0, //用户接受到的捐钱总数
+                amountaccept:0, //帮助用户人的数量
+                useremail:null,
+                university:null,
+                sex:0,
+                selfintroduce:'暂无简介',
+                registerdate:null,
+                photoupload:1,
+                msgpubcount:0,
+                followcount:0,
+                fanscount:0,
+                country:'无',
+                company:'中国',
+                address:null,
+                certificatetype:0,
+                behelptime:null,
+                backupone:null,
+                backupthree:null,
+                watchornot:2 ,//是否关注,1 未关注，2已关注
+                userIDFollow:1,
+                userIDBeFocus:2
+            };
+       }//if
+    }//constructor
     componentDidMount(){
-        
+        //console.log(this.props);
+        let formData = new FormData();
+        formData.append("nickname",this.props.nickname); 
+        let option={
+            url:UrlByAtgetUserProfile,
+            body:formData
+        };
+        let response=UploadFile(option);
+        response.then(resp=>{
+            if (resp.retcode===2000) {
+                console.log(resp);
+                this.setState({
+                    mainOrmore:2, 
+                    usertype:resp.data.usertype,
+                    usertag:resp.data.usertag,
+                    userphoto:resp.data.userPhoto,
+                    usernickname:resp.data.usernickname,
+                    userid:resp.data.userid,
+                    userhelpsman:resp.data.userhelpsman,
+                    userdonate:resp.data.userdonate,
+                    acceptmoney:resp.data.acceptmoney, //用户接受到的捐钱总数
+                    amountaccept:resp.data.amountaccept, //帮助用户人的数量
+                    useremail:resp.data.useremail,
+                    university:resp.data.university,
+                    sex:resp.data.sex,
+                    selfintroduce:resp.data.selfintroduce,
+                    registerdate:resp.data.registerdate,
+                    photoupload:resp.data.photoupload,
+                    msgpubcount:resp.data.msgpubcount ||0,
+                    followcount:resp.data.followcount,
+                    fanscount:resp.data.fanscount||0,
+                    country:resp.data.country,
+                    company:resp.data.company,
+                    address:resp.data.address,
+                    certificatetype:resp.data.certificatetype,
+                    behelptime:resp.data.behelptime,
+                    backupone:resp.data.backupone,
+                    backupthree:resp.data.backupthree,
+                    watchornot:resp.data.watchornot,//是否关注,1 未关注，2已关注
+                    userIDFollow:resp.data.userIDFollow,
+                    userIDBeFocus:resp.data.userIDBeFocus
+                });
+            }else{
+                 Alert.alert(
+                    '出问题了',
+                    resp.msg,
+                    [
+                        {
+                            text: '好的'
+                        }
+                    ]
+                 );
+            }
+        }).catch(err=>{         
+            
+        }); 
     }
     _back() {
         this.props.navigator.pop();
@@ -103,7 +194,7 @@ export default class UserPage extends Component{
               this.setState({
                 visible:false
               });
-              console.log(resp)
+              //console.log(resp)
              if (resp.retcode===2000) {
                   
               }else{

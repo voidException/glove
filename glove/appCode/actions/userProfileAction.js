@@ -44,10 +44,9 @@ export  function fetchUserProfile(userAccount){
 			   		NativeAppEventEmitter.emit('loginSuccess', {
                         code: 0
                     })
-
                     Alert.alert(
                      	"出现异常",
-                     	"稍后再试",
+                     	String(e),
                      	[{text:'好的',onPress: () => {}}]
                      )
 			   });

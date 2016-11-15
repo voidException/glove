@@ -3,7 +3,9 @@ let commonUrl='http://172.16.32.70:8080/glove';
 export const URLLogin=commonUrl+'/user/login';
 export const URLRegister=commonUrl+'/user/register';
 export const URLFindPasswd=commonUrl+'/user/findpassword';
-export const URLTuiwenPage =commonUrl+'/weibos/gettweetbyuserid';
+export const URLTuiwenPage =commonUrl+'/weibos/gettweetbyuserid'; //适合查看自己发布转发的
+export const URLmainPageWeiBo=commonUrl+'/weibos/gettuiwenlists';//适合查用户关注的推文
+
 export const URLItemPage=commonUrl+'/item/list';
 export const URLWheelImg=commonUrl+'/picture/getpicture';
 export const UrlSuperMenList=commonUrl+'/peoplelist/lsmen';
@@ -22,6 +24,8 @@ export const UrluploadPhoto=commonUrl+'/photo/upload';
 
 export const UrldoWatch=commonUrl+'/watch/dowatch'; //关注一个人
 export const UrlcancelWatch=commonUrl+'/watch/cancelwatch'; //取消关注一个人
+
+export const  UrlByAtgetUserProfile=commonUrl+'/user/getprofile/bynickname';
 
 
 
