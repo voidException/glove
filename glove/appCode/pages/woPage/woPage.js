@@ -26,6 +26,7 @@ import Setting from './setting';
 import PersonVerify from'../components/personVerify'
 import {UrluploadPhoto} from '../../utils/url';
 import Loading from '../../loading/loading';
+import TweetPageWrapper from '../tuiwenPage/tweetPage';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
 import UploadFile from '../../utils/uploadFile';
@@ -39,7 +40,7 @@ let ImagePicker = require('react-native-image-picker');
 let formData = new FormData();
 let nowDate = new Date();
 let imgUrl=require('./123.png');
-console.log(UrluploadPhoto);
+//console.log(UrluploadPhoto);
 export default class WoPage extends Component{
 	constructor(props){
 		super(props);
@@ -152,6 +153,16 @@ export default class WoPage extends Component{
         });                               
 
     }
+    goTweetList(){
+        
+        this.props.navigator.push({
+            component:TweetPageWrapper,
+            params:{
+                token:this.props.token ||"e10adc3949ba59abbe56e057f20f883e1" ,
+                symbol:2
+            }
+        });
+    }
 	render(){
 		return(
 			<View style={styles.container}> 
@@ -212,7 +223,7 @@ export default class WoPage extends Component{
                     
                         <View style={styles.txtWrapper}>
                             <Text style={styles.tuiwenWrapperTxt}>100</Text>
-                            <Text style={styles.txt}>推文</Text>                           
+                            <Text onPress={this.goTweetList.bind(this)}  style={styles.txt}>推文</Text>                           
                         </View>
                         <View style={styles.txtWrapper}>
                             <Text style={styles.tuiwenWrapperTxt}>9000</Text>

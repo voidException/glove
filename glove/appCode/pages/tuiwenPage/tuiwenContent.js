@@ -17,7 +17,6 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 import ZhuanfaPageWrapper from './zhuanfaPage';
-import OtherWoPage from '../woPage/otherWoPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';

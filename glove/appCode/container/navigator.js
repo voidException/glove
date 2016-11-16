@@ -46,7 +46,6 @@ import CarList from './carList';
 import ProductView  from './listViewDemo';
 import Setting from '../pages/woPage/setting';
 import CompleteProfile from '../pages/woPage/completeProfile';
-import OtherWoPage from '../pages/woPage/otherWoPage';
 import ResetPassword from '../pages/woPage/resetPassword';
 import FindPasswordPage from '../pages/findPasswordPage';
 import AboutUs from '../pages/faxianPage/aboutUs';

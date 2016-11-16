@@ -17,7 +17,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 import ZhuanfaPageWrapper from './zhuanfaPage';
-import OtherWoPage from '../woPage/otherWoPage';
+import UserPage from '../../components/userPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
@@ -97,7 +97,7 @@ export default class WeiBoContent extends Component{
 	goOtherWoPage(){
 		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
 		this.props.navigator.push({
-			component:OtherWoPage,
+			component:UserPage,
 
 		});
 	}
@@ -132,11 +132,14 @@ export default class WeiBoContent extends Component{
 		//console.log(url);//成功了，哈哈
 		// //在这里把url(用户昵称)传递给主页
 		this.props.navigator.push({
-			component:OtherWoPage,
+			component:UserPage,
 			params:{
 				nickname:url
 			}
 		});
+	}
+	deleteMe(){
+
 	}
 	render(){
 		return(
@@ -144,9 +147,13 @@ export default class WeiBoContent extends Component{
 				<View style={styles.broadcast}>
 					<TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
 						<Image source={require('./image/ic_web_back.png')} style={styles.backImg} resizeMode={'contain'} />
-						<Text style={{fontSize:18,color:'#fff'}}>返回</Text>
+						<Text style={{fontSize:16,color:'#fff'}}>返回</Text>
 					</TouchableOpacity>
-					
+					{
+						this.props.symbol==2?
+						<Text  onPress={this.deleteMe.bind(this)} style={{fontSize:16,color:'white'}}>删除</Text>
+						:null
+					}					
 					<View style={{marginRight:8}}>
 						<Text style={styles.broad}  onPress={this.goZhuanFa.bind(this)}>转发</Text>
 					</View>
@@ -327,7 +334,7 @@ let styles=StyleSheet.create({
 	},
 	broad:{
 		textAlign:'center',
-		fontSize:18,
+		fontSize:16,
 		color:'#FFFFFF'
 	},
 	shareWrapper:{

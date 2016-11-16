@@ -69,7 +69,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 							this.setState({selectedTab:'tuiwen'});
 						}}>
 
-						<TuiWenPageWrapper {...this.props}/>
+						<TuiWenPageWrapper {...this.props} symbol={1}/>
 					</TabBarIOS.Item>
 					
 					

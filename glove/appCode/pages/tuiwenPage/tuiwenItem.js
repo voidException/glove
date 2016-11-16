@@ -11,7 +11,6 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 import UserPage from '../../components/userPage';
-import OtherWoPage from '../woPage/otherWoPage';
 import WoPage from '../woPage/woPage';
 import TuiwenContent from './tuiwenContent';
 import AutoLink from 'react-native-autolink';

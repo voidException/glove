@@ -19,7 +19,7 @@ import TuiwenItem from './tuiwenItem';
 
 let {width,height}=Dimensions.get('window');
 
-export default class WeiBoItem extends Component{
+export default class TweetItem extends Component{
 	constructor(props){
 		super(props);
 		

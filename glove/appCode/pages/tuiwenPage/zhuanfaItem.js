@@ -10,7 +10,7 @@ import{
 	PixelRatio
 } from 'react-native';
 import React,{ Component } from 'react';
-import OtherWoPage from '../woPage/otherWoPage';
+
 import UserPage from '../../components/userPage';
 import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
