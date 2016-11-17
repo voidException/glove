@@ -14,6 +14,7 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{ Component } from 'react';
+import fmDate from '../../utils/fmDate';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -27,17 +28,23 @@ export default  class CashNeed extends Component{
 			cash:{
 				closetime:null,
 				targetcash:null,
-				realcash:null
+				realcash:null,
+				supporttimes:null //支持的次数
 			}
 		}
 		// console.log(this.props);
 	}
-    componentWillReceiveProps(nextProps) {
+   componentDidMount(){
+
+   }
+    componentWillReceiveProps(nextProps) {   	
+    	let	finalCloseTime=fmDate(nextProps.cash.closetime);
 		this.setState({
 			cash:{
-				closetime: nextProps.cash.closetime,
+				closetime: finalCloseTime,
 				targetcash:nextProps.cash.targetcash,
-				realcash:nextProps.cash.realcash
+				realcash:nextProps.cash.realcash,
+				supporttimes:nextProps.cash.backupfive 
 			}
 		});
         //console.log(nextProps.cash);
@@ -58,7 +65,7 @@ export default  class CashNeed extends Component{
 			       		 <Text style={{color:'#BEBEBE'}}>已筹金额</Text>
 			        </View>
 			        <View style={styles.bottomItem}>
-			       		  <Text style={{color:'red'}}>8082次</Text>
+			       		  <Text style={{color:'red'}}>{this.state.cash.supporttimes}</Text>
 			       		 <Text style={{color:'#BEBEBE'}}>支持次数</Text>
 			        </View>
 			    </View>

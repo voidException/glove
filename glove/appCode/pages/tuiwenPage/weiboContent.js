@@ -13,7 +13,8 @@ import{
 	ListView,
 	PixelRatio,
 	Platform,
-	Dimensions
+	Dimensions,
+	Alert
 } from 'react-native';
 import React,{Component} from 'react';
 import ZhuanfaPageWrapper from './zhuanfaPage';
@@ -32,6 +33,7 @@ import  Report  from  '../components/report';
 import {UrlDeleteTwitter,UrlCashRecord} from '../../utils/url';
 import fetchTool  from '../../utils/fetchTool';
 import Loading from '../../loading/loading';
+import fmDate from '../../utils/fmDate';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -66,11 +68,11 @@ export default class WeiBoContent extends Component{
 			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//1 代表普通推文，2 是救助推文
 			videoaddress:this.props.row.tuiwen.tweet.videoaddress|| null, //推文附带的图片地址
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
-			cash:null
+			cash:{}
 		};		
 	}
 	componentDidMount(){
-		if (this.state.tweetbackupfour===2) { //有转发的
+		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweet.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
 			let params={
 	       		proof:"111",
 	       		cashid:this.props.row.tuiwen.tweet.tweetbackupfive
@@ -90,7 +92,12 @@ export default class WeiBoContent extends Component{
 	        }).catch(err=>{
 	        	console.log('获取cashNeed 失败');
 	        });
-	    }//if		
+	    }//if	
+      let  finalPublishTime=fmDate(this.props.row.tuiwen.tweet.publishtime);
+      this.setState({
+      	    publishtime:finalPublishTime
+      });
+
 	}//componentDidMount
 	getJson(json){
 	    //console.log(json);		
@@ -110,20 +117,36 @@ export default class WeiBoContent extends Component{
 		});
 	}
 	doComment(){
-		if (this.state.deletetag===2 || this.state.publicsee===2)
+		if (this.state.deletetag===1 || this.state.publicsee===2){
+			return Alert.alert(
+                        '该内容不能被评论',
+                        '可能作者已删除',
+                        [
+                            { text:'好的'}
+                        ]
+                    );
+		}
 		this.props.navigator.push({
 			component:DoComment,
 		});
 	}
 	goCommentList(){
-		if (this.state.deletetag===2 || this.state.publicsee===2)
+		if (this.state.deletetag===2 || this.state.publicsee===2){
+			return
+		}
 		this.props.navigator.push({
 			component:Comment
 		});
 	}
 	goZhuanFa(){
 		if (this.state.deletetag===2 || this.state.publicsee===2) {//不能被转发
-			return; 
+			return Alert.alert(
+                        '审核未通过',
+                        '暂时不能转发',
+                        [
+                            { text:'好的'}
+                        ]
+                    );
 		};
 		this.props.navigator.push({
 			component:DoZhuanFa,
