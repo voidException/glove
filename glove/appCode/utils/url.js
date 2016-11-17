@@ -27,7 +27,9 @@ export const UrlcancelWatch=commonUrl+'/watch/cancelwatch'; //取消关注一个
 
 export const  UrlByAtgetUserProfile=commonUrl+'/user/getprofile/bynickname';
 
+export const UrlDeleteTwitter=commonUrl+'/weibos/deleteTweetByID'; //删除一条推文
 
+export const UrlCashRecord=commonUrl+'/cash/getcashrecord';
 
 
 

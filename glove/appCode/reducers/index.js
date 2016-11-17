@@ -2,6 +2,7 @@ import  { combineReducers} from 'redux';
 import  {userProfile}  from './userProfileReducer';
 import  {weiboList} from './tuiwenPageReducer';
 import {tweetList} from './tweetPageReducer';
+import {twitterList} from './weiboPageReducer';
 import {itemList} from './itemPageReducer';
 import {wheelImg} from './wheelImgReducer.js';
 // 当userProfileReducer.js中加上default时，就不需要import加上{} ,反之必须如上加上才行。 丫的，什么破玩意了
@@ -10,6 +11,7 @@ import {wheelImg} from './wheelImgReducer.js';
 const rootReducer=combineReducers({
  	userProfile,
  	weiboList,
+ 	twitterList,
  	tweetList,
  	itemList,
  	wheelImg

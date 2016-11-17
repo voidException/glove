@@ -29,6 +29,9 @@ import Comment from '../components/comment';
 import PostAffirm from '../components/postAffirm';
 import DoComment from '../../components/doComment';
 import  Report  from  '../components/report';
+import {UrlDeleteTwitter,UrlCashRecord} from '../../utils/url';
+import fetchTool  from '../../utils/fetchTool';
+import Loading from '../../loading/loading';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -39,6 +42,7 @@ export default class WeiBoContent extends Component{
 		super(props);
 		//console.log(this.props);
 		this.state={
+			visible:false, //控制转圈圈
 			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
 			userphoto: this.props.row.tuiwen.userphoto ||'../../image/default.jpg',
@@ -49,7 +53,7 @@ export default class WeiBoContent extends Component{
 			msgcontent: this.props.row.tuiwen.tweet.msgcontent|| null,
 			boxtimes:  this.props.row.tuiwen.tweet.boxtimes ||null, //被收藏的次数
 			commenttimes: this.props.row.tuiwen.tweet.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.tuiwen.tweet.deletetag|| 0, //是否删除标志 1默认没删除。2 代表删除
+			deletetag: this.props.row.tuiwen.tweet.deletetag|| 1, //是否删除标志 1默认没删除。2 代表删除
 			ok:  0, //微博被赞的次数
 			publicsee:  0, //是否可见
 			publishtime:  this.props.row.tuiwen.tweet.publishtime|| null, //微博发布的时间
@@ -59,31 +63,35 @@ export default class WeiBoContent extends Component{
 			tweetbackupone:this.props.row.tuiwen.tweet.tweetbackupone||  null, //推文附带的图片地址
 			tweetbackuptwo: this.props.row.tuiwen.tweet.tweetbackuptwo ||null, //推文附带的图片地址
 			tweetbackupthree: this.props.row.tuiwen.tweet.tweetbackupthree||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//推文附带的图片地址
+			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//1 代表普通推文，2 是救助推文
 			videoaddress:this.props.row.tuiwen.tweet.videoaddress|| null, //推文附带的图片地址
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
 			cash:null
-		}		
+		};		
 	}
 	componentDidMount(){
-		fetch('http://127.0.0.1:8080/glove/cash/getcashrecord',{
-			method:'POST',
-			headers:{
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-			    "proof" :"111",
-			    "cashid": this.props.row.tuiwen.tweet.tweetbackupfive
-			})
-       })
-	   .then(response=>response.json())
-	   .then(json=>this.getJson(json))
-	   .catch(function(e){
-	   		console.log(e)
-	   })
-
-	}
+		if (this.state.tweetbackupfour===2) { //有转发的
+			let params={
+	       		proof:"111",
+	       		cashid:this.props.row.tuiwen.tweet.tweetbackupfive
+	        };
+		   	let options={
+		        url:UrlCashRecord,
+		        body: JSON.stringify(params)
+		    }; 
+		
+	        let response=fetchTool(options);
+	        response.then(resp=>{
+	        	 console.log(UrlCashRecord);
+	        	 console.log(resp);
+	             if (resp.retcode===2000) {
+	              	  this.getJson(resp.data);
+	              }
+	        }).catch(err=>{
+	        	console.log('获取cashNeed 失败');
+	        });
+	    }//if		
+	}//componentDidMount
 	getJson(json){
 	    //console.log(json);		
 		this.setState({
@@ -102,16 +110,21 @@ export default class WeiBoContent extends Component{
 		});
 	}
 	doComment(){
+		if (this.state.deletetag===2 || this.state.publicsee===2)
 		this.props.navigator.push({
 			component:DoComment,
 		});
 	}
 	goCommentList(){
+		if (this.state.deletetag===2 || this.state.publicsee===2)
 		this.props.navigator.push({
 			component:Comment
 		});
 	}
 	goZhuanFa(){
+		if (this.state.deletetag===2 || this.state.publicsee===2) {//不能被转发
+			return; 
+		};
 		this.props.navigator.push({
 			component:DoZhuanFa,
 		});
@@ -139,7 +152,47 @@ export default class WeiBoContent extends Component{
 		});
 	}
 	deleteMe(){
+		if (this.state.deletetag===2) {
+			return ;//已被删除
+		};
+       let params={
+       		// token:this.props.token,
+       		// tweetid:this.props.row.tuiwen.tweet.tweetid
+       		token:'e10adc3949ba59abbe56e057f20f883e1',
+       		tweetid:13
+       };
+   	    let options={
+            url:UrlDeleteTwitter,
+            body: JSON.stringify(params)
+        };
+       let response=fetchTool(options);
+       response.then(resp=>{
+        	  //停止转圈圈
+        	  this.setState({
+        	  	visible:false
+        	  });
+             if (resp.retcode===2000) {
+              	  this.setState({
+              	  	msgcontent:'信息已被您删除'
+              	  });
+              	  this.backUp(); //返回主页
+              }else{
+              	    Alert.alert(
+                        '出错了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('删除失败')}
 
+                        ]
+                    );
+              }
+        }).catch(err=>{
+        	//停止转圈圈
+        	this.setState({
+        		visible:false
+        	});
+
+        });
 	}
 	render(){
 		return(
@@ -262,6 +315,7 @@ export default class WeiBoContent extends Component{
 						</View>
 					</View>
 				</View>
+				<Loading  visible={this.state.visible}/>
 			</View>
 		);
 	}

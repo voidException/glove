@@ -19,6 +19,7 @@ import{
 import React,{Component} from 'react';
 // let backBtnImg = require('../imgs/bar_btn_back_ico.png');
 // let rightBtn=require('../imgs/right_btn.png');
+import WeiBoPageWrapper from '../pages/tuiwenPage/weiboPage';
 import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile} from '../utils/url';
 import fetchTool from '../utils/fetchTool';
 import UploadFile from '../utils/uploadFile';
@@ -257,6 +258,16 @@ export default class UserPage extends Component{
 
         });
     }
+    goWeiBoList(){
+        
+        this.props.navigator.push({
+            component:WeiBoPageWrapper,
+            params:{
+                token:this.props.token ||"e10adc3949ba59abbe56e057f20f883e1" ,
+                symbol:3
+            }
+        });
+    }
     render(){
         return(
             <View style={styles.container}> 
@@ -320,7 +331,7 @@ export default class UserPage extends Component{
                         <Text style={{marginLeft:20}}>{this.state.followcount}</Text>
                     </View>
                     <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>推文:</Text>
+                        <Text onPress={this.goWeiBoList.bind(this)}  style={{color:'#B1B1B1'}}>推文:</Text>
                         <Text style={{marginLeft:20}}>{this.state.msgpubcount}</Text>
                     </View>
                     <View style={styles.commonStyle}>

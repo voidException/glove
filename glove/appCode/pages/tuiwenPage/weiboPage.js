@@ -30,7 +30,7 @@ let { width,height}=Dimensions.get('window');
 let lastItemstartTime='2015-09-04 00:00:00';
 let lastUpdateTime='2015-09-04 00:00:00';
 let finalData2=[];
-class TweetPage extends Component{ //查看自己发布的tweet
+class WeiBoPage extends Component{ //查看自己发布的tweet
 	constructor(props){
 		super(props);
 		this.DS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -173,12 +173,12 @@ function mapStateToProps(state,ownProps){
 	//debugger
 	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
-	const { userProfile,tweetList }= state;	 
+	const { userProfile,twitterList }= state;	 
 
 	return {
 		token:userProfile.items.backupfour,
 		userid:userProfile.items.userid,
-		weiboList:tweetList
+		weiboList:twitterList
 	}
 }
 //以下展示两种包裹action的方法，使它们等价于disptch(action)
@@ -196,8 +196,8 @@ function mapStateToProps(state,ownProps){
 //const MyNavigator=connect(mapStateToProps,mapDispatchToProps)(INavigator);
 //const MyNavigator=connect(mapStateToProps)(INavigator);
 //const TuiWenPageWrapper=connect(mapStateToProps)(TuiWenPage);
-const TweetPageWrapper=connect(mapStateToProps)(TweetPage);
-export default TweetPageWrapper
+const WeiBoPageWrapper=connect(mapStateToProps)(WeiBoPage);
+export default WeiBoPageWrapper
 
 
 let styles=StyleSheet.create({
