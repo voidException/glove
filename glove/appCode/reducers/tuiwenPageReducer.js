@@ -1,7 +1,7 @@
 import * as types  from '../actions/actionTypes';
 
 //每次请求都需要更新请求参数
-export function weiboList(state={
+export function tuiwenList(state={
 		tuiwenList:[],
 		flag:0
     },action){

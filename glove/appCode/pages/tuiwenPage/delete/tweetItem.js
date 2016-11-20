@@ -15,7 +15,7 @@ import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
-import TuiwenItem from './tuiwenItem';
+import OriginTuiwenItem from './originTuiwenItem';
 
 let {width,height}=Dimensions.get('window');
 

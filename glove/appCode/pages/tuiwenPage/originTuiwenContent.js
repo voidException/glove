@@ -16,7 +16,7 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{Component} from 'react';
-import ZhuanfaPageWrapper from './zhuanfaPage';
+//import ZhuanfaPageWrapper from './zhuanfaPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
@@ -32,7 +32,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class TuiwenContent extends Component{
+export default class OriginTuiwenContent extends Component{
 	constructor(props){
 		super(props);
 		console.log(this.props);

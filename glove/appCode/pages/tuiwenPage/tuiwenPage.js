@@ -26,6 +26,7 @@ import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 //import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
 import WeiBoItem from './weiboItem';
+//import TweetItem from './tweetItem';
 let { width,height}=Dimensions.get('window');
 let lastItemstartTime='2015-09-04 00:00:00';
 let lastUpdateTime='2015-09-04 00:00:00';
@@ -96,6 +97,8 @@ class TuiWenPage extends Component{
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
 		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
+		
+		//return( <TweetItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
 	}
 
 	_onRefresh() {
@@ -116,6 +119,7 @@ class TuiWenPage extends Component{
     onEndReached(){
     	//这里面实现列表到达底部时自动加载更多
         //symbol 在前端影响路由，后端影响是查看自己发布的还是别人发布的
+        
         let symbol=this.props.symbol;
     	let requestParams={
 			token:this.props.token,
@@ -176,12 +180,12 @@ function mapStateToProps(state,ownProps){
 	//debugger
 	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
-	const { userProfile,weiboList }= state;	 
+	const { userProfile,tuiwenList }= state;	 
 
 	return {
 		token:userProfile.items.backupfour,
 		userid:userProfile.items.userid,
-		weiboList:weiboList
+		weiboList:tuiwenList
 	}
 }
 //以下展示两种包裹action的方法，使它们等价于disptch(action)

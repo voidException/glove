@@ -23,7 +23,7 @@ import { fetchTuiwenPageIfNeeded } from '../actions/tuiwenPageAction';
 import ItemPage from '../pages/zhuPage/itemPage';
 import ItemCell from '../pages/zhuPage/itemCell';
 import WeiBoContent from '../pages/tuiwenPage/weiboContent';
-import TuiwenItem from '../pages/tuiwenPage/tuiwenItem';
+import OriginTuiwenItem from '../pages/tuiwenPage/originTuiwenItem';
 import WoPage from '../pages/woPage/woPage';
 import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';

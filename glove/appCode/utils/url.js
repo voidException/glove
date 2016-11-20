@@ -31,5 +31,7 @@ export const UrlDeleteTwitter=commonUrl+'/weibos/deleteTweetByID'; //删除一�
 
 export const UrlCashRecord=commonUrl+'/cash/getcashrecord';
 
+export const UrlAffirmList=commonUrl+'/confirm/getconfirmls'; //affirm 中，获取证实人列表
+
 
 

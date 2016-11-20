@@ -14,13 +14,15 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{ Component } from 'react';
+import  fetchTool from '../../utils/fetchTool';
+import  PostAffirm  from './postAffirm';
+import AffirmList from './affirmList';
+import {UrlAffirmList} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-import  PostAffirm  from './postAffirm';
-import AffirmList from './affirmList';
 export default class Affirm extends Component{
 	constructor(props){
 		super(props);
@@ -32,35 +34,34 @@ export default class Affirm extends Component{
 	}
 
     componentDidMount(){
-		fetch('http://127.0.0.1:8080/glove/confirm/getconfirmls',{
-			method:'POST',
-			headers:{
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-			    'id':5,
-			    'tag': 2,
-			    'page':0,
-			    'pageSize':3
-			})
-       })
-	   .then(response=>response.json())
-	   .then(json=>this.getJson(json))
-	   .catch(function(e){
-	   		//console.log(e);
-	   		console.log('证实人信息请求出错');
-	   })
-	   
-	}
+		
 
-	getJson(json){
-	     //console.log(json);		
-		 this.setState({
-		 	affirm:json,
-		 	count:json.count,
-		 	affirmInfo:json.lp[0].content
-		 });
+	   let params={
+			id:this.props.tweetid,
+			tag:1, //证实和举报都是同一张表，1证实2举报
+			page:0,
+			pageSize:6,
+		};		
+		let options={
+            url:UrlAffirmList,
+            body: JSON.stringify(params)
+        };
+ 
+        let  response=fetchTool(options);
+        response.then(resp=>{
+        	 	
+             if (resp.retcode===2000) {
+             	
+              	    this.setState({
+					 	affirm:resp,
+					 	count:resp.count,
+					 	affirmInfo:resp.lp[0].content
+		            });
+              }
+        }).catch(err=>{
+        	console.log(err);
+        	console.log('证实人列表请求出错');
+        });	   
 	}
 	postAffirm(){
 		this.props.navigator.push({
@@ -69,25 +70,35 @@ export default class Affirm extends Component{
 	}
 
     goAffirmList(){
+    	if (this.state.count==0) {
+    		return
+    	};
 		this.props.navigator.push({
 			component:AffirmList,
 			params:{
-				data:this.state.affirm
+				data:this.state.affirm,
+				tweetid:this.props.tweetid
 			}
 		});
 	}
 	render(){
 		//let img=<Image source={require('../../image/default.jpg')} style={styles.image}/>;
 		var items = [];
-        for (var i = 0; i < this.state.count; i++) {
-            if (this.state.count===0) {
+		let realLength=0;
+		if (this.state.affirm!==null) {
+			realLength=this.state.affirm.lp.length;
+		};	
+		if (realLength>3) {
+			realLength=3
+		}
+        for (var i = 0; i < realLength; i++) {
+            if (realLength===0) {
             	items.push(<Image key={i} source={require('../../image/default.jpg')} style={styles.image}/>);
             }else{
-            	let imgurl=this.state.affirm.lp[i].confirmbackuptwo;
-            	
-            	items.push(<Image key={i} source={{uri:imgurl}} style={styles.image}/>);
-            }
-           
+               
+            	let imgurl=this.state.affirm.lp[i].confirmbackuptwo;           	
+            	items.push(<Image key={i} source={{uri:imgurl}} style={styles.image}/>);             
+            }          
         }
 
         let imgsrc=require('../../image/default.jpg');
@@ -98,9 +109,11 @@ export default class Affirm extends Component{
 					<Text style={{color:'red',fontWeight:'bold',fontSize:16}}  onPress={this.postAffirm.bind(this)}>我要证实</Text>
 				</View>
 				<View  style={styles.zhengshiImg}>
-				     {/*img*/}
-				     {items}
-					 <Image source={imgsrc} style={styles.image}/>
+				     {this.state.count===0 ?
+				     	  <Image source={imgsrc} style={styles.image}/>
+				     	:                          
+				          items
+				     }
 					 <TouchableOpacity onPress={this.goAffirmList.bind(this)}  style={styles.zhengmingImgArrow}>
 					 	<Image source={require('./image/moreArrow2.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>					 
 					 </TouchableOpacity>

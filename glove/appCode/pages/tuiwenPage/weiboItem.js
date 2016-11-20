@@ -15,14 +15,13 @@ import WoPage from '../woPage/woPage';
 import WeiBoContent from './weiboContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
-import TuiwenItem from './tuiwenItem';
+import OriginTuiwenItem from './originTuiwenItem';
 
 let {width,height}=Dimensions.get('window');
 
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		
 		this.state={
 			photoupload:this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
@@ -169,7 +168,7 @@ export default class WeiBoItem extends Component{
 		       	    </View>
 		       	    : null
 	       		}
-                {/*直接从父组件取得数据*/}
+                {/*直接从父组件取得转发部分的数据*/}
 				{
 					this.state.tagid===2 ? 
 					<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>

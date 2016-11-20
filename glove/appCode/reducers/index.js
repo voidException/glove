@@ -1,6 +1,6 @@
 import  { combineReducers} from 'redux';
 import  {userProfile}  from './userProfileReducer';
-import  {weiboList} from './tuiwenPageReducer';
+import  {tuiwenList} from './tuiwenPageReducer';
 import {tweetList} from './tweetPageReducer';
 import {twitterList} from './weiboPageReducer';
 import {itemList} from './itemPageReducer';
@@ -10,7 +10,7 @@ import {wheelImg} from './wheelImgReducer.js';
 
 const rootReducer=combineReducers({
  	userProfile,
- 	weiboList,
+ 	tuiwenList,
  	twitterList,
  	tweetList,
  	itemList,

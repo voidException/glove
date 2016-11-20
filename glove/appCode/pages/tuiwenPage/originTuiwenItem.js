@@ -12,13 +12,13 @@ import{
 import React,{ Component } from 'react';
 import UserPage from '../../components/userPage';
 import WoPage from '../woPage/woPage';
-import TuiwenContent from './tuiwenContent';
+import OriginTuiwenContent from './originTuiwenContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
 
 let {width,height}=Dimensions.get('window');
 
-export default class TuiwenItem extends Component{
+export default class OriginTuiwenItem extends Component{
 	constructor(props){
 		super(props);
 		//console.log(this.props.row)

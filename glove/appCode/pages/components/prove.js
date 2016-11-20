@@ -24,6 +24,7 @@ let height=Dimensions.get('window').height;
 export default class Prove extends Component{
 	constructor(props){
 		super(props);
+		//console.log(this.props)
 		this.state={
 			cash:{
 				circleusername:null,
@@ -92,7 +93,7 @@ export default class Prove extends Component{
 						</View>						
 					</View>
 
-					<Affirm   navigator={this.props.navigator}/>
+					<Affirm   navigator={this.props.navigator} userProfile={this.props.userProfile} tweetid={this.props.tweetid}/>
 
 				</View>
 			

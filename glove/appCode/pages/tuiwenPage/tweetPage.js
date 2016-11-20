@@ -25,7 +25,8 @@ import fetchTool from '../../utils/fetchTool';
 import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 //import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
-import TweetItem from './tweetItem';
+//import TweetItem from './tweetItem';
+import WeiBoItem from './weiboItem';
 let { width,height}=Dimensions.get('window');
 let lastItemstartTime='2015-09-04 00:00:00';
 let lastUpdateTime='2015-09-04 00:00:00';
@@ -91,7 +92,8 @@ class TweetPage extends Component{ //查看自己发布的tweet
 	}
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
-		return( <TweetItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
+		//return( <TweetItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
+		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
 	}
 
 	_onRefresh() {

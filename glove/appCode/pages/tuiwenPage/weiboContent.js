@@ -1,5 +1,4 @@
-//该页面是5大页面的容器，
-
+//由于从tweetPage  weiboPage tuiwenpage进入的页面共用weiboContent，所以这里获取用户的userProfile
 import{
 	StyleSheet,
 	Text,
@@ -17,12 +16,12 @@ import{
 	Alert
 } from 'react-native';
 import React,{Component} from 'react';
-import ZhuanfaPageWrapper from './zhuanfaPage';
+//import ZhuanfaPageWrapper from './zhuanfaPage';
 import UserPage from '../../components/userPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
-import TuiwenItem from './tuiwenItem';
+import OriginTuiwenItem from './originTuiwenItem';
 import Prove from '../components/prove';
 import CashNeed from '../components/cashNeed';
 import DoZhuanFa  from '../components/doZhuanFa';
@@ -30,26 +29,27 @@ import Comment from '../components/comment';
 import PostAffirm from '../components/postAffirm';
 import DoComment from '../../components/doComment';
 import  Report  from  '../components/report';
+import ReportTuiwen from '../components/reportTuiwen';
 import {UrlDeleteTwitter,UrlCashRecord} from '../../utils/url';
 import fetchTool  from '../../utils/fetchTool';
 import Loading from '../../loading/loading';
 import fmDate from '../../utils/fmDate';
+import { connect } from 'react-redux';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class WeiBoContent extends Component{
+export default class WeiBoContentP extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props);
 		this.state={
 			visible:false, //控制转圈圈
 			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
 			userphoto: this.props.row.tuiwen.userphoto ||'../../image/default.jpg',
 			usernickname: this.props.row.tuiwen.usernickname ||'无名氏',
-			tweetid: this.props.row.tuiwen.tweet.tweetid||0, //推文的id
+			tweetid: this.props.row.tuiwen.tweet.tweetid||null, //推文的id
 			useridtweet: this.props.row.tuiwen.tweet.useridtweet || 0, //发布推文的用户id
 			sourcemsgid: this.props.row.tuiwen.tweet.sourcemsgid|| 0, // 被转发的微博的id
 			msgcontent: this.props.row.tuiwen.tweet.msgcontent|| null,
@@ -72,6 +72,7 @@ export default class WeiBoContent extends Component{
 		};		
 	}
 	componentDidMount(){
+		//console.log(this.props);
 		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweet.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
 			let params={
 	       		proof:"111",
@@ -84,8 +85,8 @@ export default class WeiBoContent extends Component{
 		
 	        let response=fetchTool(options);
 	        response.then(resp=>{
-	        	 console.log(UrlCashRecord);
-	        	 console.log(resp);
+	        	 //console.log(UrlCashRecord);
+	        	 //console.log(resp);
 	             if (resp.retcode===2000) {
 	              	  this.getJson(resp.data);
 	              }
@@ -117,7 +118,7 @@ export default class WeiBoContent extends Component{
 		});
 	}
 	doComment(){
-		if (this.state.deletetag===1 || this.state.publicsee===2){
+		if (this.state.deletetag===2 || this.state.publicsee===2){
 			return Alert.alert(
                         '该内容不能被评论',
                         '可能作者已删除',
@@ -154,8 +155,9 @@ export default class WeiBoContent extends Component{
 	}
 
 	goReport(){
+		//如果是救助推文就到Report 否则去ReportTuiwen
 		this.props.navigator.push({
-			component:Report,
+			component:ReportTuiwen,
 		})
 	}
 	reportMe(){
@@ -302,9 +304,9 @@ export default class WeiBoContent extends Component{
 						<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>
 						: null
 					}
-				    {/* 证明有关的信息*/}
+				    {/* 证明有关的信息; affirm.js中我要证实，需要toke，所以传过去userProfile*/}
 				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
-                       <Prove cash={this.state.cash}  navigator={this.props.navigator}/>
+                       <Prove cash={this.state.cash} userProfile={this.props.userProfile} tweetid={this.props.row.tuiwen.tweet.tweetid}  navigator={this.props.navigator}/>
                        :null
                     }
 					<View style={styles.progress}>
@@ -343,6 +345,19 @@ export default class WeiBoContent extends Component{
 		);
 	}
 }
+
+function mapStateToProps(state,ownProps){
+
+	//这里的state就是store里面的各种键值对,store是个外壳
+	//在这个函数中，应该从store中取出所有需要的state，向下传递
+	const { userProfile}= state;	 
+	return {
+		userProfile:userProfile
+
+	}
+}
+ const WeiBoContent=connect(mapStateToProps)(WeiBoContentP);
+ export default WeiBoContent;
 
 let styles=StyleSheet.create({
 	container:{
