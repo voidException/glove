@@ -25,7 +25,7 @@ let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 export default class Affirm extends Component{
 	constructor(props){
-		super(props);
+		super(props); //含有userProfile的
 		this.state={
 			count:0,
 			affirmInfo:"还没有人证实哦",
@@ -63,9 +63,15 @@ export default class Affirm extends Component{
         	console.log('证实人列表请求出错');
         });	   
 	}
-	postAffirm(){
+	postAffirm(){ 
+      
 		this.props.navigator.push({
-			component:PostAffirm
+			component:PostAffirm,
+			params:{
+				token:this.props.userProfile.items.backupfour,
+				notsay:this.props.userProfile.items.notsay,
+				tweetid:this.props.tweetid,
+			}
 		});
 	}
 

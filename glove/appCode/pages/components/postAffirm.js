@@ -33,13 +33,13 @@ export default class PostAffirm extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			token:"e10adc3949ba59abbe56e057f20f883e1",
-			notSay:1, //1默认可以发表
+			token:this.props.token,
+			notSay:this.props.notsay, //1默认可以发表
 			content:" ",
             relation:" ",
             tag:1,
             mobile:" ",
-            tuiwenid:1,
+            tuiwenid:this.props.tweetid,
 		}
 	}
 
@@ -68,19 +68,28 @@ export default class PostAffirm extends Component{
 		let response=UploadFile(option);
 	
 		response.then(resp=>{
-			console.log(resp);
 			this.setState({
 				visible:false
 			});
 			if (resp.retcode===2000) {
-				this.props.navigator.pop();
+				 Alert.alert(
+	        		'发布成功',
+	        		'感谢参与',
+		            [
+		                {
+		                    text: '好的',
+		                    onPress: () =>this.props.navigator.pop()
+		                }
+		            ]
+	   			 );
+				
 			}else{
 				 Alert.alert(
 	        		'出问题了',
 	        		resp.msg,
 		            [
 		                {
-		                    text: '好的'
+		                    text: '好的',
 		                }
 		            ]
 	   			 );
@@ -98,7 +107,7 @@ export default class PostAffirm extends Component{
     }
      getPhone(event){
     	this.setState({
-			phone:event.nativeEvent.text
+			mobile:event.nativeEvent.text
 		});
     }
      getAffirmDesp(event){
