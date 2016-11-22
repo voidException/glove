@@ -118,7 +118,7 @@ export default class WeiBoContentP extends Component{
 		});
 	}
 	doComment(){
-		if (this.state.deletetag===2 || this.state.publicsee===2){
+		if (this.state.deletetag===2 || this.state.publicsee===2){ //已被删除或者不可见
 			return Alert.alert(
                         '该内容不能被评论',
                         '可能作者已删除',
@@ -129,6 +129,10 @@ export default class WeiBoContentP extends Component{
 		}
 		this.props.navigator.push({
 			component:DoComment,
+			params:{
+				userProfile:this.props.userProfile,
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
+			}
 		});
 	}
 	goCommentList(){
@@ -151,6 +155,10 @@ export default class WeiBoContentP extends Component{
 		};
 		this.props.navigator.push({
 			component:DoZhuanFa,
+			params:{
+				userProfile:this.props.userProfile,
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
+			}
 		});
 	}
 
@@ -158,6 +166,10 @@ export default class WeiBoContentP extends Component{
 		//如果是救助推文就到Report 否则去ReportTuiwen
 		this.props.navigator.push({
 			component:ReportTuiwen,
+			params:{
+				userProfile:this.props.userProfile,
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
+			}
 		})
 	}
 	reportMe(){

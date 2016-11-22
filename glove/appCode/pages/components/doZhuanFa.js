@@ -32,10 +32,10 @@ export default class DoZhuanFa extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			notSay:1, 
-			token:"e10adc3949ba59abbe56e057f20f883e1",
+			token:this.props.userProfile.items.backupfour,
+			notSay:this.props.userProfile.items.notsay, 
 			content:'', //转发时输入的内容
-            sourceMsgID:100, //被转发的推文的id
+            sourceMsgID:this.props.tweetid, //被转发的推文的id
 		}
 	}
 
@@ -61,7 +61,7 @@ export default class DoZhuanFa extends Component{
 			this.setState({
 				visible:false
 			});
-			console.log(resp);
+			
 			if (resp.retcode===2000) {
 				this.props.navigator.pop();
 			}else{

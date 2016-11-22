@@ -33,13 +33,13 @@ export default class ReportTuiwen extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			token:"e10adc3949ba59abbe56e057f20f883e1",
-			notSay:1, //1默认可以发表
+			token:this.props.userProfile.items.backupfour,
+			notSay:this.props.userProfile.items.notsay, //1默认可以发表
 			content:" ",
             relation:" ",
-            tag:1,
+            tag:1, //tag 为1 代表举报
             mobile:" ",
-            tuiwenid:1,
+            tuiwenid:this.props.tweetid,
 		}
 	}
    cancel(){
@@ -86,52 +86,6 @@ export default class ReportTuiwen extends Component{
 			});
 		});		
    }
-
-
- //   doCommit2(){
- //        let confirm={
-	// 		token:this.state.token,
-	// 		notSay:this.state.notSay,
-	// 		content:this.state.content,
-	// 		relation:this.state.relation,
-	// 		tag:this.state.tag,
-	// 		mobile:this.state.mobile,
-	// 		tuiwenid:this.state.tuiwenid
-	// 	};
-		
-	// 	let options={
- //            url:UrlConfirmReport,
- //            body: JSON.stringify(confirm)
- //        };
- //        this.setState({
- //        	visible:true
- //        });
- //        let  response=fetchTool(options);
- //        response.then(resp=>{
- //        	  //停止转圈圈
- //        	  this.setState({
- //        	  	visible:false
- //        	  });
- //             if (resp.retcode===2000) {
- //              	  this.goBack();
- //              }else{
- //              	    Alert.alert(
- //                        '出错了',
- //                        resp.msg,
- //                        [
- //                            { text:'好的',onPress:() =>console.log('举报出错了')}
-
- //                        ]
- //                    );
- //              }
- //        }).catch(err=>{
- //        	//停止转圈圈
- //        	this.setState({
- //        		visible:false
- //        	});
-
- //        });
-	// }
 
    getContent(event){
     	this.setState({

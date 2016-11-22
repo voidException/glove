@@ -33,10 +33,10 @@ export default class DoComment extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			token:"e10adc3949ba59abbe56e057f20f883e1",
-			notSay:1, //1默认可以发表
+			token:this.props.userProfile.items.backupfour,
+			notSay:this.props.userProfile.items.notsay, //1默认可以发表
 			content:" ", //评论内容
-            tuiwenid:1,  //被评论的推文id            			
+            tuiwenid:this.props.tweetid,  //被评论的推文id            			
 		}
 	}
 	cancel(){
@@ -65,7 +65,7 @@ export default class DoComment extends Component{
 			this.setState({
 				visible:false
 			});
-			console.log(resp);
+			
 			if (resp.retcode===2000) {
 				this.props.navigator.pop();
 			}else{
