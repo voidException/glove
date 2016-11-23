@@ -31,9 +31,10 @@ let nullImg=require('../../image/tupianzhanwei.jpeg')
 export default class PublishTuiwen extends Component{
 	constructor(props){
 		super(props);
+		//console.log(props)
 		this.state={
-			token:"e10adc3949ba59abbe56e057f20f883e1",
-			notSay:1, //1默认可以发表
+			token:this.props.userProfile.items.backupfour,
+			notSay:this.props.userProfile.items.notsay, //1默认可以发表
 			content:null,
 			avatarSource:nullImg,
 			imgOneUrl:nullImg,
@@ -61,7 +62,6 @@ export default class PublishTuiwen extends Component{
 		formData.append("token",this.state.token); 
 		formData.append("content", this.state.content);
 	    formData.append("notSay",this.state.notSay);
-        console.log(formData);
 		let option={
 			url:UrlUploadFile,
 			body:formData
@@ -74,7 +74,6 @@ export default class PublishTuiwen extends Component{
 			this.setState({
 				visible:false
 			});
-			console.log(resp);
 			if (resp.retcode===2000) {
 				formData=new FormData(); //要清空formData的数据，防止重复提交
 				this.setState({  
@@ -104,7 +103,7 @@ export default class PublishTuiwen extends Component{
 			});
 			Alert.alert(
             		'出问题了',
-            		resp.msg,
+            		'推文没发出去',
 		            [
 		                {
 		                    text: '好的'

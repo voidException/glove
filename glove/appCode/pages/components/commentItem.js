@@ -15,7 +15,7 @@ import{
 	TextInput
 } from 'react-native';
 import React,{ Component } from 'react';
-
+import fmDate from '../../utils/fmDate';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -35,13 +35,14 @@ export default class CommentItem extends Component{
 	}
 
 	render(){
+		let publishTime=fmDate(this.state.discussreplytime);
 		return(
 			<View style={styles.container}>
 			    <View style={styles.toper}>
 			        <Image source={{uri:this.state.url}} resizeMode={'contain'} style={styles.img} />
 			        <View style={styles.topRight}>
 			    	    <Text style={{color:'red'}}>{this.state.backupone}</Text>
-			    	    <Text style={{color:'red'}}>{this.state.discussreplytime}</Text>
+			    	    <Text style={{color:'red'}}>{publishTime}</Text>
 			    	</View>
 			    </View>
                 

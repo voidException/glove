@@ -11,10 +11,14 @@ import{
 	ListView,
 	PixelRatio,
 	Platform,
-	Dimensions
+	Dimensions,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import CommentItem from './commentItem';
+import {UrlcommentList} from '../../utils/url';
+import fmDate from '../../utils/fmDate';
+import fetchTool from '../../utils/fetchTool';
 
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
@@ -30,42 +34,56 @@ export default class Comment extends Component{
 			dataSource:DS.cloneWithRows([]),
 			isRefreshing: false,
 			page:1,
-			pageSize:6
-		}
+			pageSize:3
+		};
+		this.lastCommentTime='2016-09-04 00:00:00';
 	}
 
     componentDidMount(){
-		fetch('http://127.0.0.1:8080/glove/tweetcomment/listcomments',{
-			method:'POST',
-			headers:{
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-			    'tweetid':5,
-			    'page':0,
-			    'pageSize':3
-			})
-       })
-	   .then(response=>response.json())
-	   .then(json=>this.getJson(json))
-	   .catch(function(e){
-	   		console.log(e);
-	   		console.log('推文评论列表请求出错');
-	   })
+
+       let params={
+			tag:1, //1刷新 2loadMore
+		    tweetid:5,
+		    page:0,
+		    pageSize:this.state.pageSize,
+		    lastCommentTime:this.lastCommentTime, //loadMore 后要更新这个值，没有刷新，首次加载是唯一的刷新，降低难度	
+		};
+		let options={
+            url:UrlcommentList,
+            body: JSON.stringify(params)
+        };
+        let  response=fetchTool(options);
+        response.then(resp=>{
+
+             if (resp.retcode===2000) {
+                 this.setState({
+				 	dataSource: DS.cloneWithRows(resp.data)
+				 });
+				 //更新this.lastCommentTime的值为本次获取数据的最早发布的时间值
+				 let length=resp.data.length;
+				 let newTime=resp.data[length-1].discussreplytime;
+				 this.lastCommentTime=fmDate(newTime);
+
+              }else{
+              	    Alert.alert(
+                        '没有数据了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('查看评论列表出错了')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+   			console.log(err);
+        });
 	   
-	}
-    getJson(json){
-    	console.log(json);
-     	this.setState({
-		 	dataSource: DS.cloneWithRows(json.data)
-		 });
-    }
+	}//componentDidMount
 
 
     renderRow(row,sectionID){
 		//console.log(row)
-		return( <CommentItem  row={row} {...this.props}/>);
+		return( <CommentItem  key={row.discussreplyid}  row={row} {...this.props}/>);
 	}
 
 	back(){
@@ -75,11 +93,52 @@ export default class Comment extends Component{
     _onRefresh() {
     	
     }
+    _loadMore(){
+        //注意更新this.lastCommentTime的值
+         let params={
+			tag:2, //1刷新 2loadMore
+		    tweetid:5,
+		    page:0,
+		    pageSize:this.state.pageSize,
+		    lastCommentTime:this.lastCommentTime, //loadMore 后要更新这个值，没有刷新，首次加载是唯一的刷新，降低难度	
+		};
+		
+		let options={
+            url:UrlcommentList,
+            body: JSON.stringify(params)
+        };
+        let  response=fetchTool(options);
+        response.then(resp=>{
+          
+             if (resp.retcode===2000) {
+             
+                 this.setState({
+				 	dataSource: DS.cloneWithRows(resp.data)
+				 });
+				 //更新this.lastCommentTime的值为本次获取数据的最早发布的时间值
+				 let length=resp.data.length;
+				 let newTime=resp.data[length-1].discussreplytime;
+ 				 this.lastCommentTime=fmDate(newTime);
+              }else{
+              	    Alert.alert(
+                        '没有数据了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('查看评论列表出错了')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+   			console.log(err);
+        });
+    }
 	render(){
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
 					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
+					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:18}}>下一页</Text>
 				</View>
 			   	<ListView 
 			    	refreshControl={
@@ -117,7 +176,7 @@ let  styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'flex-start',
+        justifyContent:'space-between',
         backgroundColor:'#43AC43',
         paddingLeft:10,
         paddingRight:10

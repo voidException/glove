@@ -94,6 +94,10 @@ class TuiWenPage extends Component{
 	componentWillUpdate(nextProps,nextState){
 
 	}
+	componentWillUnmount(){
+		lastItemstartTime='2015-09-04 00:00:00';
+		lastUpdateTime='2015-09-04 00:00:00';
+	}
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
 		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
@@ -137,7 +141,10 @@ class TuiWenPage extends Component{
     }
     goTuiwen(){
     	this.props.navigator.push({
-    		component:PublishTuiwen
+    		component:PublishTuiwen,
+    		params:{
+    			userProfile:this.props.userProfile
+    		}
     	})
     }
 	render(){
@@ -183,6 +190,7 @@ function mapStateToProps(state,ownProps){
 	const { userProfile,tuiwenList }= state;	 
 
 	return {
+		userProfile:userProfile,
 		token:userProfile.items.backupfour,
 		userid:userProfile.items.userid,
 		weiboList:tuiwenList

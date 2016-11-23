@@ -11,12 +11,15 @@ export const URLWheelImg=commonUrl+'/picture/getpicture';
 export const UrlSuperMenList=commonUrl+'/peoplelist/lsmen';
 
 export const UrlUploadFile=commonUrl+'/demo/upload/multiUpload'; //发表推文
+export const UrldoZhuanfa=commonUrl+'/weibos/zhuanfaTweet'; //转发推文
+export const UrlcommentList=commonUrl+'/tweetcomment/listcomments';//一条推文的评论列表
+
 export const UrlAddNeedMan=commonUrl+'/cash/addhelpman'; //增加一个需要帮助的人
 export const UrlJoinLoveClue=commonUrl+'/renzheng/author'; //加入爱心社认证,监督处认证，身份认证
 export const UrlpostAffirm=commonUrl+'/zhengshi/affirm'; //这是发布一条证实的接口地址 
 export const UrladdCommont=commonUrl+'/tweetcomment/addcomment'; //这个是增加一条评论的
 export const UrlConfirmReport=commonUrl+'/confirm/report'; //举报推文
-export const UrldoZhuanfa=commonUrl+'/weibos/zhuanfaTweet';
+
 
 export const Urlresetpass=commonUrl+'/user/resetpass'; //重置密码
 export const UrlcompleteProfile=commonUrl+'/profile/completeProfile';

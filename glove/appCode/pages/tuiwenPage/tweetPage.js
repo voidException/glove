@@ -25,7 +25,7 @@ import fetchTool from '../../utils/fetchTool';
 import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 //import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
-//import TweetItem from './tweetItem';
+import TweetItem from './tweetItem';
 import WeiBoItem from './weiboItem';
 let { width,height}=Dimensions.get('window');
 let lastItemstartTime='2015-09-04 00:00:00';
@@ -47,6 +47,8 @@ class TweetPage extends Component{ //查看自己发布的tweet
 	componentDidMount(){
 		//console.log(this.props.symbol);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
+		console.log(lastUpdateTime);
+		console.log(lastItemstartTime);
 		let symbol=this.props.symbol;
 		let requestParams={
 			token:this.props.token,
@@ -62,6 +64,12 @@ class TweetPage extends Component{ //查看自己发布的tweet
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 		//因为这个时候，数据还没到来，所以为null，但这个时候数据已会传入weiboItem，后者也会渲染，
 
+	}
+	componentWillUnmount(){
+		//let 声明的变量是全局的，pop这个页面后不会销毁，所以当刷完数据后，再次进来就是空白页面
+		//每次销毁这个页面时可以把时间设为倒数第4个推文的时间，这样每次进来会有数据
+		lastItemstartTime='2015-09-04 00:00:00';
+		lastUpdateTime='2015-09-04 00:00:00';
 	}
 	//异步获取数据后，更新的是store，connect会感知到，将会执行这个方法，这样weiboItem就有数据了
 	componentWillReceiveProps(nextProps) {
@@ -83,6 +91,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
 			let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.tweet.publishtime;
 			lastItemstartTime=fmDate(rowLastItemStart);
         };
+
 		this.setState({
 			dataSource: this.DS.cloneWithRows(oldNewdata)
 		});		
@@ -144,7 +153,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
 				<View style={styles.header}>
 					<Text onPress={this.goBack.bind(this)} style={{fontSize:16,color:'#ffffff'}}>返回</Text>
 					<Text style={{fontSize:18,marginTop:-5}}>传播温暖</Text>					
-		            <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:16,color:'#ffffff'}}>发布</Text>                 
+		            <Text style={{fontSize:16,color:'#ffffff'}}>发布</Text>                 
 				</View>
 			    <ListView 
 			    	refreshControl={

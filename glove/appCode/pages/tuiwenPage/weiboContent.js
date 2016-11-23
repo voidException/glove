@@ -140,7 +140,10 @@ export default class WeiBoContentP extends Component{
 			return
 		}
 		this.props.navigator.push({
-			component:Comment
+			component:Comment,
+			params:{
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
+			}
 		});
 	}
 	goZhuanFa(){
@@ -193,10 +196,9 @@ export default class WeiBoContentP extends Component{
 			return ;//已被删除
 		};
        let params={
-       		// token:this.props.token,
-       		// tweetid:this.props.row.tuiwen.tweet.tweetid
-       		token:'e10adc3949ba59abbe56e057f20f883e1',
-       		tweetid:13
+       		 token:this.props.userProfile.items.backupfour,
+       		 tweetid:this.props.row.tuiwen.tweet.tweetid
+       		
        };
    	    let options={
             url:UrlDeleteTwitter,
