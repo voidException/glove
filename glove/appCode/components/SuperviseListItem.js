@@ -53,6 +53,7 @@ export default class SuperviseListtItem extends Component{
 		
 		return(
 			<View style={styles.container}>
+			   <View>
 			    <View style={styles.toper}>
 			        <TouchableOpacity onPress={this.goUserPage.bind(this)}>
 			        	<Image source={this.imagesrc} onError={this.onImgError.bind(this)} resizeMode={'contain'} style={styles.img} />
@@ -61,14 +62,12 @@ export default class SuperviseListtItem extends Component{
 			    	    <Text style={{color:'black',fontSize:16}}>{this.state.usernickname}</Text>
 			    	    <Text style={{color:'#B1B1B1',fontSize:14,marginTop:5}}>{this.state.time}</Text>
 			    	</View>
-			    	<View style={styles.watch}>
-			    	   <Image source={require('../image/watch.png')} resizeMode={'contain'} style={styles.watchimg} />
-			    	   <Text style={{color:'#61B972',marginRight:10}}>加关注</Text>
-			    	</View>
 			    </View>
 	    	    <View style={styles.introduce}>
 	    	        <Text numberOfLines={4} style={{color:'#272822'}}>{this.state.introduce}</Text>
 	    	    </View>
+	    	    </View>
+
 			</View>
 		);
 	}

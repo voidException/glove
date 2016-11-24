@@ -25,7 +25,7 @@ import fetchTool from '../../utils/fetchTool';
 import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 //import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
-import TweetItem from './tweetItem';
+//import TweetItem from './tweetItem';
 import WeiBoItem from './weiboItem';
 let { width,height}=Dimensions.get('window');
 let lastItemstartTime='2015-09-04 00:00:00';
@@ -47,8 +47,8 @@ class TweetPage extends Component{ //查看自己发布的tweet
 	componentDidMount(){
 		//console.log(this.props.symbol);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
-		console.log(lastUpdateTime);
-		console.log(lastItemstartTime);
+		//console.log(lastUpdateTime);
+		//console.log(lastItemstartTime);
 		let symbol=this.props.symbol;
 		let requestParams={
 			token:this.props.token,

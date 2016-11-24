@@ -16,7 +16,7 @@ import{
 import React,{ Component } from 'react';
 import SuperviseListItem from './SuperviseListItem';
 import CharityListItem  from './CharityListItem';
-import { UrlSuperMenList } from '../utils/url';
+import { UrlCommomPeopleList,UrlWatchList,UrlFansList,UrlHelpMeList,UrliHelpList } from '../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -39,31 +39,31 @@ export default class PeopleListPage extends Component{
     	//根据props传过来的tag 确定是什么列表，传入不同的url
     	if (this.props.userType==3) { //监督处
             let  param={
-            	url:UrlSuperMenList, //当是我关注的人和我我帮助的人时这里需要改变url
+            	url:UrlCommomPeopleList, //当是我关注的人和我我帮助的人时这里需要改变url
             	tag:1  //此处应换成param.tag，数据库不足
             };
             this.fetchWrapper(param);
         }else if (this.props.userType==2) { //社团青协
         	let  param={
-            	url:UrlSuperMenList,
+            	url:UrlCommomPeopleList,
             	tag:1  
             };
             this.fetchWrapper(param);
         }else  if (this.props.userType==5) { //社会公益机构
         	let  param={
-            	url:UrlSuperMenList,  
+            	url:UrlCommomPeopleList,  
             	tag:1  
             };
             this.fetchWrapper(param);
         }else if (this.props.userType==7) { //公益排行榜
         	let  param={
-            	url:UrlSuperMenList,  
+            	url:UrlCommomPeopleList,  
             	tag:1  
             };
             this.fetchWrapper(param);
         }else{
         	let  param={
-            	url:UrlSuperMenList,  
+            	url:UrlCommomPeopleList,  
             	tag:1  
             };
             this.fetchWrapper(param);
@@ -129,6 +129,7 @@ export default class PeopleListPage extends Component{
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
 					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
+					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>下一页</Text>
 				</View>
 			   	<ListView 
 			    	refreshControl={

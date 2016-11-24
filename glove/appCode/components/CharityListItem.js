@@ -50,9 +50,8 @@ export default class CharityListItem extends Component{
 			    	    <Text style={{color:'#B1B1B1',fontSize:14,marginTop:5}}>{this.state.time}</Text>
 			    	    <Text style={{color:'red',fontWeight:'bold'}}>5000元</Text>
 			    	</View>
-			    	<View style={styles.watch}>
-			    	   <Image source={require('../image/watch.png')} resizeMode={'contain'} style={styles.watchimg} />
-			    	   <Text style={{color:'#61B972',marginRight:10}}>加关注</Text>
+			    	<View>
+			    	   <Text style={{color:'#61B972',marginRight:10}}>100元</Text>
 			    	</View>
 			    </View>
 	    	    <View style={styles.introduce}>
@@ -98,11 +97,6 @@ let  styles=StyleSheet.create({
 	    //marginLeft:40,
 		marginLeft:5,
 		marginTop:5
-	},
-	watch:{
-		position:'absolute',
-		right:0,
-		top:5
 	},
 	introduce:{
 		flexDirection:'column',
