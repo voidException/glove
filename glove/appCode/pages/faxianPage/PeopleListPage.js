@@ -15,7 +15,9 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 import PeopleListItem from './PeopleListItem';
-
+import fetchTool from '../../utils/fetchTool';
+import fmDate from '../../utils/fmDate';
+import {UrlCommomPeopleList,UrlWatchList,UrlFansList,UrlHelpMeList,UrliHelpList} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -26,10 +28,11 @@ let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
-
 		this.state={
 			dataSource:DS.cloneWithRows([]),
 			isRefreshing: false,
+			tag:this.props.tag, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
+			token:null,
 			page:1,
 			pageSize:6
 		}
@@ -37,36 +40,9 @@ export default class PeopleListPage extends Component{
 
     componentDidMount(){
     	//根据props传过来的tag 确定是什么列表，然后调用不同的接口
-    	//
-		fetch('http://127.0.0.1:8080/glove/peoplelist/lsmen',{
-			method:'POST',
-			headers:{
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				'proof':'eee',
-			    'tag':1,
-			    'page':0,
-			    'pageSize':3
-			})
-       })
-	   .then(response=>response.json())
-	   .then(json=>this.getJson(json))
-	   .catch(function(e){
-	   		console.log(e);
-	   		console.log('people列表获取出错');
-	   })
-	   
+	    this._onRefresh(); //
 	}
-    getJson(json){
-    	console.log(json);
-     	this.setState({
-		 	dataSource: DS.cloneWithRows(json.lp)
-		 });
-    }
-
-
+ 
     renderRow(row,sectionID){
 		//console.log(row)
 		//根据props传过来的tag 确定是什么列表，然后调用不同的Item
@@ -78,13 +54,105 @@ export default class PeopleListPage extends Component{
 	}
 
     _onRefresh() {
-    	
+       let url;
+       let localTag=this.state.tag;
+       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构排行榜等
+       		url=UrlCommomPeopleList;
+       }else if (localTag==10) {
+       		url=UrlWatchList; //我关注的人
+       }else if (localTag==11) {
+       	  url=UrlFansList; //我的粉丝
+       }else if (localTag==20) {
+          url=UrlHelpMeList; //帮助我的人
+       }else {
+       		url=UrliHelpList; //我帮助的人
+       }
+	   let params={
+			token:this.state.token,
+			tag:this.state.tag,
+			loadMoreTag:1, //refresh 是1
+			page:1,
+			pageSize:5,
+			lastTime:'2015-09-01 12:10:01'
+		};
+		//console.log(userAccount);
+		//发起网络请求
+		let options={
+            url:Url,
+            body: JSON.stringify(params)
+        };
+        let  response=fetchTool(options);
+        response.then(resp=>{
+             if (resp.retcode===2000) { 
+
+              }
+              else{
+              	    Alert.alert(
+                        '不妙',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('爱心社列表等出错')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+
+        });
+    }
+    _loadMore(){
+       let url;
+       let localTag=this.state.tag;
+       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构排行榜等
+       		url=UrlCommomPeopleList;
+       }else if (localTag==10) {
+       		url=UrlWatchList; //我关注的人
+       }else if (localTag==11) {
+       	  url=UrlFansList; //我的粉丝
+       }else if (localTag==20) {
+          url=UrlHelpMeList; //帮助我的人
+       }else {
+       		url=UrliHelpList; //我帮助的人
+       }
+	   let params={
+			token:this.state.token,
+			tag:this.state.tag,
+			loadMoreTag:1, //refresh 是1
+			page:2,
+			pageSize:5,
+			lastTime:'2015-09-01 12:10:01'
+		};
+		//console.log(userAccount);
+		//发起网络请求
+		let options={
+            url:Url,
+            body: JSON.stringify(params)
+        };
+        let  response=fetchTool(options);
+        response.then(resp=>{
+             if (resp.retcode===2000) { 
+
+              }
+              else{
+              	    Alert.alert(
+                        '不妙',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('爱心社列表等出错')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+
+        });
     }
 	render(){
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
 					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
+					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:18}}>下一页</Text>
 				</View>
 			   	<ListView 
 			    	refreshControl={
