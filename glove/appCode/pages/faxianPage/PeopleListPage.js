@@ -24,29 +24,29 @@ let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 
-let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
+		//console.log(this.props);
+        this.DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 		this.state={
-			dataSource:DS.cloneWithRows([]),
+			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			tag:this.props.tag, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
-			token:null,
+			tag: 2||this.props.userType, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
+			token:this.props.userProfile.items.backupfour,
 			page:1,
 			pageSize:6
-		}
+		};
+		this.lastTime='2015-09-01 12:10:01';
 	}
 
     componentDidMount(){
-    	//根据props传过来的tag 确定是什么列表，然后调用不同的接口
+
 	    this._onRefresh(); //
 	}
  
     renderRow(row,sectionID){
-		//console.log(row)
-		//根据props传过来的tag 确定是什么列表，然后调用不同的Item
-		return( <PeopleListItem  row={row} {...this.props}/>);
+		return( <PeopleListItem key={row.userid} row={row} {...this.props}/>);
 	}
 
 	back(){
@@ -54,6 +54,7 @@ export default class PeopleListPage extends Component{
 	}
 
     _onRefresh() {
+
        let url;
        let localTag=this.state.tag;
        if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构排行榜等
@@ -64,37 +65,37 @@ export default class PeopleListPage extends Component{
        	  url=UrlFansList; //我的粉丝
        }else if (localTag==20) {
           url=UrlHelpMeList; //帮助我的人
-       }else {
+       }else if (localTag==21){
        		url=UrliHelpList; //我帮助的人
        }
 	   let params={
 			token:this.state.token,
 			tag:this.state.tag,
 			loadMoreTag:1, //refresh 是1
-			page:1,
+			page:0,
 			pageSize:5,
 			lastTime:'2015-09-01 12:10:01'
 		};
-		//console.log(userAccount);
-		//发起网络请求
 		let options={
-            url:Url,
+            url:url,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
         response.then(resp=>{
-             if (resp.retcode===2000) { 
+            if (resp.retcode===2000) { 
+                    this.setState({
+						dataSource: this.DS.cloneWithRows(resp.data)
+					});	
+				//这里要更新this.lastTime 以便loadMore使用	
+            }else{
+          	    Alert.alert(
+                    '不妙',
+                    resp.msg,
+                    [
+                        { text:'好的',onPress:() =>console.log('爱心社列表等出错')}
 
-              }
-              else{
-              	    Alert.alert(
-                        '不妙',
-                        resp.msg,
-                        [
-                            { text:'好的',onPress:() =>console.log('爱心社列表等出错')}
-
-                        ]
-                    );
+                    ]
+                );
               }
         }).catch(err=>{
 
@@ -117,21 +118,24 @@ export default class PeopleListPage extends Component{
 	   let params={
 			token:this.state.token,
 			tag:this.state.tag,
-			loadMoreTag:1, //refresh 是1
-			page:2,
+			loadMoreTag:2, //refresh 是1
+			page:0,
 			pageSize:5,
 			lastTime:'2015-09-01 12:10:01'
 		};
 		//console.log(userAccount);
 		//发起网络请求
 		let options={
-            url:Url,
+            url:url,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
         response.then(resp=>{
              if (resp.retcode===2000) { 
-
+             	this.setState({
+						dataSource: this.DS.cloneWithRows(resp.data)
+				});
+				//这里要更新this.lastTime
               }
               else{
               	    Alert.alert(
@@ -144,15 +148,15 @@ export default class PeopleListPage extends Component{
                     );
               }
         }).catch(err=>{
-
+        	console.log(err);
         });
     }
 	render(){
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
-					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:18}}>下一页</Text>
+					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:16}}>返回</Text>
+					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:16}}>下一页</Text>
 				</View>
 			   	<ListView 
 			    	refreshControl={
@@ -190,7 +194,7 @@ let  styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'flex-start',
+        justifyContent:'space-between',
         backgroundColor:'#43AC43',
         paddingLeft:10,
         paddingRight:10

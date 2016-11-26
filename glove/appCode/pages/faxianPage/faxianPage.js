@@ -20,10 +20,11 @@ import{
 import React,{ Component } from 'react';
 import Swiper from 'react-native-swiper2';
 import WheelContent  from './findWheelContent';
-import PeopleListPage  from  '../../components/PeopleListPage';
+import PeopleListPage  from  './PeopleListPage';
 import AboutUs from './aboutUs';
 import JoinSupervise from '../components/joinSupervise';
 import WelfareAuth from '../components/welfareAuth';
+import { connect } from 'react-redux';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -31,7 +32,7 @@ let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 let loveImg = require('../../image/25.jpg');//慈善排行榜
 
-export default class FaxianPage extends Component{
+ class FaxianPageP extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -39,12 +40,17 @@ export default class FaxianPage extends Component{
 		}
 		
 	}
+	componentDidMount(){
+		//console.log(this.props);
+	}
+	
 	goMenList(userType){
 	    //console.log(userType);		
 		this.props.navigator.push({
             component: PeopleListPage,
             params:{
-            	userType:userType
+            	userType:userType,
+            	userProfile:this.props.userProfile
             }
         });
 	}
@@ -167,7 +173,17 @@ export default class FaxianPage extends Component{
 		);
 	}
 }
+function mapStateToProps(state,ownProps){
 
+	//这里的state就是store里面的各种键值对,store是个外壳
+	//在这个函数中，应该从store中取出所有需要的state，向下传递
+	const { userProfile}= state;	 
+	return {
+		userProfile:userProfile
+	}
+}
+ const FaxianPage=connect(mapStateToProps)(FaxianPageP);
+ export default FaxianPage;
 let styles=StyleSheet.create({
 	 wrapper: {
 	 	flex:1 ,

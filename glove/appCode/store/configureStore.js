@@ -5,15 +5,15 @@ import rootReducer from '../reducers/index';
 
 //仔细看看createLogger()的使用
 export default function configureStore(initialState) {
-  const store = createStore(
+  // const store = createStore(
+  //   rootReducer,
+  //   initialState,
+  //   applyMiddleware(thunkMiddleware, createLogger())
+  // )
+ const store = createStore(
     rootReducer,
     initialState,
-    applyMiddleware(thunkMiddleware, createLogger())
+    applyMiddleware(thunkMiddleware)
   )
- // const store = createStore(
- //    rootReducer,
- //    initialState,
- //    applyMiddleware(thunkMiddleware)
- //  )
 	return store;
 }

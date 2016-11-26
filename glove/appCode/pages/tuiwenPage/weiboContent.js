@@ -40,7 +40,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class WeiBoContentP extends Component{
+class WeiBoContentP extends Component{
 	constructor(props){
 		super(props);
 		this.state={
