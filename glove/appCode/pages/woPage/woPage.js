@@ -19,7 +19,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 //let backBtnImg = require('./image/bar_btn_back_ico.png');
-import PeopleListPage  from  '../../components/PeopleListPage';
+import PeopleListPage  from  '../faxianPage/PeopleListPage';
 import FAQ from './FAQ';
 import FeedBack from './feedBack';
 import Setting from './setting';
@@ -30,6 +30,7 @@ import TweetPageWrapper from '../tuiwenPage/tweetPage';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
 import UploadFile from '../../utils/uploadFile';
+import { connect } from 'react-redux';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -41,9 +42,10 @@ let formData = new FormData();
 let nowDate = new Date();
 let imgUrl=require('./123.png');
 //console.log(UrluploadPhoto);
-export default class WoPage extends Component{
+ class WoPageP extends Component{
 	constructor(props){
 		super(props);
+        console.log(this.props);
 		this.state={
             token:"e10adc3949ba59abbe56e057f20f883e1",
             notSay:1,
@@ -53,9 +55,13 @@ export default class WoPage extends Component{
 	_back() {
         this.props.navigator.pop();
     }
-    goSupervise(){      
+    goPeopleList(userType){      
         this.props.navigator.push({
-            component: PeopleListPage
+            component: PeopleListPage,
+            params:{
+                userType:userType,
+                userProfile: this.props.userProfile
+            }
         });
     }
     goSetting(){
@@ -196,7 +202,7 @@ export default class WoPage extends Component{
                 <View style={styles.helpInfo}>
                     <View style={styles.helpInfoLeft}>
                         <View style={styles.ihelp}>
-                            <Text onPress={this.goSupervise.bind(this)}>我帮助</Text>
+                            <Text onPress={this.goPeopleList.bind(this,21)}>我帮助</Text>
                         </View>
                         <View style={styles.helpInfoMoney}>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
@@ -204,7 +210,7 @@ export default class WoPage extends Component{
                         </View>
                     </View>
                     <View style={styles.helpInfoRight}>
-                        <Text onPress={this.goSupervise.bind(this)} style={{marginBottom:5}}>帮助我</Text>
+                        <Text onPress={this.goPeopleList.bind(this,20)} style={{marginBottom:5}}>帮助我</Text>
                         <View  style={styles.helpInfoMoney}>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>400元</Text>
@@ -227,11 +233,11 @@ export default class WoPage extends Component{
                         </View>
                         <View style={styles.txtWrapper}>
                             <Text style={styles.tuiwenWrapperTxt}>9000</Text>
-                            <Text  onPress={this.goSupervise.bind(this)} style={styles.txt}>关注</Text>
+                            <Text  onPress={this.goPeopleList.bind(this,10)} style={styles.txt}>关注</Text>
                         </View>
                         <View style={styles.txtWrapper}>
                             <Text style={styles.tuiwenWrapperTxt}>120</Text>
-                            <Text onPress={this.goSupervise.bind(this)} style={styles.txt}>粉丝</Text>
+                            <Text onPress={this.goPeopleList.bind(this,11)} style={styles.txt}>粉丝</Text>
                         </View>                 
                 </View>
 
@@ -288,7 +294,14 @@ export default class WoPage extends Component{
 		);
 	}
 }
-
+function mapStateToProps(state,ownProps){
+    const { userProfile}= state;     
+    return {
+        userProfile:userProfile
+    }
+}
+ const WoPage=connect(mapStateToProps)(WoPageP);
+ export default WoPage;
 let styles=StyleSheet.create({
 	container:{
 		flex:1,

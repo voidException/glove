@@ -15,9 +15,10 @@ import{
 	TextInput
 } from 'react-native';
 import React,{ Component } from 'react';
-/*根据this.props.userType决定是否显示钱数等*/
+
 import UserPage from '../../components/userPage';
-import formTime from '../../utils/formTime';
+import geShiDate from '../../utils/geShiDate';
+
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -30,7 +31,7 @@ export default class PeopleListtItem extends Component{
 			url: this.props.row.userphoto || null,
 			introduce:this.props.row.selfintroduce|| '用户还没有写简介。',
 			usernickname:this.props.row.usernickname ||'无名氏',
-			time:formTime(this.props.row.registerdate) || '2016-9-19'
+			time:geShiDate(this.props.row.registerdate) || '2016-9-19'
 		}
 	}
     goUserPage(){ //把用户所有的数据都传输过去

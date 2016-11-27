@@ -11,7 +11,8 @@ import{
 	ListView,
 	PixelRatio,
 	Platform,
-	Dimensions
+	Dimensions,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import PeopleListItem from './PeopleListItem';
@@ -24,6 +25,7 @@ let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 
+//该页面需要的token等userProfile需要父页面传入
 export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
@@ -32,10 +34,10 @@ export default class PeopleListPage extends Component{
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			tag: 2||this.props.userType, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
+			tag: this.props.userType, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
 			token:this.props.userProfile.items.backupfour,
 			page:1,
-			pageSize:6
+			pageSize:10
 		};
 		this.lastTime='2015-09-01 12:10:01';
 	}
@@ -46,6 +48,7 @@ export default class PeopleListPage extends Component{
 	}
  
     renderRow(row,sectionID){
+    	//console.log(row.userid)
 		return( <PeopleListItem key={row.userid} row={row} {...this.props}/>);
 	}
 
@@ -54,10 +57,10 @@ export default class PeopleListPage extends Component{
 	}
 
     _onRefresh() {
-
+ 
        let url;
        let localTag=this.state.tag;
-       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构排行榜等
+       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { 
        		url=UrlCommomPeopleList;
        }else if (localTag==10) {
        		url=UrlWatchList; //我关注的人
@@ -70,10 +73,10 @@ export default class PeopleListPage extends Component{
        }
 	   let params={
 			token:this.state.token,
-			tag:this.state.tag,
+			tag:this.state.tag,  //在我关注的人，和关注我的人时，没用到这个标志
 			loadMoreTag:1, //refresh 是1
 			page:0,
-			pageSize:5,
+			pageSize:6,
 			lastTime:'2015-09-01 12:10:01'
 		};
 		let options={
@@ -82,17 +85,23 @@ export default class PeopleListPage extends Component{
         };
         let  response=fetchTool(options);
         response.then(resp=>{
+        	 console.log(resp);
             if (resp.retcode===2000) { 
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)
 					});	
+					//console.log(resp.data);
 				//这里要更新this.lastTime 以便loadMore使用	
+				let length=resp.data.length-1;
+				//获取的数据的最后一项的值的时间，注意这里没有格式化时间
+				this.lastTime=resp.data[length].registerdate; 
+                //console.log(this.lastTime)
             }else{
           	    Alert.alert(
-                    '不妙',
+                    '提示...',
                     resp.msg,
                     [
-                        { text:'好的',onPress:() =>console.log('爱心社列表等出错')}
+                        { text:'好的',onPress:()=>this.props.navigator.pop()}
 
                     ]
                 );
@@ -102,9 +111,10 @@ export default class PeopleListPage extends Component{
         });
     }
     _loadMore(){
+
        let url;
-       let localTag=this.state.tag;
-       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构排行榜等
+       let localTag=this.state.tag;  //this.props.userType
+       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构等
        		url=UrlCommomPeopleList;
        }else if (localTag==10) {
        		url=UrlWatchList; //我关注的人
@@ -112,43 +122,58 @@ export default class PeopleListPage extends Component{
        	  url=UrlFansList; //我的粉丝
        }else if (localTag==20) {
           url=UrlHelpMeList; //帮助我的人
-       }else {
+       }else if (localTag==21){
        		url=UrliHelpList; //我帮助的人
        }
+
 	   let params={
 			token:this.state.token,
 			tag:this.state.tag,
 			loadMoreTag:2, //refresh 是1
 			page:0,
-			pageSize:5,
-			lastTime:'2015-09-01 12:10:01'
+			pageSize:4,
+			lastTime:fmDate(this.lastTime), // 对时间进行了格式化
 		};
-		//console.log(userAccount);
-		//发起网络请求
+		//console.log(this.lastTime);
 		let options={
             url:url,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
+       
         response.then(resp=>{
+        	 console.log(resp);
              if (resp.retcode===2000) { 
              	this.setState({
-						dataSource: this.DS.cloneWithRows(resp.data)
+				    dataSource: this.DS.cloneWithRows(resp.data)
 				});
+				//console.log(resp.data);
 				//这里要更新this.lastTime
+				let length=resp.data.length-1;
+				this.lastTime=resp.data[length].registerdate; 
+				//console.log('loadMore')
+                //console.log(this.lastTime)
               }
               else{
               	    Alert.alert(
-                        '不妙',
+                        '提示...',
                         resp.msg,
                         [
-                            { text:'好的',onPress:() =>console.log('爱心社列表等出错')}
+                            { text:'好的',onPress:()=>this.props.navigator.pop()}
 
                         ]
                     );
               }
         }).catch(err=>{
         	console.log(err);
+        	Alert.alert(
+                '出现异常',
+                '稍后再试',
+                [
+                    { text:'好的',onPress:()=>this.props.navigator.pop()}
+
+                ]
+            );
         });
     }
 	render(){
@@ -184,7 +209,8 @@ export default class PeopleListPage extends Component{
 
 let  styles=StyleSheet.create({
 	contain:{
-		flex:1
+		flex:1,
+		backgroundColor:'#ffffff'
 	},
 	header:{
 		flexDirection:'row',

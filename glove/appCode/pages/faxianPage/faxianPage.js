@@ -21,6 +21,7 @@ import React,{ Component } from 'react';
 import Swiper from 'react-native-swiper2';
 import WheelContent  from './findWheelContent';
 import PeopleListPage  from  './PeopleListPage';
+import GongYiPagePeopleList from './gongyiPeopleList';
 import AboutUs from './aboutUs';
 import JoinSupervise from '../components/joinSupervise';
 import WelfareAuth from '../components/welfareAuth';
@@ -54,6 +55,14 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
             }
         });
 	}
+	gogongyiList(){
+		this.props.navigator.push({
+            component: GongYiPagePeopleList,
+            params:{
+            	userProfile:this.props.userProfile
+            }
+        });
+	}
 	goAboutUs(){
 		this.props.navigator.push({
             component: AboutUs
@@ -71,7 +80,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 	}
 
 	render(){
-		let urlone='aaa'
+		//let urlone='aaa'
 		return(
 			<View style={styles.wrapper}>
 				<StatusBar backgroundColor='#3B3738' barStyle="default"/>
@@ -116,7 +125,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}
 				     	<View style={styles.gloveMiddle}>
 					    	<Text onPress={this.goMenList.bind(this,2)} style={styles.loveCubtxt}>大学爱心社</Text>	
-					    	<Text onPress={this.goMenList.bind(this,2)} style={styles.volunteer}>青年志愿者协会</Text>		    	
+					    	<Text onPress={this.goMenList.bind(this,4)} style={styles.volunteer}>青年志愿者协会</Text>		    	
 				    	</View>
 				    {/*<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.gloveImage}/>*/}	    	
 			    </View>
@@ -125,29 +134,17 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 			    <View style={styles.itemWrapperSociety}>
 			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
 			        <View style={styles.shehui}>				        
-					    <Text  onPress={this.goMenList.bind(this,5)} style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
+					    <Text  onPress={this.gogongyiList.bind(this)} style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
 					    <View style={styles.shehuidown}>
 					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已入住300家</Text>
 					    	<Text onPress={this.goWelfareAuth.bind(this)} style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>
 					    </View>
 					</View>	    	
 			    </View>
-                {/*
-				<View style={styles.itemWrapperSociety}>
-			    	
-			        <View style={styles.shehui}>				        
-					    <Text style={{fontSize:16,fontWeight:'bold'}}>虚拟基金</Text>					    
-					    <View style={styles.shehuidown}>
-					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已有300家</Text>
-					    	<Text style={{marginLeft:80, color:'#9D9D9D'}}>立即创办</Text>
-					    </View>
-					</View>	    	
-			    </View>
-			    */}
 
 			    <View style={styles.itemWrapperTop}>
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-			        <TouchableOpacity  onPress={this.goMenList.bind(this,7)}>
+			        <TouchableOpacity  onPress={this.gogongyiList.bind(this,7)}>
 				        <View style={styles.rightWrapper}>
 					    	<Text  style={styles.volunteer}>慈善排行榜</Text>	
 					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
@@ -156,12 +153,12 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 			    </View>
 			    <View style={styles.itemWrapperTop}>
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-			        <TouchableOpacity>
-				        <View style={styles.aboutUsWrapper}>
-					    	<Text onPress={this.goAboutUs.bind(this)} style={styles.volunteer}>关于我们</Text>	
-					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
-				    	</View>	
-			    	</TouchableOpacity>	    	
+			       
+			        <View style={styles.aboutUsWrapper}>
+				    	<Text onPress={this.goAboutUs.bind(this)} style={styles.volunteer}>关于我们</Text>	
+				    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
+			    	</View>	
+			    	  	
 			    </View>
 			    <View  style={styles.sunShine}>
 			    	<Image source={require('./image/sunShine.png')} resizeMode={'cover'} style={{width:40,height:40}}/>

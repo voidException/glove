@@ -11,66 +11,41 @@ import{
 	ListView,
 	PixelRatio,
 	Platform,
-	Dimensions
+	Dimensions,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import PeopleListItem from './PeopleListItem';
-
+import fetchTool from '../../utils/fetchTool';
+import fmDate from '../../utils/fmDate';
+import {UrligongyiList} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 
-let DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
-export default class PeopleListPage extends Component{
+export default class GongYiPeopleList extends Component{
 	constructor(props){
 		super(props);
-
+		//console.log(this.props);
+        this.DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 		this.state={
-			dataSource:DS.cloneWithRows([]),
+			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			page:1,
-			pageSize:6
-		}
+			tag: 2, //对应于tobeuseone，1表明未捐钱 2捐钱了 
+		};
+		this.money=1;
 	}
 
     componentDidMount(){
-    	//根据props传过来的tag 确定是什么列表，然后调用不同的接口
-    	//
-		fetch('http://127.0.0.1:8080/glove/peoplelist/lsmen',{
-			method:'POST',
-			headers:{
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				'proof':'eee',
-			    'tag':1,
-			    'page':0,
-			    'pageSize':3
-			})
-       })
-	   .then(response=>response.json())
-	   .then(json=>this.getJson(json))
-	   .catch(function(e){
-	   		console.log(e);
-	   		console.log('people列表获取出错');
-	   })
-	   
+
+	    this._onRefresh(); 
 	}
-    getJson(json){
-    	console.log(json);
-     	this.setState({
-		 	dataSource: DS.cloneWithRows(json.lp)
-		 });
-    }
-
-
+ 
     renderRow(row,sectionID){
-		//console.log(row)
-		//根据props传过来的tag 确定是什么列表，然后调用不同的Item
-		return( <PeopleListItem  row={row} {...this.props}/>);
+    	//console.log(row.userid)
+		return( <PeopleListItem key={row.userid} row={row} {...this.props}/>);
 	}
 
 	back(){
@@ -78,13 +53,91 @@ export default class PeopleListPage extends Component{
 	}
 
     _onRefresh() {
-    	
+	   let params={
+			token:'', //后台没有用到
+			tag:this.state.tag,
+			loadMoreTag:1, //refresh 是1
+			page:0,
+			pageSize:10,
+			money:this.money
+		};
+		let options={
+            url:UrligongyiList,
+            body: JSON.stringify(params)
+        };
+        let  response=fetchTool(options);
+        response.then(resp=>{
+            if (resp.retcode===2000) { 
+                    this.setState({
+						dataSource: this.DS.cloneWithRows(resp.data)
+					});	
+					console.log(resp.data);
+				//这里要更新this.money 以便loadMore使用	
+				let length=resp.data.length-1;
+				this.money=resp.data[length].userdonate; //获取的数据的最后一项的值钱数
+                
+            }else{
+          	    Alert.alert(
+                    '嗯...',
+                    resp.msg,
+                    [
+                        { text:'好的'}
+
+                    ]
+                );
+              }
+        }).catch(err=>{
+
+        });
+    }
+    _loadMore(){
+  
+	   let params={
+			token:this.state.token,
+			tag:this.state.tag,
+			loadMoreTag:2, //refresh 是1
+			page:0,
+			pageSize:10,
+			money:this.money,
+		};
+		//console.log(this.lastTime);
+		let options={
+            url:UrligongyiList,
+            body: JSON.stringify(params)
+        };
+        let  response=fetchTool(options);
+       
+        response.then(resp=>{
+        	
+             if (resp.retcode===2000) { 
+             	this.setState({
+				    dataSource: this.DS.cloneWithRows(resp.data)
+				});
+				//console.log(resp.data);
+				//这里要更新this.money
+				let length=resp.data.length-1;
+				this.money=resp.data[length].userdonate; 
+              }
+              else{
+              	    Alert.alert(
+                        '嗯...',
+                        resp.msg,
+                        [
+                            { text:'好的'}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+        	console.log(err);
+        });
     }
 	render(){
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
+					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:16}}>返回</Text>
+					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:16}}>下一页</Text>
 				</View>
 			   	<ListView 
 			    	refreshControl={
@@ -122,7 +175,7 @@ let  styles=StyleSheet.create({
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
-        justifyContent:'flex-start',
+        justifyContent:'space-between',
         backgroundColor:'#43AC43',
         paddingLeft:10,
         paddingRight:10
