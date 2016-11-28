@@ -24,7 +24,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-
+//这个是查看我帮助的人和帮助我的界面
 //该页面需要的token等userProfile需要父页面传入，查看我帮助的人或者帮助我的人
 export default class HelpListPage extends Component{
 	constructor(props){
@@ -56,7 +56,7 @@ export default class HelpListPage extends Component{
 	}
 
     _onRefresh() {
- 
+       
        let url;
        let localTag=this.state.userType;
        if (localTag==20) { 
@@ -78,7 +78,7 @@ export default class HelpListPage extends Component{
         };
         let  response=fetchTool(options);
         response.then(resp=>{
-        	 console.log(resp);
+        	 //console.log(resp);
             if (resp.retcode===2000) { 
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)
@@ -128,7 +128,7 @@ export default class HelpListPage extends Component{
         let  response=fetchTool(options);
        
         response.then(resp=>{
-        	 console.log(resp);
+        	 //console.log(resp);
              if (resp.retcode===2000) { 
              	this.setState({
 				    dataSource: this.DS.cloneWithRows(resp.data)

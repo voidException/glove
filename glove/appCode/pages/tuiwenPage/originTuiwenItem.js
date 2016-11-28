@@ -21,7 +21,6 @@ let {width,height}=Dimensions.get('window');
 export default class OriginTuiwenItem extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props.row)
 		this.state={
 			photoupload:this.props.row.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.selfintroduce ||'什么也没有介绍自己',
@@ -59,18 +58,22 @@ export default class OriginTuiwenItem extends Component{
 	}
 
 	goOtherWoPage(){
-		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
+		//这个必须知道昵称，然后传递给OtherWoPage
 		this.props.navigator.push({
-			component:UserPage
+			component:UserPage,
+			params:{
+				userID:this.state.useridtweet,
+				userNickName:this.state.usernickname
+			}//注意从weiboItem.js中也必须采用完全一样的形式
 		});
 	}
 	//函数根绝props中的值，传递给下一个页面
-	goTuiwenContent(){
-		
+	goTuiwenContent(){		
 		this.props.navigator.push({
-			component:TuiwenContent,
+			component:OriginTuiwenContent,
 			params:{
-				row:this.props.row
+				row:this.props.row , //这里的数据只是zhuanfa的数据
+				userProfile:this.props.userProfile
 			}
 		});
 	}
@@ -78,23 +81,19 @@ export default class OriginTuiwenItem extends Component{
 		//这里实现举报次数增加
 	}
 	goBeatRenMainPage(url){
-		//console.log(url);//成功了，哈哈
-		// //在这里把url(用户昵称)传递给主页
+		if(url.indexOf('instagram')>=0){
+			return
+		}
 		this.props.navigator.push({
 			component:UserPage,
 			params:{
-				nickname:url
-			}
+				userNickName:url
+			}//与weiboItem.js保持一致，与上面的goOtherWoPage保持一致，都是昵称
 		});
 	}
 	render(){
-		//确保渲染前的每一个数据域都有值，否则会出现错误
-		//let row=this.props.row;
-		//console.log(row)
-		return(
-			
+		return(			
 			<View style={styles.container}>
-
 			   {/*推文内容*/}	
 				<TouchableOpacity onPress={this.goTuiwenContent.bind(this)}>			
 					<View style={styles.upContent}>
@@ -137,8 +136,7 @@ export default class OriginTuiwenItem extends Component{
 		       			</View>
 		       	    </View>
 		       	    : null
-	       		}
-			   			
+	       		}			   			
 			</View>
 		);
 	}

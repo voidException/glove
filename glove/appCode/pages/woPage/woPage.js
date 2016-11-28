@@ -1,5 +1,4 @@
 //该页面是5大页面的容器，
-
 import{
 	AppRegistry,
 	StyleSheet,
@@ -18,7 +17,6 @@ import{
     Alert
 } from 'react-native';
 import React,{Component} from 'react';
-//let backBtnImg = require('./image/bar_btn_back_ico.png');
 import PeopleListPage  from  '../faxianPage/PeopleListPage';
 import HelpListPage  from  '../faxianPage/helpListPage';
 import FAQ from './FAQ';
@@ -32,23 +30,22 @@ import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
 import UploadFile from '../../utils/uploadFile';
 import { connect } from 'react-redux';
+
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-
 let ImagePicker = require('react-native-image-picker');
 let formData = new FormData();
 let nowDate = new Date();
 let imgUrl=require('./123.png');
-//console.log(UrluploadPhoto);
+
  class WoPageP extends Component{
 	constructor(props){
 		super(props);
-        console.log(this.props);
 		this.state={
-            token:"e10adc3949ba59abbe56e057f20f883e1",
+            token:this.props.userProfile.items.backupfour,
             notSay:1,
             imgOneUrl:imgUrl,
         }
@@ -61,7 +58,7 @@ let imgUrl=require('./123.png');
             component: PeopleListPage,
             params:{
                 userType:userType,
-                userProfile: this.props.userProfile
+                userProfile:this.props.userProfile
             }
         });
     }
@@ -111,8 +108,7 @@ let imgUrl=require('./123.png');
             }
         };
         ImagePicker.showImagePicker(options, (response) => {
-              
-              //console.log(response);
+
             if (response.didCancel) {
                   console.log('User cancelled image picker');
             }else if (response.error) {
@@ -120,22 +116,21 @@ let imgUrl=require('./123.png');
             }else if (response.customButton) {
                   console.log('User tapped custom button:',response.customButton);
             }else{
-                   let uri = response.uri;
-                   console.log(uri)
-                    if(uri.indexOf('file://') < 0){
-                        uri = 'file://' + uri;
-                    }else{
-                        uri = uri.replace('file://', '')
-                    }           
-                    formData.append("photo", {uri: uri, type: 'image/jpeg',name:'photo'});
-                    formData.append("token",this.state.token); 
-                    formData.append("notSay",this.state.notSay);  
-                    this.doCommit();  
-                }               
+               let uri = response.uri;
+               console.log(uri)
+                if(uri.indexOf('file://') < 0){
+                    uri = 'file://' + uri;
+                }else{
+                    uri = uri.replace('file://', '')
+                }           
+                formData.append("photo", {uri: uri, type: 'image/jpeg',name:'photo'});
+                formData.append("token",this.state.token); 
+                formData.append("notSay",this.state.notSay);  
+                this.doCommit();  
+            }               
         }); 
     }
-    doCommit(){
-        
+    doCommit(){       
         let option={
             url:UrluploadPhoto,
             body:formData
@@ -170,12 +165,11 @@ let imgUrl=require('./123.png');
         });                               
 
     }
-    goTweetList(){
-        
+    goTweetList(){       
         this.props.navigator.push({
             component:TweetPageWrapper,
             params:{
-                token:this.props.token ||"e10adc3949ba59abbe56e057f20f883e1" ,
+                userProfile:this.props.userProfile
             }
         });
     }
@@ -198,17 +192,8 @@ let imgUrl=require('./123.png');
 	                	    <Text style={styles.nickName}>小神经很Ok</Text>
 	                		<Text>这个家伙的业余产品，想拯救世界</Text>
 	                	</View>
-                	</View>
-                   {/*
-                    <View style={styles.topRight}>
-                        <Text>已认证</Text>
-                        <Image source={require('./image/setImg.png')} style={styles.setImage} />
-                    </View>
-                   */}
-                    
-                </View>
-
-              
+                	</View>                    
+                </View>             
                 <View style={styles.helpInfo}>
                     <View style={styles.helpInfoLeft}>
                         <View style={styles.ihelp}>
@@ -235,8 +220,7 @@ let imgUrl=require('./123.png');
                         </View>
                         <View style={styles.loveRight}></View>                
                 </View>
-                <View style={styles.tuiwenWrapper}>
-                    
+                <View style={styles.tuiwenWrapper}>                 
                         <View style={styles.txtWrapper}>
                             <Text style={styles.tuiwenWrapperTxt}>100</Text>
                             <Text onPress={this.goTweetList.bind(this)}  style={styles.txt}>推文</Text>                           
@@ -250,31 +234,6 @@ let imgUrl=require('./123.png');
                             <Text onPress={this.goPeopleList.bind(this,11)} style={styles.txt}>粉丝</Text>
                         </View>                 
                 </View>
-             {/*
-                <View style={styles.itenInfoWrapper}>
-                    
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>100</Text>
-                            <Text style={styles.txt}>发起的项目</Text>                           
-                        </View>
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>9000</Text>
-                            <Text style={styles.txt}>参与的项目</Text>
-                        </View>
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>120</Text>
-                            <Text style={styles.txt}>关注的项目</Text>
-                        </View>                 
-                </View>
-             */}
-               
-            {/*
-                <View style={styles.fundWrapper}>                  
-                    <Image source={require('./image/personal_navibar_icon_message.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text style={styles.texts}>加入的基金</Text>
-                    <View style={{width:40}}></View>
-                </View>
-            */}
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/zhifubao_btn.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
                     <Text  onPress={this.goPersonVerify.bind(this)} style={styles.texts}>去认证</Text>
@@ -309,6 +268,7 @@ function mapStateToProps(state,ownProps){
 }
  const WoPage=connect(mapStateToProps)(WoPageP);
  export default WoPage;
+
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
@@ -481,18 +441,10 @@ let styles=StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
-        //marginTop:10,
-        //marginRight:7,
         borderBottomWidth:1/ratio,
-        //borderBottomColor:'#F9F9F9',
-        //borderTopColor:'#F9F9F9',
         backgroundColor:'#ffffff'
     },
      fundWrapper:{
-        //borderTopWidth:1/ratio,
-        //borderTopColor:'#9D9D9D',
-        //borderBottomWidth:1/ratio,
-        //borderBottomColor:'#9D9D9D',
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
@@ -503,8 +455,6 @@ let styles=StyleSheet.create({
     itemWrapper:{
         borderTopWidth:1/ratio,
         borderTopColor:'#9D9D9D',
-        //borderBottomWidth:1/ratio,
-        //borderBottomColor:'#9D9D9D',
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
@@ -515,8 +465,6 @@ let styles=StyleSheet.create({
     itemWrapperDonate:{
         borderTopWidth:1/ratio,
         borderTopColor:'#9D9D9D',
-        //borderBottomWidth:1/ratio,
-        //borderBottomColor:'#9D9D9D',
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',

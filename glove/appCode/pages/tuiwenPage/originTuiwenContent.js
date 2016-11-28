@@ -16,7 +16,6 @@ import{
 	Dimensions
 } from 'react-native';
 import React,{Component} from 'react';
-//import ZhuanfaPageWrapper from './zhuanfaPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
@@ -35,7 +34,7 @@ let height=Dimensions.get('window').height;
 export default class OriginTuiwenContent extends Component{
 	constructor(props){
 		super(props);
-		console.log(this.props);
+		//console.log(this.props);
 		this.state={
 			photoupload:this.props.row.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.selfintroduce ||'什么也没有介绍自己',
@@ -64,26 +63,32 @@ export default class OriginTuiwenContent extends Component{
 		}		
 	}
 	componentDidMount(){
-		fetch('http://127.0.0.1:8080/glove/cash/getcashrecord',{
-			method:'POST',
-			headers:{
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-			    "proof" :"111",
-			    "cashid": this.props.row.tweet.tweetbackupfive
-			})
-       })
-	   .then(response=>response.json())
-	   .then(json=>this.getJson(json))
-	   .catch(function(e){
-	   		console.log(e)
-	   })
-
-	}
-	getJson(json){
-	    //console.log(json);		
+		//console.log(this.props);
+		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweet.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
+			let params={
+	       		proof:"111",
+	       		cashid:this.props.row.tuiwen.tweet.tweetbackupfive
+	        };
+		   	let options={
+		        url:UrlCashRecord,
+		        body: JSON.stringify(params)
+		    }; 
+		
+	        let response=fetchTool(options);
+	        response.then(resp=>{
+	             if (resp.retcode===2000) {
+	              	  this.getJson(resp.data);
+	              }
+	        }).catch(err=>{
+	        	console.log('获取cashNeed 失败');
+	        });
+	    }//if	
+        let  finalPublishTime=fmDate(this.props.row.tuiwen.tweet.publishtime);
+        this.setState({
+      	    publishtime:finalPublishTime
+        });
+	}//componentDidMount
+	getJson(json){		
 		this.setState({
 			cash:json
 		});
@@ -92,11 +97,14 @@ export default class OriginTuiwenContent extends Component{
 		this.props.navigator.pop();
 	}
 
-	goOtherWoPage(){
-		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
+	goOtherWoPage(){ //点击头像进入UserPage
+		//这个必须知道昵称，然后传递给OtherWoPage
 		this.props.navigator.push({
-			component:OtherWoPage,
-
+			component:UserPage,
+			params:{
+				userID:this.state.useridtweet,
+				userNickName:this.state.usernickname
+			}//注意从originTuiwenItem.js中也必须采用完全一样的形式
 		});
 	}
 	doComment(){
@@ -127,13 +135,14 @@ export default class OriginTuiwenContent extends Component{
 		//console.log('aa');
 	}
 	goBeatRenMainPage(url){
-		//console.log(url);//成功了，哈哈
-		// //在这里把url(用户昵称)传递给主页
+		if(url.indexOf('instagram')>=0){
+			return
+		}
 		this.props.navigator.push({
-			component:OtherWoPage,
+			component:UserPage,
 			params:{
-				nickname:url
-			}
+				userNickName:url
+			}//注意userNickName必须与goOtherWoPage中保持一致
 		});
 	}
 	render(){

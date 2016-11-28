@@ -1,4 +1,4 @@
-//由于从tweetPage  weiboPage tuiwenpage进入的页面共用weiboContent，所以这里获取用户的userProfile
+//tweetPage  weiboPage tuiwenpage进入的页面共用weiboContent，
 import{
 	StyleSheet,
 	Text,
@@ -16,7 +16,6 @@ import{
 	Alert
 } from 'react-native';
 import React,{Component} from 'react';
-//import ZhuanfaPageWrapper from './zhuanfaPage';
 import UserPage from '../../components/userPage';
 import WoPage from '../woPage/woPage';
 import AutoLink from 'react-native-autolink';
@@ -40,7 +39,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-class WeiBoContentP extends Component{
+ export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -85,8 +84,6 @@ class WeiBoContentP extends Component{
 		
 	        let response=fetchTool(options);
 	        response.then(resp=>{
-	        	 //console.log(UrlCashRecord);
-	        	 //console.log(resp);
 	             if (resp.retcode===2000) {
 	              	  this.getJson(resp.data);
 	              }
@@ -100,8 +97,7 @@ class WeiBoContentP extends Component{
       });
 
 	}//componentDidMount
-	getJson(json){
-	    //console.log(json);		
+	getJson(json){		
 		this.setState({
 			cash:json
 		});
@@ -110,11 +106,14 @@ class WeiBoContentP extends Component{
 		this.props.navigator.pop();
 	}
 
-	goOtherWoPage(){
-		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
+	goOtherWoPage(){ //点击头像进入UserPage
+		//这个必须知道昵称，然后传递给OtherWoPage
 		this.props.navigator.push({
 			component:UserPage,
-
+			params:{
+				userID:this.state.useridtweet,
+				userNickName:this.state.usernickname
+			}//注意从originTuiwenItem.js中也必须采用完全一样的形式
 		});
 	}
 	doComment(){
@@ -179,16 +178,18 @@ class WeiBoContentP extends Component{
 		//这里实现举报次数增加
 	}
 	imageError(err){
-		//console.log('aa');
+		
 	}
 	goBeatRenMainPage(url){
-		//console.log(url);//成功了，哈哈
-		// //在这里把url(用户昵称)传递给主页
+		if(url.indexOf('instagram')>=0){
+			return
+		}
+		// 在这里把url(用户昵称)传递给主页
 		this.props.navigator.push({
 			component:UserPage,
 			params:{
-				nickname:url
-			}
+				userNickName:url
+			}//注意userNickName必须与goOtherWoPage中保持一致
 		});
 	}
 	deleteMe(){
@@ -303,7 +304,6 @@ class WeiBoContentP extends Component{
 			       			   } 
 			       			</View>
 			       			<View style={styles.imageWrapper}>
-			       			   {/*  <Image source={{uri:this.state.tweetbackupfour}} style={styles.imageListImg} /> */}
 			       			   { this.state.videoaddress !==null ?
 				       			   <Image source={{uri:this.state.videoaddress}} onLoadEnd={this.imageError.bind(this)} style={styles.imageListImg} /> 	
 				       			   :null
@@ -315,7 +315,7 @@ class WeiBoContentP extends Component{
 
 					{
 						this.state.tagid===2 ? 
-						<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>
+						<OriginTuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator} userProfile={this.props.userProfile}/>
 						: null
 					}
 				    {/* 证明有关的信息; affirm.js中我要证实，需要toke，所以传过去userProfile*/}
@@ -360,19 +360,6 @@ class WeiBoContentP extends Component{
 	}
 }
 
-function mapStateToProps(state,ownProps){
-
-	//这里的state就是store里面的各种键值对,store是个外壳
-	//在这个函数中，应该从store中取出所有需要的state，向下传递
-	const { userProfile}= state;	 
-	return {
-		userProfile:userProfile
-
-	}
-}
- const WeiBoContent=connect(mapStateToProps)(WeiBoContentP);
- export default WeiBoContent;
-
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
@@ -380,7 +367,6 @@ let styles=StyleSheet.create({
 	},
 	bottomWrapper:{
 		height:60,
-		//backgroundColor:'#F9F9F9',
 		borderBottomWidth:1/ratio,
 		borderTopWidth:1/ratio,
 		borderBottomColor:'#BEBEBE',
@@ -392,7 +378,6 @@ let styles=StyleSheet.create({
 	},
 	bottomItem:{
 		flexDirection:'column',
-		//alignItems:'center',
 	},
 	endTime:{
 		flexDirection:'row',
@@ -432,7 +417,6 @@ let styles=StyleSheet.create({
 		flexDirection:'row',
 		alignItems:'center',
 		justifyContent:'space-between',
-
 	},
 	returnButton:{
 		flexDirection:'row',
@@ -484,9 +468,7 @@ let styles=StyleSheet.create({
 		position:'absolute',
 		width:width,
 		bottom:0,
-		//flexDirection:'row',
 		justifyContent:'space-around',
-		//alignItems:'center',
 		height:95,
 		backgroundColor:'#FFFFFF'
 	},
@@ -529,8 +511,7 @@ let styles=StyleSheet.create({
 		justifyContent:'flex-start',
 		paddingTop:10,
 		paddingLeft:5,
-		paddingRight:5,
-		//backgroundColor:'#F7F7F7',			
+		paddingRight:5,			
 	},
 	nicknameWrapper:{
 		flexDirection:'row',

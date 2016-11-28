@@ -38,8 +38,8 @@ class TuiWenPage extends Component{
 		this.state={
 			dataSource: this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			page:1,
-			pageSize:6,
+			token:this.props.userProfile.items.backupfour,
+			//pageSize:6,
 			visible:false
 		};
 		//console.log(this.props)
@@ -48,9 +48,9 @@ class TuiWenPage extends Component{
 		//console.log(this.props.symbol);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
 		let requestParams={
-			token:this.props.token,
+			token:this.state.token,
 			page:0,
-			pageSize:2,
+			pageSize:10,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime,   //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 			flag:1,
@@ -100,16 +100,14 @@ class TuiWenPage extends Component{
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
 		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
-		
-		//return( <TweetItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
 	}
 
 	_onRefresh() {
 		
 		let requestParams={
-			token:this.props.token,
+			token:this.state.token,
 			page:0,
-			pageSize:4,
+			pageSize:10,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime , //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 			flag:1, //1代表刷新，2代表loadMore
@@ -124,7 +122,7 @@ class TuiWenPage extends Component{
         //symbol 在前端影响路由，后端影响是查看自己发布的还是别人发布的
 
     	let requestParams={
-			token:this.props.token,
+			token:this.state.token,
 			page:0,
 			pageSize:10,
 			lastUpdate:lastUpdateTime,
@@ -146,7 +144,6 @@ class TuiWenPage extends Component{
     	})
     }
 	render(){
-		//console.log(this.state.dataSource)
 		return(
 			<View style={styles.container}> 
 				<View style={{ flexDirection:'row',backgroundColor:'#43AC43',height:60,paddingTop:24, paddingLeft:15,paddingRight:15,justifyContent:'center',alignItems:'center'}}>
@@ -186,11 +183,8 @@ function mapStateToProps(state,ownProps){
 	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
 	const { userProfile,tuiwenList }= state;	 
-
 	return {
 		userProfile:userProfile,
-		token:userProfile.items.backupfour,
-		userid:userProfile.items.userid,
 		weiboList:tuiwenList
 	}
 }

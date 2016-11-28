@@ -1,5 +1,4 @@
-//该页面是5大页面的容器，
-
+//此页面为进入对方的主页面
 import{
     AppRegistry,
     StyleSheet,
@@ -17,8 +16,6 @@ import{
     Platform
 } from 'react-native';
 import React,{Component} from 'react';
-// let backBtnImg = require('../imgs/bar_btn_back_ico.png');
-// let rightBtn=require('../imgs/right_btn.png');
 import WeiBoPageWrapper from '../pages/tuiwenPage/weiboPage';
 import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile} from '../utils/url';
 import fetchTool from '../utils/fetchTool';
@@ -31,7 +28,6 @@ let height=Dimensions.get('window').height;
 export default class UserPage extends Component{
     constructor(props){
         super(props);
-        //console.log(this.props.data);
         if (!!this.props.data) {
             this.state={
                 token:"e10adc3949ba59abbe56e057f20f883e1",
@@ -103,9 +99,9 @@ export default class UserPage extends Component{
        }//if
     }//constructor
     componentDidMount(){
-        //console.log(this.props);
+        //如果数据只传递过来nickname,那么需要网络获取user信息
         let formData = new FormData();
-        formData.append("nickname",this.props.nickname); 
+        formData.append("nickname",this.props.userNickName); 
         let option={
             url:UrlByAtgetUserProfile,
             body:formData
@@ -113,7 +109,7 @@ export default class UserPage extends Component{
         let response=UploadFile(option);
         response.then(resp=>{
             if (resp.retcode===2000) {
-                console.log(resp);
+                //console.log(resp);
                 this.setState({
                     mainOrmore:2, 
                     usertype:resp.data.usertype,
@@ -179,16 +175,46 @@ export default class UserPage extends Component{
             userIDFollow:this.state.userIDFollow,
             userIDBeFocus:this.state.userIDBeFocus
         };
-        //console.log(userAccount);
-        //发起网络请求
         let options={
             url:UrldoWatch,
             body: JSON.stringify(watchData)
         };
-        //显示转圈圈
-        // this.setState({
-        //     visible:true
-        // });
+        let  response=fetchTool(options);
+        response.then(resp=>{
+              //停止转圈圈
+              this.setState({
+                visible:false
+              });
+             if (resp.retcode===2000) {
+                  
+              }else{
+                    Alert.alert(
+                        '出错了',
+                        resp.msg,
+                        [
+                            { text:'好的',onPress:() =>console.log('关注出错了')}
+
+                        ]
+                    );
+              }
+        }).catch(err=>{
+            //停止转圈圈
+            this.setState({
+                visible:false
+            });
+
+        });
+    }
+    cancelWatch(){
+        let cancelWatchData={
+            token:this.state.token,
+            beCancel:2
+        };
+        //发起网络请求
+        let options={
+            url:UrlcancelWatch,
+            body: JSON.stringify(cancelWatchData)
+        };
         let  response=fetchTool(options);
         response.then(resp=>{
               //停止转圈圈
@@ -216,54 +242,11 @@ export default class UserPage extends Component{
 
         });
     }
-    cancelWatch(){
-        let cancelWatchData={
-            token:this.state.token,
-            beCancel:2
-        };
-        //console.log(userAccount);
-        //发起网络请求
-        let options={
-            url:UrlcancelWatch,
-            body: JSON.stringify(cancelWatchData)
-        };
-        //显示转圈圈
-        // this.setState({
-        //     visible:true
-        // });
-        let  response=fetchTool(options);
-        response.then(resp=>{
-              //停止转圈圈
-              this.setState({
-                visible:false
-              });
-              console.log(resp)
-             if (resp.retcode===2000) {
-                  
-              }else{
-                    Alert.alert(
-                        '出错了',
-                        resp.msg,
-                        [
-                            { text:'好的',onPress:() =>console.log('关注出错了')}
-
-                        ]
-                    );
-              }
-        }).catch(err=>{
-            //停止转圈圈
-            this.setState({
-                visible:false
-            });
-
-        });
-    }
-    goWeiBoList(){
-        
+    goWeiBoList(){  //这里应该把完整的userProfile传递过去      
         this.props.navigator.push({
             component:WeiBoPageWrapper,
             params:{
-                token:this.props.token ||"e10adc3949ba59abbe56e057f20f883e1" ,
+                userProfile:this.props.data
             }
         });
     }
@@ -401,18 +384,13 @@ let styles=StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        //backgroundColor:'#69B94C'
     },
     head: {
         flexDirection:'row',
         height: 40+statusBarHeight,
         paddingTop: statusBarHeight,
-        //width:width,    
-        // borderBottomWidth:1/ratio,
-        // borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'flex-start',
-        //backgroundColor:'#69B94C'
     },
     headimg:{
         height:14,
@@ -421,7 +399,6 @@ let styles=StyleSheet.create({
     userPhotoWrapper:{
         flexDirection:'row',
         justifyContent:'center',
-
     },
     userPhoto:{
         width:70,
@@ -512,14 +489,10 @@ let styles=StyleSheet.create({
         paddingLeft:20,
         alignItems:'center',
         justifyContent:'flex-start',
-        
-        //borderTopWidth:1/ratio,
         backgroundColor:'#EBFAEE',
         height:40,
         width:width
-
     }
-
 });
 
 

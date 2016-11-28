@@ -16,13 +16,12 @@ import WeiBoContent from './weiboContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
 import OriginTuiwenItem from './originTuiwenItem';
-
 let {width,height}=Dimensions.get('window');
 
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props.row);
+		//console.log(this.props);
 		this.state={
 			photoupload:this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
@@ -50,12 +49,12 @@ export default class WeiBoItem extends Component{
 		}
 	}
 	componentWillMount(){
+		//此处是格式化时间用的。
 		let timeNeedHandle=this.props.row.tuiwen.tweet.publishtime;
 		var date = new Date(timeNeedHandle);
 		Y = date.getFullYear() + '-';
 		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
 		D = date.getDate() + ' ';
-		//console.log(Y+M+D)
 		let itemEndTime=Y+M+D;
 		this.setState({
 			publishtime:itemEndTime
@@ -68,21 +67,23 @@ export default class WeiBoItem extends Component{
 	}
 
 
-	goOtherWoPage(){
-		//这个必须知道昵称，然后传递给OtherWoPage，涉及到refs的使用
+	goOtherWoPage(){ //点击头像进入UserPage
+		//这个必须知道昵称，然后传递给OtherWoPage
 		this.props.navigator.push({
 			component:UserPage,
-
+			params:{
+				userID:this.state.useridtweet,
+				userNickName:this.state.usernickname
+			}//注意从originTuiwenItem.js中也必须采用完全一样的形式
 		});
 	}
 	//函数根绝props中的值，传递给下一个页面
-
 	goWeiBoContent(){
 		this.props.navigator.push({
 			component:WeiBoContent,
 			params:{
-				row:this.props.row,
-				symbol:this.props.symbol
+				row:this.props.row,  //完整的数据包括原创和转发
+				userProfile:this.props.userProfile, //
 			}
 		});
 	}
@@ -93,31 +94,25 @@ export default class WeiBoItem extends Component{
 		//console.log('aa');
 	}
 	goBeatRenMainPage(url){
-
 		if(url.indexOf('instagram')>=0){
 			return
 		}
-		// //在这里把url(用户昵称)传递给主页
+		// 在这里把url(用户昵称)传递给主页
 		this.props.navigator.push({
 			component:UserPage,
 			params:{
-				nickname:url
-			}
+				userNickName:url
+			}//注意userNickName必须与goOtherWoPage中保持一致
 		});
 	}
 	render(){
-		//确保渲染前的每一个数据域都有值，否则会出现错误
-		//let row=this.props.row;
-		//console.log(row)
-		return(
-			
-			<View style={{flex:1 }}>
-								
+		return(			
+			<View style={{flex:1 }}>								
 				<View style={styles.headerWrapper}>
 					<View  style={styles.header}>
 						<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>						
 							{	
-								 this.state.photoupload ===1 ?
+								this.state.photoupload ===1 ?
 								  <Image source={require('../../image/default.jpg')} style={styles.image}/>
 								: <Image source={{uri:this.state.userphoto}} resizeMode={'contain'} style={styles.image}/>	
 							}
@@ -160,7 +155,6 @@ export default class WeiBoItem extends Component{
 		       			   } 
 		       			</View>
 		       			<View style={styles.imageWrapper}>
-		       			   {/*  <Image source={{uri:this.state.tweetbackupfour}} style={styles.imageListImg} /> */}
 		       			   { this.state.videoaddress !==null ?
 			       			   <Image source={{uri:this.state.videoaddress}} onLoadEnd={this.imageError.bind(this)} style={styles.imageListImg} /> 	
 			       			   :null
@@ -172,7 +166,7 @@ export default class WeiBoItem extends Component{
                 {/*直接从父组件取得转发部分的数据*/}
 				{
 					this.state.tagid===2 ? 
-					<TuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}/>
+					<OriginTuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator}  userProfile={this.props.userProfile}/>
 					: null
 				}
 				{
@@ -223,8 +217,7 @@ let styles=StyleSheet.create({
 		justifyContent:'flex-start',
 		paddingTop:10,
 		paddingLeft:5,
-		paddingRight:5,
-		//backgroundColor:'#F7F7F7',			
+		paddingRight:5,			
 	},
 	nicknameWrapper:{
 		flexDirection:'row',
@@ -275,25 +268,22 @@ let styles=StyleSheet.create({
 		lineHeight:18
     },
 	bottomWrapper:{
-	height:40,
-	backgroundColor:'#F9F9F9',
-	//borderBottomWidth:1,
-	marginTop:5,
-	flexDirection:'row',
-	justifyContent:'space-around',
-	alignItems:'center'
+		height:40,
+		backgroundColor:'#F9F9F9',
+		marginTop:5,
+		flexDirection:'row',
+		justifyContent:'space-around',
+		alignItems:'center'
 	},
 	bottomItem:{
 		flexDirection:'row',
 		alignItems:'center',
-
 	},
 	bottomico:{
 		height:15,
 		width:15
 	},
 	txt:{
-		// color:'#7D7D7D'
 		color:'red'
 	},
 	promise:{
@@ -305,7 +295,6 @@ let styles=StyleSheet.create({
 		height:60,
 		width:60
 	}
-
 });
 
 
