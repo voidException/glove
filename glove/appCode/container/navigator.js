@@ -39,7 +39,6 @@ import Affirm  from '../pages/components/affirm';
 import PublishTuiwen from  '../pages/components/publishTuiwen';
 import PostAffirm from '../pages/components/postAffirm';
 import AffirmListItem from '../pages/components/affirmListItem';
-import SuperviseListItem from '../components/SuperviseListItem';
 import UserPage from '../components/userPage';
 import ListViewBasics from './listviewSection';
 import CarList from './carList';

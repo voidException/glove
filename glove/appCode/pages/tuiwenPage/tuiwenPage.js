@@ -1,5 +1,4 @@
-//改页面适合查看
-
+//改页面适合查看主页中的推文
 import{
 	StyleSheet,
 	Text,

@@ -28,50 +28,51 @@ let height=Dimensions.get('window').height;
 export default class UserPage extends Component{
     constructor(props){
         super(props);
-        if (!!this.props.data) {
+        //console.log(this.props)
+        if (this.props.diffTag===88) { //88表明传过来的就是userProfile
+            //将如下值传递给weiboListPage等
+            this.userProfile=this.props.userProfile; 
             this.state={
-                token:"e10adc3949ba59abbe56e057f20f883e1",
+                userid:this.props.userProfile.userid||null, //在这里面不能用token
                 notSay:1, //1默认可以发表
                 mainOrmore:2, 
-                usertype:this.props.data.usertype ||1,
-                usertag:this.props.data.usertag ||1,
-                userphoto:this.props.data.userphoto,
-                usernickname:this.props.data.usernickname ||'无名氏',
-                userid:this.props.data.userid||0,
-                userhelpsman:this.props.data.userhelpsman ||0,
-                userdonate:this.props.data.userdonate ||0,
-                acceptmoney:this.props.data.acceptmoney ||0, //用户接受到的捐钱总数
-                amountaccept:this.props.data.amountaccept ||0, //帮助用户人的数量
-                useremail:this.props.data.useremail||null,
-                university:this.props.data.university ||null,
-                sex:this.props.data.sex ||0,
-                selfintroduce:this.props.data.selfintroduce ||'暂无简介',
-                registerdate:this.props.data.registerdate ||null,
-                photoupload:this.props.data.photoupload,
-                msgpubcount:this.props.data.msgpubcount ||0,
-                followcount:this.props.data.followcount ||0,
-                fanscount:this.props.data.fanscount ||0,
-                country:this.props.data.country ||'无',
-                company:this.props.data.company ||'中国',
-                address:this.props.data.address ||null,
-                certificatetype:this.props.data.certificatetype ||0,
-                behelptime:this.props.data.behelptime ||null,
-                backupone:this.props.data.backupone ||null,
-                backupthree:this.props.data.backupthree ||null,
+                usertype:this.props.userProfile.usertype ||1,
+                usertag:this.props.userProfile.usertag ||1,
+                userphoto:this.props.userProfile.userphoto,
+                usernickname:this.props.userProfile.usernickname ||'无名氏',                
+                userhelpsman:this.props.userProfile.userhelpsman ||0,
+                userdonate:this.props.userProfile.userdonate ||0,
+                acceptmoney:this.props.userProfile.acceptmoney ||0, //用户接受到的捐钱总数
+                amountaccept:this.props.userProfile.amountaccept ||0, //帮助用户人的数量
+                useremail:this.props.userProfile.useremail||null,
+                university:this.props.userProfile.university ||null,
+                sex:this.props.userProfile.sex ||0,
+                selfintroduce:this.props.userProfile.selfintroduce ||'暂无简介',
+                registerdate:this.props.userProfile.registerdate ||null,
+                photoupload:this.props.userProfile.photoupload,
+                msgpubcount:this.props.userProfile.msgpubcount ||0,
+                followcount:this.props.userProfile.followcount ||0,
+                fanscount:this.props.userProfile.fanscount ||0,
+                country:this.props.userProfile.country ||'无',
+                company:this.props.userProfile.company ||'中国',
+                address:this.props.userProfile.address ||null,
+                certificatetype:this.props.userProfile.certificatetype ||0,
+                behelptime:this.props.userProfile.behelptime ||null,
+                backupone:this.props.userProfile.backupone ||null,
+                backupthree:this.props.userProfile.backupthree ||null,
                 watchornot:2,//是否关注,1 未关注，2已关注
                 userIDFollow:1,
                 userIDBeFocus:2
             }
         }else{
             this.state={
-                token:"e10adc3949ba59abbe56e057f20f883e1",
+                userid:null, //这里面必须用userid，因为token是会被隐藏的
                 notSay:1, //1默认可以发表
                 mainOrmore:2, 
                 usertype:1,
                 usertag:1,
                 userphoto:null,
                 usernickname:'无名氏',
-                userid:0,
                 userhelpsman:0,
                 userdonate:0,
                 acceptmoney:0, //用户接受到的捐钱总数
@@ -100,6 +101,9 @@ export default class UserPage extends Component{
     }//constructor
     componentDidMount(){
         //如果数据只传递过来nickname,那么需要网络获取user信息
+       if (this.props.diffTag===88) {
+            return 0;
+       } 
         let formData = new FormData();
         formData.append("nickname",this.props.userNickName); 
         let option={
@@ -109,14 +113,14 @@ export default class UserPage extends Component{
         let response=UploadFile(option);
         response.then(resp=>{
             if (resp.retcode===2000) {
-                //console.log(resp);
+                this.userProfile=resp.data;
                 this.setState({
+                    userid:resp.data.userid,
                     mainOrmore:2, 
                     usertype:resp.data.usertype,
                     usertag:resp.data.usertag,
                     userphoto:resp.data.userPhoto,
                     usernickname:resp.data.usernickname,
-                    userid:resp.data.userid,
                     userhelpsman:resp.data.userhelpsman,
                     userdonate:resp.data.userdonate,
                     acceptmoney:resp.data.acceptmoney, //用户接受到的捐钱总数
@@ -141,6 +145,7 @@ export default class UserPage extends Component{
                     userIDFollow:resp.data.userIDFollow,
                     userIDBeFocus:resp.data.userIDBeFocus
                 });
+            
             }else{
                  Alert.alert(
                     '出问题了',
@@ -170,14 +175,14 @@ export default class UserPage extends Component{
         })
     }
     doWatch(){
-        let watchData={
+        let watchuserProfile={
             token:this.state.token,
             userIDFollow:this.state.userIDFollow,
             userIDBeFocus:this.state.userIDBeFocus
         };
         let options={
             url:UrldoWatch,
-            body: JSON.stringify(watchData)
+            body: JSON.stringify(watchuserProfile)
         };
         let  response=fetchTool(options);
         response.then(resp=>{
@@ -206,14 +211,14 @@ export default class UserPage extends Component{
         });
     }
     cancelWatch(){
-        let cancelWatchData={
+        let cancelWatchuserProfile={
             token:this.state.token,
             beCancel:2
         };
         //发起网络请求
         let options={
             url:UrlcancelWatch,
-            body: JSON.stringify(cancelWatchData)
+            body: JSON.stringify(cancelWatchuserProfile)
         };
         let  response=fetchTool(options);
         response.then(resp=>{
@@ -246,7 +251,7 @@ export default class UserPage extends Component{
         this.props.navigator.push({
             component:WeiBoPageWrapper,
             params:{
-                userProfile:this.props.data
+                userProfile:this.userProfile
             }
         });
     }
@@ -255,21 +260,21 @@ export default class UserPage extends Component{
             <View style={styles.container}> 
                 <View style={styles.topper}>
                     <View style={styles.headWrapper}>
-                       <View style={styles.head}> 
+                        <View style={styles.head}> 
                            <Image  source={require('../image/bar_btn_back_ico.png')} style={styles.headimg} />
                            <Text onPress={this._back.bind(this)} style={{color:'black'}}>返回</Text>
-                       </View>
-                       <View style={styles.nickName}>
+                        </View>
+                        <View style={styles.nickName}>
                             <Text>{this.state.usernickname}</Text>
-                       </View>
-                       <View style={{width:42}}>
-                       </View>
+                        </View>
+                        <View style={{width:42}}>
+                        </View>
                     </View>
 
                     <View style={styles.userPhotoWrapper}>
-                         <Image  source={{uri:this.state.userphoto}} style={styles.userPhoto} />
+                        <Image  source={{uri:this.state.userphoto}} style={styles.userPhoto} />
                     </View>
-                     <View style={styles.renzheng}>
+                    <View style={styles.renzheng}>
                         <Text style={{color:'green'}}>
                             认证:{this.state.backupthree}。
                         </Text>
@@ -295,77 +300,75 @@ export default class UserPage extends Component{
                    
                 </View>
                 <View style={styles.middle}>
-                        <View style={styles.mainPage}>
-                            <Text onPress={this._main.bind(this)} style={{fontSize:16}}>主页</Text>
-                        </View>
-                        <View style={styles.more}>
-                            <Text onPress={this._more.bind(this)} style={{fontSize:16}}>更多</Text>
-                        </View>
+                    <View style={styles.mainPage}>
+                        <Text onPress={this._main.bind(this)} style={{fontSize:16}}>主页</Text>
+                    </View>
+                    <View style={styles.more}>
+                        <Text onPress={this._more.bind(this)} style={{fontSize:16}}>更多</Text>
+                    </View>
                 </View>
                 {this.state.mainOrmore===2 ?
-                <ScrollView>
-                    <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>粉丝:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.fanscount}</Text>
-                    </View>
-                    <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>收听:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.followcount}</Text>
-                    </View>
-                    <View style={styles.commonStyle}>
-                        <Text onPress={this.goWeiBoList.bind(this)}  style={{color:'#B1B1B1'}}>推文:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.msgpubcount}</Text>
-                    </View>
-                    <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>参与的项目:</Text>
-                        <Text style={{marginLeft:20}}>23</Text>
-                    </View>
-                     <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>是否处于救助状态:</Text>
-                        <Text style={{marginLeft:20}}>否</Text>
-                    </View>
-                    <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>简介:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.selfintroduce}</Text>
-                    </View>
-                    <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>邮箱:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.useremail}</Text>
-                    </View>
-                </ScrollView>
-                   :
-                <ScrollView>
-                 <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>公司:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.company}</Text>
-                    </View>
-                     <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>地区:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.address}</Text>
-                    </View>
-                     <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>大学:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.university}</Text>
-                    </View>
-                     <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>性别:</Text>
-                        <Text style={{marginLeft:20}}>男</Text>
-                    </View>
-                     <View style={styles.commonStyle}>
-                        <Text style={{color:'#B1B1B1'}}>用户标签:</Text>
-                        <Text style={{marginLeft:20}}>{this.state.usertag}</Text>
-                    </View>
-                </ScrollView>
+                    <ScrollView>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>粉丝:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.fanscount}</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>收听:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.followcount}</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text onPress={this.goWeiBoList.bind(this)}  style={{color:'#B1B1B1'}}>推文:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.msgpubcount}</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>参与的项目:</Text>
+                            <Text style={{marginLeft:20}}>23</Text>
+                        </View>
+                         <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>是否处于救助状态:</Text>
+                            <Text style={{marginLeft:20}}>否</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>简介:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.selfintroduce}</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>邮箱:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.useremail}</Text>
+                        </View>
+                    </ScrollView>
+                       :
+                    <ScrollView>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>公司:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.company}</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>地区:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.address}</Text>
+                        </View>
+                        <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>大学:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.university}</Text>
+                        </View>
+                         <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>性别:</Text>
+                            <Text style={{marginLeft:20}}>男</Text>
+                        </View>
+                         <View style={styles.commonStyle}>
+                            <Text style={{color:'#B1B1B1'}}>用户标签:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.usertag}</Text>
+                        </View>
+                    </ScrollView>
                 }
                 <View style={styles.bottom}>
                     {this.state.watchornot===1 ?
-                         <Text onPress={this.doWatch.bind(this)}>+关注</Text>
+                        <Text onPress={this.doWatch.bind(this)}>+关注</Text>
                          :
-                         <Text onPress={this.cancelWatch.bind(this)}>√已关注</Text>
-                    }
-                   
+                        <Text onPress={this.cancelWatch.bind(this)}>√已关注</Text>
+                    }                  
                 </View>
-
             </View>
         );
     }

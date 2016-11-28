@@ -63,7 +63,8 @@ export default class OriginTuiwenItem extends Component{
 			component:UserPage,
 			params:{
 				userID:this.state.useridtweet,
-				userNickName:this.state.usernickname
+				userNickName:this.state.usernickname,
+				diffTag:99 //99表明传递的是一个昵称
 			}//注意从weiboItem.js中也必须采用完全一样的形式
 		});
 	}
@@ -87,7 +88,8 @@ export default class OriginTuiwenItem extends Component{
 		this.props.navigator.push({
 			component:UserPage,
 			params:{
-				userNickName:url
+				userNickName:url,
+				diffTag:99 //99表明传递的是一个昵称
 			}//与weiboItem.js保持一致，与上面的goOtherWoPage保持一致，都是昵称
 		});
 	}

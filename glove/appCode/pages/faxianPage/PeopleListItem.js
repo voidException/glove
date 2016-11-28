@@ -38,7 +38,8 @@ export default class PeopleListtItem extends Component{
     	this.props.navigator.push({
     		component:UserPage,
     		params:{
-    			data:this.props.row
+    			userProfile:this.props.row,
+    			diffTag:88 //99表明传递的是userProfile,唯一一处，所有的展示有关人的列表都用这个
     		}
     	});
     }
