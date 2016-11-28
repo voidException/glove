@@ -20,6 +20,7 @@ import{
 import React,{Component} from 'react';
 //let backBtnImg = require('./image/bar_btn_back_ico.png');
 import PeopleListPage  from  '../faxianPage/PeopleListPage';
+import HelpListPage  from  '../faxianPage/helpListPage';
 import FAQ from './FAQ';
 import FeedBack from './feedBack';
 import Setting from './setting';
@@ -64,6 +65,16 @@ let imgUrl=require('./123.png');
             }
         });
     }
+    goHelpListPage(userType){      
+        this.props.navigator.push({
+            component: HelpListPage,
+            params:{
+                userType:userType,
+                userProfile: this.props.userProfile
+            }
+        });
+    }
+
     goSetting(){
         this.props.navigator.push({
             component: Setting
@@ -165,7 +176,6 @@ let imgUrl=require('./123.png');
             component:TweetPageWrapper,
             params:{
                 token:this.props.token ||"e10adc3949ba59abbe56e057f20f883e1" ,
-                symbol:2
             }
         });
     }
@@ -202,7 +212,7 @@ let imgUrl=require('./123.png');
                 <View style={styles.helpInfo}>
                     <View style={styles.helpInfoLeft}>
                         <View style={styles.ihelp}>
-                            <Text onPress={this.goPeopleList.bind(this,21)}>我帮助</Text>
+                            <Text onPress={this.goHelpListPage.bind(this,21)}>我帮助</Text>
                         </View>
                         <View style={styles.helpInfoMoney}>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
@@ -210,7 +220,7 @@ let imgUrl=require('./123.png');
                         </View>
                     </View>
                     <View style={styles.helpInfoRight}>
-                        <Text onPress={this.goPeopleList.bind(this,20)} style={{marginBottom:5}}>帮助我</Text>
+                        <Text onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助我</Text>
                         <View  style={styles.helpInfoMoney}>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>400元</Text>
@@ -240,9 +250,6 @@ let imgUrl=require('./123.png');
                             <Text onPress={this.goPeopleList.bind(this,11)} style={styles.txt}>粉丝</Text>
                         </View>                 
                 </View>
-
-          
-
              {/*
                 <View style={styles.itenInfoWrapper}>
                     

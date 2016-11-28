@@ -264,7 +264,6 @@ export default class UserPage extends Component{
             component:WeiBoPageWrapper,
             params:{
                 token:this.props.token ||"e10adc3949ba59abbe56e057f20f883e1" ,
-                symbol:3
             }
         });
     }

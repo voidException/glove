@@ -24,7 +24,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-
+//查看我关注的，我的粉丝，爱心社排行榜等等都是这个
 //该页面需要的token等userProfile需要父页面传入
 export default class PeopleListPage extends Component{
 	constructor(props){
@@ -66,10 +66,6 @@ export default class PeopleListPage extends Component{
        		url=UrlWatchList; //我关注的人
        }else if (localTag==11) {
        	  url=UrlFansList; //我的粉丝
-       }else if (localTag==20) {
-          url=UrlHelpMeList; //帮助我的人
-       }else if (localTag==21){
-       		url=UrliHelpList; //我帮助的人
        }
 	   let params={
 			token:this.state.token,
@@ -127,7 +123,7 @@ export default class PeopleListPage extends Component{
        }
 
 	   let params={
-			token:this.state.token,
+			token:this.state.token, //查看我帮助的人
 			tag:this.state.tag,
 			loadMoreTag:2, //refresh 是1
 			page:0,

@@ -18,14 +18,15 @@ import React,{ Component } from 'react';
 import PeopleListItem from './PeopleListItem';
 import fetchTool from '../../utils/fetchTool';
 import fmDate from '../../utils/fmDate';
-import {UrligongyiList} from '../../utils/url';
+import {UrlHelpMeList,UrliHelpList} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-//因为公益排行榜是依据钱排名的，所以单独列出来
-export default class GongYiPeopleList extends Component{
+
+//该页面需要的token等userProfile需要父页面传入，查看我帮助的人或者帮助我的人
+export default class HelpListPage extends Component{
 	constructor(props){
 		super(props);
 		//console.log(this.props);
@@ -33,14 +34,16 @@ export default class GongYiPeopleList extends Component{
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			tag: 2, //对应于tobeuseone，1表明未捐钱 2捐钱了 
+			userType: this.props.userType, // 20助我的人 21我帮助的人
+			token:this.props.userProfile.items.backupfour,
+		
 		};
-		this.money=1;
+		this.lastTime='2015-09-01 12:10:01';
 	}
 
     componentDidMount(){
 
-	    this._onRefresh(); 
+	    this._onRefresh(); //
 	}
  
     renderRow(row,sectionID){
@@ -53,35 +56,45 @@ export default class GongYiPeopleList extends Component{
 	}
 
     _onRefresh() {
+ 
+       let url;
+       let localTag=this.state.userType;
+       if (localTag==20) { 
+       		url=UrlHelpMeList; //帮助我的人
+       }else if (localTag==21) {
+       		url=UrliHelpList; // 我帮助的人
+       }
 	   let params={
-			token:'', //后台没有用到
-			tag:this.state.tag,
+			token:this.state.token, //这里面取得用户的userid
 			loadMoreTag:1, //refresh 是1
+			tag:localTag, //这个用不到
 			page:0,
-			pageSize:10,
-			money:this.money
+			pageSize:6,
+			lastTime:'2015-09-01 12:10:01' //根据帮助的时间排序
 		};
 		let options={
-            url:UrligongyiList,
+            url:url,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
         response.then(resp=>{
+        	 console.log(resp);
             if (resp.retcode===2000) { 
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)
 					});	
 					//console.log(resp.data);
-				//这里要更新this.money 以便loadMore使用	
+				//这里要更新this.lastTime 以便loadMore使用	
 				let length=resp.data.length-1;
-				this.money=resp.data[length].userdonate; //获取的数据的最后一项的值钱数
-                
+				//获取的数据的最后一项的值的时间，注意这里没有格式化时间
+				this.lastTime=resp.data[length].registerdate; 
+                //console.log(this.lastTime)
             }else{
           	    Alert.alert(
-                    '嗯...',
+                    '提示...',
                     resp.msg,
                     [
-                        { text:'好的'}
+                        { text:'好的',onPress:()=>this.props.navigator.pop()}
 
                     ]
                 );
@@ -91,45 +104,62 @@ export default class GongYiPeopleList extends Component{
         });
     }
     _loadMore(){
-  
+
+       let url;
+       let localTag=this.state.userType;
+       if (localTag==20) { 
+       		url=UrlHelpMeList; //帮助我的人
+       }else if (localTag==21) {
+       		url=UrliHelpList; // 我帮助的人
+       }
 	   let params={
-			token:this.state.token,
-			tag:this.state.tag,
+			token:this.state.token, //这里面取得用户的userid
 			loadMoreTag:2, //refresh 是1
+			tag:localTag,  //这个用不到
 			page:0,
-			pageSize:10,
-			money:this.money,
+			pageSize:6,
+			lastTime:fmDate(this.lastTime) //根据帮助的时间排序
 		};
 		//console.log(this.lastTime);
 		let options={
-            url:UrligongyiList,
+            url:url,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
        
         response.then(resp=>{
-        	
+        	 console.log(resp);
              if (resp.retcode===2000) { 
              	this.setState({
 				    dataSource: this.DS.cloneWithRows(resp.data)
 				});
 				//console.log(resp.data);
-				//这里要更新this.money
+				//这里要更新this.lastTime
 				let length=resp.data.length-1;
-				this.money=resp.data[length].userdonate; 
+				this.lastTime=resp.data[length].registerdate; 
+				//console.log('loadMore')
+                //console.log(this.lastTime)
               }
               else{
               	    Alert.alert(
-                        '嗯...',
+                        '提示...',
                         resp.msg,
                         [
-                            { text:'好的'}
+                            { text:'好的',onPress:()=>this.props.navigator.pop()}
 
                         ]
                     );
               }
         }).catch(err=>{
         	console.log(err);
+        	Alert.alert(
+                '出现异常',
+                '稍后再试',
+                [
+                    { text:'好的',onPress:()=>this.props.navigator.pop()}
+
+                ]
+            );
         });
     }
 	render(){
@@ -165,7 +195,8 @@ export default class GongYiPeopleList extends Component{
 
 let  styles=StyleSheet.create({
 	contain:{
-		flex:1
+		flex:1,
+		backgroundColor:'#ffffff'
 	},
 	header:{
 		flexDirection:'row',

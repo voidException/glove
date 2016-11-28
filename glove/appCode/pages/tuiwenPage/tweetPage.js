@@ -49,7 +49,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
 		//这里可以换成真实的r数据了,必须确保这个是同步的
 		//console.log(lastUpdateTime);
 		//console.log(lastItemstartTime);
-		let symbol=this.props.symbol;
+		
 		let requestParams={
 			token:this.props.token,
 			page:0,
@@ -57,7 +57,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime,   //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 			flag:1,
-			symbol:symbol
+			symbol:2
 		};
 
 		const {dispatch}=this.props;
@@ -123,7 +123,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
     onEndReached(){
     	//这里面实现列表到达底部时自动加载更多
         //symbol 在前端影响路由，后端影响是查看自己发布的还是别人发布的
-        let symbol=this.props.symbol;
+       
     	let requestParams={
 			token:this.props.token,
 			page:0,
@@ -131,7 +131,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime,  
 			flag:2, //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
-            symbol:symbol
+            symbol:2
 		};
 		//console.log(lastItemstartTime);
 		const {dispatch}=this.props;

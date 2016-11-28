@@ -33,9 +33,9 @@ export  function fetchTuiWenPage(requestParams){
    //在这里判断传入的请求时间和当前时间的差值，如果相差太大，可认为用户是重新登录，而不是短时间内连续的请求
     let selecturl=null;
     if (requestParams.symbol===1) {
-    	selecturl=URLmainPageWeiBo;
+    	selecturl=URLmainPageWeiBo; //我的主页推文
     }else{
-    	selecturl=URLTuiwenPage;
+    	selecturl=URLTuiwenPage; //查看自己发布的和对方发布的
     }
     //console.log(selecturl);
 	return dispatch=>{
