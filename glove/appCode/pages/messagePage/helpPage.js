@@ -70,7 +70,7 @@ export default class HelpPage extends Component{
               	});
             }
         }).catch(err=>{
-        	//停止转圈圈
+        	//谢谢你梦琪，陪我走过最艰难的日子。
         	console.log(err);
         });
 	}
