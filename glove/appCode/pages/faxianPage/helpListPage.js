@@ -65,7 +65,7 @@ export default class HelpListPage extends Component{
        		url=UrliHelpList; // 我帮助的人
        }
 	   let params={
-			token:this.state.token, //这里面取得用户的userid
+			userID:this.props.userProfile.items.userid,  
 			loadMoreTag:1, //refresh 是1
 			tag:localTag, //这个用不到
 			page:0,
@@ -113,7 +113,7 @@ export default class HelpListPage extends Component{
        		url=UrliHelpList; // 我帮助的人
        }
 	   let params={
-			token:this.state.token, //这里面取得用户的userid
+			userID:this.props.userProfile.items.userid, 
 			loadMoreTag:2, //refresh 是1
 			tag:localTag,  //这个用不到
 			page:0,

@@ -42,7 +42,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 		
 	}
 	componentDidMount(){
-		//console.log(this.props);
+		
 	}
 	
 	goMenList(userType){

@@ -122,17 +122,7 @@ export default class HelpPage extends Component{
 				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'contain'} style={styles.rightImage}/>
 
 				    </View>
-				{/*
-                    <View style={styles.itemWrapper}>
-				     	<View style={styles.leftWrapper}>
-					    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text style={{fontWeight:'bold'}}>资助一个人</Text>	
-				    	</View>
-				    	<Image source={require('./image/find_more_friend_near_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
-				    </View>
-				*/}
-				    
-
+				
 				    <View style={styles.itemWrapperTop}>
 				     	<View style={styles.leftWrapper}>
 					    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>

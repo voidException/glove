@@ -54,7 +54,6 @@ export default class GongYiPeopleList extends Component{
 
     _onRefresh() {
 	   let params={
-			token:'', //后台没有用到
 			tag:this.state.tag,
 			loadMoreTag:1, //refresh 是1
 			page:0,
@@ -93,7 +92,7 @@ export default class GongYiPeopleList extends Component{
     _loadMore(){
   
 	   let params={
-			token:this.state.token,
+			
 			tag:this.state.tag,
 			loadMoreTag:2, //refresh 是1
 			page:0,

@@ -41,12 +41,13 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 	componentDidMount(){
 		
 		let requestParams={
-			userid:0 ,//要用userid取数据
+			userID:1,//要用userid取数据
 			page:0,
 			pageSize:2,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime,  
 			flag:1,
+			symbol:3
 		};
 
 		const {dispatch}=this.props;
@@ -80,12 +81,13 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 
 	_onRefresh() {
 		let requestParams={
-			userid,
+			userID:1,
 			page:0,
 			pageSize:4,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime , //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 			flag:1, //1代表刷新，2代表loadMore
+			symbol:3
 		};
 
 		const {dispatch}=this.props;
@@ -94,12 +96,13 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
     onEndReached(){
     	
     	let requestParams={
-			userid,
+			userID:1,
 			page:0,
 			pageSize:10,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime,  
 			flag:2, //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
+			symbol:3
 		};
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams));
@@ -146,7 +149,7 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 }
 
 function mapStateToProps(state,ownProps){
-	const {twitterList }= state;	 
+	const { twitterList}= state;	 
 	return {
 		weiboList:twitterList
 	}

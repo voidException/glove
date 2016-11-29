@@ -3,6 +3,8 @@ let commonUrl='http://172.16.32.70:8080/glove';
 export const URLLogin=commonUrl+'/user/login';
 export const URLRegister=commonUrl+'/user/register';
 export const URLFindPasswd=commonUrl+'/user/findpassword';
+
+export const URLUserPageWeibo=commonUrl+'/userpage/weibos/gettweetbyuserid'; //咋userPage页面查看对方发布的微博
 export const URLTuiwenPage =commonUrl+'/weibos/gettweetbyuserid'; //适合查看自己发布转发的
 export const URLmainPageWeiBo=commonUrl+'/weibos/gettuiwenlists';//适合查用户关注的推文
 

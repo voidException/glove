@@ -29,13 +29,13 @@ let height=Dimensions.get('window').height;
 export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props);
+		
         this.DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
 			tag: this.props.userType, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
-			token:this.props.userProfile.items.backupfour,
+			userID:this.props.userProfile.items.userid,
 			page:1,
 			pageSize:10
 		};
@@ -68,7 +68,7 @@ export default class PeopleListPage extends Component{
        	  url=UrlFansList; //我的粉丝
        }
 	   let params={
-			token:this.state.token,
+			userID:this.props.userProfile.items.userid,
 			tag:this.state.tag,  //在我关注的人，和关注我的人时，没用到这个标志
 			loadMoreTag:1, //refresh 是1
 			page:0,
@@ -81,7 +81,7 @@ export default class PeopleListPage extends Component{
         };
         let  response=fetchTool(options);
         response.then(resp=>{
-        	 console.log(resp);
+        	 //console.log(resp);
             if (resp.retcode===2000) { 
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)
@@ -123,7 +123,7 @@ export default class PeopleListPage extends Component{
        }
 
 	   let params={
-			token:this.state.token, //查看我帮助的人
+			userID:this.props.userProfile.items.userid, //查看我帮助的人
 			tag:this.state.tag,
 			loadMoreTag:2, //refresh 是1
 			page:0,
@@ -138,7 +138,7 @@ export default class PeopleListPage extends Component{
         let  response=fetchTool(options);
        
         response.then(resp=>{
-        	 console.log(resp);
+        	 //console.log(resp);
              if (resp.retcode===2000) { 
              	this.setState({
 				    dataSource: this.DS.cloneWithRows(resp.data)
