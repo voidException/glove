@@ -25,6 +25,8 @@ import WheelContent  from './findWheelContent';
 import AddHelpMan  from '../components/addHelpMan';
 import HelpAixinShe from './helpAixinShe';
 import DonateMe from './donateMe';
+import { UrlGatherInfo } from  '../../utils/url';
+import fetchTool from '../../utils/fetchTool';
 import JoinLoveClub from '../components/joinLoveClub';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
@@ -36,13 +38,41 @@ export default class HelpPage extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			wheelImageOne:'http://7xihgc.com1.z0.glb.clouddn.com/lunbo1.jpg',
-			wheelImageTwo:'http://7xihgc.com1.z0.glb.clouddn.com/lunbo2.jpg',
-			wheelImageThree:'http://7xihgc.com1.z0.glb.clouddn.com/lunbo3.jpg',
-			wheelImageOneURL:'http://www.jianshu.com/p/55b586de943d',
-			wheelImageTwoURL:'http://www.jianshu.com/p/55b586de943d',
-			wheelImageThreeURL:'http://www.jianshu.com/p/55b586de943d'
+			club:100, //社团总数
+			clubgrow:9,
+			member:893, //成员总数
+			membergrow:200, //注册用户总数
+			city:50, //覆盖的城市
+			citygrow:5, //每日增长的城市
 		}	
+	}
+
+	componentDidMount(){
+		let userAccount={
+			gatherinfoid:1, //这个是固定的
+		};
+		//发起网络请求
+		let options={
+            url:UrlGatherInfo,
+            body: JSON.stringify(userAccount)
+        };
+       //debugger
+        let  response=fetchTool(options);
+        response.then(resp=>{
+            if (resp.retcode===2000) {
+               	this.setState({
+              	  	clubnum:resp.data.club||100, //社团总数
+					clubgrow:resp.data.clubgrow||9,
+					member:resp.data.member||893, //成员总数
+					membergrow: resp.data.member||200, //注册用户总数
+					city:resp.data.city||50, //覆盖的城市
+					citygrow: resp.data.citygrow||5, //每日增长的城市
+              	});
+            }
+        }).catch(err=>{
+        	//停止转圈圈
+        	console.log(err);
+        });
 	}
 
 	wheelImageTouch(url){	
@@ -72,76 +102,75 @@ export default class HelpPage extends Component{
         });
     }
 	render(){
-			let urlone='aaa'
-			return(
-				<View style={styles.wrapper}>
-					<StatusBar backgroundColor='#3B3738' barStyle="default"/>
-					<View style={styles.topper}>			    
-					    <Text style={{fontSize:18,color:'#fff'}}>资助</Text>
-					</View>
-					<View style={styles.shanWater}>		    
-			           	<Image source={require('./image/earth.png')} resizeMode={'cover'} style={styles.helpImg}/>
-			           	<View style={styles.shanTxt}>
-			           		<Text style={{color:'#4EB160'}}>越过，</Text>
-			           		<Text style={{color:'#4EB160',marginLeft:-15}}>千山万水</Text>
-			           		<Text style={{color:'#4EB160',marginLeft:-20}}>连接每一座城市的</Text>
-			           		<Text style={{color:'#4EB160',marginLeft:-25}}>每一个爱心社</Text>
-			           		<Text style={{color:'#4EB160',marginLeft:-30}}>只为温暖世界的每一处角落。</Text>
-			           	</View>			  
-			        </View>
-			        <View style={styles.clubInfo}>
-			        	<View style={styles.yong}>
-			        		<Image source={require('./image/plants_003.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
-			        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>爱心社、</Text>
-			        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>青年志愿者协会</Text>
-			        		<View style={styles.join}><Text onPress={this.goJoinLoveClub.bind(this)}  style={{fontSize:12,color:'#fff'}}>现在加入></Text></View>
-			        	</View>
-			        	<View style={styles.clubDetailInfo}>
-			        		<View>
-			        			<Text style={styles.upTxt}>已有社团</Text>
-			        			<Text style={styles.midTxt}>10000<Text style={{fontSize:14}}>个</Text></Text>
-			        			<Text style={styles.bottomTxt}>今日↑10个</Text>
-			        		</View>
-			        		<View style={styles.midWrapper}>
-			        			<Text style={styles.upTxt}>成员</Text>
-			        			<Text style={styles.midTxt}>10000<Text style={{fontSize:14}}>人</Text></Text>
-			        			<Text style={styles.bottomTxt}>今日↑10人</Text>
-			        		</View>
-			        		<View>
-			        			<Text style={styles.upTxt}>覆盖城市</Text>
-			        			<Text style={styles.midTxt}>1000<Text style={{fontSize:14}}>座</Text></Text>
-			        			<Text style={styles.bottomTxt}>今日↑10座</Text>
-			        		</View>
-			        	</View>
-			        </View>
-				    <View style={styles.itemWrapperTop}>
-				        <View style={styles.leftWrapper}>
-					    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text  onPress={this.goAddHelpMan.bind(this)}  style={{fontWeight:'bold'}}>发布项目</Text>	
-				    	</View>
-				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'contain'} style={styles.rightImage}/>
-
-				    </View>
-				
-				    <View style={styles.itemWrapperTop}>
-				     	<View style={styles.leftWrapper}>
-					    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text  onPress={this.goDonateMe.bind(this)}  style={{fontWeight:'bold'}}>资助我们</Text>
-				    	</View>
-				    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
-				    </View>
-
-				    <View style={styles.itemWrapper}>
-				     	<View style={styles.leftWrapper}>
-					    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-					    	<Text onPress={this.goHelpAixinShe.bind(this)}  style={{fontWeight:'bold'}}>赞助爱心社</Text>	
-				    	</View>
-				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
-				    </View>
-				   	<View style={styles.upRightImgWrapper}>
-				   		<Image source={require('./image/water.png')} resizeMode={'contain'} style={styles.upRightImg}/>	
-				   	</View>
+		return(
+			<View style={styles.wrapper}>
+				<StatusBar backgroundColor='#3B3738' barStyle="default"/>
+				<View style={styles.topper}>			    
+				    <Text style={{fontSize:18,color:'#fff'}}>资助</Text>
+				</View>
+				<View style={styles.shanWater}>		    
+		           	<Image source={require('./image/earth.png')} resizeMode={'cover'} style={styles.helpImg}/>
+		           	<View style={styles.shanTxt}>
+		           		<Text style={{color:'#4EB160'}}>越过，</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-15}}>千山万水</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-20}}>连接每一座城市的</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-25}}>每一个爱心社</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-30}}>只为温暖世界的每一处角落。</Text>
+		           	</View>			  
 		        </View>
+		        <View style={styles.clubInfo}>
+		        	<View style={styles.yong}>
+		        		<Image source={require('./image/plants_003.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
+		        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>爱心社、</Text>
+		        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>青年志愿者协会</Text>
+		        		<View style={styles.join}><Text onPress={this.goJoinLoveClub.bind(this)}  style={{fontSize:12,color:'#fff'}}>现在加入></Text></View>
+		        	</View>
+		        	<View style={styles.clubDetailInfo}>
+		        		<View>
+		        			<Text style={styles.upTxt}>已有社团</Text>
+		        			<Text style={styles.midTxt}>{this.state.club}<Text style={{fontSize:14}}>个</Text></Text>
+		        			<Text style={styles.bottomTxt}>今日↑<Text>{this.state.clubgrow}</Text>个</Text>
+		        		</View>
+		        		<View style={styles.midWrapper}>
+		        			<Text style={styles.upTxt}>成员</Text>
+		        			<Text style={styles.midTxt}>{this.state.member}<Text style={{fontSize:14}}>人</Text></Text>
+		        			<Text style={styles.bottomTxt}>今日↑<Text>{this.state.membergrow}</Text>人</Text>
+		        		</View>
+		        		<View>
+		        			<Text style={styles.upTxt}>覆盖城市</Text>
+		        			<Text style={styles.midTxt}>{this.state.city}<Text style={{fontSize:14}}>座</Text></Text>
+		        			<Text style={styles.bottomTxt}>今日↑<Text>{this.state.citygrow}</Text>座</Text>
+		        		</View>
+		        	</View>
+		        </View>
+			    <View style={styles.itemWrapperTop}>
+			        <View style={styles.leftWrapper}>
+				    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
+				    	<Text  onPress={this.goAddHelpMan.bind(this)}  style={{fontWeight:'bold'}}>发布项目</Text>	
+			    	</View>
+			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'contain'} style={styles.rightImage}/>
+
+			    </View>
+			
+			    <View style={styles.itemWrapperTop}>
+			     	<View style={styles.leftWrapper}>
+				    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
+				    	<Text  onPress={this.goDonateMe.bind(this)}  style={{fontWeight:'bold'}}>资助我们</Text>
+			    	</View>
+			    	<Image source={require('./image/find_more_friend_photograph_icon.png')} resizeMode={'contain'} style={styles.rightImage}/>		    	
+			    </View>
+
+			    <View style={styles.itemWrapper}>
+			     	<View style={styles.leftWrapper}>
+				    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
+				    	<Text onPress={this.goHelpAixinShe.bind(this)}  style={{fontWeight:'bold'}}>赞助爱心社</Text>	
+			    	</View>
+			    	<Image source={require('./image/find_more_friend_scan.png')} resizeMode={'contain'} style={styles.rightImage}/>	    	
+			    </View>
+			   	<View style={styles.upRightImgWrapper}>
+			   		<Image source={require('./image/water.png')} resizeMode={'contain'} style={styles.upRightImg}/>	
+			   	</View>
+	        </View>
 	   );
 	}
 }

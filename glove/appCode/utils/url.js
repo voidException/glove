@@ -44,7 +44,7 @@ export const UrlCashRecord=commonUrl+'/cash/getcashrecord';
 
 export const UrlAffirmList=commonUrl+'/confirm/getconfirmls'; //affirm 中，获取证实人列表
 
-
+export const UrlGatherInfo=commonUrl+'/gatherinfo/byid'; //资助页面
 
 
 
