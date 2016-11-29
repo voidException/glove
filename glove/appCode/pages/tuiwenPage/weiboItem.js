@@ -21,7 +21,7 @@ let {width,height}=Dimensions.get('window');
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props);
+		
 		this.state={
 			photoupload:this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',

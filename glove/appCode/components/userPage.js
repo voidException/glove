@@ -13,11 +13,14 @@ import{
     View,
     ListView,
     PixelRatio,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
 import React,{Component} from 'react';
 import WeiBoPageWrapper from '../pages/tuiwenPage/weiboPage';
 import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile} from '../utils/url';
+import UserPagePeopleList from '../pages/faxianPage/userPagePeopleList';
+import UserPageHelpList from '../pages/faxianPage/userPageHelpList';
 import fetchTool from '../utils/fetchTool';
 import UploadFile from '../utils/uploadFile';
 let ratio = PixelRatio.get();
@@ -28,10 +31,11 @@ let height=Dimensions.get('window').height;
 export default class UserPage extends Component{
     constructor(props){
         super(props);
-        //console.log(this.props)
+       
         if (this.props.diffTag===88) { //88表明传过来的就是userProfile
             //将如下值传递给weiboListPage等
             this.userProfile=this.props.userProfile; 
+            console.log(this.userProfile)
             this.state={
                 userid:this.props.userProfile.userid||null, //在这里面不能用token
                 notSay:1, //1默认可以发表
@@ -104,6 +108,7 @@ export default class UserPage extends Component{
        if (this.props.diffTag===88) {
             return 0;
        } 
+     
         let formData = new FormData();
         formData.append("nickname",this.props.userNickName); 
         let option={
@@ -114,12 +119,13 @@ export default class UserPage extends Component{
         response.then(resp=>{
             if (resp.retcode===2000) {
                 this.userProfile=resp.data;
+                 //console.log(this.userProfile)
                 this.setState({
                     userid:resp.data.userid,
                     mainOrmore:2, 
                     usertype:resp.data.usertype,
                     usertag:resp.data.usertag,
-                    userphoto:resp.data.userPhoto,
+                    userphoto:resp.data.userphoto,
                     usernickname:resp.data.usernickname,
                     userhelpsman:resp.data.userhelpsman,
                     userdonate:resp.data.userdonate,
@@ -157,8 +163,9 @@ export default class UserPage extends Component{
                     ]
                  );
             }
-        }).catch(err=>{         
-            
+        }).catch(err=>{      
+            console.log('userPage页面请求userProfile失败');   
+            console.log(err);
         }); 
     }
     _back() {
@@ -173,6 +180,24 @@ export default class UserPage extends Component{
          this.setState({
             mainOrmore:2
         })
+    }
+    goMenList(userType){        
+        this.props.navigator.push({
+            component: UserPagePeopleList,
+            params:{
+                userType:userType,
+                userProfile:this.userProfile
+            }
+        });
+    }
+     goHelpListPage(userType){      
+        this.props.navigator.push({
+            component: UserPageHelpList,
+            params:{
+                userType:userType,
+                userProfile: this.userProfile
+            }
+        });
     }
     doWatch(){
         let watchuserProfile={
@@ -282,7 +307,7 @@ export default class UserPage extends Component{
                     <View style={styles.helpInfo}>
                         <View style={styles.helpInfoLeft}>
                             <View style={styles.ihelp}>
-                                <Text>他帮助</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)}>他帮助</Text>
                             </View>
                             <View style={styles.helpInfoMoney}>
                                 <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userhelpsman}人</Text>
@@ -290,7 +315,7 @@ export default class UserPage extends Component{
                             </View>
                         </View>
                         <View style={styles.helpInfoRight}>
-                            <Text  style={{marginBottom:5}}>帮助他</Text>
+                            <Text  onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助他</Text>
                             <View  style={styles.helpInfoMoney}>
                                 <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.amountaccept}人</Text>
                                 <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.acceptmoney}元</Text>
@@ -310,11 +335,11 @@ export default class UserPage extends Component{
                 {this.state.mainOrmore===2 ?
                     <ScrollView>
                         <View style={styles.commonStyle}>
-                            <Text style={{color:'#B1B1B1'}}>粉丝:</Text>
+                            <Text  onPress={this.goMenList.bind(this,11)} style={{color:'#B1B1B1'}}>粉丝:</Text>
                             <Text style={{marginLeft:20}}>{this.state.fanscount}</Text>
                         </View>
                         <View style={styles.commonStyle}>
-                            <Text style={{color:'#B1B1B1'}}>收听:</Text>
+                            <Text  onPress={this.goMenList.bind(this,10)} style={{color:'#B1B1B1'}}>收听:</Text>
                             <Text style={{marginLeft:20}}>{this.state.followcount}</Text>
                         </View>
                         <View style={styles.commonStyle}>

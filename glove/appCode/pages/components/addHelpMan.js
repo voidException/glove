@@ -136,7 +136,7 @@ export default class AddHelpMan extends Component{
 			});
 			Alert.alert(
             		'出问题了',
-            		resp.msg,
+            		'稍后再试',
 		            [
 		                {
 		                    text: '好的'
