@@ -39,7 +39,7 @@ export default class AddHelpMan extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			token:"e10adc3949ba59abbe56e057f20f883e1",
+			token:this.props.userProfile.items.backupfour,
 			notSay:1, //1默认可以发表
 			AXSnickName:null||'putaozhuose',
 			JDnickName:null||" ",

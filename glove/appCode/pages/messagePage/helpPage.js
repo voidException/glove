@@ -28,13 +28,14 @@ import DonateMe from './donateMe';
 import { UrlGatherInfo } from  '../../utils/url';
 import fetchTool from '../../utils/fetchTool';
 import JoinLoveClub from '../components/joinLoveClub';
+import { connect } from 'react-redux';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 let loveImg = require('../../image/25.jpg');//慈善排行榜
-export default class HelpPage extends Component{
+class HelpPageP extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -82,7 +83,10 @@ export default class HelpPage extends Component{
 	}
     goAddHelpMan(){
     	this.props.navigator.push({
-            component: AddHelpMan
+            component: AddHelpMan,
+            params:{
+            	userProfile:this.props.userProfile
+            }
         });
     }
     goHelpAixinShe(){
@@ -92,13 +96,16 @@ export default class HelpPage extends Component{
     }
     goJoinLoveClub(){
     	this.props.navigator.push({
-            component: JoinLoveClub
+            component: JoinLoveClub,
+            params:{
+            	userProfile:this.props.userProfile
+            }
         });
     }
 
     goDonateMe(){
     	this.props.navigator.push({
-            component: DonateMe
+            component: DonateMe,
         });
     }
 	render(){
@@ -174,7 +181,14 @@ export default class HelpPage extends Component{
 	   );
 	}
 }
-
+	function mapStateToProps(state,ownProps){
+		const { userProfile}= state;	 
+		return {
+			userProfile:userProfile
+		}
+	}
+   const HelpPage=connect(mapStateToProps)(HelpPageP);
+   export default  HelpPage;
 let styles=StyleSheet.create({
 	 wrapper: {
 	 	flex:1 ,

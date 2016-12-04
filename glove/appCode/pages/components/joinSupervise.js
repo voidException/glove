@@ -18,7 +18,7 @@ import{
 import React,{ Component } from 'react';
 import Affirm from './affirm';
 import UploadFile from '../../utils/uploadFile';
-import {UrlAddNeedMan} from '../../utils/url';
+import {UrlJoinLoveClue} from '../../utils/url';
 import Loading from '../../loading/loading';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
@@ -36,13 +36,11 @@ export default class JoinSuperVise extends Component{
 		super(props);
 		this.state={
 			token:"e10adc3949ba59abbe56e057f20f883e1",
-			notSay:1, //1默认可以发表
 			realName:null||" ",
 			phoneNo:null||" ",
 			idno:null||" ",
-			school:null||" ",
 			post:null||" ", //职务
-			status:null||" ",//现状
+			selfIntroduce:null||" ",//简单介绍自己
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,
 			imgThreeUrl:imgUrl,
@@ -56,10 +54,59 @@ export default class JoinSuperVise extends Component{
     cancel(){
    	 this.props.navigator.pop();
     }
-     componentDidMount(){
-       let startDate=formTime();
-   	   //console.log(startDate);
-	 
+    doCommit(){
+   	    let startDate=formTime();
+		formData.append("tag",3); //个人认证是1
+		formData.append("token",this.state.token); 
+	    formData.append("realName",this.state.realName); //真实姓名
+	    formData.append("phoneNo",this.state.phoneNo); //认证人的手机号
+	    formData.append("idno",this.state.idno); //认证人的身份证号
+	    formData.append("post",this.state.post); //社团中的职务，存入个人标签中backupseve
+		let option={
+			url:UrlJoinLoveClue,
+			body:formData
+		};
+		this.setState({
+			visible:true
+		});
+		let response=UploadFile(option);
+		response.then(resp=>{
+			formData=new FormData(); 
+			this.setState({
+				visible:false
+			});
+			//console.log(resp);
+			if (resp.retcode===2000) {
+				 Alert.alert(
+            		'提交成功',
+            		resp.msg,
+		            [
+		                {
+		                    text: '好的',
+		                    onPress:()=>{this.props.navigator.pop();}
+		                }
+		            ]
+       			 );
+			}else{
+				 Alert.alert(
+            		'出问题了',
+            		resp.msg,
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+       			 );
+			}
+		}).catch(err=>{			
+			//console.log(err);
+			this.setState({
+				visible:false
+			});
+		});
+	}
+    componentDidMount(){
+       //let startDate=formTime(); 
 	}
    getRealName(event){
    		this.setState({
@@ -84,7 +131,7 @@ export default class JoinSuperVise extends Component{
    }
    getStatus(event){
    	    this.setState({
-			status:event.nativeEvent.text
+			selfIntroduce:event.nativeEvent.text
 		});
    }
    selectPicture(tag){
@@ -165,7 +212,7 @@ export default class JoinSuperVise extends Component{
 		
 			    <View  style={styles.header}>
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>
 				<ScrollView>
 					<View style={styles.commonInputWrapper}>

@@ -34,9 +34,10 @@ let imgUrl=require('./image/uploadimg.jpg');
 export default class JoinLoveClub extends Component{
 	constructor(props){
 		super(props);
+		//console.log(this.props);
 		this.state={
-			token:"e10adc3949ba59abbe56e057f20f883e1",
-			notSay:1, //1默认可以发表
+			token:"e10adc3949ba59abbe56e057f20f883e1" ||this.props.userProfile.items.backupfour,
+			//notSay:1, //1默认可以发表
 			realName:null||" ",
 			phoneNo:null||" ",
 			idno:null||" ",
@@ -63,15 +64,14 @@ export default class JoinLoveClub extends Component{
 		// if(this.state.token.length<32 ||this.state.notSay===2){
 		// 	return 
 		// }
-		formData.append("tag",1); //爱心社认证标识为1
+		formData.append("tag",2); //爱心社认证标识为CertificateType 为2
 		formData.append("token",this.state.token); 
-	    formData.append("notSay",this.state.notSay);
-	    formData.append("realName",this.state.realName); //大学爱心社昵称
+	    // formData.append("notSay",this.state.notSay);
+	    formData.append("realName",this.state.realName); //真实姓名
 	    formData.append("phoneNo",this.state.phoneNo); //认证人的手机号
 	    formData.append("idno",this.state.idno); //认证人的身份证号
-	    formData.append("school",this.state.school); //社团所属的大学
-	    formData.append("post",this.state.post); //社团中的职务，存入个人标签中
-	    formData.append("status",this.state.status); //简单介绍社团现状
+	    formData.append("school",this.state.school); //社团所属的大学University
+	    formData.append("post",this.state.post); //社团中的职务，存入个人标签中backupseve
         //console.log(formData);
 		let option={
 			url:UrlJoinLoveClue,
@@ -88,7 +88,17 @@ export default class JoinLoveClub extends Component{
 			});
 			//console.log(resp);
 			if (resp.retcode===2000) {
-				this.props.navigator.pop();
+				 Alert.alert(
+            		'提交成功',
+            		resp.msg,
+		            [
+		                {
+		                    text: '好的',
+		                    onPress:()=>{this.props.navigator.pop();}
+		                }
+		            ]
+       			 );
+				
 			}else{
 				 Alert.alert(
             		'出问题了',
@@ -105,21 +115,10 @@ export default class JoinLoveClub extends Component{
 			this.setState({
 				visible:false
 			});
-			Alert.alert(
-            		'出问题了',
-            		resp.msg,
-		            [
-		                {
-		                    text: '好的'
-		                }
-		            ]
-       	    );
 		});
 	}
    componentDidMount(){
        let startDate=formTime();
-   	   //console.log(startDate);
-	 
 	}
    getRealName(event){
    		this.setState({
@@ -173,7 +172,7 @@ export default class JoinLoveClub extends Component{
 			      console.log('ImagePicker Error:',response.error);
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
-			}else {
+			}else{
 				    let uri = response.uri;
 					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;

@@ -242,7 +242,7 @@ let imgUrl=require('./123.png');
                
                 <View style={styles.fundWrapper}>                  
                     <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text  style={styles.texts}>给爱保险:300</Text>
+                    <Text onPress={this.goFeedBack.bind(this)}  style={styles.texts}>意见反馈</Text>
                     <View style={{width:40}}></View>
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
@@ -250,12 +250,13 @@ let imgUrl=require('./123.png');
                     <Text  onPress={this.goFAQ.bind(this)} style={styles.texts}>常见问题</Text>
                     <View style={{width:40}}></View>
                 </View>
-                 <View style={styles.fundWrapper}>                  
-                    <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text onPress={this.goFeedBack.bind(this)} style={styles.texts}>意见反馈</Text>
-                    <View style={{width:40}}></View>
-                </View>
-
+                {/*
+                    <View style={styles.fundWrapper}>                  
+                        <Image source={require('./image/nav_beauty.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
+                        <Text onPress={this.goFeedBack.bind(this)} style={styles.texts}>意见反馈</Text>
+                        <View style={{width:40}}></View>
+                    </View>
+                */}
 			</View>
 		);
 	}
