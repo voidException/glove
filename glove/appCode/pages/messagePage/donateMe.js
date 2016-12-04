@@ -16,11 +16,12 @@ import{
 	TextInput,
 	Picker,
 	Switch,
-	Slider
+	Slider,
+    WebView,
 } from 'react-native';
 /*这个是加V认证的*/
 import React,{ Component } from 'react';
-
+import {UrlHelpApp} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -39,7 +40,8 @@ export  default  class DonateMe extends Component{
 			<View style={styles.container}> 
 				<View style={styles.head}>   
 					<Text onPress={this.goBack.bind(this)}  style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
-                </View>              
+                </View>
+                 <WebView source={{uri: UrlHelpApp}}/>              
             </View>
         );
 	}

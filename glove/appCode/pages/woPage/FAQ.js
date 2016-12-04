@@ -22,7 +22,7 @@ import{
 } from 'react-native';
 
 import React,{ Component } from 'react';
-
+import {UrlFAQ} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -40,25 +40,9 @@ export  default  class FAQ extends Component{
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
-                                                      
-                </View>
-                <View style={styles.commonStyle}>
-                	<Text>如何申请</Text>
-                	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                </View>
-                <View style={styles.commonStyle}>
-                	<Text>可否修改金额</Text> 
-                	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                              	
-                </View>
-                <View style={styles.commonStyle}>
-                	<Text>申请条件是什么</Text>
-                	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                </View>
-                <WebView 
-                    source={{uri: 'https://m.baidu.com/'}}
-                />
+					<Text onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                                     
+                </View>           
+                <WebView source={{uri: UrlFAQ}}/>
             </View>
         );
 	}

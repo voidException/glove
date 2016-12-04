@@ -46,6 +46,13 @@ export const UrlAffirmList=commonUrl+'/confirm/getconfirmls'; //affirm 中，获
 
 export const UrlGatherInfo=commonUrl+'/gatherinfo/byid'; //资助页面
 
+/********************JSP************************************************/
+export const UrlHelpApp=commonUrl+'/pages/helpApp'; //资助我们
+export const UrlHelpAixinshe=commonUrl+'/pages/helpAixinshe'; //赞助爱心社
+export const UrlAboutUs=commonUrl+'/pages/aboutus';  //关于我们
+export const UrlFeedBack=commonUrl+'/pages/feedback'; //意见反馈
+export const UrlFAQ=commonUrl+'/pages/faq'; //常见问题
+
 
 
 

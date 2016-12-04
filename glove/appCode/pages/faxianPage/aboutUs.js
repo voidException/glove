@@ -17,12 +17,13 @@ import{
 	TextInput,
 	Picker,
 	Switch,
-	Slider
+	Slider,
+    WebView
 } from 'react-native';
 
 import React,{ Component } from 'react';
 import fetchTool  from '../../utils/fetchTool';
-
+import {UrlAboutUs} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -33,19 +34,7 @@ export  default  class AboutUs extends Component{
 		super(props);
 	}
     componentDidMount(){      
-        let options={
-            url:'http://172.16.33.212:8080/glove/user/login',
-            body: JSON.stringify({
-                userEmail: 'alooge@126.com',
-                userPassword: '123456'
-            })
-         };
-         let  response=fetchTool(options);
-         response.then(resp=>{
-              console.log(resp);
-         })
-        
-
+       console.log(UrlAboutUs);
     }
     goBack(){
         this.props.navigator.pop();
@@ -54,21 +43,9 @@ export  default  class AboutUs extends Component{
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text  onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
-                </View>
-                <View style={styles.commonStyle}>
-                	<Text>作者</Text>
-                	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                </View>
-                <View style={styles.commonStyle}>
-                	<Text>为什么要开发这个软件</Text> 
-                	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                              	
-                </View>
-                <View style={styles.commonStyle}>
-                	<Text>你好，爱心社</Text>
-                	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                </View>
+					 <Text  onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
+                </View>              
+                <WebView source={{uri:UrlAboutUs}}/>
             </View>
         );
 	}
@@ -94,14 +71,8 @@ let styles=StyleSheet.create({
         paddingRight:10
     },
     commonStyle:{
-    	flexDirection:'row',
-    	justifyContent:'space-between',
-    	alignItems:'center',
-    	height:40,
-    	backgroundColor:'#ffffff',
-    	borderBottomWidth:1/ratio,
-    	borderBottomColor:'#F4F4F4',
-    	paddingLeft:10
+        marginTop:100,
+    	
     },
       wrapperImage:{
         width:15,
