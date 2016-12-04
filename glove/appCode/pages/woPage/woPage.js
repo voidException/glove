@@ -44,6 +44,7 @@ let imgUrl=require('./123.png');
  class WoPageP extends Component{
 	constructor(props){
 		super(props);
+        //console.log(this.props);
 		this.state={
             token:this.props.userProfile.items.backupfour,
             notSay:1,
@@ -117,7 +118,7 @@ let imgUrl=require('./123.png');
                   console.log('User tapped custom button:',response.customButton);
             }else{
                let uri = response.uri;
-               console.log(uri)
+         
                 if(uri.indexOf('file://') < 0){
                     uri = 'file://' + uri;
                 }else{
@@ -146,6 +147,7 @@ let imgUrl=require('./123.png');
             });
             //console.log(resp);
             if (resp.retcode===2000) {
+
             }else{
                  Alert.alert(
                     '出问题了',
@@ -180,8 +182,7 @@ let imgUrl=require('./123.png');
                     <Text style={{fontSize:18,color:'#ffffff'}}>我</Text> 
                     <View  style={styles.setting}>
                         <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>     
-                    </View>
-                             
+                    </View>                            
                 </View>
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
@@ -189,8 +190,8 @@ let imgUrl=require('./123.png');
     	                	<Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
                         </TouchableOpacity>
 	                	<View style={styles.topperMiddle}>
-	                	    <Text style={styles.nickName}>小神经很Ok</Text>
-	                		<Text>这个家伙的业余产品，想拯救世界</Text>
+	                	    <Text style={styles.nickName}>{this.props.userProfile.items.usernickname}</Text>
+	                		<Text>{this.props.userProfile.items.backupeight||'暂无简介'}</Text>
 	                	</View>
                 	</View>                    
                 </View>             
@@ -200,43 +201,47 @@ let imgUrl=require('./123.png');
                             <Text onPress={this.goHelpListPage.bind(this,21)}>我帮助</Text>
                         </View>
                         <View style={styles.helpInfoMoney}>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>400元</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.userhelpsman||0}人</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.userdonate ||0}元</Text>
                         </View>
                     </View>
                     <View style={styles.helpInfoRight}>
                         <Text onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助我</Text>
                         <View  style={styles.helpInfoMoney}>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>500人</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>400元</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.amountaccept||0}人</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.acceptmoney||0}元</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={styles.loveWrapper}>                  
-                        <View style={styles.loveLeft}></View>
-                        <View style={styles.loveMiddle}>
-                             <Image source={require('./image/hearts.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                        </View>
-                        <View style={styles.loveRight}></View>                
+                    <View style={styles.loveLeft}></View>
+                    <View style={styles.loveMiddle}>
+                         <Image source={require('./image/hearts.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
+                    </View>
+                    <View style={styles.loveRight}></View>                
                 </View>
                 <View style={styles.tuiwenWrapper}>                 
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>100</Text>
-                            <Text onPress={this.goTweetList.bind(this)}  style={styles.txt}>推文</Text>                           
-                        </View>
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>9000</Text>
-                            <Text  onPress={this.goPeopleList.bind(this,10)} style={styles.txt}>关注</Text>
-                        </View>
-                        <View style={styles.txtWrapper}>
-                            <Text style={styles.tuiwenWrapperTxt}>120</Text>
-                            <Text onPress={this.goPeopleList.bind(this,11)} style={styles.txt}>粉丝</Text>
-                        </View>                 
+                    <View style={styles.txtWrapper}>
+                        <Text style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.msgpubcount||0}</Text>
+                        <Text onPress={this.goTweetList.bind(this)}  style={styles.txt}>推文</Text>                           
+                    </View>
+                    <View style={styles.txtWrapper}>
+                        <Text style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.followcount||0}</Text>
+                        <Text  onPress={this.goPeopleList.bind(this,10)} style={styles.txt}>关注</Text>
+                    </View>
+                    <View style={styles.txtWrapper}>
+                        <Text style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.fanscount||0}</Text>
+                        <Text onPress={this.goPeopleList.bind(this,11)} style={styles.txt}>粉丝</Text>
+                    </View>                 
                 </View>
                 <View style={styles.itemWrapperDonate}>                  
                     <Image source={require('./image/zhifubao_btn.png')} resizeMode={'cover'} style={styles.wrapperImage}/>
-                    <Text  onPress={this.goPersonVerify.bind(this)} style={styles.texts}>去认证</Text>
+                    { this.props.userProfile.items.usertype===0 ?
+                        <Text onPress={this.goPersonVerify.bind(this)} style={styles.texts}>去认证</Text>
+                        :
+                        <Text style={styles.texts}>已认证</Text>
+                    }                  
                     <View style={{width:40}}></View>
                 </View>
                

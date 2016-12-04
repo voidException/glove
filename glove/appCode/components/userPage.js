@@ -35,7 +35,7 @@ export default class UserPage extends Component{
         if (this.props.diffTag===88) { //88表明传过来的就是userProfile
             //将如下值传递给weiboListPage等
             this.userProfile=this.props.userProfile; 
-            console.log(this.userProfile)
+            //console.log(this.userProfile)
             this.state={
                 userid:this.props.userProfile.userid||null, //在这里面不能用token
                 notSay:1, //1默认可以发表
@@ -53,17 +53,16 @@ export default class UserPage extends Component{
                 sex:this.props.userProfile.sex ||0,
                 selfintroduce:this.props.userProfile.selfintroduce ||'暂无简介',
                 registerdate:this.props.userProfile.registerdate ||null,
-                photoupload:this.props.userProfile.photoupload,
+                photoupload:this.props.userProfile.photoupload||1,
                 msgpubcount:this.props.userProfile.msgpubcount ||0,
                 followcount:this.props.userProfile.followcount ||0,
                 fanscount:this.props.userProfile.fanscount ||0,
-                country:this.props.userProfile.country ||'无',
-                company:this.props.userProfile.company ||'中国',
+                country:this.props.userProfile.country ||'中国',
+                company:this.props.userProfile.company ||null,
                 address:this.props.userProfile.address ||null,
-                certificatetype:this.props.userProfile.certificatetype ||0,
                 behelptime:this.props.userProfile.behelptime ||null,
                 backupone:this.props.userProfile.backupone ||null,
-                backupthree:this.props.userProfile.backupthree ||null,
+                backupeight:this.props.userProfile.backupeight||'用户还没认证',
                 watchornot:2,//是否关注,1 未关注，2已关注
                 userIDFollow:1,
                 userIDBeFocus:2
@@ -96,7 +95,6 @@ export default class UserPage extends Component{
                 certificatetype:0,
                 behelptime:null,
                 backupone:null,
-                backupthree:null,
                 watchornot:2 ,//是否关注,1 未关注，2已关注
                 userIDFollow:1,
                 userIDBeFocus:2
@@ -143,10 +141,8 @@ export default class UserPage extends Component{
                     country:resp.data.country,
                     company:resp.data.company,
                     address:resp.data.address,
-                    certificatetype:resp.data.certificatetype,
                     behelptime:resp.data.behelptime,
                     backupone:resp.data.backupone,
-                    backupthree:resp.data.backupthree,
                     watchornot:resp.data.watchornot,//是否关注,1 未关注，2已关注
                     userIDFollow:resp.data.userIDFollow,
                     userIDBeFocus:resp.data.userIDBeFocus
@@ -301,7 +297,7 @@ export default class UserPage extends Component{
                     </View>
                     <View style={styles.renzheng}>
                         <Text style={{color:'green'}}>
-                            认证:{this.state.backupthree}。
+                            {this.state.backupeight || '用户还未认证'}
                         </Text>
                     </View>
                     <View style={styles.helpInfo}>
@@ -310,15 +306,15 @@ export default class UserPage extends Component{
                                 <Text onPress={this.goHelpListPage.bind(this,21)}>他帮助</Text>
                             </View>
                             <View style={styles.helpInfoMoney}>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userhelpsman}人</Text>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userdonate}元</Text>
+                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userhelpsman ||0}人</Text>
+                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userdonate ||0}元</Text>
                             </View>
                         </View>
                         <View style={styles.helpInfoRight}>
                             <Text  onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助他</Text>
                             <View  style={styles.helpInfoMoney}>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.amountaccept}人</Text>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.acceptmoney}元</Text>
+                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.amountaccept||0}人</Text>
+                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.acceptmoney ||0}元</Text>
                             </View>
                         </View>
                     </View>
