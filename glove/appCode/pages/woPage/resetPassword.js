@@ -67,7 +67,7 @@ export default class ResetPassword extends Component{
 			this.setState({
 				visible:false
 			});
-			console.log(resp);
+			//console.log(resp);
 			if (resp.retcode===2000) {
 				this.props.navigator.pop();
 			}else{

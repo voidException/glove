@@ -73,7 +73,7 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		let defaultComponent=Login;
+		//let defaultComponent=Login;
 		//let defaultComponent=DoZhuanFa;
 		//let defaultComponent=DoComment;
 		//let defaultComponent=FindPasswordPage;
@@ -94,7 +94,7 @@ class INavigator extends Component{
         //let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;
-        //let  defaultComponent=JoinSuperVise;
+        let  defaultComponent=JoinSuperVise;
         //let  defaultComponent=AddHelpMan;
         //let defaultComponent=Setting;
         //let defaultComponent=CompleteProfile;

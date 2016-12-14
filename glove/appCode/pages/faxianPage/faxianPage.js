@@ -15,7 +15,8 @@ import{
     PixelRatio,
     Dimensions,
 	ListView,
-	WebView
+	WebView,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import Swiper from 'react-native-swiper2';
@@ -56,6 +57,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
         });
 	}
 	gogongyiList(){
+		
 		this.props.navigator.push({
             component: GongYiPagePeopleList,
             params:{
@@ -70,17 +72,29 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 	}
 	goJoinSupervise(){
 		this.props.navigator.push({
-            component: JoinSupervise
+            component: JoinSupervise,
+            params:{
+            	userProfile:this.props.userProfile
+            }
         });
 	}
    goWelfareAuth(){
+   	    return Alert.alert(
+	        		'暂未开通',
+	        		'敬请期待',
+		            [
+		                {
+		                    text: '好的'
+		                }
+		            ]
+	   			 );
 		this.props.navigator.push({
             component: WelfareAuth
         });
 	}
 
 	render(){
-		//let urlone='aaa'
+		
 		return(
 			<View style={styles.wrapper}>
 				<StatusBar backgroundColor='#3B3738' barStyle="default"/>
@@ -134,7 +148,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 			    <View style={styles.itemWrapperSociety}>
 			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
 			        <View style={styles.shehui}>				        
-					    <Text  onPress={this.gogongyiList.bind(this)} style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
+					    <Text   style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
 					    <View style={styles.shehuidown}>
 					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已入住300家</Text>
 					    	<Text onPress={this.goWelfareAuth.bind(this)} style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>

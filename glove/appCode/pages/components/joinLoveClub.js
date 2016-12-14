@@ -36,7 +36,7 @@ export default class JoinLoveClub extends Component{
 		super(props);
 		//console.log(this.props);
 		this.state={
-			token:"e10adc3949ba59abbe56e057f20f883e1" ||this.props.userProfile.items.backupfour,
+			token:this.props.userProfile.items.backupfour,
 			//notSay:1, //1默认可以发表
 			realName:null||" ",
 			phoneNo:null||" ",

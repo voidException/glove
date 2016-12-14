@@ -10,6 +10,7 @@ import { Modal,NativeAppEventEmitter, PixelRatio,ScrollView,
 import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
+import MyMainPageAndroid from '../pages/mainPageAndroid';
 import { connect } from 'react-redux';
 import ModalTips from './modalTips';
 
@@ -18,7 +19,6 @@ var dismissKeyboard = require('dismissKeyboard');
 //var KeyboardSpacer = require('react-native-keyboard-spacer');
 let ratio = PixelRatio.get();
 //对于包含多个输入域的
-
 
 export default class DengLuFragment extends Component{
 	constructor(props){
@@ -46,7 +46,7 @@ export default class DengLuFragment extends Component{
 		}
 	}
 	goMainPage(){
-		 let Route={component:MyMainPage,index:1}
+		 let Route={component:MyMainPageAndroid,index:1}
 		 this.props.navigator.replace(Route);
 	    // this.props.navigator.push({
 		   //  component:MyMainPage,

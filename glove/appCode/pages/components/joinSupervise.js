@@ -34,8 +34,9 @@ let imgUrl=require('./image/uploadimg.jpg');
 export default class JoinSuperVise extends Component{
 	constructor(props){
 		super(props);
+		//console.log(this.props.userProfile);
 		this.state={
-			token:"e10adc3949ba59abbe56e057f20f883e1",
+			token: 'e10adc3949ba59abbe56e057f20f883e1'||this.props.userProfile.backupfour,
 			realName:null||" ",
 			phoneNo:null||" ",
 			idno:null||" ",
@@ -137,10 +138,7 @@ export default class JoinSuperVise extends Component{
    selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
-			title: 'Select Avatar',
-			customButtons: {
-				'Choose Photo from Facebook': 'fb',
-			},
+			title: '最大8MB',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
@@ -156,16 +154,23 @@ export default class JoinSuperVise extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
-				    let uri = response.uri;
-					if(uri.indexOf('file://') < 0){
+                    console.log(response);       
+				    let uri = response.path;
+					if(uri.indexOf('file://') < 0){ //android ,uri:"content://media/external/images/media/8055"
 						uri = 'file://' + uri;
 					}else{
-						uri = uri.replace('file://', '')
+						uri = uri.replace('file://', '') 
 					}
-					//这个source 是控制图片显示在手机上的
 					let source = {uri: uri, isStatic: true};
-					//console.log(source);
-	          		let type = 'image/jpg';
+					
+					//const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};					
+                    // if (Platform.OS === 'ios') {
+				    //     source = {uri: response.uri.replace('file://', ''), isStatic: true};
+				    // }else{
+				    //     source = {uri: response.uri, isStatic: true};
+				    //     console.log(source);
+				    // }
+
 	          		if (tag===1) {
 	          			 this.setState({
 				            imgOneUrl: source
@@ -224,6 +229,7 @@ export default class JoinSuperVise extends Component{
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
 	                        placeholder={'请输入你的真实姓名'}
+	                        maxLength={10}
 	                        onChange={this.getRealName.bind(this)}/>
 	                </View>
 
@@ -236,6 +242,7 @@ export default class JoinSuperVise extends Component{
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
 	                        placeholder={'请输入你的手机号'}
+	                        maxLength={11}
 	                        onChange={this.getPhoneNo.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
@@ -247,6 +254,7 @@ export default class JoinSuperVise extends Component{
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
 	                        placeholder={'请输入你的身份证号'}
+	                        maxLength={18}
 	                        onChange={this.getIdentiNo.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
@@ -258,6 +266,7 @@ export default class JoinSuperVise extends Component{
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
 	                        placeholder={'如CEO'}
+	                        maxLength={10}
 	                        onChange={this.getPost.bind(this)}/>
 	                </View>
 
@@ -268,7 +277,7 @@ export default class JoinSuperVise extends Component{
 							placeholder={'简要介绍下您自己'}
 							placeholderTextColor={'#CCCCCC'}
 							multiline={true}
-							maxLength={200}
+							maxLength={120}
 							onChange={this.getStatus.bind(this)}/>
 					</View>
 					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传能表明您身份信息的有关照片</Text>

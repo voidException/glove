@@ -283,7 +283,7 @@ export default class UserPage extends Component{
                     <View style={styles.headWrapper}>
                         <View style={styles.head}> 
                            <Image  source={require('../image/bar_btn_back_ico.png')} style={styles.headimg} />
-                           <Text onPress={this._back.bind(this)} style={{color:'black'}}>返回</Text>
+                           <Text onPress={this._back.bind(this)} style={{color:'black',fontSize:20}}>返回</Text>
                         </View>
                         <View style={styles.nickName}>
                             <Text>{this.state.usernickname}</Text>

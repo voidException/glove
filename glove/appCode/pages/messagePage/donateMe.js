@@ -39,7 +39,7 @@ export  default  class DonateMe extends Component{
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text onPress={this.goBack.bind(this)}  style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                         
+					<Text onPress={this.goBack.bind(this)}  style={{fontSize:20,color:'#ffffff'}}>返回</Text>                                         
                 </View>
                  <WebView source={{uri: UrlHelpApp}}/>              
             </View>
@@ -65,20 +65,5 @@ let styles=StyleSheet.create({
         backgroundColor:'#43AC43',
         paddingLeft:10,
         paddingRight:10
-    },
-    commonStyle:{
-    	flexDirection:'row',
-    	justifyContent:'space-between',
-    	alignItems:'center',
-    	height:40,
-    	backgroundColor:'#ffffff',
-    	borderBottomWidth:1/ratio,
-    	borderBottomColor:'#F4F4F4',
-    	paddingLeft:10
-    },
-      wrapperImage:{
-        width:15,
-        height:15,
-        marginRight:10
     },
  });
