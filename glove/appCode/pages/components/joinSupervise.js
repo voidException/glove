@@ -12,16 +12,18 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 /*这个是加入监督处认证需要的*/
 import React,{ Component } from 'react';
 import Affirm from './affirm';
 import UploadFile from '../../utils/uploadFile';
 import {UrlJoinLoveClue} from '../../utils/url';
-import Loading from '../../loading/loading';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
+import WeChat from 'react-native-wechat-android';
+import Loading from '../../loading/loading';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -34,14 +36,15 @@ let imgUrl=require('./image/uploadimg.jpg');
 export default class JoinSuperVise extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props.userProfile);
+		//console.log(WeChat);
 		this.state={
 			token: 'e10adc3949ba59abbe56e057f20f883e1'||this.props.userProfile.backupfour,
-			realName:null||" ",
-			phoneNo:null||" ",
-			idno:null||" ",
-			post:null||" ", //职务
-			selfIntroduce:null||" ",//简单介绍自己
+			realName:null||"",
+			phoneNo:null||"",
+			idno:null||"",
+			post:null||"", //职务
+			showLoading:false,
+			selfIntroduce:null||"",//简单介绍自己
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,
 			imgThreeUrl:imgUrl,
@@ -56,6 +59,9 @@ export default class JoinSuperVise extends Component{
    	 this.props.navigator.pop();
     }
     doCommit(){
+    	this.setState({
+			visible:true
+		});
    	    let startDate=formTime();
 		formData.append("tag",3); //个人认证是1
 		formData.append("token",this.state.token); 
@@ -67,16 +73,13 @@ export default class JoinSuperVise extends Component{
 			url:UrlJoinLoveClue,
 			body:formData
 		};
-		this.setState({
-			visible:true
-		});
+	
 		let response=UploadFile(option);
 		response.then(resp=>{
 			formData=new FormData(); 
 			this.setState({
 				visible:false
 			});
-			//console.log(resp);
 			if (resp.retcode===2000) {
 				 Alert.alert(
             		'提交成功',
@@ -107,7 +110,7 @@ export default class JoinSuperVise extends Component{
 		});
 	}
     componentDidMount(){
-       //let startDate=formTime(); 
+
 	}
    getRealName(event){
    		this.setState({
@@ -138,7 +141,7 @@ export default class JoinSuperVise extends Component{
    selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
-			title: '最大8MB',
+			title: '',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
@@ -154,7 +157,7 @@ export default class JoinSuperVise extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
-                    console.log(response);       
+                    //console.log(response);       
 				    let uri = response.path;
 					if(uri.indexOf('file://') < 0){ //android ,uri:"content://media/external/images/media/8055"
 						uri = 'file://' + uri;
@@ -163,14 +166,6 @@ export default class JoinSuperVise extends Component{
 					}
 					let source = {uri: uri, isStatic: true};
 					
-					//const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};					
-                    // if (Platform.OS === 'ios') {
-				    //     source = {uri: response.uri.replace('file://', ''), isStatic: true};
-				    // }else{
-				    //     source = {uri: response.uri, isStatic: true};
-				    //     console.log(source);
-				    // }
-
 	          		if (tag===1) {
 	          			 this.setState({
 				            imgOneUrl: source
@@ -211,10 +206,8 @@ export default class JoinSuperVise extends Component{
 		});	
     }
 	render(){
-
 		return(
-			<View style={styles.container}>
-		
+			<View style={styles.container}>		
 			    <View  style={styles.header}>
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
 					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
@@ -311,7 +304,9 @@ export default class JoinSuperVise extends Component{
 						</TouchableOpacity>
 					</View>
 					<View style={{height:300}}></View>
+					
 				</ScrollView>
+				<Loading visible={this.state.showLoading} />
 			</View>
 		);
 	}

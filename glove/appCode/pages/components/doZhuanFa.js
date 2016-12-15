@@ -32,10 +32,10 @@ export default class DoZhuanFa extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			token:this.props.userProfile.items.backupfour,
-			notSay:this.props.userProfile.items.notsay, 
+			//token:this.props.userProfile.items.backupfour,
+			//notSay:this.props.userProfile.items.notsay, 
 			content:'', //转发时输入的内容
-            sourceMsgID:this.props.tweetid, //被转发的推文的id
+            //sourceMsgID:this.props.tweetid, //被转发的推文的id
 		}
 	}
 
@@ -99,6 +99,7 @@ export default class DoZhuanFa extends Component{
 					<TextInput
 						style={styles.affirmStyle}
 						placeholder="要不要顺便说点什么..."
+
 						multiline={true}
 						maxLength={500}
 					    placeholderTextColor='#DBDBDB'
@@ -134,10 +135,13 @@ let  styles=StyleSheet.create({
 		paddingLeft:3,		
 		marginRight:0,
 		marginLeft:0,
-		//borderColor:'#4EB160',
+		flexDirection: 'row',
+		justifyContent:'flex-start',
+		alignItems:'flex-start',
 		color:'red',
-		padding:10
-		
+		padding:10,
+		textAlign:'left',
+		textAlignVertical :'top'
 	},
 	img:{
 		height:20,

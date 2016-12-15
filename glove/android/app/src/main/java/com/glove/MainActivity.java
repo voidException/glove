@@ -1,6 +1,8 @@
 package com.glove;
 
 import com.facebook.react.ReactActivity;
+import com.heng.wechat.WeChatPackage;
+//import com.theweflex.react.WeChatPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -36,6 +38,8 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new WeChatPackage(),
+            //new WeChatPackage(),
             new ImagePickerPackage()
         );
     }

@@ -24,6 +24,7 @@ import ItemPage from '../pages/zhuPage/itemPage';
 import ItemCell from '../pages/zhuPage/itemCell';
 import WeiBoContent from '../pages/tuiwenPage/weiboContent';
 import OriginTuiwenItem from '../pages/tuiwenPage/originTuiwenItem';
+import WeChatTest from  '../pages/tuiwenPage/weChat';
 import WoPage from '../pages/woPage/woPage';
 import FaxianPage from '../pages/faxianPage/faxianPage';
 import HelpPage  from '../pages/messagePage/helpPage';
@@ -73,7 +74,7 @@ class INavigator extends Component{
 	}
 	render(){
 		let defaultName='TheLoginPage';
-		//let defaultComponent=Login;
+		let defaultComponent=Login;
 		//let defaultComponent=DoZhuanFa;
 		//let defaultComponent=DoComment;
 		//let defaultComponent=FindPasswordPage;
@@ -94,7 +95,8 @@ class INavigator extends Component{
         //let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;
-        let  defaultComponent=JoinSuperVise;
+        //let  defaultComponent=JoinSuperVise;
+        //let  defaultComponent=WeChatTest;
         //let  defaultComponent=AddHelpMan;
         //let defaultComponent=Setting;
         //let defaultComponent=CompleteProfile;

@@ -47,9 +47,14 @@ let { width,height}=Dimensions.get('window');
 		//dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 	render(){
+		let tabBarStyle = {
+    		position: 'absolute',
+    		top: height - 49 - 25 //tabbar height默认是49dp statusBar 25dp
+    	};
+		let sceneStyle = {};
 		return(	
 			<View style={styles.container}>
-			    <TabNavigator>
+			    <TabNavigator  tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
 					<TabNavigator.Item
 					    selected={this.state.selectedTab==='tuiwen'}
 					    title="推文"
@@ -97,8 +102,6 @@ let styles=StyleSheet.create({
 	container:{
 		flex:1,
 		backgroundColor:'#fff',
-		bottom:0,
-		width:width
 	},
 });
 
