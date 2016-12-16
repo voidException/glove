@@ -43,7 +43,6 @@ export default class ResetPassword extends Component{
             againPass:''
 		}
 	}
-
    cancel(){
    	 this.props.navigator.pop();
    }
@@ -53,8 +52,7 @@ export default class ResetPassword extends Component{
 		formData.append("notSay",this.state.notSay); 
 		formData.append("originPass", this.state.originPass);
 		formData.append("newPass",this.state.newPass);
-		formData.append("againPass",this.state.againPass);
-		 
+		formData.append("againPass",this.state.againPass);		 
 		let option={
 			url:Urlresetpass,
 			body:formData
@@ -207,7 +205,8 @@ let  styles=StyleSheet.create({
         fontSize:14,     
         paddingLeft:10,
         color:'#666666',
-        paddingTop:1
+        textAlign:'left',
+        textAlignVertical:'center'
     },
     
 

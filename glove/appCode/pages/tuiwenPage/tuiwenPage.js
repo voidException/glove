@@ -145,12 +145,10 @@ class TuiWenPage extends Component{
 	render(){
 		return(
 			<View style={styles.container}> 
-				<View style={{ flexDirection:'row',backgroundColor:'#43AC43',height:60,paddingTop:24, paddingLeft:15,paddingRight:15,justifyContent:'center',alignItems:'center'}}>
-					<Text style={styles.toper}>传播温暖</Text>					
-		           
-		            <View  style={styles.setting}>
-                        <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:18,color:'#ffffff'}}>发布</Text>     
-                    </View>		            
+				<View style={styles.header}>
+				    <View style={{width:32}}></View>
+					<Text style={{color:'#FFFFFF',fontSize:16}}>传播温暖</Text>							           		            
+                    <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:18,color:'#ffffff'}}>发布</Text>                       		            
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -211,14 +209,15 @@ let styles=StyleSheet.create({
 		flex:1,
 		backgroundColor:'#F9FFFC'
 	},
-	toper:{
+	header:{
+		height:60,
 		flexDirection:'row',
-		justifyContent:'center',
-		alignSelf:'center',
-		color:'white',
-		fontSize:18,
-		paddingLeft:3,
-		paddingRight:3
+		justifyContent:'space-between',
+		paddingTop:20,
+		alignItems:'center',
+		backgroundColor:'#61B972',
+		paddingLeft:5,
+		paddingRight:5
 	},
 	list: {
 	    justifyContent: 'flex-start',

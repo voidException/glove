@@ -71,7 +71,6 @@ class HelpPageP extends Component{
               	});
             }
         }).catch(err=>{
-        	//谢谢你梦琪，陪我走过最艰难的日子。
         	console.log(err);
         });
 	}
@@ -119,10 +118,10 @@ class HelpPageP extends Component{
 		           	<Image source={require('./image/earth.png')} resizeMode={'cover'} style={styles.helpImg}/>
 		           	<View style={styles.shanTxt}>
 		           		<Text style={{color:'#4EB160'}}>越过，</Text>
-		           		<Text style={{color:'#4EB160',marginLeft:-15}}>千山万水</Text>
-		           		<Text style={{color:'#4EB160',marginLeft:-20}}>连接每一座城市的</Text>
-		           		<Text style={{color:'#4EB160',marginLeft:-25}}>每一个爱心社</Text>
-		           		<Text style={{color:'#4EB160',marginLeft:-30}}>只为温暖世界的每一处角落。</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-20}}>千山万水</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-25}}>连接每一座城市的</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-30}}>每一个爱心社</Text>
+		           		<Text style={{color:'#4EB160',marginLeft:-40}}>只为温暖世界的每一处角落。</Text>
 		           	</View>			  
 		        </View>
 		        <View style={styles.clubInfo}>
@@ -181,14 +180,14 @@ class HelpPageP extends Component{
 	   );
 	}
 }
-	function mapStateToProps(state,ownProps){
-		const { userProfile}= state;	 
-		return {
-			userProfile:userProfile
-		}
+function mapStateToProps(state,ownProps){
+	const { userProfile}= state;	 
+	return {
+		userProfile:userProfile
 	}
-   const HelpPage=connect(mapStateToProps)(HelpPageP);
-   export default  HelpPage;
+}
+const HelpPage=connect(mapStateToProps)(HelpPageP);
+export default  HelpPage;
 let styles=StyleSheet.create({
 	 wrapper: {
 	 	flex:1 ,
@@ -323,10 +322,8 @@ let styles=StyleSheet.create({
 		width:30,
 		marginRight:10
 	},
-	texts: {
-	   
-	    fontSize: 16,
-	  
+	texts: {	   
+	    fontSize: 16,	  
 	    alignSelf:'center'
 	},
 	upRightImgWrapper:{

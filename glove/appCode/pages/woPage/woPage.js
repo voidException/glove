@@ -92,17 +92,17 @@ let imgUrl=require('./123.png');
     }
     goPersonVerify(){
          this.props.navigator.push({
-            component: PersonVerify
+            component: PersonVerify,
+            params:{
+                userProfile: this.props.userProfile
+            }
         });
     }
     /* 选择上传图片处理函数*/
     selectPicture(tag){
         //options是对ImagePicker的定制
         let options = {
-            title: 'Select Avatar',
-            customButtons: {
-                'Choose Photo from Facebook': 'fb',
-            },
+            title: '',
             storageOptions: {
                 skipBackup: true,
                 path: 'images'
@@ -117,8 +117,7 @@ let imgUrl=require('./123.png');
             }else if (response.customButton) {
                   console.log('User tapped custom button:',response.customButton);
             }else{
-               let uri = response.uri;
-         
+               let uri = response.path;       
                 if(uri.indexOf('file://') < 0){
                     uri = 'file://' + uri;
                 }else{
@@ -178,11 +177,10 @@ let imgUrl=require('./123.png');
 	render(){
 		return(
 			<View style={styles.container}> 
-				<View style={styles.head}>
-                    <Text style={{fontSize:18,color:'#ffffff'}}>我</Text> 
-                    <View  style={styles.setting}>
-                        <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>     
-                    </View>                            
+				<View style={styles.header}>
+                    <View style={{width:32}}></View>
+                    <Text style={{fontSize:18,color:'#ffffff'}}>我</Text>                  
+                    <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                                    
                 </View>
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
@@ -280,18 +278,15 @@ let styles=StyleSheet.create({
 		flex:1,
         backgroundColor:'#F9FFFC',
 	},
-	head: {
+	header:{
+        height:60,
         flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
-        width:width,    
-        borderBottomWidth:1/ratio,
-        borderBottomColor:'#F9F9F9',
+        justifyContent:'space-between',
+        paddingTop:20,
         alignItems:'center',
-        justifyContent:'center',
-        backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        backgroundColor:'#61B972',
+        paddingLeft:5,
+        paddingRight:5
     },
     topWrapper:{
     	flexDirection:'row',

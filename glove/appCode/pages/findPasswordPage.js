@@ -36,13 +36,13 @@ export default class RegisterPage extends Component{
 		//为了开发方便先注释掉
 		if(!this.verify()){
 		 	return Alert.alert(
-                        '邮箱有误',
-                        '请检查格式',
-                        [
-                            { text:'好的',onPress:() =>console.log('检查邮箱')}
+                '邮箱有误',
+                '请检查格式',
+                [
+                    { text:'好的',onPress:() =>console.log('检查邮箱')}
 
-                        ]
-                    );
+                ]
+            );
 		}
 		let userAccount={
 			userEmail:this.state.userEmail,
@@ -62,7 +62,7 @@ export default class RegisterPage extends Component{
         	  this.setState({
         	  	visible:false
         	  });
-              console.log(resp);
+              //console.log(resp);
               //如果注册成功就返回，失败就显示提示
               if (resp.retcode===2000) {
               	  this.goBack();
@@ -78,7 +78,6 @@ export default class RegisterPage extends Component{
               }
              
         }).catch(err=>{
-        	//停止转圈圈
         	this.setState({
         		visible:false
         	});
@@ -89,11 +88,8 @@ export default class RegisterPage extends Component{
 	  	this.setState({
 	  		userEmail:event.nativeEvent.text
 	  	});	
-	  	//console.log(event.nativeEvent.text);
     }
     verify(){
-    	//输入完密码，点击return时，校验邮箱和密码是否合法 
-    	//console.log('verify');
     	let email=this.state.userEmail;
     	let regx=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/; 
     	if(email===null  ||email.length<10 ||email.length>30 || regx.test(email)){   		
@@ -107,8 +103,9 @@ export default class RegisterPage extends Component{
 		return(
 			<View style={{backgroundColor:'#FFFFFF',flex:1}}>			
 				<View style={styles.header}>
-			    	<View style={styles.returnMe}><Text onPress={this.goBack.bind(this)}  style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
+			    	<Text onPress={this.goBack.bind(this)}  style={{color:'#FFFFFF',fontSize:16}}>返回</Text>
 					<Text style={{color:'#FFFFFF',fontSize:16}}>人过留名</Text>
+					<View style={{width:32}}></View>
 				</View>
 				<View style={styles.glove}>
 					<Text style={{color:'green',fontSize:16}}>密码会发送到您的邮箱📮</Text>
@@ -151,15 +148,11 @@ let styles=StyleSheet.create({
 	header:{
 		height:60,
 		flexDirection:'row',
-		justifyContent:'center',
-		paddingTop:20,
+		justifyContent:'space-between',
 		alignItems:'center',
-		backgroundColor:'#61B972'
-	},
-	returnMe:{
-		position:'absolute',
-		left:5,
-		top:34,	
+		backgroundColor:'#61B972',
+		paddingLeft:5,
+		paddingRight:5
 	},
 	glove:{
 		flexDirection:'row',

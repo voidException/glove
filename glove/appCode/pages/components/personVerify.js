@@ -132,10 +132,7 @@ export default class PersonVerify extends Component{
    selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
-			title: 'Select Avatar',
-			customButtons: {
-				'Choose Photo from Facebook': 'fb',
-			},
+			title: '',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
@@ -151,7 +148,7 @@ export default class PersonVerify extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
-				    let uri = response.uri;
+				    let uri = response.path;
 					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;
 					}else{
@@ -159,8 +156,7 @@ export default class PersonVerify extends Component{
 					}
 					//这个source 是控制图片显示在手机上的
 					let source = {uri: uri, isStatic: true};
-					//console.log(source);
-	          		let type = 'image/jpg';
+					
 	          		if (tag===1) {
 	          			 this.setState({
 				            imgOneUrl: source
@@ -321,7 +317,8 @@ let  styles=StyleSheet.create({
 		width:width,
 		paddingLeft:10,
 		fontSize:14, 
-		
+		textAlign:'left',
+        textAlignVertical:'top'
 	},
 	 commonInputWrapper:{
         flexDirection:'row',
@@ -341,7 +338,8 @@ let  styles=StyleSheet.create({
         fontSize:14,     
         paddingLeft:10,
         color:'#666666',
-        paddingTop:1
+        textAlign:'left',
+        textAlignVertical:'center'
     },
     uploadimgView:{
 		flexWrap :'wrap',

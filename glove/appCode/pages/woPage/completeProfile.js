@@ -44,7 +44,7 @@ export default class CompleteProfile extends Component{
 	}
 
    cancel(){
-   	 this.props.navigator.pop();
+   	    this.props.navigator.pop();
    }
    doCommit(){
    	    let formData = new FormData();
@@ -66,7 +66,6 @@ export default class CompleteProfile extends Component{
 			this.setState({
 				visible:false
 			});
-			console.log(resp);
 			if (resp.retcode===2000) {
 				this.props.navigator.pop();
 			}else{
@@ -188,7 +187,8 @@ let  styles=StyleSheet.create({
 		width:width,
 		paddingLeft:10,
 		fontSize:14, 
-		
+		textAlign:'left',
+        textAlignVertical:'top'		
 	},
 	 commonInputWrapper:{
         flexDirection:'row',
@@ -208,7 +208,8 @@ let  styles=StyleSheet.create({
         fontSize:14,     
         paddingLeft:10,
         color:'#666666',
-        paddingTop:1
+        textAlign:'left',
+        textAlignVertical:'center'
     },   
 });
 

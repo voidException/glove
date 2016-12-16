@@ -97,7 +97,7 @@ export default class PublishTuiwen extends Component{
 			}
 		}).catch(err=>{			
 			console.log(err);
-			formData=new FormData();
+			// formData=new FormData();
 			this.setState({
 				visible:false
 			});
@@ -115,10 +115,7 @@ export default class PublishTuiwen extends Component{
     selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
-			title: 'Select Avatar',
-			customButtons: {
-				'Choose Photo from Facebook': 'fb',
-			},
+			title: '',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
@@ -134,7 +131,7 @@ export default class PublishTuiwen extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
-				    let uri = response.uri;
+				    let uri = response.path;
 					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;
 					}else{
@@ -142,12 +139,7 @@ export default class PublishTuiwen extends Component{
 					}
 					//这个source 是控制图片显示在手机上的
 					let source = {uri: uri, isStatic: true};
-					//console.log(source);
-	          		let type = 'image/jpg';
-	          		// formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
-	          		// formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
-	          		// formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
-	          		//formData.append("hello", {uri: uri, type: 'image/jpeg'});
+					
 	          		if (tag===1) {
 	          			 this.setState({
 				            avatarSource: source
@@ -171,11 +163,9 @@ export default class PublishTuiwen extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text  style={{color:'#ffffff',fontSize:16}} onPress={this.cancel.bind(this)}> 取消 </Text>
-					<Text style={{fontSize:18,marginTop:-3,color:'#ffffff'}}>发推文</Text>
-					<View style={styles.fasong}>
-						<Text onPress={this.doFeedTuiwen.bind(this)}  style={{color:'#ffffff',fontSize:16}}>发送</Text>
-					</View>
+					<Text  style={{color:'#ffffff',fontSize:18}} onPress={this.cancel.bind(this)}> 取消 </Text>
+					<Text style={{fontSize:18,color:'#ffffff'}}>发推文</Text>			
+					<Text onPress={this.doFeedTuiwen.bind(this)}  style={{color:'#ffffff',fontSize:18}}>发送</Text>					
 				</View>
 
 				<View style={styles.commonStyle}>					
@@ -226,17 +216,13 @@ let  styles=StyleSheet.create({
 		backgroundColor:'#F9FFFC',
 	},
 	header:{
+		height:60,
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
-        width:width,    
-        borderBottomWidth:1/ratio,
-        borderBottomColor:'#F9F9F9',
-        alignItems:'center',
-        justifyContent:'space-between',
-        backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+		justifyContent:'space-between',
+		alignItems:'center',
+		backgroundColor:'#61B972',
+		paddingLeft:5,
+		paddingRight:5
 	},
 	fasong:{
 		backgroundColor:'#FD8324',
@@ -292,14 +278,12 @@ let  styles=StyleSheet.create({
 	affirmStyle:{
 		height:150,
 		paddingLeft:3,		
-		//borderWidth:1,
-		//borderColor:'#DBDBDB',
 		borderColor:'gray',
 		marginRight:0,
 		marginLeft:0,
-		//borderColor:'#4EB160',
 		color:'red',
-		padding:10		
+		textAlign:'left',
+        textAlignVertical:'top'	
 	},
 	img:{
 		height:15,

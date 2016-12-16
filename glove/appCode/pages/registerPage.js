@@ -156,13 +156,12 @@ export default class RegisterPage extends Component{
     	this.props.navigator.pop()
     }
 	render(){
-		//let errTip=this.state.onoff ? <ErrorTips />: null;
-		//console.log(errTip);
 		return(
 			<View style={{flex:1,backgroundColor:'#FFFFFF'}}>
 			    <View style={styles.header}>
-			    	<View style={styles.returnMe}><Text onPress={this.goBack.bind(this)} style={{color:'#FFFFFF',fontSize:16}}>返回</Text></View>
+			    	<Text onPress={this.goBack.bind(this)} style={{color:'#FFFFFF',fontSize:16}}>返回</Text>
 					<Text style={{color:'#FFFFFF',fontSize:16}}>捐助即保险</Text>
+					<View style={{width:32}}></View>
 				</View>
 				<View style={styles.glove}>
 					<Text style={{color:'green',fontSize:16}}>给点爱，一起温暖世界</Text>
@@ -256,8 +255,6 @@ export default class RegisterPage extends Component{
 	}
 }
 
-
-
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
@@ -266,15 +263,11 @@ let styles=StyleSheet.create({
 	header:{
 		height:60,
 		flexDirection:'row',
-		justifyContent:'center',
-		paddingTop:20,
+		justifyContent:'space-between',
 		alignItems:'center',
-		backgroundColor:'#61B972'
-	},
-	returnMe:{
-		position:'absolute',
-		left:5,
-		top:34,	
+		backgroundColor:'#61B972',
+		paddingLeft:5,
+		paddingRight:5
 	},
 	glove:{
 		flexDirection:'row',
@@ -312,8 +305,6 @@ let styles=StyleSheet.create({
 	},
 	password:{
 		flexDirection: 'row',
-        borderTopWidth: 1/ratio,
-        borderBottomWidth: 1/ratio,
         borderColor: '#ccc',
         backgroundColor:'#FFFFFF'
 	},

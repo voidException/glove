@@ -219,18 +219,14 @@ export default class AddHelpMan extends Component{
 	selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
-			title: 'Select Avatar',
-			customButtons: {
-				'Choose Photo from Facebook': 'fb',
-			},
+			title: '',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		};
     	ImagePicker.showImagePicker(options, (response) => {
-			  
-			  //console.log(response);
+
 			if (response.didCancel) {
 			      console.log('User cancelled image picker');
 			}else if (response.error) {
@@ -238,20 +234,14 @@ export default class AddHelpMan extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
-				    let uri = response.uri;
+				    let uri = response.path;
 					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;
 					}else{
 						uri = uri.replace('file://', '')
 					}
-					//这个source 是控制图片显示在手机上的
 					let source = {uri: uri, isStatic: true};
-					//console.log(source);
 	          		let type = 'image/jpg';
-	          		// formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
-	          		// formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
-	          		// formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
-	          		//formData.append("hello", {uri: uri, type: 'image/jpeg'});
 	          		if (tag===1) {
 	          			 this.setState({
 				            imgOneUrl: source
@@ -297,8 +287,8 @@ export default class AddHelpMan extends Component{
 			<View style={styles.container}>
 		
 			    <View  style={styles.header}>
-					<Text style={{color:'#ffffff',fontSize:16,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:16,marginRight:6}}>提交</Text>
+					<Text style={{color:'#ffffff',fontSize:20,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:20,marginRight:6}}>提交</Text>
 				</View>
 			
 				<ScrollView>
@@ -541,12 +531,12 @@ let  styles=StyleSheet.create({
 	},
 	switchStyle:{
 		height:30,
-		width:40
+		width:40,
+		marginLeft:2
 	},
 	header:{
 		flexDirection:'row',
         height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
         paddingLeft:4,
         width:width,    
         borderBottomWidth:1/ratio,
@@ -572,7 +562,9 @@ let  styles=StyleSheet.create({
 		height:120,
 		width:width,
 		paddingLeft:10,
-		fontSize:14, 		
+		fontSize:14, 
+		textAlign:'left',
+        textAlignVertical:'top'		
 	},
 	 commonInputWrapper:{
         flexDirection:'row',
@@ -592,7 +584,8 @@ let  styles=StyleSheet.create({
         fontSize:14,     
         paddingLeft:10,
         color:'#666666',
-        paddingTop:1
+        textAlign:'left',
+        textAlignVertical:'center'
     },
     chengruoWrapper:{
         flexDirection:'column',
@@ -609,7 +602,8 @@ let  styles=StyleSheet.create({
         height:150,
         fontSize:14,     
         color:'#666666',
-        paddingTop:1
+        textAlign:'left',
+        textAlignVertical:'top'
     },
     needMoneyTitle:{
     	flexDirection:'column',

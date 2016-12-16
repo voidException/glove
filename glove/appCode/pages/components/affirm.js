@@ -121,7 +121,7 @@ export default class Affirm extends Component{
 				          items
 				     }
 					 <TouchableOpacity onPress={this.goAffirmList.bind(this)}  style={styles.zhengmingImgArrow}>
-					 	<Image source={require('./image/moreArrow2.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>					 
+					 	<Image source={require('./image/forward.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>					 
 					 </TouchableOpacity>
 				</View>
 				<View style={styles.zhengshiTxt}>

@@ -36,9 +36,9 @@ let imgUrl=require('./image/uploadimg.jpg');
 export default class JoinSuperVise extends Component{
 	constructor(props){
 		super(props);
-		//console.log(WeChat);
+		//console.log(WeChat);'e10adc3949ba59abbe56e057f20f883e1'||
 		this.state={
-			token: 'e10adc3949ba59abbe56e057f20f883e1'||this.props.userProfile.backupfour,
+			token: this.props.userProfile.backupfour,
 			realName:null||"",
 			phoneNo:null||"",
 			idno:null||"",
@@ -341,7 +341,8 @@ let  styles=StyleSheet.create({
 		width:width,
 		paddingLeft:10,
 		fontSize:14, 
-		
+		textAlign:'left',
+        textAlignVertical:'top'
 	},
 	 commonInputWrapper:{
         flexDirection:'row',
@@ -361,7 +362,8 @@ let  styles=StyleSheet.create({
         fontSize:14,     
         paddingLeft:10,
         color:'#666666',
-        paddingTop:1
+        textAlign:'left',
+        textAlignVertical:'center'	
     },
     uploadimgView:{
 		flexWrap :'wrap',

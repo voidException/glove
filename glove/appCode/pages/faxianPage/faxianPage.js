@@ -389,13 +389,13 @@ let styles=StyleSheet.create({
 		width:20,
 		height:20,
 		marginLeft:40,
-		marginBottom:-8
+		marginBottom:-6
 	},
 	eyeLeft:{
 		width:20,
 		height:20,
 		marginRight:40,
-		marginBottom:-8
+		marginBottom:-6
 	},
 	gloveWrapper:{
 		flexDirection:'row',

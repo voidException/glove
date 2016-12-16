@@ -43,21 +43,16 @@ export default class PeopleListPage extends Component{
 	}
 
     componentDidMount(){
-
-	    this._onRefresh(); //
+	    this._onRefresh(); 
 	}
  
     renderRow(row,sectionID){
-    	//console.log(row.userid)
 		return( <PeopleListItem key={row.userid} row={row} {...this.props}/>);
 	}
-
 	back(){
 		this.props.navigator.pop();
 	}
-
     _onRefresh() {
- 
        let url;
        let localTag=this.state.tag;
        if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { 
@@ -86,7 +81,6 @@ export default class PeopleListPage extends Component{
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)
 					});	
-					//console.log(resp.data);
 				//这里要更新this.lastTime 以便loadMore使用	
 				let length=resp.data.length-1;
 				//获取的数据的最后一项的值的时间，注意这里没有格式化时间
@@ -147,8 +141,6 @@ export default class PeopleListPage extends Component{
 				//这里要更新this.lastTime
 				let length=resp.data.length-1;
 				this.lastTime=resp.data[length].registerdate; 
-				//console.log('loadMore')
-                //console.log(this.lastTime)
               }
               else{
               	    Alert.alert(
@@ -176,8 +168,8 @@ export default class PeopleListPage extends Component{
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:16}}>返回</Text>
-					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:16}}>下一页</Text>
+					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:20}}>返回</Text>
+					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:20}}>下一页</Text>
 				</View>
 			   	<ListView 
 			    	refreshControl={

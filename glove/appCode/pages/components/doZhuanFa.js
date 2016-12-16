@@ -32,10 +32,10 @@ export default class DoZhuanFa extends Component{
 		super(props);
 		this.state={
 			visible:false,
-			//token:this.props.userProfile.items.backupfour,
-			//notSay:this.props.userProfile.items.notsay, 
+			token:this.props.userProfile.items.backupfour,
+			notSay:this.props.userProfile.items.notsay, 
 			content:'', //转发时输入的内容
-            //sourceMsgID:this.props.tweetid, //被转发的推文的id
+            sourceMsgID:this.props.tweetid, //被转发的推文的id
 		}
 	}
 
@@ -91,15 +91,14 @@ export default class DoZhuanFa extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text  style={{color:'#ffffff',fontSize:16}} onPress={this.cancel.bind(this)}> 取消 </Text>
-					<Text style={{color:'#000',fontSize:18,marginTop:-3}}>转发</Text>
-					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:16}}>发送</Text>
+					<Text  style={{color:'#ffffff',fontSize:20}} onPress={this.cancel.bind(this)}> 取消 </Text>
+					<Text style={{color:'#000',fontSize:20,marginTop:-3}}>转发</Text>
+					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:20}}>发送</Text>
 				</View>
 				<View style={styles.commonStyle}>					
 					<TextInput
 						style={styles.affirmStyle}
 						placeholder="要不要顺便说点什么..."
-
 						multiline={true}
 						maxLength={500}
 					    placeholderTextColor='#DBDBDB'
@@ -138,7 +137,6 @@ let  styles=StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent:'flex-start',
 		alignItems:'flex-start',
-		color:'red',
 		padding:10,
 		textAlign:'left',
 		textAlignVertical :'top'

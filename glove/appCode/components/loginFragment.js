@@ -296,8 +296,8 @@ let styles=StyleSheet.create({
 	},
 	password:{
 		flexDirection: 'row',
-        borderTopWidth: 1/ratio,
-        borderBottomWidth: 1/ratio,
+        //borderTopWidth: 1/ratio,
+        //borderBottomWidth: 1/ratio,
         borderColor: '#ccc',
         backgroundColor:'#FFFFFF'
 	},
@@ -313,15 +313,16 @@ let styles=StyleSheet.create({
         color:'#666666'
     },
       inputWrap: {
+		borderBottomColor:'#CCCCCC',
+		backgroundColor:'#FFFFFF',
         height: 45,
         justifyContent: 'center'
     },
 	passwordinput:{
-		 height: 45,
+		height: 45,
         width: 320,
         fontSize: 16,
         paddingLeft: 10,
-        color:'#333333'
 	},
 	err:{
 		flexDirection:'row',

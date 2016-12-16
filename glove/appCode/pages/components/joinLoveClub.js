@@ -34,10 +34,8 @@ let imgUrl=require('./image/uploadimg.jpg');
 export default class JoinLoveClub extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props);
 		this.state={
 			token:this.props.userProfile.items.backupfour,
-			//notSay:1, //1默认可以发表
 			realName:null||" ",
 			phoneNo:null||" ",
 			idno:null||" ",
@@ -56,7 +54,7 @@ export default class JoinLoveClub extends Component{
 	}
 
    cancel(){
-   	 this.props.navigator.pop();
+   	   this.props.navigator.pop();
    }
    doCommit(){
    	    let startDate=formTime();
@@ -154,18 +152,14 @@ export default class JoinLoveClub extends Component{
 	selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
-			title: 'Select Avatar',
-			customButtons: {
-				'Choose Photo from Facebook': 'fb',
-			},
+			title: '',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		};
     	ImagePicker.showImagePicker(options, (response) => {
-			  
-			  //console.log(response);
+
 			if (response.didCancel) {
 			      console.log('User cancelled image picker');
 			}else if (response.error) {
@@ -173,7 +167,7 @@ export default class JoinLoveClub extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else{
-				    let uri = response.uri;
+				    let uri = response.path;
 					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;
 					}else{
@@ -181,12 +175,6 @@ export default class JoinLoveClub extends Component{
 					}
 					//这个source 是控制图片显示在手机上的
 					let source = {uri: uri, isStatic: true};
-					//console.log(source);
-	          		let type = 'image/jpg';
-	          		// formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
-	          		// formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
-	          		// formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
-	          		//formData.append("hello", {uri: uri, type: 'image/jpeg'});
 	          		if (tag===1) {
 	          			 this.setState({
 				            imgOneUrl: source
@@ -228,11 +216,10 @@ export default class JoinLoveClub extends Component{
     }
 	render(){
 		return(
-			<View style={styles.container}>
-		
+			<View style={styles.container}>		
 			    <View  style={styles.header}>
-					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
+					<Text style={{color:'#ffffff',fontSize:20,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:20,marginRight:6}}>提交</Text>
 				</View>
 				<ScrollView>
 					<View style={styles.commonInputWrapper}>
@@ -369,8 +356,9 @@ let  styles=StyleSheet.create({
 		height:120,
 		width:width,
 		paddingLeft:10,
-		fontSize:14, 
-		
+		fontSize:14, 		
+        textAlign:'left',
+        textAlignVertical:'top'	
 	},
 	 commonInputWrapper:{
         flexDirection:'row',
@@ -387,10 +375,12 @@ let  styles=StyleSheet.create({
      authCode:{
         width:width-60,
         height:44,
-        fontSize:14,     
+        //fontSize:14,     
         paddingLeft:10,
         color:'#666666',
-        paddingTop:1
+  
+        textAlign:'left',
+        textAlignVertical:'center'
     },
     uploadimgView:{
 		flexWrap :'wrap',

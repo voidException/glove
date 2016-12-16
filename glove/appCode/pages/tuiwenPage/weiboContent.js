@@ -241,8 +241,8 @@ let height=Dimensions.get('window').height;
 			<View style={styles.container}> 			
 				<View style={styles.broadcast}>
 					<TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
-						<Image source={require('./image/ic_web_back.png')} style={styles.backImg} resizeMode={'contain'} />
-						<Text style={{fontSize:16,color:'#fff'}}>返回</Text>
+						<Image source={require('./image/return.png')} style={styles.backImg} resizeMode={'contain'} />
+						<Text style={{fontSize:20,color:'#fff'}}>返回</Text>
 					</TouchableOpacity>
 					{
 						this.props.symbol==2?
@@ -396,8 +396,8 @@ let styles=StyleSheet.create({
 		alignItems:'center'
 	},
 	backImg:{
-		height:18,
-		width:18
+		height:20,
+		width:20
 	},
 	shareText:{
 		flexDirection:'row',
@@ -422,11 +422,12 @@ let styles=StyleSheet.create({
 	},
 	returnButton:{
 		flexDirection:'row',
-		justifyContent:'flex-start'
+		justifyContent:'flex-start',
+		alignItems:'center'
 	},
 	broad:{
 		textAlign:'center',
-		fontSize:16,
+		fontSize:20,
 		color:'#FFFFFF'
 	},
 	shareWrapper:{
