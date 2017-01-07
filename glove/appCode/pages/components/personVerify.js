@@ -140,7 +140,6 @@ export default class PersonVerify extends Component{
 		};
     	ImagePicker.showImagePicker(options, (response) => {
 			  
-			  //console.log(response);
 			if (response.didCancel) {
 			      console.log('User cancelled image picker');
 			}else if (response.error) {
@@ -148,51 +147,51 @@ export default class PersonVerify extends Component{
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
-				    let uri = response.path;
-					if(uri.indexOf('file://') < 0){
-						uri = 'file://' + uri;
-					}else{
-						uri = uri.replace('file://', '')
-					}
-					//这个source 是控制图片显示在手机上的
-					let source = {uri: uri, isStatic: true};
-					
-	          		if (tag===1) {
-	          			 this.setState({
-				            imgOneUrl: source
-				        });
-	          			formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
-	          		}else if (tag===2) {
-	          			this.setState({
-				            imgTwoUrl: source
-				        });
-				        formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
-	          		}else if (tag===3) {
-	          			this.setState({
-				            imgThreeUrl: source
-				        });
-				        formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
-	          		}else if (tag===4) {
-	          			this.setState({
-				            imgFourUrl: source
-				        });
-				        formData.append("filefoure", {uri: uri, type: 'image/jpeg',name:'filetfoure'});
-	          		}else if (tag===5) {
-	          			this.setState({
-				            imgFiveUrl: source
-				        });
-				        formData.append("filefive", {uri: uri, type: 'image/jpeg',name:'filefive'});
-	          		}else if (tag===6) {
-	          			this.setState({
-				            imgSixUrl: source
-				        });
-				        formData.append("filesix", {uri: uri, type: 'image/jpeg',name:'filesix'});
-	          		}else if (tag===7) {
-	          			this.setState({
-				            imgSevenUrl: source
-				        });
-				        formData.append("fileseven", {uri: uri, type: 'image/jpeg',name:'fileseven'});
-	          		}
+			    let uri = response.path;
+				if(uri.indexOf('file://') < 0){
+					uri = 'file://' + uri;
+				}else{
+					uri = uri.replace('file://', '')
+				}
+				//这个source 是控制图片显示在手机上的
+				let source = {uri: uri, isStatic: true};
+				
+          		if (tag===1) {
+          			 this.setState({
+			            imgOneUrl: source
+			        });
+          			formData.append("fileone", {uri: uri, type: 'image/jpeg',name:'fileone'});
+          		}else if (tag===2) {
+          			this.setState({
+			            imgTwoUrl: source
+			        });
+			        formData.append("filetwo", {uri: uri, type: 'image/jpeg',name:'filetwo'});
+          		}else if (tag===3) {
+          			this.setState({
+			            imgThreeUrl: source
+			        });
+			        formData.append("filethree", {uri: uri, type: 'image/jpeg',name:'filethree'});
+          		}else if (tag===4) {
+          			this.setState({
+			            imgFourUrl: source
+			        });
+			        formData.append("filefoure", {uri: uri, type: 'image/jpeg',name:'filetfoure'});
+          		}else if (tag===5) {
+          			this.setState({
+			            imgFiveUrl: source
+			        });
+			        formData.append("filefive", {uri: uri, type: 'image/jpeg',name:'filefive'});
+          		}else if (tag===6) {
+          			this.setState({
+			            imgSixUrl: source
+			        });
+			        formData.append("filesix", {uri: uri, type: 'image/jpeg',name:'filesix'});
+          		}else if (tag===7) {
+          			this.setState({
+			            imgSevenUrl: source
+			        });
+			        formData.append("fileseven", {uri: uri, type: 'image/jpeg',name:'fileseven'});
+          		}
 			}
 		});	
     }
@@ -281,7 +280,7 @@ export default class PersonVerify extends Component{
 							<Image key={7} source={this.state.imgSevenUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
 						</TouchableOpacity>
 					</View>
-					<View style={{height:300}}></View>
+					<View style={{height:200}}></View>
 				</ScrollView>
 			</View>
 		);

@@ -63,7 +63,7 @@ export default class UserPage extends Component{
                 behelptime:this.props.userProfile.behelptime ||null,
                 backupone:this.props.userProfile.backupone ||null,
                 backupeight:this.props.userProfile.backupeight||'用户还没认证',
-                watchornot:2,//是否关注,1 未关注，2已关注
+                watchornot:1,//是否关注,1 未关注，2已关注
                 userIDFollow:1,
                 userIDBeFocus:2
             }
@@ -95,18 +95,22 @@ export default class UserPage extends Component{
                 certificatetype:0,
                 behelptime:null,
                 backupone:null,
-                watchornot:2 ,//是否关注,1 未关注，2已关注
+                watchornot:1 ,//是否关注,1 未关注，2已关注
                 userIDFollow:1,
                 userIDBeFocus:2
             };
        }//if
     }//constructor
+    componentWillMount(){
+        //如果用户基本资料是直接传输过来的，就在这里查询是否关注
+
+    }
     componentDidMount(){
         //如果数据只传递过来nickname,那么需要网络获取user信息
+        //延时查询
        if (this.props.diffTag===88) {
             return 0;
-       } 
-     
+        }   
         let formData = new FormData();
         formData.append("nickname",this.props.userNickName); 
         let option={
@@ -117,7 +121,7 @@ export default class UserPage extends Component{
         response.then(resp=>{
             if (resp.retcode===2000) {
                 this.userProfile=resp.data;
-                 //console.log(this.userProfile)
+               // console.log(this.userProfile)
                 this.setState({
                     userid:resp.data.userid,
                     mainOrmore:2, 
@@ -145,7 +149,8 @@ export default class UserPage extends Component{
                     backupone:resp.data.backupone,
                     watchornot:resp.data.watchornot,//是否关注,1 未关注，2已关注
                     userIDFollow:resp.data.userIDFollow,
-                    userIDBeFocus:resp.data.userIDBeFocus
+                    userIDBeFocus:resp.data.userIDBeFocus,
+
                 });
             
             }else{
@@ -163,6 +168,9 @@ export default class UserPage extends Component{
             console.log('userPage页面请求userProfile失败');   
             console.log(err);
         }); 
+        /* 这里紧接着查询是否已关注了用户
+        */
+        
     }
     _back() {
         this.props.navigator.pop();
@@ -186,7 +194,7 @@ export default class UserPage extends Component{
             }
         });
     }
-     goHelpListPage(userType){      
+    goHelpListPage(userType){      
         this.props.navigator.push({
             component: UserPageHelpList,
             params:{
@@ -247,7 +255,7 @@ export default class UserPage extends Component{
               this.setState({
                 visible:false
               });
-              //console.log(resp)
+              console.log(resp)
              if (resp.retcode===2000) {
                   
               }else{
@@ -280,16 +288,14 @@ export default class UserPage extends Component{
         return(
             <View style={styles.container}> 
                 <View style={styles.topper}>
-                    <View style={styles.headWrapper}>
-                        <View style={styles.head}> 
-                           <Image  source={require('../image/bar_btn_back_ico.png')} style={styles.headimg} />
-                           <Text onPress={this._back.bind(this)} style={{color:'black',fontSize:20}}>返回</Text>
-                        </View>
+                    <View style={styles.headWrapper}>               
+                        <TouchableOpacity onPress={this._back.bind(this)}>
+                            <Image  source={require('../image/fanhui.png')} style={styles.headimg} />
+                        </TouchableOpacity>                      
                         <View style={styles.nickName}>
-                            <Text>{this.state.usernickname}</Text>
+                            <Text style={{fontWeight:'bold'}}>{this.state.usernickname}</Text>
                         </View>
-                        <View style={{width:42}}>
-                        </View>
+                        <View style={{width:22}}></View>
                     </View>
 
                     <View style={styles.userPhotoWrapper}>
@@ -306,15 +312,15 @@ export default class UserPage extends Component{
                                 <Text onPress={this.goHelpListPage.bind(this,21)}>他帮助</Text>
                             </View>
                             <View style={styles.helpInfoMoney}>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userhelpsman ||0}人</Text>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userdonate ||0}元</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userhelpsman ||0}人</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userdonate ||0}元</Text>
                             </View>
                         </View>
                         <View style={styles.helpInfoRight}>
                             <Text  onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助他</Text>
                             <View  style={styles.helpInfoMoney}>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.amountaccept||0}人</Text>
-                                <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.acceptmoney ||0}元</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.amountaccept||0}人</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.acceptmoney ||0}元</Text>
                             </View>
                         </View>
                     </View>
@@ -343,8 +349,8 @@ export default class UserPage extends Component{
                             <Text style={{marginLeft:20}}>{this.state.msgpubcount}</Text>
                         </View>
                         <View style={styles.commonStyle}>
-                            <Text style={{color:'#B1B1B1'}}>参与的项目:</Text>
-                            <Text style={{marginLeft:20}}>23</Text>
+                            <Text style={{color:'#B1B1B1'}}>所在城市:</Text>
+                            <Text style={{marginLeft:20}}>{this.state.address}</Text>
                         </View>
                          <View style={styles.commonStyle}>
                             <Text style={{color:'#B1B1B1'}}>是否处于救助状态:</Text>
@@ -366,10 +372,6 @@ export default class UserPage extends Component{
                             <Text style={{marginLeft:20}}>{this.state.company}</Text>
                         </View>
                         <View style={styles.commonStyle}>
-                            <Text style={{color:'#B1B1B1'}}>地区:</Text>
-                            <Text style={{marginLeft:20}}>{this.state.address}</Text>
-                        </View>
-                        <View style={styles.commonStyle}>
                             <Text style={{color:'#B1B1B1'}}>大学:</Text>
                             <Text style={{marginLeft:20}}>{this.state.university}</Text>
                         </View>
@@ -385,9 +387,15 @@ export default class UserPage extends Component{
                 }
                 <View style={styles.bottom}>
                     {this.state.watchornot===1 ?
-                        <Text onPress={this.doWatch.bind(this)}>+关注</Text>
+                        <TouchableOpacity style={styles.bottomInner}>
+                            <Image onPress={this.doWatch.bind(this)} source={require('../image/notPayed.png')} style={styles.payImg} />
+                            <Text>+收听Ta</Text>
+                        </TouchableOpacity>
                          :
-                        <Text onPress={this.cancelWatch.bind(this)}>√已关注</Text>
+                        <TouchableOpacity onPress={this.cancelWatch.bind(this)} style={styles.bottomInner}>
+                            <Image source={require('../image/hasPayed.png')} style={styles.payImg} />
+                            <Text>取消收听</Text>
+                        </TouchableOpacity>
                     }                  
                 </View>
             </View>
@@ -405,20 +413,15 @@ let styles=StyleSheet.create({
         paddingBottom:10
     },
     headWrapper:{
+        height: 40+statusBarHeight,
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-    },
-    head: {
-        flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
-        alignItems:'center',
-        justifyContent:'flex-start',
+        paddingLeft:5
     },
     headimg:{
-        height:14,
-        width:14,
+        height:22,
+        width:22,
     },
     userPhotoWrapper:{
         flexDirection:'row',
@@ -433,7 +436,7 @@ let styles=StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'center',
-         height: 40+statusBarHeight,
+        height: 40+statusBarHeight,
         paddingTop: statusBarHeight,
     },
      helpInfo:{
@@ -516,6 +519,15 @@ let styles=StyleSheet.create({
         backgroundColor:'#EBFAEE',
         height:40,
         width:width
+    },
+    bottomInner:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    payImg:{
+        height:20,
+        width:20
     }
 });
 
