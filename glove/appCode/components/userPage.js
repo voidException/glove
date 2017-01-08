@@ -18,7 +18,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 import WeiBoPageWrapper from '../pages/tuiwenPage/weiboPage';
-import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile} from '../utils/url';
+import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile,UrlqueryWatchif} from '../utils/url';
 import UserPagePeopleList from '../pages/faxianPage/userPagePeopleList';
 import UserPageHelpList from '../pages/faxianPage/userPageHelpList';
 import fetchTool from '../utils/fetchTool';
@@ -63,7 +63,7 @@ export default class UserPage extends Component{
                 behelptime:this.props.userProfile.behelptime ||null,
                 backupone:this.props.userProfile.backupone ||null,
                 backupeight:this.props.userProfile.backupeight||'用户还没认证',
-                watchornot:1,//是否关注,1 未关注，2已关注
+                watchornot:0,//是否关注,0 未关注，1单方面已关注，2双向关注
                 userIDFollow:1,
                 userIDBeFocus:2
             }
@@ -95,7 +95,7 @@ export default class UserPage extends Component{
                 certificatetype:0,
                 behelptime:null,
                 backupone:null,
-                watchornot:1 ,//是否关注,1 未关注，2已关注
+                watchornot:0 ,//是否关注,0 未关注，1单方面已关注，2双向关注
                 userIDFollow:1,
                 userIDBeFocus:2
             };
@@ -103,6 +103,30 @@ export default class UserPage extends Component{
     }//constructor
     componentWillMount(){
         //如果用户基本资料是直接传输过来的，就在这里查询是否关注
+        if (this.props.diffTag!==88) {
+            return 0;
+        }
+        //查询参数
+        let querywatchIfParam={
+            taUserid:this.state.userid, //用户的id
+            myUserid:3  //这个是登录用户的id，得从Redux中获取
+        } 
+        let options={
+            url:UrlqueryWatchif,
+            body: JSON.stringify(querywatchIfParam)
+        }
+        //查询是否已经关注
+        let response=fetchTool(options); //
+        response.then(resp=>{
+              
+            if (resp.retcode===2000) {
+               //改变状态
+
+            }
+        }).catch(err=>{
+            //不做提示，
+        
+        });
 
     }
     componentDidMount(){
@@ -147,9 +171,9 @@ export default class UserPage extends Component{
                     address:resp.data.address,
                     behelptime:resp.data.behelptime,
                     backupone:resp.data.backupone,
-                    watchornot:resp.data.watchornot,//是否关注,1 未关注，2已关注
-                    userIDFollow:resp.data.userIDFollow,
-                    userIDBeFocus:resp.data.userIDBeFocus,
+                    //watchornot:resp.data.watchornot,//是否关注,1 未关注，2已关注
+                    //userIDFollow:resp.data.userIDFollow,
+                    //userIDBeFocus:resp.data.userIDBeFocus,
 
                 });
             
@@ -169,6 +193,7 @@ export default class UserPage extends Component{
             console.log(err);
         }); 
         /* 这里紧接着查询是否已关注了用户
+           延时5秒查询
         */
         
     }
@@ -220,7 +245,10 @@ export default class UserPage extends Component{
                 visible:false
               });
              if (resp.retcode===2000) {
-                  
+                    //设置状态
+                    this.setState({
+                      watchornot:resp.doublefans
+                    });
               }else{
                     Alert.alert(
                         '出错了',
@@ -386,7 +414,7 @@ export default class UserPage extends Component{
                     </ScrollView>
                 }
                 <View style={styles.bottom}>
-                    {this.state.watchornot===1 ?
+                    {this.state.watchornot===0 ?
                         <TouchableOpacity style={styles.bottomInner}>
                             <Image onPress={this.doWatch.bind(this)} source={require('../image/notPayed.png')} style={styles.payImg} />
                             <Text>+收听Ta</Text>
