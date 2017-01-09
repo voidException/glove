@@ -35,6 +35,7 @@ export const UrluploadPhoto=commonUrl+'/photo/upload';
 
 export const UrldoWatch=commonUrl+'/watch/dowatch'; //关注一个人
 export const UrlcancelWatch=commonUrl+'/watch/cancelwatch'; //取消关注一个人
+export const UrlqueryWatchif=commonUrl+'/watch/querywatchif'; //查询是否关注一个人
 
 export const  UrlByAtgetUserProfile=commonUrl+'/user/getprofile/bynickname';
 

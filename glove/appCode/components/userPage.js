@@ -23,15 +23,16 @@ import UserPagePeopleList from '../pages/faxianPage/userPagePeopleList';
 import UserPageHelpList from '../pages/faxianPage/userPageHelpList';
 import fetchTool from '../utils/fetchTool';
 import UploadFile from '../utils/uploadFile';
+import { connect } from 'react-redux';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class UserPage extends Component{
+class UserPageP extends Component{
     constructor(props){
         super(props);
-       
+        console.log(this.props.myProfile);
         if (this.props.diffTag===88) { //88表明传过来的就是userProfile
             //将如下值传递给weiboListPage等
             this.userProfile=this.props.userProfile; 
@@ -64,7 +65,7 @@ export default class UserPage extends Component{
                 backupone:this.props.userProfile.backupone ||null,
                 backupeight:this.props.userProfile.backupeight||'用户还没认证',
                 watchornot:0,//是否关注,0 未关注，1单方面已关注，2双向关注
-                userIDFollow:1,
+                //userIDFollow:1,
                 userIDBeFocus:2
             }
         }else{
@@ -96,19 +97,20 @@ export default class UserPage extends Component{
                 behelptime:null,
                 backupone:null,
                 watchornot:0 ,//是否关注,0 未关注，1单方面已关注，2双向关注
-                userIDFollow:1,
+               // userIDFollow:1,
                 userIDBeFocus:2
             };
        }//if
     }//constructor
     componentWillMount(){
         //如果用户基本资料是直接传输过来的，就在这里查询是否关注
-        if (this.props.diffTag!==88) {
-            return 0;
-        }
+        //暂时注释掉
+        // if (this.props.diffTag!==88) {
+        //     return 0;
+        // }
         //查询参数
         let querywatchIfParam={
-            taUserid:this.state.userid, //用户的id
+            taUserid:1||this.state.userid, //用户的id
             myUserid:3  //这个是登录用户的id，得从Redux中获取
         } 
         let options={
@@ -118,10 +120,12 @@ export default class UserPage extends Component{
         //查询是否已经关注
         let response=fetchTool(options); //
         response.then(resp=>{
-              
+            console.log(resp)         
             if (resp.retcode===2000) {
                //改变状态
-
+               this.setState({
+                    watchornot:resp.doublefans
+                });
             }
         }).catch(err=>{
             //不做提示，
@@ -229,10 +233,11 @@ export default class UserPage extends Component{
         });
     }
     doWatch(){
+        
         let watchuserProfile={
-            token:this.state.token,
-            userIDFollow:this.state.userIDFollow,
-            userIDBeFocus:this.state.userIDBeFocus
+            token:"e10adc3949ba59abbe56e057f20f883e1",
+            userIDBeFocus:this.state.userIDBeFocus,
+            paytag:1
         };
         let options={
             url:UrldoWatch,
@@ -240,16 +245,18 @@ export default class UserPage extends Component{
         };
         let  response=fetchTool(options);
         response.then(resp=>{
-              //停止转圈圈
-              this.setState({
+            //停止转圈圈
+            this.setState({
                 visible:false
-              });
-             if (resp.retcode===2000) {
-                    //设置状态
-                    this.setState({
-                      watchornot:resp.doublefans
-                    });
-              }else{
+            });
+            if (resp.retcode===2000) {
+                //设置状态
+               
+                this.setState({
+                    watchornot:1
+                });
+                    
+            }else{
                     Alert.alert(
                         '出错了',
                         resp.msg,
@@ -269,23 +276,26 @@ export default class UserPage extends Component{
     }
     cancelWatch(){
         let cancelWatchuserProfile={
-            token:this.state.token,
-            beCancel:2
+            token:"e10adc3949ba59abbe56e057f20f883e1",
+            beCancel:3
         };
         //发起网络请求
         let options={
             url:UrlcancelWatch,
             body: JSON.stringify(cancelWatchuserProfile)
         };
+
         let  response=fetchTool(options);
         response.then(resp=>{
               //停止转圈圈
               this.setState({
                 visible:false
               });
-              console.log(resp)
+             
              if (resp.retcode===2000) {
-                  
+                this.setState({
+                    watchornot:0
+                });
               }else{
                     Alert.alert(
                         '出错了',
@@ -415,8 +425,8 @@ export default class UserPage extends Component{
                 }
                 <View style={styles.bottom}>
                     {this.state.watchornot===0 ?
-                        <TouchableOpacity style={styles.bottomInner}>
-                            <Image onPress={this.doWatch.bind(this)} source={require('../image/notPayed.png')} style={styles.payImg} />
+                        <TouchableOpacity  onPress={this.doWatch.bind(this)}  style={styles.bottomInner}>
+                            <Image source={require('../image/notPayed.png')} style={styles.payImg} />
                             <Text>+收听Ta</Text>
                         </TouchableOpacity>
                          :
@@ -430,6 +440,15 @@ export default class UserPage extends Component{
         );
     }
 }
+
+function mapStateToProps(state,ownProps){
+    const { userProfile}= state;     
+    return {
+        myProfile:userProfile
+    }
+}
+const UserPage=connect(mapStateToProps)(UserPageP);
+export  default UserPage; 
 
 let styles=StyleSheet.create({
     container:{
