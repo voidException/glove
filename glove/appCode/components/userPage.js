@@ -32,7 +32,6 @@ let height=Dimensions.get('window').height;
 class UserPageP extends Component{
     constructor(props){
         super(props);
-        console.log(this.props.myProfile);
         if (this.props.diffTag===88) { //88表明传过来的就是userProfile
             //将如下值传递给weiboListPage等
             this.userProfile=this.props.userProfile; 
@@ -65,8 +64,7 @@ class UserPageP extends Component{
                 backupone:this.props.userProfile.backupone ||null,
                 backupeight:this.props.userProfile.backupeight||'用户还没认证',
                 watchornot:0,//是否关注,0 未关注，1单方面已关注，2双向关注
-                //userIDFollow:1,
-                userIDBeFocus:2
+                paytag: 1    //1主动关注，2系统迫使用户关注
             }
         }else{
             this.state={
@@ -97,21 +95,19 @@ class UserPageP extends Component{
                 behelptime:null,
                 backupone:null,
                 watchornot:0 ,//是否关注,0 未关注，1单方面已关注，2双向关注
-               // userIDFollow:1,
-                userIDBeFocus:2
+                paytag: 1    //1主动关注，2系统迫使用户关注
             };
        }//if
     }//constructor
     componentWillMount(){
         //如果用户基本资料是直接传输过来的，就在这里查询是否关注
-        //暂时注释掉
-        // if (this.props.diffTag!==88) {
-        //     return 0;
-        // }
+        if (this.props.diffTag!==88) {
+            return 0;
+        }
         //查询参数
         let querywatchIfParam={
-            taUserid:1||this.state.userid, //用户的id
-            myUserid:3  //这个是登录用户的id，得从Redux中获取
+            taUserid:this.state.userid, //用户的id
+            myUserid:this.props.myProfile.items.userid  //这个是登录用户的id，得从Redux中获取
         } 
         let options={
             url:UrlqueryWatchif,
@@ -120,7 +116,7 @@ class UserPageP extends Component{
         //查询是否已经关注
         let response=fetchTool(options); //
         response.then(resp=>{
-            console.log(resp)         
+            //console.log(resp)         
             if (resp.retcode===2000) {
                //改变状态
                this.setState({
@@ -136,71 +132,101 @@ class UserPageP extends Component{
     componentDidMount(){
         //如果数据只传递过来nickname,那么需要网络获取user信息
         //延时查询
-       if (this.props.diffTag===88) {
+        if (this.props.diffTag===88) { 
             return 0;
         }   
-        let formData = new FormData();
-        formData.append("nickname",this.props.userNickName); 
-        let option={
-            url:UrlByAtgetUserProfile,
-            body:formData
-        };
-        let response=UploadFile(option);
-        response.then(resp=>{
-            if (resp.retcode===2000) {
-                this.userProfile=resp.data;
-               // console.log(this.userProfile)
-                this.setState({
-                    userid:resp.data.userid,
-                    mainOrmore:2, 
-                    usertype:resp.data.usertype,
-                    usertag:resp.data.usertag,
-                    userphoto:resp.data.userphoto,
-                    usernickname:resp.data.usernickname,
-                    userhelpsman:resp.data.userhelpsman,
-                    userdonate:resp.data.userdonate,
-                    acceptmoney:resp.data.acceptmoney, //用户接受到的捐钱总数
-                    amountaccept:resp.data.amountaccept, //帮助用户人的数量
-                    useremail:resp.data.useremail,
-                    university:resp.data.university,
-                    sex:resp.data.sex,
-                    selfintroduce:resp.data.selfintroduce,
-                    registerdate:resp.data.registerdate,
-                    photoupload:resp.data.photoupload,
-                    msgpubcount:resp.data.msgpubcount ||0,
-                    followcount:resp.data.followcount,
-                    fanscount:resp.data.fanscount||0,
-                    country:resp.data.country,
-                    company:resp.data.company,
-                    address:resp.data.address,
-                    behelptime:resp.data.behelptime,
-                    backupone:resp.data.backupone,
-                    //watchornot:resp.data.watchornot,//是否关注,1 未关注，2已关注
-                    //userIDFollow:resp.data.userIDFollow,
-                    //userIDBeFocus:resp.data.userIDBeFocus,
-
-                });
-            
-            }else{
-                 Alert.alert(
-                    '出问题了',
-                    resp.msg,
-                    [
-                        {
-                            text: '好的'
-                        }
-                    ]
-                 );
-            }
-        }).catch(err=>{      
-            console.log('userPage页面请求userProfile失败');   
-            console.log(err);
-        }); 
-        /* 这里紧接着查询是否已关注了用户
-           延时5秒查询
-        */
         
-    }
+        const foo=async()=>{
+            let formData = new FormData();
+            formData.append("nickname",this.props.userNickName); 
+            let option={
+                url:UrlByAtgetUserProfile,
+                body:formData
+            };
+
+        await UploadFile(option)
+            .then(resp=>{
+                if (resp.retcode===2000) {
+                    this.userProfile=resp.data; //为了统一
+                    this.setState({
+                        userid:resp.data.userid,
+                        mainOrmore:2, 
+                        usertype:resp.data.usertype,
+                        usertag:resp.data.usertag,
+                        userphoto:resp.data.userphoto,
+                        usernickname:resp.data.usernickname,
+                        userhelpsman:resp.data.userhelpsman,
+                        userdonate:resp.data.userdonate,
+                        acceptmoney:resp.data.acceptmoney, //用户接受到的捐钱总数
+                        amountaccept:resp.data.amountaccept, //帮助用户人的数量
+                        useremail:resp.data.useremail,
+                        university:resp.data.university,
+                        sex:resp.data.sex,
+                        selfintroduce:resp.data.selfintroduce,
+                        registerdate:resp.data.registerdate,
+                        photoupload:resp.data.photoupload,
+                        msgpubcount:resp.data.msgpubcount ||0,
+                        followcount:resp.data.followcount,
+                        fanscount:resp.data.fanscount||0,
+                        country:resp.data.country,
+                        company:resp.data.company,
+                        address:resp.data.address,
+                        behelptime:resp.data.behelptime,
+                        backupone:resp.data.backupone,
+                    }); 
+                    return 0              
+                }else{
+                    return Alert.alert(
+                        '出问题了',
+                        resp.msg,
+                        [
+                            {
+                                text: '好的'
+                            }
+                        ]
+                     );
+                }
+            }).catch(err=>{      
+                console.log('userPage页面请求userProfile失败');   
+                console.log(err);
+                return 0  
+            }); 
+             //接下来查询是不是关注他了，这要依赖上面的await返回的值       
+    
+            let querywatchIfParam={
+                taUserid:this.state.userid, //用户的id
+                myUserid:this.props.myProfile.items.userid   //这个是登录用户的id，得从Redux中获取
+            } 
+            let options={
+                url:UrlqueryWatchif,
+                body: JSON.stringify(querywatchIfParam)
+            }
+            //查询是否已经关注
+        await fetchTool(options)
+            .then(resp=>{        
+                if (resp.retcode===2000) {
+                   //改变状态
+                   this.setState({
+                        watchornot:resp.doublefans
+                    });
+                   return 0  
+                }
+            }).catch(err=>{
+                //不做提示，
+                return 0             
+            }); //fetchTool
+        }//foo 
+
+        foo().then(resp=>{
+           
+        })
+        .catch(err=>{
+
+        });   
+
+    } //componentDidMount
+
+
     _back() {
         this.props.navigator.pop();
     }
@@ -235,8 +261,8 @@ class UserPageP extends Component{
     doWatch(){
         
         let watchuserProfile={
-            token:"e10adc3949ba59abbe56e057f20f883e1",
-            userIDBeFocus:this.state.userIDBeFocus,
+            token:this.props.myProfile.items.backupfour,
+            userIDBeFocus:this.state.userid,
             paytag:1
         };
         let options={
@@ -250,8 +276,7 @@ class UserPageP extends Component{
                 visible:false
             });
             if (resp.retcode===2000) {
-                //设置状态
-               
+                //设置状态              
                 this.setState({
                     watchornot:1
                 });
@@ -276,8 +301,8 @@ class UserPageP extends Component{
     }
     cancelWatch(){
         let cancelWatchuserProfile={
-            token:"e10adc3949ba59abbe56e057f20f883e1",
-            beCancel:3
+            token:this.props.myProfile.items.backupfour,
+            beCancel:this.state.userid
         };
         //发起网络请求
         let options={
