@@ -49,6 +49,7 @@ let imgUrl=require('./123.png');
             token:this.props.userProfile.items.backupfour,
             notSay:1,
             imgOneUrl:imgUrl,
+            photoUpload:this.props.userProfile.items.photoupload ||1 //标志图片是否上传
         }
 	}
 	_back() {
@@ -144,9 +145,17 @@ let imgUrl=require('./123.png');
             this.setState({
                 visible:false
             });
-            //console.log(resp);
+            //上传头像后，下次登录生效
             if (resp.retcode===2000) {
-
+                 Alert.alert(
+                    '上传成功',
+                    '下次登录生效',
+                    [
+                        {
+                            text: '好的'
+                        }
+                    ]
+                 );
             }else{
                  Alert.alert(
                     '出问题了',
@@ -170,7 +179,8 @@ let imgUrl=require('./123.png');
         this.props.navigator.push({
             component:TweetPageWrapper,
             params:{
-                userProfile:this.props.userProfile
+                userProfile:this.props.userProfile,
+                symbol:2
             }
         });
     }
@@ -185,7 +195,10 @@ let imgUrl=require('./123.png');
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
                         <TouchableOpacity onPress={this.selectPicture.bind(this,2)}>
-    	                	<Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
+                        {  this.state.photoupload==1 ?
+    	                	 <Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
+                          :  <Image source={{uri:this.props.userProfile.items.userphoto}} style={styles.topleftImg} />
+                        }
                         </TouchableOpacity>
 	                	<View style={styles.topperMiddle}>
 	                	    <Text style={styles.nickName}>{this.props.userProfile.items.usernickname}</Text>

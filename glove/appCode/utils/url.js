@@ -1,4 +1,4 @@
-let commonUrl='http://172.16.32.70:8080/glove';
+let commonUrl='http://172.16.33.99:8080/glove';
 
 export const URLLogin=commonUrl+'/user/login';
 export const URLRegister=commonUrl+'/user/register';

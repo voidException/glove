@@ -85,6 +85,7 @@ export default class WeiBoItem extends Component{
 			params:{
 				row:this.props.row,  //完整的数据包括原创和转发
 				userProfile:this.props.userProfile, //
+				symbol: this.props.symbol
 			}
 		});
 	}

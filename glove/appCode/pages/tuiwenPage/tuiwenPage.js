@@ -66,7 +66,7 @@ class TuiWenPage extends Component{
 		//必须确保cloneWithRows是一个数组！！
 		// console.log('*********')
   //       console.log(this.props.weiboList.tuiwenList.length);
-  //       console.log(nextProps.weiboList.tuiwenList.length);	
+        //console.log(nextProps.weiboList.tuiwenList);	
   //       console.log('*********')
         let oldNewdata=[];
         if (nextProps.weiboList.flag==1) {
@@ -138,7 +138,8 @@ class TuiWenPage extends Component{
     	this.props.navigator.push({
     		component:PublishTuiwen,
     		params:{
-    			userProfile:this.props.userProfile
+    			userProfile:this.props.userProfile,
+    			symbol:1  //这个symbol 仅仅用于是否显示删除按钮
     		}
     	})
     }

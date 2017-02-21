@@ -120,12 +120,12 @@ class UserPageP extends Component{
             if (resp.retcode===2000) {
                //改变状态
                this.setState({
-                    watchornot:resp.doublefans
+                    watchornot:resp.doublefans,
+                    paytag:resp.paytag
                 });
             }
         }).catch(err=>{
-            //不做提示，
-        
+            //不做提示，      
         });
 
     }
@@ -134,8 +134,7 @@ class UserPageP extends Component{
         //延时查询
         if (this.props.diffTag===88) { 
             return 0;
-        }   
-        
+        }          
         const foo=async()=>{
             let formData = new FormData();
             formData.append("nickname",this.props.userNickName); 
@@ -191,10 +190,9 @@ class UserPageP extends Component{
                 console.log(err);
                 return 0  
             }); 
-             //接下来查询是不是关注他了，这要依赖上面的await返回的值       
-    
+             //接下来查询是不是关注他了，这要依赖上面的await返回的值          
             let querywatchIfParam={
-                taUserid:this.state.userid, //用户的id
+                taUserid:this.state.userid, //用户的id,上面请求设置
                 myUserid:this.props.myProfile.items.userid   //这个是登录用户的id，得从Redux中获取
             } 
             let options={
@@ -207,7 +205,8 @@ class UserPageP extends Component{
                 if (resp.retcode===2000) {
                    //改变状态
                    this.setState({
-                        watchornot:resp.doublefans
+                        watchornot:resp.doublefans,
+                        paytag:resp.paytag
                     });
                    return 0  
                 }
@@ -225,7 +224,6 @@ class UserPageP extends Component{
         });   
 
     } //componentDidMount
-
 
     _back() {
         this.props.navigator.pop();
@@ -300,6 +298,11 @@ class UserPageP extends Component{
         });
     }
     cancelWatch(){
+        //根据 this.state.paytag 决定能否取消关注
+        if (this.state.paytag==2) {
+            return
+        };
+
         let cancelWatchuserProfile={
             token:this.props.myProfile.items.backupfour,
             beCancel:this.state.userid
@@ -343,7 +346,8 @@ class UserPageP extends Component{
         this.props.navigator.push({
             component:WeiBoPageWrapper,
             params:{
-                userProfile:this.userProfile
+                userProfile:this.userProfile,
+                symbol:1
             }
         });
     }

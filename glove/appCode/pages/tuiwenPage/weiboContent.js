@@ -71,7 +71,7 @@ let height=Dimensions.get('window').height;
 		};		
 	}
 	componentDidMount(){
-		//console.log(this.props);
+		console.log(this.props.symbol);
 		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweet.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
 			let params={
 	       		proof:"111",
