@@ -23,27 +23,48 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-export default class Affirm extends Component{ //<Affirm   confirmList={this.state.confirmList}    navigator={this.props.navigator} userProfile={this.props.userProfile} tweetid={this.props.tweetid}/>
+export default class Affirm extends Component{
 	constructor(props){
 		super(props); //含有userProfile的
 		this.state={
-			count: 0,
+			count:0,
 			affirmInfo:"还没有人证实哦",
-			affirm:this.props.confirmList
+			affirm:null
 		}
 	}
 
     componentDidMount(){
-    	// console.log("aa");
-    	// console.log(this.props)
 		
-    }
-    componentWillReceiveProps(nextProps) {
-    	// console.log("bb");
-    	// console.log(this.nextProps)
-    }
 
-	postAffirm(){     
+	   let params={
+			id:this.props.tweetid,
+			tag:1, //证实和举报都是同一张表，1证实2举报
+			page:0,
+			pageSize:6,
+		};		
+		let options={
+            url:UrlAffirmList,
+            body: JSON.stringify(params)
+        };
+ 
+        let  response=fetchTool(options);
+        response.then(resp=>{
+        	 	
+             if (resp.retcode===2000) {
+             	
+              	    this.setState({
+					 	affirm:resp,
+					 	count:resp.count,
+					 	affirmInfo:resp.lp[0].content
+		            });
+              }
+        }).catch(err=>{
+        	console.log(err);
+        	console.log('证实人列表请求出错');
+        });	   
+	}
+	postAffirm(){ 
+      
 		this.props.navigator.push({
 			component:PostAffirm,
 			params:{
@@ -70,8 +91,8 @@ export default class Affirm extends Component{ //<Affirm   confirmList={this.sta
 		//let img=<Image source={require('../../image/default.jpg')} style={styles.image}/>;
 		var items = [];
 		let realLength=0;
-		if (this.state.affirm!==null ) {
-			realLength=this.state.affirm.length;
+		if (this.state.affirm!==null) {
+			realLength=this.state.affirm.lp.length;
 		};	
 		if (realLength>3) {
 			realLength=3
@@ -79,8 +100,9 @@ export default class Affirm extends Component{ //<Affirm   confirmList={this.sta
         for (var i = 0; i < realLength; i++) {
             if (realLength===0) {
             	items.push(<Image key={i} source={require('../../image/default.jpg')} style={styles.image}/>);
-            }else{              
-            	let imgurl=this.state.affirm[i].confirmbackupthree;           	
+            }else{
+               
+            	let imgurl=this.state.affirm.lp[i].confirmbackuptwo;           	
             	items.push(<Image key={i} source={{uri:imgurl}} style={styles.image}/>);             
             }          
         }
@@ -111,7 +133,7 @@ export default class Affirm extends Component{ //<Affirm   confirmList={this.sta
 }
 
 let styles=StyleSheet.create({
-	zhengmingOuter:{
+		zhengmingOuter:{
 		marginTop:14,
 		paddingLeft:7,
 		paddingRight:7

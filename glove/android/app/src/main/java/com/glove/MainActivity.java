@@ -1,5 +1,7 @@
 package com.glove;
 
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
 import com.heng.wechat.WeChatPackage;
 //import com.theweflex.react.WeChatPackage;
@@ -11,6 +13,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends ReactActivity {
+
+//    @Override
+//    public  void  onCreate(Bundle savedInstanceState){
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.main_activity);
+//    }
+
 
     /**
      * Returns the name of the main component registered from JavaScript.

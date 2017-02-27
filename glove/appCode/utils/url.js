@@ -1,4 +1,4 @@
-let commonUrl='http://172.16.33.99:8080/glove';
+let commonUrl='http://172.16.32.52:8080/glove';
 
 export const URLLogin=commonUrl+'/user/login';
 export const URLRegister=commonUrl+'/user/register';
@@ -22,6 +22,7 @@ export const UrlUploadFile=commonUrl+'/demo/upload/multiUpload'; //发表推文
 export const UrldoZhuanfa=commonUrl+'/weibos/zhuanfaTweet'; //转发推文
 export const UrlcommentList=commonUrl+'/tweetcomment/listcomments';//一条推文的评论列表
 
+
 export const UrlAddNeedMan=commonUrl+'/cash/addhelpman'; //增加一个需要帮助的人
 export const UrlJoinLoveClue=commonUrl+'/renzheng/author'; //加入爱心社认证,监督处认证，个人实名认证，公益机构认证
 export const UrlpostAffirm=commonUrl+'/zhengshi/affirm'; //这是发布一条证实的接口地址 
@@ -40,6 +41,8 @@ export const UrlqueryWatchif=commonUrl+'/watch/querywatchif'; //查询是否关�
 export const  UrlByAtgetUserProfile=commonUrl+'/user/getprofile/bynickname';
 
 export const UrlDeleteTwitter=commonUrl+'/weibos/deleteTweetByID'; //删除一条推文
+
+export const UrlCashConfirmRecord=commonUrl+'/timelinetweet/getInfoByCashUUID/';
 
 export const UrlCashRecord=commonUrl+'/cash/getcashrecord';
 

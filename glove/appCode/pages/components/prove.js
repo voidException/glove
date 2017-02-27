@@ -24,21 +24,24 @@ let height=Dimensions.get('window').height;
 export default class Prove extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props)
 		this.state={
 			cash:{
-				circleusername:null,
-				superusername:null,
-				realcash:null,
-				dutyusername:null,
-				behelpusername:null,
-				promisetype:null,
-				promisemiaoshu:null
+				circleusername: this.props.cash.circleusername,
+				superusername:this.props.cash.superusername,
+				realcash:this.props.cash.realcash,
+				dutyusername:this.props.cash.dutyusername,
+				behelpusername:this.props.cash.behelpusername,
+				promisetype:this.props.cash.promisetype,
+				promisemiaoshu:this.props.cash.promisemiaoshu,
+				confirmList:[],  //这个是证实的数据
+				affirmInfo:"还没有人证实哦"
 			}
 		}
 	}
+	componentDidMount(){
+	}
     
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {   
 		this.setState({
 			cash:{
 				circleusername: nextProps.cash.circleusername,
@@ -47,13 +50,31 @@ export default class Prove extends Component{
 				dutyusername:nextProps.cash.dutyusername,
 				behelpusername:nextProps.cash.behelpusername,
 				promisetype:nextProps.cash.promisetype,
-				promisemiaoshu:nextProps.cash.promisemiaoshu
-
+				promisemiaoshu:nextProps.cash.promisemiaoshu,
+				confirmList:nextProps.confirmList ||[]
 			}
 		});
-       // console.log(nextProps.cash);
 	}
 	render(){
+		var items = [];
+		let realLength=0;
+		if (this.state.cash.confirmList!==[]||this.state.cash.confirmList!=='undefined' ) {
+			realLength=this.state.cash.confirmList.length;
+		};	
+		if (realLength>5) {
+			realLength=5
+		}
+        for (var i = 0; i < realLength; i++) {
+            if (realLength===0) {
+            	items.push(<Image key={i} source={require('../../image/default.jpg')} style={styles.image}/>);
+            }else{            
+            
+            	let imgurl=this.state.cash.confirmList[i].confirmbackupthree;           	
+            	items.push(<Image key={i} source={{uri:imgurl}} style={styles.image}/>);             
+            }          
+        }
+
+        let imgsrc=require('../../image/default.jpg');
         return(	
         	<View>
 		       	<View style={styles.zhengmingWrapper}>
@@ -93,7 +114,24 @@ export default class Prove extends Component{
 						</View>						
 					</View>
 
-					<Affirm   navigator={this.props.navigator} userProfile={this.props.userProfile} tweetid={this.props.tweetid}/>
+					
+					<View style={styles.zhengmingOuter}>
+						<View style={styles.zhengshi}>
+							<Text style={{fontSize:16,fontWeight:'bold'}}>已有<Text style={{fontSize:16,color:'red'}}>{this.state.cash.confirmList.length}</Text>人证实</Text>
+							<Text style={{color:'red',fontWeight:'bold',fontSize:16}} >我要证实</Text>
+						</View>
+						<View  style={styles.zhengshiImg}>
+						     {                          
+						          items
+						     }
+							 <TouchableOpacity  style={styles.zhengmingImgArrow}>
+							 	<Image source={require('./image/forward.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>					 
+							 </TouchableOpacity>
+						</View>
+						<View style={styles.zhengshiTxt}>
+							<Text style={{color:'#B1B1B1'}}>{this.state.affirmInfo}</Text>
+						</View>
+					</View>
 
 				</View>
 			
@@ -114,7 +152,7 @@ export default class Prove extends Component{
 }
 
 let styles=StyleSheet.create({
-    	zhengmingWrapper:{
+    zhengmingWrapper:{
 		borderColor:'#43AC43',
 		borderWidth:1/ratio,
 		margin:3,
@@ -165,7 +203,6 @@ let styles=StyleSheet.create({
 		fontSize:12,
 		color:'green'
 	},
-
 	zhengmingOuter:{
 		marginTop:14,
 		paddingLeft:7,
@@ -173,7 +210,8 @@ let styles=StyleSheet.create({
 	},
 	zhengshi:{
 		flexDirection:'row',
-		justifyContent:'space-between',				
+		justifyContent:'space-between',	
+		alignItems:'center'				
 	},
 	zhengshiImg:{
 		marginTop:5,
@@ -189,7 +227,7 @@ let styles=StyleSheet.create({
 	},
 	zhengmingImgArrow:{
 		position:'absolute',
-		right:-7,
+		right:2,
 		top:0,
 		width:40,
 		height:40,	

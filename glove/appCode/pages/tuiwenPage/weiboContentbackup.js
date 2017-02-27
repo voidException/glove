@@ -29,9 +29,8 @@ import PostAffirm from '../components/postAffirm';
 import DoComment from '../../components/doComment';
 import  Report  from  '../components/report';
 import ReportTuiwen from '../components/reportTuiwen';
-import {UrlDeleteTwitter,UrlCashRecord,UrlCashConfirmRecord} from '../../utils/url';
+import {UrlDeleteTwitter,UrlCashRecord} from '../../utils/url';
 import fetchTool  from '../../utils/fetchTool';
-import fetchToolget  from  '../../utils/fetchToolget'; //发送get请求的fetch接口包装
 import Loading from '../../loading/loading';
 import fmDate from '../../utils/fmDate';
 import { connect } from 'react-redux';
@@ -67,38 +66,36 @@ export default class WeiBoContent extends Component{
 			tweetbackupthree: this.props.row.tuiwen.tweet.tweetbackupthree||null, //推文附带的图片地址
 			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//1 代表普通推文，2 是救助推文
 			videoaddress:this.props.row.tuiwen.tweet.videoaddress|| null, //推文附带的图片地址
-			tweetUUiD:this.props.row.tuiwen.tweet.backupneight||null, //这个是推文本事的UUiD
-			cashUUiD:this.props.row.tuiwen.tweet.cashuuid||null, //这个是推文关联的cash的uuid
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
-			cash:{},
-			confirmList:[]
+			cash:{}
 		};		
 	}
 	componentDidMount(){
+		// console.log(this.props.symbol);
+		// console.log(this.props);
 		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweet.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
-	       // console.log(this.state.cashUUiD);
-	        let url=UrlCashConfirmRecord+this.state.cashUUiD;
-	        let  response=fetchToolget(url);
+			let params={
+	       		proof:"111",
+	       		cashid:this.props.row.tuiwen.tweet.tweetbackupfive
+	        };
+		   	let options={
+		        url:UrlCashRecord,
+		        body: JSON.stringify(params)
+		    }; 
+		
+	        let response=fetchTool(options);
 	        response.then(resp=>{
-	            if (resp.retcode===2000) {
-	            	//console.log(resp);
-	              	this.getJson(resp.lp.cash);
-	              	if (resp.lp.confirmList!=null) {
-	              		this.getJson2(resp.lp.confirmList);
-	              	};
-	            }
+	             if (resp.retcode===2000) {
+	              	  this.getJson(resp.data);
+	              }
 	        }).catch(err=>{
-	        	console.log(err);
-	        	console.log(' 获取prove数据失败');
+	        	console.log('获取cashNeed 失败');
 	        });
-
 	    }//if	
-	    let  finalPublishTime=fmDate(this.props.row.tuiwen.tweet.publishtime);
-	    this.setState({
-	      	publishtime:finalPublishTime
-	    });
-    /*发起请求进度更新的请求，永远是最新的前10条数据*/
-    /*发起请求“支持了”的请求，永远是最新的前10条数据*/
+      let  finalPublishTime=fmDate(this.props.row.tuiwen.tweet.publishtime);
+      this.setState({
+      	    publishtime:finalPublishTime
+      });
 
 	}//componentDidMount
 	getJson(json){		
@@ -106,13 +103,6 @@ export default class WeiBoContent extends Component{
 			cash:json
 		});
 	}
-    getJson2(json){		
-		this.setState({
-			confirmList:json
-		});
-	}
-
-
 	backUp(){
 		this.props.navigator.pop();
 	}
@@ -333,7 +323,7 @@ export default class WeiBoContent extends Component{
 					}
 				    {/* 证明有关的信息; affirm.js中我要证实，需要toke，所以传过去userProfile*/}
 				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
-                       <Prove cash={this.state.cash}  confirmList={this.state.confirmList}  userProfile={this.props.userProfile} tweetid={this.props.row.tuiwen.tweet.tweetid}  navigator={this.props.navigator}/>
+                       <Prove cash={this.state.cash} userProfile={this.props.userProfile} tweetid={this.props.row.tuiwen.tweet.tweetid}  navigator={this.props.navigator}/>
                        :null
                     }
 

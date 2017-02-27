@@ -56,8 +56,9 @@ export default class DoZhuanFa extends Component{
 			visible:true
 		});
 		let response=UploadFile(option);
-	
+	    
 		response.then(resp=>{
+		
 			this.setState({
 				visible:false
 			});
