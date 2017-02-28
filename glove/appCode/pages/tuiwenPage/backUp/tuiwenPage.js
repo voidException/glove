@@ -27,30 +27,33 @@ import fmDate from '../../utils/fmDate';
 import WeiBoItem from './weiboItem';
 //import TweetItem from './tweetItem';
 let { width,height}=Dimensions.get('window');
-
-let lastUpdateTime='2075-09-04 00:00:00';
-
-
+let lastItemstartTime='2015-09-04 00:00:00';
+let lastUpdateTime='2015-09-04 00:00:00';
+let finalData=[];
 class TuiWenPage extends Component{
 	constructor(props){
 		super(props);
-
 		this.DS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state={
 			dataSource: this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			userID:this.props.userProfile.items.userid,
+			token:this.props.userProfile.items.backupfour,
+			//pageSize:6,
 			visible:false
 		};
 		//console.log(this.props)
 	}
 	componentDidMount(){
+		//console.log(this.props.symbol);
 		//这里可以换成真实的r数据了,必须确保这个是同步的
 		let requestParams={
-			userID:this.state.userID,
+			token:this.state.token,
 			page:0,
-			pageSize:4,
-			lastUpdate:lastUpdateTime
+			pageSize:10,
+			lastUpdate:lastUpdateTime,
+			lastItemstart:lastItemstartTime,   //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
+			flag:1,
+			symbol:1
 		};
 
 		const {dispatch}=this.props;
@@ -65,39 +68,72 @@ class TuiWenPage extends Component{
   //       console.log(this.props.weiboList.tuiwenList.length);
         //console.log(nextProps.weiboList.tuiwenList);	
   //       console.log('*********')
-
-     	let weiboLength=nextProps.weiboList.tuiwenList.length-1;   	 					
-		let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.publishtime;
-		lastUpdateTime=fmDate(rowLastItemStart);
-		//console.log(rowLastItemStart);
-        //console.log(lastUpdateTime);
+        let oldNewdata=[];
+        if (nextProps.weiboList.flag==1) {
+             //oldNewdata=nextProps.weiboList.tuiwenList.concat(this.props.weiboList.tuiwenList);
+             oldNewdata=nextProps.weiboList.tuiwenList.concat(finalData);
+             finalData=oldNewdata;
+             let receivedAt=nextProps.weiboList.tuiwenList[0].tuiwen.tweet.publishtime;
+             lastUpdateTime=fmDate(receivedAt);
+        }else if (nextProps.weiboList.flag==2) {
+        	//oldNewdata=this.props.weiboList.tuiwenList.concat(nextProps.weiboList.tuiwenList); 
+        	oldNewdata=finalData.concat(nextProps.weiboList.tuiwenList);
+        	let weiboLength=nextProps.weiboList.tuiwenList.length-1;  
+        	finalData=oldNewdata;  	 					
+			let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.tweet.publishtime;
+			lastItemstartTime=fmDate(rowLastItemStart);
+        };
+        //console.log(oldNewdata);
+       
 		this.setState({
-			dataSource: this.DS.cloneWithRows(nextProps.weiboList.tuiwenList)
+			dataSource: this.DS.cloneWithRows(oldNewdata)
 		});		
 	}
-	componentWillUnmount(){		
-		lastUpdateTime='2075-09-04 00:00:00';
+	componentWillUpdate(nextProps,nextState){
+
+	}
+	componentWillUnmount(){
+		lastItemstartTime='2015-09-04 00:00:00';
+		lastUpdateTime='2015-09-04 00:00:00';
 	}
 	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
-		
-		return( <WeiBoItem  key={row.tuiwen.tweetid} row={row} {...this.props}/>);
+		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
 	}
 
 	_onRefresh() {
 		
 		let requestParams={
-			userID:this.state.userID,
+			token:this.state.token,
 			page:0,
-			pageSize:4,
-     		lastUpdate:lastUpdateTime,
-	
+			pageSize:10,
+			lastUpdate:lastUpdateTime,
+			lastItemstart:lastItemstartTime , //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
+			flag:1, //1代表刷新，2代表loadMore
+			symbol:1  //1代表是主页，2代表是自己查看自己发布的推文，3是查看别人的推文
 		};
-        
+
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
-   
+    onEndReached(){
+    	//这里面实现列表到达底部时自动加载更多
+        //symbol 在前端影响路由，后端影响是查看自己发布的还是别人发布的
+
+    	let requestParams={
+			token:this.state.token,
+			page:0,
+			pageSize:10,
+			lastUpdate:lastUpdateTime,
+			lastItemstart:lastItemstartTime,  
+			flag:2, //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
+            symbol:1
+		};
+		//console.log(lastItemstartTime);
+		const {dispatch}=this.props;
+
+		dispatch(fetchTuiwenPageIfNeeded(requestParams));
+    }
     goTuiwen(){
     	this.props.navigator.push({
     		component:PublishTuiwen,
@@ -130,7 +166,7 @@ class TuiWenPage extends Component{
 		             renderRow={this.renderRow.bind(this)}
 		             initialListSize={21}       
 		             pageSize={10}
-		       
+		             onEndReached={this.onEndReached.bind(this)} 
 		             onEndReachedThreshold={20}
 		             scrollRenderAheadDistance={300}
 		             enableEmptySections={true}/>		
@@ -150,6 +186,21 @@ function mapStateToProps(state,ownProps){
 		weiboList:tuiwenList
 	}
 }
+//以下展示两种包裹action的方法，使它们等价于disptch(action)
+//  const mapDispatchToProps=(dispatch,ownProps)=>{
+	
+//  return {
+// 		getLists:()=>{
+// 			dispatch(fetchTuiwenPageIfNeeded(requestParams))
+// 		}
+// 		someActions:bindActionCreators(fetchTuiwenPageIfNeeded(requestParams),dispatch)
+//  	}
+//  }
+
+//也可以在这里面直接定义参数函数，注意没有return
+//const MyNavigator=connect(mapStateToProps,mapDispatchToProps)(INavigator);
+//const MyNavigator=connect(mapStateToProps)(INavigator);
+//const TuiWenPageWrapper=connect(mapStateToProps)(TuiWenPage);
 const TuiWenPageWrapper=connect(mapStateToProps)(TuiWenPage);
 export default TuiWenPageWrapper
 

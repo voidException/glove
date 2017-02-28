@@ -3,7 +3,6 @@ import * as types  from '../actions/actionTypes';
 //每次请求都需要更新请求参数
 export function tweetList(state={
 		tuiwenList:[],
-		flag:0
     },action){
 	    //console.log(state.tuiwenList);
 	   // console.log(action);
@@ -21,7 +20,6 @@ export function tweetList(state={
 			case  types.Get_tweetPage:
 				return	Object.assign({},state,{
 					tuiwenList:action.posts,
-					flag:action.param.flag
 				});
 			default:
 				return state;

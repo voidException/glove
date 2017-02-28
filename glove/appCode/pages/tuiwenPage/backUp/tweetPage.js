@@ -1,4 +1,4 @@
-//从userPage进入的推文列表
+//查看我自己的推文
 import{
 	StyleSheet,
 	Text,
@@ -28,32 +28,36 @@ let { width,height}=Dimensions.get('window');
 let lastItemstartTime='2015-09-04 00:00:00';
 let lastUpdateTime='2015-09-04 00:00:00';
 let finalData2=[];
-class WeiBoPage extends Component{ //查看自己发布的tweet
+class TweetPage extends Component{ //查看自己发布的tweet
 	constructor(props){
 		super(props);
 		this.DS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state={
 			dataSource: this.DS.cloneWithRows([]),
 			isRefreshing: false,
+			token:this.props.userProfile.items.backupfour,
 			visible:false
 		};
 	}
-	componentDidMount(){
-		
+	componentDidMount(){	
 		let requestParams={
-			userID:1,//要用userid取数据
+			token:this.state.token,
 			page:0,
 			pageSize:2,
 			lastUpdate:lastUpdateTime,
-			lastItemstart:lastItemstartTime,  
+			lastItemstart:lastItemstartTime, //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 			flag:1,
-			symbol:3
+			symbol:2
 		};
-
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
+		//因为这个时候，数据还没到来，所以为null，但这个时候数据已会传入weiboItem，后者也会渲染，
 	}
-
+	componentWillUnmount(){
+		lastItemstartTime='2015-09-04 00:00:00';
+		lastUpdateTime='2015-09-04 00:00:00';
+	}
+	//异步获取数据后，更新的是store，connect会感知到，将会执行这个方法，这样weiboItem就有数据了
 	componentWillReceiveProps(nextProps) {
         let oldNewdata=[];
         if (nextProps.weiboList.flag==1) {
@@ -68,46 +72,44 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 			let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.tweet.publishtime;
 			lastItemstartTime=fmDate(rowLastItemStart);
         };
+
 		this.setState({
 			dataSource: this.DS.cloneWithRows(oldNewdata)
-		});
-
-  //       this.setState({
-		// 	dataSource: this.DS.cloneWithRows(nextProps.weiboList.tuiwenList)
-		// });	
-
+		});		
 	}
 	componentWillUpdate(nextProps,nextState){
 
 	}
+	//这个需要把navigator传递过去
 	renderRow(row,sectionID){
 		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
 	}
 
 	_onRefresh() {
 		let requestParams={
-			userID:1,
+			token:this.state.token,
 			page:0,
 			pageSize:4,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime , //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 			flag:1, //1代表刷新，2代表loadMore
-			symbol:3
+			symbol:2
 		};
 
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
     onEndReached(){
-    	
+    	//这里面实现列表到达底部时自动加载更多
+        //symbol 在前端影响路由，后端影响是查看自己发布的还是别人发布的    
     	let requestParams={
-			userID:1,
+			token:this.state.token,
 			page:0,
 			pageSize:10,
 			lastUpdate:lastUpdateTime,
 			lastItemstart:lastItemstartTime,  
 			flag:2, //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
-			symbol:3
+            symbol:2
 		};
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams));
@@ -126,7 +128,7 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 				<View style={styles.header}>
 					<Text onPress={this.goBack.bind(this)} style={{fontSize:16,color:'#ffffff'}}>返回</Text>
 					<Text style={{fontSize:18,marginTop:-5}}>传播温暖</Text>					
-		            <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:16,color:'#ffffff'}}>发布</Text>                 
+		            <Text style={{fontSize:16,color:'#ffffff'}}>发布</Text>                 
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -154,14 +156,13 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 }
 
 function mapStateToProps(state,ownProps){
-	const { twitterList}= state;	 
+	const { tweetList }= state;	 
 	return {
-		weiboList:twitterList
+		weiboList:tweetList
 	}
 }
-const WeiBoPageWrapper=connect(mapStateToProps)(WeiBoPage);
-export default WeiBoPageWrapper
-
+const TweetPageWrapper=connect(mapStateToProps)(TweetPage);
+export default TweetPageWrapper
 
 let styles=StyleSheet.create({
 	container:{

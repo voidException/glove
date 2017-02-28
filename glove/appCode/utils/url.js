@@ -4,9 +4,12 @@ export const URLLogin=commonUrl+'/user/login';
 export const URLRegister=commonUrl+'/user/register';
 export const URLFindPasswd=commonUrl+'/user/findpassword';
 
-export const URLUserPageWeibo=commonUrl+'/userpage/weibos/gettweetbyuserid'; //咋userPage页面查看对方发布的微博
-export const URLTuiwenPage =commonUrl+'/weibos/gettweetbyuserid'; //适合查看自己发布转发的
-export const URLmainPageWeiBo=commonUrl+'/weibos/gettuiwenlists';//适合查用户关注的推文
+// export const URLUserPageWeibo=commonUrl+'/userpage/weibos/gettweetbyuserid'; //咋userPage页面查看对方发布的微博
+// export const URLTuiwenPage =commonUrl+'/weibos/gettweetbyuserid'; //适合查看自己发布转发的
+// export const URLmainPageWeiBo=commonUrl+'/weibos/gettuiwenlists';//适合查用户关注的推文
+export const URLUserPageWeibo=commonUrl+'/tuiwen/getTweetByOtherUseriD'; //咋userPage页面查看对方发布的微博
+export const URLTuiwenPage =commonUrl+'/tuiwen/getMyselfPublishedTweetByMyiD'; //适合查看自己发布转发的
+export const URLmainPageWeiBo=commonUrl+'/tuiwen/getTweetByUseriD';//适合查用户关注的推文
 
 export const URLItemPage=commonUrl+'/item/list';
 export const URLWheelImg=commonUrl+'/picture/getpicture';

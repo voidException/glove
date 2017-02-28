@@ -43,42 +43,39 @@ let height=Dimensions.get('window').height;
 export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
-		// console.log(this.props);
-
 		this.state={
 			visible:false, //控制转圈圈
 			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
 			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
 			userphoto: this.props.row.tuiwen.userphoto ||'../../image/default.jpg',
 			usernickname: this.props.row.tuiwen.usernickname ||'无名氏',
-			//tweetid: this.props.row.tuiwen.tweetid||null, //推文的id
-			tweetid:1,
-			useridtweet: this.props.row.tuiwen.useridtweet || 0, //发布推文的用户id
-			sourcemsgid: this.props.row.tuiwen.sourcemsgid|| 0, // 被转发的微博的id
-			msgcontent: this.props.row.tuiwen.msgcontent|| null,
-			boxtimes:  this.props.row.tuiwen.boxtimes ||null, //被收藏的次数
-			commenttimes: this.props.row.tuiwen.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.tuiwen.deletetag|| 1, //是否删除标志 1默认没删除。2 代表删除
+			tweetid: this.props.row.tuiwen.tweet.tweetid||null, //推文的id
+			useridtweet: this.props.row.tuiwen.tweet.useridtweet || 0, //发布推文的用户id
+			sourcemsgid: this.props.row.tuiwen.tweet.sourcemsgid|| 0, // 被转发的微博的id
+			msgcontent: this.props.row.tuiwen.tweet.msgcontent|| null,
+			boxtimes:  this.props.row.tuiwen.tweet.boxtimes ||null, //被收藏的次数
+			commenttimes: this.props.row.tuiwen.tweet.commenttimes || 0, //微博被评论的次数
+			deletetag: this.props.row.tuiwen.tweet.deletetag|| 1, //是否删除标志 1默认没删除。2 代表删除
 			ok:  0, //微博被赞的次数
 			publicsee:  0, //是否可见
-			publishtime:  this.props.row.tuiwen.publishtime|| null, //微博发布的时间
-			reportedtimes: this.props.row.tuiwen.reportedtimes || 0, //被举报的次数
-			tagid: this.props.row.tuiwen.tagid|| 1, // 1 代表没有转发的微博。2代表有被转发的微博
-			topic:this.props.row.tuiwen.topic|| 1, //话题的主键
-			tweetbackupone:this.props.row.tuiwen.tweetbackupone||  null, //推文附带的图片地址
-			tweetbackuptwo: this.props.row.tuiwen.tweetbackuptwo ||null, //推文附带的图片地址
-			tweetbackupthree: this.props.row.tuiwen.tweetbackupthree||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tuiwen.tweetbackupfour|| null,//1 代表普通推文，2 是救助推文
-			videoaddress:this.props.row.tuiwen.videoaddress|| null, //推文附带的图片地址
-			tweetUUiD:this.props.row.tuiwen.backupneight||null, //这个是推文本事的UUiD
-			cashUUiD:this.props.row.tuiwen.cashuuid||null, //这个是推文关联的cash的uuid
+			publishtime:  this.props.row.tuiwen.tweet.publishtime|| null, //微博发布的时间
+			reportedtimes: this.props.row.tuiwen.tweet.reportedtimes || 0, //被举报的次数
+			tagid: this.props.row.tuiwen.tweet.tagid|| 1, // 1 代表没有转发的微博。2代表有被转发的微博
+			topic:this.props.row.tuiwen.tweet.topic|| 1, //话题的主键
+			tweetbackupone:this.props.row.tuiwen.tweet.tweetbackupone||  null, //推文附带的图片地址
+			tweetbackuptwo: this.props.row.tuiwen.tweet.tweetbackuptwo ||null, //推文附带的图片地址
+			tweetbackupthree: this.props.row.tuiwen.tweet.tweetbackupthree||null, //推文附带的图片地址
+			tweetbackupfour: this.props.row.tuiwen.tweet.tweetbackupfour|| null,//1 代表普通推文，2 是救助推文
+			videoaddress:this.props.row.tuiwen.tweet.videoaddress|| null, //推文附带的图片地址
+			tweetUUiD:this.props.row.tuiwen.tweet.backupneight||null, //这个是推文本事的UUiD
+			cashUUiD:this.props.row.tuiwen.tweet.cashuuid||null, //这个是推文关联的cash的uuid
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
 			cash:{},
 			confirmList:[]
 		};		
 	}
 	componentDidMount(){
-		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
+		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweet.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
 	       // console.log(this.state.cashUUiD);
 	        let url=UrlCashConfirmRecord+this.state.cashUUiD;
 	        let  response=fetchToolget(url);
@@ -96,7 +93,7 @@ export default class WeiBoContent extends Component{
 	        });
 
 	    }//if	
-	    let  finalPublishTime=fmDate(this.props.row.tuiwen.publishtime);
+	    let  finalPublishTime=fmDate(this.props.row.tuiwen.tweet.publishtime);
 	    this.setState({
 	      	publishtime:finalPublishTime
 	    });
@@ -145,7 +142,7 @@ export default class WeiBoContent extends Component{
 			component:DoComment,
 			params:{
 				userProfile:this.props.userProfile,
-				tweetid:this.props.row.tuiwen.tweetid 
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
 			}
 		});
 	}
@@ -156,7 +153,7 @@ export default class WeiBoContent extends Component{
 		this.props.navigator.push({
 			component:Comment,
 			params:{
-				tweetid:this.props.row.tuiwen.tweetid 
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
 			}
 		});
 	}
@@ -174,7 +171,7 @@ export default class WeiBoContent extends Component{
 			component:DoZhuanFa,
 			params:{
 				userProfile:this.props.userProfile,
-				tweetid:this.props.row.tuiwen.tweetid 
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
 			}
 		});
 	}
@@ -185,7 +182,7 @@ export default class WeiBoContent extends Component{
 			component:ReportTuiwen,
 			params:{
 				userProfile:this.props.userProfile,
-				tweetid:this.props.row.tuiwen.tweetid 
+				tweetid:this.props.row.tuiwen.tweet.tweetid 
 			}
 		})
 	}
@@ -214,7 +211,7 @@ export default class WeiBoContent extends Component{
 		};
        let params={
        		 token:this.props.userProfile.items.backupfour,
-       		 tweetid:this.props.row.tuiwen.tweetid
+       		 tweetid:this.props.row.tuiwen.tweet.tweetid
        		
        };
    	    let options={
@@ -353,13 +350,13 @@ export default class WeiBoContent extends Component{
 		       		}
 
 					{
-						this.state.tagid===2 && this.props.tagDiffweiboItemOrigin==100 ?
+						this.state.tagid===2 ? 
 						<OriginTuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator} userProfile={this.props.userProfile}/>
 						: null
 					}
 				    {/* 证明有关的信息; affirm.js中我要证实，需要toke，所以传过去userProfile*/}
 				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
-                       <Prove cash={this.state.cash}  confirmList={this.state.confirmList}  userProfile={this.props.userProfile} tweetid={this.props.row.tuiwen.tweetid}  navigator={this.props.navigator}/>
+                       <Prove cash={this.state.cash}  confirmList={this.state.confirmList}  userProfile={this.props.userProfile} tweetid={this.props.row.tuiwen.tweet.tweetid}  navigator={this.props.navigator}/>
                        :null
                     }
 

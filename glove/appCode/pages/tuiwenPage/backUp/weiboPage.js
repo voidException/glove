@@ -70,12 +70,7 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
         };
 		this.setState({
 			dataSource: this.DS.cloneWithRows(oldNewdata)
-		});
-
-  //       this.setState({
-		// 	dataSource: this.DS.cloneWithRows(nextProps.weiboList.tuiwenList)
-		// });	
-
+		});		
 	}
 	componentWillUpdate(nextProps,nextState){
 

@@ -4,6 +4,7 @@ import { Alert,NativeAppEventEmitter} from 'react-native';
 //userAccount 包含邮箱和密码，外部传入
 export function  receiveUserProfile(userAccount,json){
 	//console.log(userAccount)应该多存一个数据域
+	//console.log(json);
 	NativeAppEventEmitter.emit('loginSuccess', {
 		type:1,
         userpassword:userAccount.userPassword,

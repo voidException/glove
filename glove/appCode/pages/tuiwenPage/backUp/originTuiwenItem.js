@@ -15,37 +15,35 @@ import WoPage from '../woPage/woPage';
 import OriginTuiwenContent from './originTuiwenContent';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
-import WeiBoContent from './weiboContent';
+
 let {width,height}=Dimensions.get('window');
 
 export default class OriginTuiwenItem extends Component{
 	constructor(props){
 		super(props);
-		console.log(this.props);
 		this.state={
-			photoupload: 1, //1 代表未上传头像
-			selfintroduce: '什么也没有介绍自己',
-			userphoto:'../../image/default.jpg',
-			usernickname: '无名氏',
-			tweetid:this.props.row.tweetid || 0, //推文的id,应该是zhuanfaTuiwen
-		
-			useridtweet: this.props.row.useridtweet || 0, //发布推文的用户id
-			sourcemsgid: this.props.row.sourcemsgid || 0, // 被转发的微博的id
-			msgcontent: this.props.row.msgcontent || "出错了", //微博的内容
-			boxtimes: this.props.row.boxtimes || null, //被收藏的次数
-			commenttimes: this.props.row.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.deletetag || 0, //是否删除标志 1默认没删除。2 代表删除
-			ok: this.props.row.ok || 0, //微博被赞的次数
-			publicsee: this.props.row.publicsee || 0, //是否可见
-			publishtime: this.props.row.publishtime || null, //微博发布的时间
-			reportedtimes: this.props.row.reportedtimes || 0, //被举报的次数
-			tagid: this.props.row.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
+			photoupload:this.props.row.photoupload || 1, //1 代表未上传头像
+			selfintroduce: this.props.row.selfintroduce ||'什么也没有介绍自己',
+			userphoto:this.props.row.userphoto ||'../../image/default.jpg',
+			usernickname:this.props.row.usernickname || '无名氏',
+			tweetid:this.props.row.tweet.tweetid || 0, //推文的id
+			useridtweet: this.props.row.tweet.useridtweet || 0, //发布推文的用户id
+			sourcemsgid: this.props.row.tweet.sourcemsgid || 0, // 被转发的微博的id
+			msgcontent: this.props.row.tweet.msgcontent || null, //微博的内容
+			boxtimes: this.props.row.tweet.boxtimes || null, //被收藏的次数
+			commenttimes: this.props.row.tweet.commenttimes || 0, //微博被评论的次数
+			deletetag: this.props.row.tweet.deletetag || 0, //是否删除标志 1默认没删除。2 代表删除
+			ok: this.props.row.tweet.ok || 0, //微博被赞的次数
+			publicsee: this.props.row.tweet.publicsee || 0, //是否可见
+			publishtime: this.props.row.tweet.publishtime || null, //微博发布的时间
+			reportedtimes: this.props.row.tweet.reportedtimes || 0, //被举报的次数
+			tagid: this.props.row.tweet.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
 			//topic:this.props.row.tweet.topic || 1, //话题的主键
-			tweetbackupone: this.props.row.tweetbackupone || null, //推文附带的图片地址
-			tweetbackuptwo: this.props.row.tweetbackuptwo || null, //推文附带的图片地址
-			tweetbackupthree: this.props.row.tweetbackupthree ||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tweetbackupfour || null,//推文附带的图片地址
-			videoaddress: this.props.row.videoaddress ||null, //推文附带的图片地址
+			tweetbackupone: this.props.row.tweet.tweetbackupone || null, //推文附带的图片地址
+			tweetbackuptwo: this.props.row.tweet.tweetbackuptwo || null, //推文附带的图片地址
+			tweetbackupthree: this.props.row.tweet.tweetbackupthree ||null, //推文附带的图片地址
+			tweetbackupfour: this.props.row.tweet.tweetbackupfour || null,//推文附带的图片地址
+			videoaddress: this.props.row.tweet.videoaddress ||null, //推文附带的图片地址
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
 			/*转发的内容封装成一个组件，传props*/
 		}
@@ -76,8 +74,7 @@ export default class OriginTuiwenItem extends Component{
 			component:OriginTuiwenContent,
 			params:{
 				row:this.props.row , //这里的数据只是zhuanfa的数据
-				userProfile:this.props.userProfile,
-				tagDiffweiboItemOrigin:200
+				userProfile:this.props.userProfile
 			}
 		});
 	}
