@@ -114,20 +114,22 @@ class UserPageP extends Component{
             body: JSON.stringify(querywatchIfParam)
         }
         //查询是否已经关注
-        let response=fetchTool(options); //
-        response.then(resp=>{
-            //console.log(resp)         
-            if (resp.retcode===2000) {
-               //改变状态
-               this.setState({
-                    watchornot:resp.doublefans,
-                    paytag:resp.paytag
-                });
-            }
-        }).catch(err=>{
-            //不做提示，      
-        });
 
+        setTimeout(()=>{ 
+            let response=fetchTool(options); //
+            response.then(resp=>{
+                //console.log(resp)         
+                if (resp.retcode===2000) {
+                   //改变状态
+                   this.setState({
+                        watchornot:resp.doublefans,
+                        paytag:resp.paytag
+                    });
+                }
+            }).catch(err=>{
+                //不做提示，      
+            });
+        },1000) 
     }
     componentDidMount(){
         //如果数据只传递过来nickname,那么需要网络获取user信息
@@ -135,7 +137,9 @@ class UserPageP extends Component{
         if (this.props.diffTag===88) { 
             return 0;
         }          
-        const foo=async()=>{
+
+        setTimeout(()=>{ 
+            const foo=async()=>{
             let formData = new FormData();
             formData.append("nickname",this.props.userNickName); 
             let option={
@@ -143,86 +147,86 @@ class UserPageP extends Component{
                 body:formData
             };
 
-        await UploadFile(option)
-            .then(resp=>{
-                if (resp.retcode===2000) {
-                    this.userProfile=resp.data; //为了统一
-                    this.setState({
-                        userid:resp.data.userid,
-                        mainOrmore:2, 
-                        usertype:resp.data.usertype,
-                        usertag:resp.data.usertag,
-                        userphoto:resp.data.userphoto,
-                        usernickname:resp.data.usernickname,
-                        userhelpsman:resp.data.userhelpsman,
-                        userdonate:resp.data.userdonate,
-                        acceptmoney:resp.data.acceptmoney, //用户接受到的捐钱总数
-                        amountaccept:resp.data.amountaccept, //帮助用户人的数量
-                        useremail:resp.data.useremail,
-                        university:resp.data.university,
-                        sex:resp.data.sex,
-                        selfintroduce:resp.data.selfintroduce,
-                        registerdate:resp.data.registerdate,
-                        photoupload:resp.data.photoupload,
-                        msgpubcount:resp.data.msgpubcount ||0,
-                        followcount:resp.data.followcount,
-                        fanscount:resp.data.fanscount||0,
-                        country:resp.data.country,
-                        company:resp.data.company,
-                        address:resp.data.address,
-                        behelptime:resp.data.behelptime,
-                        backupone:resp.data.backupone,
-                    }); 
-                    return 0              
-                }else{
-                    return Alert.alert(
-                        '出问题了',
-                        resp.msg,
-                        [
-                            {
-                                text: '好的'
-                            }
-                        ]
-                     );
+            await UploadFile(option)
+                .then(resp=>{
+                    if (resp.retcode===2000) {
+                        this.userProfile=resp.data; //为了统一
+                        this.setState({
+                            userid:resp.data.userid,
+                            mainOrmore:2, 
+                            usertype:resp.data.usertype,
+                            usertag:resp.data.usertag,
+                            userphoto:resp.data.userphoto,
+                            usernickname:resp.data.usernickname,
+                            userhelpsman:resp.data.userhelpsman,
+                            userdonate:resp.data.userdonate,
+                            acceptmoney:resp.data.acceptmoney, //用户接受到的捐钱总数
+                            amountaccept:resp.data.amountaccept, //帮助用户人的数量
+                            useremail:resp.data.useremail,
+                            university:resp.data.university,
+                            sex:resp.data.sex,
+                            selfintroduce:resp.data.selfintroduce,
+                            registerdate:resp.data.registerdate,
+                            photoupload:resp.data.photoupload,
+                            msgpubcount:resp.data.msgpubcount ||0,
+                            followcount:resp.data.followcount,
+                            fanscount:resp.data.fanscount||0,
+                            country:resp.data.country,
+                            company:resp.data.company,
+                            address:resp.data.address,
+                            behelptime:resp.data.behelptime,
+                            backupone:resp.data.backupone,
+                        }); 
+                        return 0              
+                    }else{
+                        return Alert.alert(
+                            '出问题了',
+                            resp.msg,
+                            [
+                                {
+                                    text: '好的'
+                                }
+                            ]
+                         );
+                    }
+                }).catch(err=>{      
+                    console.log('userPage页面请求userProfile失败');   
+                    console.log(err);
+                    return 0  
+                }); 
+                 //接下来查询是不是关注他了，这要依赖上面的await返回的值          
+                let querywatchIfParam={
+                    taUserid:this.state.userid, //用户的id,上面请求设置
+                    myUserid:this.props.myProfile.items.userid   //这个是登录用户的id，得从Redux中获取
+                } 
+                let options={
+                    url:UrlqueryWatchif,
+                    body: JSON.stringify(querywatchIfParam)
                 }
-            }).catch(err=>{      
-                console.log('userPage页面请求userProfile失败');   
-                console.log(err);
-                return 0  
-            }); 
-             //接下来查询是不是关注他了，这要依赖上面的await返回的值          
-            let querywatchIfParam={
-                taUserid:this.state.userid, //用户的id,上面请求设置
-                myUserid:this.props.myProfile.items.userid   //这个是登录用户的id，得从Redux中获取
-            } 
-            let options={
-                url:UrlqueryWatchif,
-                body: JSON.stringify(querywatchIfParam)
-            }
-            //查询是否已经关注
-        await fetchTool(options)
-            .then(resp=>{        
-                if (resp.retcode===2000) {
-                   //改变状态
-                   this.setState({
-                        watchornot:resp.doublefans,
-                        paytag:resp.paytag
-                    });
-                   return 0  
-                }
-            }).catch(err=>{
-                //不做提示，
-                return 0             
-            }); //fetchTool
-        }//foo 
+                //查询是否已经关注
+            await fetchTool(options)
+                .then(resp=>{        
+                    if (resp.retcode===2000) {
+                       //改变状态
+                       this.setState({
+                            watchornot:resp.doublefans,
+                            paytag:resp.paytag
+                        });
+                       return 0  
+                    }
+                }).catch(err=>{
+                    //不做提示，
+                    return 0             
+                }); //fetchTool
+            }//foo 
 
-        foo().then(resp=>{
-           
-        })
-        .catch(err=>{
+            foo().then(resp=>{
+               
+            })
+            .catch(err=>{
 
-        });   
-
+            });   
+        },1000);  
     } //componentDidMount
 
     _back() {
@@ -368,26 +372,22 @@ class UserPageP extends Component{
                     <View style={styles.userPhotoWrapper}>
                         <Image  source={{uri:this.state.userphoto}} style={styles.userPhoto} />
                     </View>
-                    <View style={styles.renzheng}>
-                        <Text style={{color:'green'}}>
-                            {this.state.backupeight || '用户还未认证'}
-                        </Text>
-                    </View>
+                
                     <View style={styles.helpInfo}>
                         <View style={styles.helpInfoLeft}>
                             <View style={styles.ihelp}>
                                 <Text onPress={this.goHelpListPage.bind(this,21)}>他帮助</Text>
                             </View>
                             <View style={styles.helpInfoMoney}>
-                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userhelpsman ||0}人</Text>
-                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.userdonate ||0}元</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.userhelpsman ||0}人</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.userdonate ||0}元</Text>
                             </View>
                         </View>
                         <View style={styles.helpInfoRight}>
                             <Text  onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助他</Text>
                             <View  style={styles.helpInfoMoney}>
-                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.amountaccept||0}人</Text>
-                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.state.acceptmoney ||0}元</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.amountaccept||0}人</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.acceptmoney ||0}元</Text>
                             </View>
                         </View>
                     </View>
@@ -502,6 +502,10 @@ let styles=StyleSheet.create({
     userPhotoWrapper:{
         flexDirection:'row',
         justifyContent:'center',
+        width:70,
+        height:70,
+        borderRadius:35,
+        backgroundColor:'#61B972'
     },
     userPhoto:{
         width:70,

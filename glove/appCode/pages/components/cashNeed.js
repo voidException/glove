@@ -26,10 +26,10 @@ export default  class CashNeed extends Component{
 		super(props);
 		this.state={
 			cash:{
-				closetime:null,
-				targetcash:null,
-				realcash:null,
-				supporttimes:null //支持的次数
+				closetime:"1970-07-05 00:00:00",
+				targetcash:0,
+				realcash:0,
+				supporttimes:0 //支持的次数
 			}
 		}
 		// console.log(this.props);
@@ -44,7 +44,7 @@ export default  class CashNeed extends Component{
 				closetime: finalCloseTime,
 				targetcash:nextProps.cash.targetcash,
 				realcash:nextProps.cash.realcash,
-				supporttimes:nextProps.cash.backupfive 
+				supporttimes:nextProps.cash.sumbackup 
 			}
 		});
         //console.log(nextProps.cash);

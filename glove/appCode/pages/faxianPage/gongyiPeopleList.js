@@ -39,8 +39,9 @@ export default class GongYiPeopleList extends Component{
 	}
 
     componentDidMount(){
-
-	    this._onRefresh(); 
+        setTimeout(()=>{ 
+   			this._onRefresh(); 
+    	},500) 
 	}
  
     renderRow(row,sectionID){
@@ -164,7 +165,8 @@ export default class GongYiPeopleList extends Component{
 
 let  styles=StyleSheet.create({
 	contain:{
-		flex:1
+		flex:1,
+		backgroundColor:'#ffffff'
 	},
 	header:{
 		flexDirection:'row',

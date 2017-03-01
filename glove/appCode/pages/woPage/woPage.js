@@ -192,35 +192,34 @@ let imgUrl=require('./123.png');
                     <Text style={{fontSize:18,color:'#ffffff'}}>我</Text>                  
                     <Text onPress={this.goSetting.bind(this)} style={{fontSize:18,color:'#ffffff'}}>设置</Text>                                                    
                 </View>
+
                 <View style={styles.topWrapper}>
                 	<View  style={styles.topleft}>
-                        <TouchableOpacity onPress={this.selectPicture.bind(this,2)}>
-                        {  this.state.photoupload==1 ?
-    	                	 <Image source={require('../../image/default.jpg')} style={styles.topleftImg} />
-                          :  <Image source={{uri:this.props.userProfile.items.userphoto}} style={styles.topleftImg} />
-                        }
+                        <TouchableOpacity onPress={this.selectPicture.bind(this,2)}>	
+                            <Image source={{uri:this.props.userProfile.items.userphoto}} style={styles.topleftImg} />
                         </TouchableOpacity>
-	                	<View style={styles.topperMiddle}>
-	                	    <Text style={styles.nickName}>{this.props.userProfile.items.usernickname}</Text>
-	                		<Text>{this.props.userProfile.items.backupeight||'暂无简介'}</Text>
-	                	</View>
-                	</View>                    
-                </View>             
+                    </View>     
+                	<View style={styles.topperMiddle}>
+                	    <Text style={styles.nickName}>{this.props.userProfile.items.usernickname ||'无名氏'}</Text>
+                		<Text>{this.props.userProfile.items.backupeight||'暂无简介'}</Text>
+                	</View>               	                   
+                </View> 
+
                 <View style={styles.helpInfo}>
                     <View style={styles.helpInfoLeft}>
                         <View style={styles.ihelp}>
                             <Text onPress={this.goHelpListPage.bind(this,21)}>我帮助</Text>
                         </View>
                         <View style={styles.helpInfoMoney}>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.userhelpsman||0}人</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.userdonate ||0}元</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.userhelpsman||0}人</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.userdonate ||0}元</Text>
                         </View>
                     </View>
                     <View style={styles.helpInfoRight}>
                         <Text onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助我</Text>
                         <View  style={styles.helpInfoMoney}>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.amountaccept||0}人</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'red'}}>{this.props.userProfile.items.acceptmoney||0}元</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.amountaccept||0}人</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.acceptmoney||0}元</Text>
                         </View>
                     </View>
                 </View>
@@ -292,10 +291,9 @@ let styles=StyleSheet.create({
         backgroundColor:'#F9FFFC',
 	},
 	header:{
-        height:60,
+        height:51,
         flexDirection:'row',
         justifyContent:'space-between',
-        paddingTop:20,
         alignItems:'center',
         backgroundColor:'#61B972',
         paddingLeft:5,
@@ -303,7 +301,7 @@ let styles=StyleSheet.create({
     },
     topWrapper:{
     	flexDirection:'row',
-    	justifyContent:'space-between',
+    	justifyContent:'flex-start',
     	height:80,
         paddingRight:10,
         paddingLeft:10,
@@ -314,12 +312,15 @@ let styles=StyleSheet.create({
     },
     topleft:{
     	flexDirection:'row',
-    	height:80
+    	height:80,
+        width:80,
+        borderRadius:40,
+        backgroundColor:'#61B972'
     },
     topleftImg:{
-        height:80,
-        width:80,
-        borderRadius:40
+        height:78,
+        width:78,
+        borderRadius:39
     },
     topRight:{
         flexDirection:'row',

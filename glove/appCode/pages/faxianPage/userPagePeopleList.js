@@ -43,8 +43,10 @@ export default class UserPagePeopleList extends Component{
 	}
 
     componentDidMount(){
-
-	    this._onRefresh(); //
+       
+	    setTimeout(()=>{ 
+   			this._onRefresh(); 
+    	},100) 
 	}
  
     renderRow(row,sectionID){

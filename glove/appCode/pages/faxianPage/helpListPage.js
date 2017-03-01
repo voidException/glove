@@ -43,7 +43,10 @@ export default class HelpListPage extends Component{
 
     componentDidMount(){
 
-	    this._onRefresh(); //
+	    setTimeout(()=>{ 
+   			this._onRefresh(); 
+    	},500) 
+
 	}
  
     renderRow(row,sectionID){
@@ -78,7 +81,7 @@ export default class HelpListPage extends Component{
         };
         let  response=fetchTool(options);
         response.then(resp=>{
-        	 console.log(resp);
+        	
             if (resp.retcode===2000) { 
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)

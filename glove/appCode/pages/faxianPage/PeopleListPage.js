@@ -43,7 +43,12 @@ export default class PeopleListPage extends Component{
 	}
 
     componentDidMount(){
-	    this._onRefresh(); 
+	   //this._onRefresh(); 
+
+	   setTimeout(()=>{ 
+   			this._onRefresh(); 
+    	},500) 
+
 	}
  
     renderRow(row,sectionID){

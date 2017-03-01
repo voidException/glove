@@ -203,7 +203,7 @@ let styles=StyleSheet.create({
 	 },
 	topper:{
 	 	paddingTop:statusBarHeight,
-	 	height:60,
+	 	height:51,
 	 	justifyContent:'center',
 	 	alignItems:'center',
 	 	backgroundColor:'#43AC43'

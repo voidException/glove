@@ -118,7 +118,7 @@ export default class Prove extends Component{
 					<View style={styles.zhengmingOuter}>
 						<View style={styles.zhengshi}>
 							<Text style={{fontSize:16,fontWeight:'bold'}}>已有<Text style={{fontSize:16,color:'red'}}>{this.state.cash.confirmList.length}</Text>人证实</Text>
-							<Text style={{color:'red',fontWeight:'bold',fontSize:16}} >我要证实</Text>
+							<Text style={{color:'#2893C3',fontWeight:'bold',fontSize:16}} >我要证实</Text>
 						</View>
 						<View  style={styles.zhengshiImg}>
 						     {                          

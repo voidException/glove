@@ -40,7 +40,10 @@ export default class UserPageHelpList extends Component{
 	}
 
     componentDidMount(){
-	    this._onRefresh(); 
+	   setTimeout(()=>{ 
+   			this._onRefresh(); 
+    	},500) 
+	    
 	}
     renderRow(row,sectionID){
 		return( <PeopleListItem key={row.userid} row={row} {...this.props}/>);

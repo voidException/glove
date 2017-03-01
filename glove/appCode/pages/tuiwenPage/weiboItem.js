@@ -46,7 +46,7 @@ export default class WeiBoItem extends Component{
             userphoto: this.props.row.tuiwen.backupeleven ||null, //用户的头像地址
             tweetTitle: this.props.row.tuiwen.backuptwelve || "求助", //求助的标题
             cashiD: this.props.row.tuiwen.cashid ||0, //关联的cash的iD，这个一般是0，
-            cashuuid: this.props.row.tuiwen.cashid || "", //关联的cash的uuid,必须得有
+            cashuuid: this.props.row.tuiwen.cashuuid || "", //关联的cash的uuid,必须得有
             citycode:this.props.row.tuiwen.citycode || "" ,//城市的编码
             cityname:this.props.row.tuiwen.cityname || "城市为空" , //这个必须有				
 			tweetbackupone: this.props.row.tuiwen.tweetbackupone || null, //推文附带的图片地址
@@ -94,7 +94,6 @@ export default class WeiBoItem extends Component{
 				row:this.props.row,  //完整的数据包括原创和转发
 				userProfile:this.props.userProfile, //
 				symbol: this.props.symbol, //这个symbol的最初来源只能是tuiwenPage、weiboPage 和tweetPage
-				tagDiffweiboItemOrigin:100  //这个用来区分进入weiboContent是从weiboItem还是originTuiwenItem进入的
 			}
 		});
 	}
@@ -102,7 +101,7 @@ export default class WeiBoItem extends Component{
 		//这里实现举报次数增加
 	}
 	imageError(err){
-		//console.log('aa');
+		
 	}
 	goBeatRenMainPage(url){
 		if(url.indexOf('instagram')>=0){
@@ -123,14 +122,11 @@ export default class WeiBoItem extends Component{
 				<View style={styles.headerWrapper}>
 					<View  style={styles.header}>
 						<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>													
-							 <Image source={{uri:this.state.userphoto}} resizeMode={'contain'} style={styles.image}/>							
+							<Image source={{uri:this.state.userphoto}} resizeMode={'contain'} style={styles.image}/>							
 						</TouchableOpacity>
 					</View>
-					<View style={styles.nameV}>
-						<View style={styles.nicknameWrapper}>
-							<Text style={styles.nicknameTxt}>{this.state.tweetAuthorNickname}</Text>
-							<Image source={require('./image/VV.png')} style={styles.vTag} />
-						</View>							
+					<View style={styles.nameV}>						
+					    <Text onPress={this.goOtherWoPage.bind(this)} style={styles.nicknameTxt}>{this.state.tweetAuthorNickname}</Text>												
 						<Text style={{color:'#B1B1B1',marginTop:3}}>{this.state.publishtime}</Text> 							
 					</View>
 				</View>
@@ -214,9 +210,13 @@ let styles=StyleSheet.create({
 		borderRadius:20	
 	},
    	header:{
+   		width:40,
+		height:40,
+		borderRadius:20	,
 		flexDirection:'row',
 		alignItems:'center',
-		justifyContent:'center'
+		justifyContent:'center',
+		backgroundColor:'#61B972'
 	},
 	headerWrapper:{
 		flexDirection:'row',

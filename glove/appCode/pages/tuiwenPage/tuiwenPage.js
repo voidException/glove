@@ -49,7 +49,10 @@ class TuiWenPage extends Component{
 			lastUpdate:lastUpdateTime
 		};
 		const {dispatch}=this.props;
-		dispatch(fetchTuiwenPageIfNeeded(requestParams))
+		setTimeout(()=>{ 
+   			dispatch(fetchTuiwenPageIfNeeded(requestParams))
+    	},500) 
+		// dispatch(fetchTuiwenPageIfNeeded(requestParams))
 		//因为这个时候，数据还没到来，所以为null，但这个时候数据已会传入weiboItem，后者也会渲染，
 
 	}

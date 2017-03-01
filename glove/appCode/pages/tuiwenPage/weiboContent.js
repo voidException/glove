@@ -22,6 +22,7 @@ import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
 import OriginTuiwenItem from './originTuiwenItem';
 import Prove from '../components/prove';
+import ProgressUpdate  from '../components/progressUpdate';
 import CashNeed from '../components/cashNeed';
 import DoZhuanFa  from '../components/doZhuanFa';
 import Comment from '../components/comment';
@@ -43,48 +44,53 @@ let height=Dimensions.get('window').height;
 export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
-		 console.log(this.props.symbol);
-
 		this.state={
-			visible:false, //控制转圈圈
-			photoupload: this.props.row.tuiwen.photoupload || 1, //1 代表未上传头像
-			selfintroduce: this.props.row.tuiwen.selfintroduce ||'什么也没有介绍自己',
-			userphoto: this.props.row.tuiwen.userphoto ||'../../image/default.jpg',
-			usernickname: this.props.row.tuiwen.usernickname ||'无名氏',
-			//tweetid: this.props.row.tuiwen.tweetid||null, //推文的id
-			tweetid:1,
-			useridtweet: this.props.row.tuiwen.useridtweet || 0, //发布推文的用户id
-			sourcemsgid: this.props.row.tuiwen.sourcemsgid|| 0, // 被转发的微博的id
-			msgcontent: this.props.row.tuiwen.msgcontent|| null,
-			boxtimes:  this.props.row.tuiwen.boxtimes ||null, //被收藏的次数
+			tweetid:this.props.row.tuiwen.tweetid || 0, //推文的id,0有特殊含义
+			useridtweet:this.props.row.tuiwen.useridtweet ||0,
+			//userUUIDTweet:this.props.row.tuiwen.userUUIDTweet ||"", //待加入
+			sourcemsgid: this.props.row.tuiwen.sourcemsgid || 0, // 被转发的推文的id
+			tagid: this.props.row.tuiwen.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
+			msgcontent: this.props.row.tuiwen.msgcontent || "", //微博的内容
+			// topic:this.props.row.tuiwen.topic || 0, //话题的主键
 			commenttimes: this.props.row.tuiwen.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.tuiwen.deletetag|| 1, //是否删除标志 1默认没删除。2 代表删除
-			ok:  0, //微博被赞的次数
-			publicsee:  0, //是否可见
-			publishtime:  this.props.row.tuiwen.publishtime|| null, //微博发布的时间
+			ok: this.props.row.tuiwen.ok || 0, //微博被赞的次数
+			boxtimes: this.props.row.tuiwen.boxtimes ||0, //被收藏的次数
+			publishtime: this.props.row.tuiwen.publishtime || "1909411200", //微博发布的时间
 			reportedtimes: this.props.row.tuiwen.reportedtimes || 0, //被举报的次数
-			tagid: this.props.row.tuiwen.tagid|| 1, // 1 代表没有转发的微博。2代表有被转发的微博
-			topic:this.props.row.tuiwen.topic|| 1, //话题的主键
-			tweetbackupone:this.props.row.tuiwen.tweetbackupone||  null, //推文附带的图片地址
-			tweetbackuptwo: this.props.row.tuiwen.tweetbackuptwo ||null, //推文附带的图片地址
-			tweetbackupthree: this.props.row.tuiwen.tweetbackupthree||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tuiwen.tweetbackupfour|| null,//1 代表普通推文，2 是救助推文
-			videoaddress:this.props.row.tuiwen.videoaddress|| null, //推文附带的图片地址
-			tweetUUiD:this.props.row.tuiwen.backupneight||null, //这个是推文本事的UUiD
-			cashUUiD:this.props.row.tuiwen.cashuuid||null, //这个是推文关联的cash的uuid
-			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
+			publicsee: this.props.row.tuiwen.publicsee || 1, //是否可见.1可见，2不可见
+			deletetag: this.props.row.tuiwen.deletetag || 1, // 1默认没删除，2用户删除了
+			helpTweet: this.props.row.tuiwen.tweetbackupfour ||1, // 1普通 2救助
+            promiseType:this.props.row.tuiwen.tweetbackupfive ||1, //1普通承若，即真实；234
+            promise:this.props.row.tuiwen.promise || "本人承诺信息真实，不存在夸大事实！", //默认承诺
+            tweetUUID:this.props.row.tuiwen.backupneight || "", //推文的uuid
+            tweetAuthorNickname: this.props.row.tuiwen.backupnine || "无名氏", //推文的作者
+            selfintroduce: this.props.row.tuiwen.backupten || '同学，你该介绍下自己', //用户的自我介绍
+            userphoto: this.props.row.tuiwen.backupeleven ||null, //用户的头像地址
+            tweetTitle: this.props.row.tuiwen.backuptwelve || "求助", //求助的标题
+            cashiD: this.props.row.tuiwen.cashid ||0, //关联的cash的iD，这个一般是0，
+            cashuuid: this.props.row.tuiwen.cashuuid ||"", //关联的cash的uuid,必须得有
+            citycode:this.props.row.tuiwen.citycode || "" ,//城市的编码
+            cityname:this.props.row.tuiwen.cityname || "城市为空" , //这个必须有				
+			tweetbackupone: this.props.row.tuiwen.tweetbackupone || null, //推文附带的图片地址
+			tweetbackuptwo: this.props.row.tuiwen.tweetbackuptwo || null, //推文附带的图片地址
+			tweetbackupthree: this.props.row.tuiwen.tweetbackupthree ||null, //推文附带的图片地址
+			tweetbackupseven: this.props.row.tuiwen.tweetbackupseven || null,//推文附带的图片地址
+			backupneight: this.props.row.tuiwen.backupneight || null,//推文附带的图片地址
+			videoaddress: this.props.row.tuiwen.videoaddress ||null, //推文附带的图片地址
+			// zhuanfaTuiwen:this.props.row.zhuanfaTuiwen || null,
+			visible:false, //控制转圈圈
 			cash:{},
 			confirmList:[]
 		};		
 	}
 	componentDidMount(){
-		if (this.state.tweetbackupfour===2 &&this.props.row.tuiwen.tweetbackupfive!==null ) { //等于2表明是一条救助推文。
+		if (this.state.helpTweet===2 &&this.state.cashuuid!=="" ) { //等于2表明是一条救助推文。
 	       // console.log(this.state.cashUUiD);
-	        let url=UrlCashConfirmRecord+this.state.cashUUiD;
+	        let url=UrlCashConfirmRecord+this.state.cashuuid;
+	        
 	        let  response=fetchToolget(url);
 	        response.then(resp=>{
 	            if (resp.retcode===2000) {
-	            	//console.log(resp);
 	              	this.getJson(resp.lp.cash);
 	              	if (resp.lp.confirmList!=null) {
 	              		this.getJson2(resp.lp.confirmList);
@@ -278,15 +284,14 @@ export default class WeiBoContent extends Component{
 			<View style={styles.container}> 			
 				<View style={styles.broadcast}>
 					<TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
-						<Image source={require('./image/return.png')} style={styles.backImg} resizeMode={'contain'} />
-						<Text style={{fontSize:20,color:'#fff'}}>返回</Text>
+						<Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
 					</TouchableOpacity>
 					{
 						this.props.symbol==2?
-						<Text  onPress={this.deleteMe.bind(this)} style={{fontSize:16,color:'white'}}>删除</Text>
+						<Text  onPress={this.deleteMe.bind(this)} style={{fontSize:17,color:'white'}}>删除</Text>
 						:null
 					}					
-					<View style={{marginRight:8}}>
+					<View style={{marginRight:6}}>
 						<Text style={styles.broad}  onPress={this.goZhuanFa.bind(this)}>转发</Text>
 					</View>
 				</View>
@@ -294,27 +299,31 @@ export default class WeiBoContent extends Component{
 	            <ScrollView>
 	                <View style={styles.headerWrapper}>
 						<View  style={styles.header}>
-							<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>						
-								{	
-									 this.state.photoupload ===1 ?
-									  <Image source={require('../../image/default.jpg')} style={styles.image}/>
-									: <Image source={{uri:this.state.userphoto}} resizeMode={'contain'} style={styles.image}/>	
-								}
+							<TouchableOpacity onPress={this.goOtherWoPage.bind(this)}>												  
+								<Image source={{uri:this.state.userphoto}} resizeMode={'contain'} style={styles.image}/>									
 							</TouchableOpacity>
 						</View>
-						<View style={styles.nameV}>
-							<View style={styles.nicknameWrapper}>
-								<Text style={styles.nicknameTxt}>{this.state.usernickname}</Text>
-								<Image source={require('./image/VV.png')} style={styles.vTag} />
-							</View>							
-							<Text style={{color:'#B1B1B1',marginTop:3}}>{this.state.publishtime}</Text> 							
+						<View style={styles.nameV}>					
+							<Text style={styles.nicknameTxt}>{this.state.tweetAuthorNickname}</Text>														
 						</View>
 					</View>
 				    {/* 需要捐钱的金额等等*/}
-				    {this.state.tweetbackupfour===2 && this.state.tagid===1?
-				    	 <CashNeed  cash={this.state.cash}/>
+				    {
+				    	this.state.helpTweet===2 && this.state.tagid===1?
+				    	<CashNeed  cash={this.state.cash}/>
+				    	:
+				    	null
+				    }
+
+				    {/*救助的标题*/}
+				    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+				    {
+				    	this.state.tweetTitle!==null && this.state.helpTweet===2? 
+				    	 <Text style={{fontSize:17,color:'black',fontWeight:'bold'}}>{this.state.tweetTitle}</Text>
 				    	 :null
 				    }
+				    </View>
+
 				    {/* 救助文案*/}
 					<Text style={styles.upContent}>
 						<AutoLink
@@ -358,19 +367,26 @@ export default class WeiBoContent extends Component{
 						: null
 					}
 				    {/* 证明有关的信息; affirm.js中我要证实，需要toke，所以传过去userProfile*/}
-				    { this.state.tagid===1 && this.state.tweetbackupfour===2 ?
+				    { this.state.tagid===1 && this.state.helpTweet===2 ?
                        <Prove cash={this.state.cash}  confirmList={this.state.confirmList}  userProfile={this.props.userProfile} tweetid={this.props.row.tuiwen.tweetid}  navigator={this.props.navigator}/>
                        :null
                     }
-
+                  
 					<View style={styles.progress}>
-						<Text style={styles.txt}  onPress={this.goCommentList.bind(this)}>留言<Text style={{fontSize:14}}>(736)</Text></Text>
+						<Text style={styles.text}  onPress={this.goCommentList.bind(this)}>留言<Text style={{fontSize:14}}>(736)</Text></Text>
 						<Text style={styles.txt} onPress={this.doComment.bind(this)}>去评论</Text>
 					</View>
-					{/*<Comment /> */}
-				    {/*  */}
-					
+
+					{/* 这个是进度更新和支持了 */}
+					{this.state.helpTweet===2 && this.state.tagid===1?
+						<View>
+				        	<ProgressUpdate cash={this.state.cash} userProfile={this.props.userProfile} />
+				        </View>
+				        :null
+					}
+														
 				</ScrollView>
+
 				<View style={{height:95}}></View>
                 {/* 这个是底部*/}
 				<View style={styles.commentBottomWrapper}>				
@@ -406,6 +422,13 @@ let styles=StyleSheet.create({
 		flex:1,
 		backgroundColor:'#F9FFFC',
 	},
+	broadcast:{
+		height:51,
+		backgroundColor:'#61B972',
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'space-between',
+	},
 	bottomWrapper:{
 		height:60,
 		borderBottomWidth:1/ratio,
@@ -435,8 +458,8 @@ let styles=StyleSheet.create({
 		alignItems:'center'
 	},
 	backImg:{
-		height:20,
-		width:20
+		height:24,
+		width:24
 	},
 	shareText:{
 		flexDirection:'row',
@@ -450,14 +473,6 @@ let styles=StyleSheet.create({
 	shareTxt:{
 		fontSize:18,
 		color:'red'
-	},
-	broadcast:{
-		height:64,
-		paddingTop:20,
-		backgroundColor:'#69B94C',
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent:'space-between',
 	},
 	returnButton:{
 		flexDirection:'row',
@@ -544,7 +559,11 @@ let styles=StyleSheet.create({
    	header:{
 		flexDirection:'row',
 		alignItems:'center',
-		justifyContent:'center'
+		justifyContent:'center',
+		width:40,
+		height:40,	
+		borderRadius:20,
+		backgroundColor:'#61B972'
 	},
 	headerWrapper:{
 		flexDirection:'row',
@@ -608,7 +627,11 @@ let styles=StyleSheet.create({
 	},
 	txt:{
 		fontSize:16,
-		color:'black',
+		color:'#2893C3',
+		fontWeight:'bold'
+	},
+	text:{
+		fontSize:16,
 		fontWeight:'bold'
 	},
 	promise:{
@@ -706,7 +729,14 @@ let styles=StyleSheet.create({
 	},
 	progress:{
 		flexDirection:'row',
-		justifyContent:'space-around'
+		justifyContent:'space-between',
+		alignItems:'center',
+		paddingLeft:5,
+		paddingRight:5,
+		borderColor:'#43AC43',
+		borderWidth:1/ratio,
+		borderTopWidth:0,
+		height:50
 	}
 });
 

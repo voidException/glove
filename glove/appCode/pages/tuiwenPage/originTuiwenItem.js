@@ -22,40 +22,54 @@ export default class OriginTuiwenItem extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			photoupload: 1, //1 代表未上传头像
-			selfintroduce: '什么也没有介绍自己',
-			userphoto:'../../image/default.jpg',
-			usernickname: '无名氏',
-			tweetid:this.props.row.tweetid || 0, //推文的id,应该是zhuanfaTuiwen
-		
+			
+			selfintroduce: this.props.row.backupten || '同学，你该介绍下自己', //用户的自我介绍
+			userphoto:this.props.row.backupeleven ||null, //用户的头像地址
+			usernickname: this.props.row.backupnine || "无名氏", //推文的作者
+
+			tweetid:this.props.row.tweetid || 0, //推文的id,应该是zhuanfaTuiwen	
 			useridtweet: this.props.row.useridtweet || 0, //发布推文的用户id
-			sourcemsgid: this.props.row.sourcemsgid || 0, // 被转发的微博的id
+			//sourcemsgid: this.props.row.sourcemsgid || 0, // 被转发的微博的id
 			msgcontent: this.props.row.msgcontent || "出错了", //微博的内容
-			boxtimes: this.props.row.boxtimes || null, //被收藏的次数
+			boxtimes: this.props.row.boxtimes || 0, //被收藏的次数
 			commenttimes: this.props.row.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.deletetag || 0, //是否删除标志 1默认没删除。2 代表删除
+			deletetag: this.props.row.deletetag || 1, //是否删除标志 1默认没删除。2 代表删除
 			ok: this.props.row.ok || 0, //微博被赞的次数
-			publicsee: this.props.row.publicsee || 0, //是否可见
+			publicsee: this.props.row.publicsee || 1, //是否可见
 			publishtime: this.props.row.publishtime || null, //微博发布的时间
+			helpTweet: this.props.row.tweetbackupfour ||1, // 1普通 2救助
 			reportedtimes: this.props.row.reportedtimes || 0, //被举报的次数
+			promiseType:this.props.row.tweetbackupfive ||1, //1普通承若，即真实；234
+            promise:this.props.row.promise || "本人承诺信息真实，不存在夸大事实！", //默认承诺
+            tweetUUID:this.props.row.backupneight || "", //推文的uuid
 			tagid: this.props.row.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
-			//topic:this.props.row.tweet.topic || 1, //话题的主键
+
+			tweetTitle: this.props.row.backuptwelve || "求助", //求助的标题
+            cashiD: this.props.row.cashid ||0, //关联的cash的iD，这个一般是0，
+            cashuuid: this.props.row.cashuuid || "", //关联的cash的uuid,必须得有
+            citycode:this.props.row.citycode || "" ,//城市的编码
+            cityname:this.props.row.cityname || "城市为空" , //这个必须有	
+
 			tweetbackupone: this.props.row.tweetbackupone || null, //推文附带的图片地址
 			tweetbackuptwo: this.props.row.tweetbackuptwo || null, //推文附带的图片地址
 			tweetbackupthree: this.props.row.tweetbackupthree ||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tweetbackupfour || null,//推文附带的图片地址
+			tweetbackupseven: this.props.row.tweetbackupseven || null,//推文附带的图片地址
+			backupneight: this.props.row.backupneight || null,//推文附带的图片地址
 			videoaddress: this.props.row.videoaddress ||null, //推文附带的图片地址
 			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
-			/*转发的内容封装成一个组件，传props*/
+			
 		}
 	}
-	componentWillMount(){
-		
+	componentDidMount(){
+		let message='//@'+this.state.usernickname+'  '+this.state.msgcontent;
+		this.setState({
+			msgcontent:message
+		})
 	}
 	componentWillReceiveProps(nextProps) {
-		this.setState({
-			tweetid:nextProps.tweetid
-		});
+		// this.setState({
+		// 	tweetid:nextProps.tweetid
+		// });
 	}
 
 	goOtherWoPage(){
@@ -76,7 +90,6 @@ export default class OriginTuiwenItem extends Component{
 			params:{
 				row:this.props.row , //这里的数据只是zhuanfa的数据
 				userProfile:this.props.userProfile,
-				tagDiffweiboItemOrigin:200
 			}
 		});
 	}

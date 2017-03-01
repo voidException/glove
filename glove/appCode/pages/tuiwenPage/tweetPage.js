@@ -122,7 +122,7 @@ class TweetPage extends Component{ //查看自己发布的tweet
 			<View style={styles.container}> 
 				<View style={styles.header}>
 					<Text onPress={this.goBack.bind(this)} style={{fontSize:16,color:'#ffffff'}}>返回</Text>
-					<Text style={{fontSize:18,marginTop:-5}}>传播温暖</Text>					
+									
 		            <Text style={{fontSize:16,color:'#ffffff'}}>发布</Text>                 
 				</View>
 			    <ListView 
@@ -167,8 +167,7 @@ let styles=StyleSheet.create({
 	header:{
 		flexDirection:'row',
 		backgroundColor:'#43AC43',
-		height:60,
-		paddingTop:24, 
+		height:51,
 		paddingLeft:15,
 		paddingRight:15,
 		justifyContent:'space-between',
