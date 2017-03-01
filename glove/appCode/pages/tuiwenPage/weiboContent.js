@@ -43,7 +43,7 @@ let height=Dimensions.get('window').height;
 export default class WeiBoContent extends Component{
 	constructor(props){
 		super(props);
-		// console.log(this.props);
+		 console.log(this.props.symbol);
 
 		this.state={
 			visible:false, //控制转圈圈

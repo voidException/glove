@@ -23,18 +23,14 @@ import PublishTuiwen from '../components/publishTuiwen';
 import fetchTool from '../../utils/fetchTool';
 import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
-//import {fetchTuiWenPage} from '../../actions/tuiwenPageAction';
 import WeiBoItem from './weiboItem';
-//import TweetItem from './tweetItem';
+
 let { width,height}=Dimensions.get('window');
-
-let lastUpdateTime='2075-09-04 00:00:00';
-
-
+let lastUpdateTime='2075-09-09 00:00:00';
+let nextPageAllow=false;
 class TuiWenPage extends Component{
 	constructor(props){
 		super(props);
-
 		this.DS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state={
 			dataSource: this.DS.cloneWithRows([]),
@@ -52,7 +48,6 @@ class TuiWenPage extends Component{
 			pageSize:4,
 			lastUpdate:lastUpdateTime
 		};
-
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 		//因为这个时候，数据还没到来，所以为null，但这个时候数据已会传入weiboItem，后者也会渲染，
@@ -60,40 +55,43 @@ class TuiWenPage extends Component{
 	}
 	//异步获取数据后，更新的是store，connect会感知到，将会执行这个方法，这样weiboItem就有数据了
 	componentWillReceiveProps(nextProps) {
-		//必须确保cloneWithRows是一个数组！！
-		// console.log('*********')
-  //       console.log(this.props.weiboList.tuiwenList.length);
         //console.log(nextProps.weiboList.tuiwenList);	
-  //       console.log('*********')
+     	let weiboLength=nextProps.weiboList.tuiwenList.length-1;  
+        if (weiboLength!==3) { //说明无数据了
+        	nextPageAllow=true;
+        };
 
-     	let weiboLength=nextProps.weiboList.tuiwenList.length-1;   	 					
-		let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.publishtime;
-		lastUpdateTime=fmDate(rowLastItemStart);
-		//console.log(rowLastItemStart);
-        //console.log(lastUpdateTime);
+		let publishTime=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.publishtime;
+		lastUpdateTime=fmDate(publishTime);
 		this.setState({
 			dataSource: this.DS.cloneWithRows(nextProps.weiboList.tuiwenList)
 		});		
 	}
-	componentWillUnmount(){		
-		lastUpdateTime='2075-09-04 00:00:00';
-	}
 	//这个需要把navigator传递过去
-	renderRow(row,sectionID){
-		
-		return( <WeiBoItem  key={row.tuiwen.tweetid} row={row} {...this.props}/>);
+	renderRow(row,sectionID){		
+		return( <WeiBoItem  key={row.tuiwen.tweetid}  symbol={1} row={row} {...this.props}/>);
 	}
 
-	_onRefresh() {
-		
+	_onRefresh() {		
 		let requestParams={
 			userID:this.state.userID,
 			page:0,
 			pageSize:4,
-     		lastUpdate:lastUpdateTime,
-	
-		};
-        
+     		lastUpdate:'2075-09-09 00:00:00',	
+		};       
+		const {dispatch}=this.props;
+		dispatch(fetchTuiwenPageIfNeeded(requestParams))
+	}
+	_nextPage() {	
+		if (nextPageAllow) {
+			return
+		};	
+		let requestParams={
+			userID:this.state.userID,
+			page:0,
+			pageSize:4,
+     		lastUpdate:lastUpdateTime,	
+		};       
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
@@ -103,17 +101,19 @@ class TuiWenPage extends Component{
     		component:PublishTuiwen,
     		params:{
     			userProfile:this.props.userProfile,
-    			symbol:1  //这个symbol 仅仅用于是否显示删除按钮
     		}
     	})
     }
+    componentWillUnmount(){		
+		lastUpdateTime='2075-09-09 00:00:00';
+	}
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.header}>
-				    <View style={{width:32}}></View>
-					<Text style={{color:'#FFFFFF',fontSize:16}}>传播温暖</Text>							           		            
-                    <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:18,color:'#ffffff'}}>发布</Text>                       		            
+				    <Text onPress={this._nextPage.bind(this)} style={{color:'#FFFFFF',fontSize:17}}>下一页</Text>	
+					<Text style={{color:'#000',fontSize:18}}>传播温暖</Text>							           		            
+                    <Text onPress={this.goTuiwen.bind(this)} style={{fontSize:17,color:'#ffffff'}}>&#12288;发布</Text>                       		            
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -141,7 +141,6 @@ class TuiWenPage extends Component{
 }
 
 function mapStateToProps(state,ownProps){
-	//debugger
 	//这里的state就是store里面的各种键值对,store是个外壳
 	//在这个函数中，应该从store中取出所有需要的state，向下传递
 	const { userProfile,tuiwenList }= state;	 
@@ -153,21 +152,19 @@ function mapStateToProps(state,ownProps){
 const TuiWenPageWrapper=connect(mapStateToProps)(TuiWenPage);
 export default TuiWenPageWrapper
 
-
 let styles=StyleSheet.create({
 	container:{
 		flex:1,
 		backgroundColor:'#F9FFFC'
 	},
 	header:{
-		height:60,
+		height:51, //以此为准，导航栏高度是51，背景色是'#61B972',
 		flexDirection:'row',
 		justifyContent:'space-between',
-		paddingTop:20,
 		alignItems:'center',
 		backgroundColor:'#61B972',
-		paddingLeft:5,
-		paddingRight:5
+		paddingLeft:6,
+		paddingRight:6
 	},
 	list: {
 	    justifyContent: 'flex-start',

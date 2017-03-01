@@ -17,6 +17,7 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 import WoPage from '../woPage/woPage';
+import UserPage from '../../components/userPage';
 import AutoLink from 'react-native-autolink';
 import Hyperlink from 'react-native-hyperlink';
 import Prove from '../components/prove';

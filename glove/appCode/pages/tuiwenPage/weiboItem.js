@@ -21,36 +21,46 @@ let {width,height}=Dimensions.get('window');
 export default class WeiBoItem extends Component{
 	constructor(props){
 		super(props);
-		
+		// console.log(this.props);
 		this.state={
-			photoupload: 1, //1 代表未上传头像
-			selfintroduce: '什么也没有介绍自己',
-			userphoto:this.props.row.tuiwen.backupeleven ,
-			usernickname:this.props.row.tuiwen.backupneight ,
-			tweetid:this.props.row.tuiwen.tweetid || 0, //推文的id
-			useridtweet: this.props.row.tuiwen.useridtweet || 0, //发布推文的用户id
-			sourcemsgid: this.props.row.tuiwen.sourcemsgid || 0, // 被转发的微博的id
-			msgcontent: this.props.row.tuiwen.msgcontent || null, //微博的内容
-			boxtimes: this.props.row.tuiwen.boxtimes || null, //被收藏的次数
-			commenttimes: this.props.row.tuiwen.commenttimes || 0, //微博被评论的次数
-			deletetag: this.props.row.tuiwen.deletetag || 0, //是否删除标志 1默认没删除。2 代表删除
-			ok: this.props.row.tuiwen.ok || 0, //微博被赞的次数
-			publicsee: this.props.row.tuiwen.publicsee || 0, //是否可见
-			publishtime: this.props.row.tuiwen.publishtime || null, //微博发布的时间
-			reportedtimes: this.props.row.tuiwen.reportedtimes || 0, //被举报的次数
+			tweetid:this.props.row.tuiwen.tweetid || 0, //推文的id,0有特殊含义
+			useridtweet:this.props.row.tuiwen.useridtweet ||0,
+			//userUUIDTweet:this.props.row.tuiwen.userUUIDTweet ||"", //待加入
+			sourcemsgid: this.props.row.tuiwen.sourcemsgid || 0, // 被转发的推文的id
 			tagid: this.props.row.tuiwen.tagid || 1, // 1 代表没有转发的微博。2代表有被转发的微博
-			topic:this.props.row.tuiwen.topic || 1, //话题的主键
+			msgcontent: this.props.row.tuiwen.msgcontent || "", //微博的内容
+			// topic:this.props.row.tuiwen.topic || 0, //话题的主键
+			commenttimes: this.props.row.tuiwen.commenttimes || 0, //微博被评论的次数
+			ok: this.props.row.tuiwen.ok || 0, //微博被赞的次数
+			boxtimes: this.props.row.tuiwen.boxtimes ||0, //被收藏的次数
+			publishtime: this.props.row.tuiwen.publishtime || "1909411200", //微博发布的时间
+			reportedtimes: this.props.row.tuiwen.reportedtimes || 0, //被举报的次数
+			publicsee: this.props.row.tuiwen.publicsee || 1, //是否可见.1可见，2不可见
+			deletetag: this.props.row.tuiwen.deletetag || 1, // 1默认没删除，2用户删除了
+			helpTweet: this.props.row.tuiwen.tweetbackupfour ||1, // 1普通 2救助
+            promiseType:this.props.row.tuiwen.tweetbackupfive ||1, //1普通承若，即真实；234
+            promise:this.props.row.tuiwen.promise || "本人承诺信息真实，不存在夸大事实！", //默认承诺
+            tweetUUID:this.props.row.tuiwen.backupneight || "", //推文的uuid
+            tweetAuthorNickname: this.props.row.tuiwen.backupnine || "无名氏", //推文的作者
+            selfintroduce: this.props.row.tuiwen.backupten || '同学，你该介绍下自己', //用户的自我介绍
+            userphoto: this.props.row.tuiwen.backupeleven ||null, //用户的头像地址
+            tweetTitle: this.props.row.tuiwen.backuptwelve || "求助", //求助的标题
+            cashiD: this.props.row.tuiwen.cashid ||0, //关联的cash的iD，这个一般是0，
+            cashuuid: this.props.row.tuiwen.cashid || "", //关联的cash的uuid,必须得有
+            citycode:this.props.row.tuiwen.citycode || "" ,//城市的编码
+            cityname:this.props.row.tuiwen.cityname || "城市为空" , //这个必须有				
 			tweetbackupone: this.props.row.tuiwen.tweetbackupone || null, //推文附带的图片地址
 			tweetbackuptwo: this.props.row.tuiwen.tweetbackuptwo || null, //推文附带的图片地址
 			tweetbackupthree: this.props.row.tuiwen.tweetbackupthree ||null, //推文附带的图片地址
-			tweetbackupfour: this.props.row.tuiwen.tweetbackupfour || null,//推文附带的图片地址
+			tweetbackupseven: this.props.row.tuiwen.tweetbackupseven || null,//推文附带的图片地址
+			backupneight: this.props.row.tuiwen.backupneight || null,//推文附带的图片地址
 			videoaddress: this.props.row.tuiwen.videoaddress ||null, //推文附带的图片地址
-			// zhuanfaTuiwen:this.props.row.tuiwen.zhuanfaTuiwen || null,
+			// zhuanfaTuiwen:this.props.row.zhuanfaTuiwen || null,
 		}
 	}
 	componentWillMount(){
 		//此处是格式化时间用的。
-		let timeNeedHandle=this.props.row.tuiwen.publishtime;
+		let timeNeedHandle=this.state.publishtime;
 		var date = new Date(timeNeedHandle);
 		Y = date.getFullYear() + '-';
 		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
@@ -61,9 +71,7 @@ export default class WeiBoItem extends Component{
 		});
 	}
 	componentWillReceiveProps(nextProps) {
-		this.setState({
-			tweetid:nextProps.tweetid
-		});
+
 	}
 
 
@@ -85,7 +93,7 @@ export default class WeiBoItem extends Component{
 			params:{
 				row:this.props.row,  //完整的数据包括原创和转发
 				userProfile:this.props.userProfile, //
-				symbol: this.props.symbol,
+				symbol: this.props.symbol, //这个symbol的最初来源只能是tuiwenPage、weiboPage 和tweetPage
 				tagDiffweiboItemOrigin:100  //这个用来区分进入weiboContent是从weiboItem还是originTuiwenItem进入的
 			}
 		});
@@ -120,7 +128,7 @@ export default class WeiBoItem extends Component{
 					</View>
 					<View style={styles.nameV}>
 						<View style={styles.nicknameWrapper}>
-							<Text style={styles.nicknameTxt}>{this.state.usernickname}</Text>
+							<Text style={styles.nicknameTxt}>{this.state.tweetAuthorNickname}</Text>
 							<Image source={require('./image/VV.png')} style={styles.vTag} />
 						</View>							
 						<Text style={{color:'#B1B1B1',marginTop:3}}>{this.state.publishtime}</Text> 							
@@ -170,10 +178,10 @@ export default class WeiBoItem extends Component{
 					: null
 				}
 				{
-					this.state.tweetbackupfour===2 ?
+					this.state.helpTweet===2 ?
 					<View style={styles.promise}>
 						<Image  source={require('./image/chengnuo.png')} resizeMode={'contain'} style={styles.promiseico} />
-						<Text style={styles.txt}>对方承诺：20年内归还恩人的善款</Text>
+						<Text style={styles.txt}>{this.state.promise}</Text>
 			    	</View>
 			    	:null
 				}

@@ -81,7 +81,7 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 
 	}
 	renderRow(row,sectionID){
-		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} row={row} {...this.props}/>);
+		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} symbol={1} row={row} {...this.props}/>);
 	}
 
 	_onRefresh() {
@@ -90,9 +90,7 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 			page:0,
 			pageSize:4,
 			lastUpdate:lastUpdateTime,
-			lastItemstart:lastItemstartTime , //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
-			flag:1, //1代表刷新，2代表loadMore
-			symbol:3
+			//这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
 		};
 
 		const {dispatch}=this.props;
@@ -105,9 +103,6 @@ class WeiBoPage extends Component{ //查看自己发布的tweet
 			page:0,
 			pageSize:10,
 			lastUpdate:lastUpdateTime,
-			lastItemstart:lastItemstartTime,  
-			flag:2, //flag==1表明是刷新，2是加载更多，这个影响sql取值和reducer的数据合并
-			symbol:3
 		};
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams));

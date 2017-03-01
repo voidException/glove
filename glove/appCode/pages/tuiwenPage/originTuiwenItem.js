@@ -21,7 +21,6 @@ let {width,height}=Dimensions.get('window');
 export default class OriginTuiwenItem extends Component{
 	constructor(props){
 		super(props);
-		console.log(this.props);
 		this.state={
 			photoupload: 1, //1 代表未上传头像
 			selfintroduce: '什么也没有介绍自己',
