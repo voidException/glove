@@ -1,4 +1,4 @@
-//查看我自己的推文
+//改页面适合查看主页中的推文
 import{
 	StyleSheet,
 	Text,
@@ -15,115 +15,111 @@ import{
 } from 'react-native';
 import React,{Component} from 'react';
 import WeiBoContent  from './weiboContent';
-import { fetchTuiwenPageIfNeeded } from '../../actions/tuiwenPageAction';
+import { fetchTweetPageIfNeeded } from '../../actions/tweetPageAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Loading from '../../loading/loading';
 import PublishTuiwen from '../components/publishTuiwen';
 import fetchTool from '../../utils/fetchTool';
-import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
+//import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 import WeiBoItem from './weiboItem';
+
 let { width,height}=Dimensions.get('window');
-let lastItemstartTime='2015-09-04 00:00:00';
-let lastUpdateTime='2015-09-04 00:00:00';
-let finalData2=[];
-class TweetPage extends Component{ //查看自己发布的tweet
+let lastUpdateTime='2075-09-09 00:00:00';
+let nextPageAllow=false;
+class TweetPage extends Component{
 	constructor(props){
 		super(props);
 		this.DS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state={
 			dataSource: this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			token:this.props.userProfile.items.backupfour,
+			userID:this.props.userProfile.items.userid,
 			visible:false
 		};
+		//console.log(this.props)
 	}
-	componentDidMount(){	
+	componentDidMount(){
+		//这里可以换成真实的r数据了,必须确保这个是同步的
 		let requestParams={
-			token:this.state.token,
+			userID:this.state.userID,
 			page:0,
-			pageSize:2,
-			lastUpdate:lastUpdateTime,
-			lastItemstart:lastItemstartTime, //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
-			flag:1,
-			symbol:2
+			pageSize:4,
+			lastUpdate:lastUpdateTime
 		};
 		const {dispatch}=this.props;
-		dispatch(fetchTuiwenPageIfNeeded(requestParams))
+		setTimeout(()=>{ 
+   			dispatch(fetchTweetPageIfNeeded(requestParams))
+    	},500) 
+		// dispatch(fetchTuiwenPageIfNeeded(requestParams))
 		//因为这个时候，数据还没到来，所以为null，但这个时候数据已会传入weiboItem，后者也会渲染，
-	}
-	componentWillUnmount(){
-		lastItemstartTime='2015-09-04 00:00:00';
-		lastUpdateTime='2015-09-04 00:00:00';
+
 	}
 	//异步获取数据后，更新的是store，connect会感知到，将会执行这个方法，这样weiboItem就有数据了
 	componentWillReceiveProps(nextProps) {
-        let oldNewdata=[];
-        if (nextProps.weiboList.flag==1) {
-             oldNewdata=nextProps.weiboList.tuiwenList.concat(finalData2);
-             finalData2=oldNewdata;
-             let receivedAt=nextProps.weiboList.tuiwenList[0].tuiwen.tweet.publishtime;
-             lastUpdateTime=fmDate(receivedAt);
-        }else if (nextProps.weiboList.flag==2) {
-        	oldNewdata=finalData2.concat(nextProps.weiboList.tuiwenList);
-        	finalData2=oldNewdata;
-        	let weiboLength=nextProps.weiboList.tuiwenList.length-1;    	 					
-			let rowLastItemStart=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.tweet.publishtime;
-			lastItemstartTime=fmDate(rowLastItemStart);
+       
+     	let weiboLength=nextProps.weiboList.tuiwenList.length-1;  
+        if (weiboLength!==3) { //说明无数据了
+        	nextPageAllow=true;
         };
 
+		let publishTime=nextProps.weiboList.tuiwenList[weiboLength].tuiwen.publishtime;
+		lastUpdateTime=fmDate(publishTime);
 		this.setState({
-			dataSource: this.DS.cloneWithRows(oldNewdata)
+			dataSource: this.DS.cloneWithRows(nextProps.weiboList.tuiwenList)
 		});		
 	}
-	componentWillUpdate(nextProps,nextState){
-
-	}
 	//这个需要把navigator传递过去
-	renderRow(row,sectionID){
-		return( <WeiBoItem  key={row.tuiwen.tweet.tweetid} symbol={1} row={row} {...this.props}/>);
+	renderRow(row,sectionID){		
+		return( <WeiBoItem  key={row.tuiwen.tweetid}  symbol={1} row={row} {...this.props}/>);
 	}
 
-	_onRefresh() {
+	_onRefresh() {		
 		let requestParams={
-			token:this.state.token,
+			userID:this.state.userID,
 			page:0,
 			pageSize:4,
-			lastUpdate:lastUpdateTime, //这个是点击加载更多获取的数据集合中，最后一条数据的发布时间
-			
-		};
-
+     		lastUpdate:'2075-09-09 00:00:00',	
+		};       
 		const {dispatch}=this.props;
-		dispatch(fetchTuiwenPageIfNeeded(requestParams))
+		dispatch(fetchTweetPageIfNeeded(requestParams))
 	}
-    onEndReached(){
-    	//这里面实现列表到达底部时自动加载更多
-        //symbol 在前端影响路由，后端影响是查看自己发布的还是别人发布的    
-    	let requestParams={
-			token:this.state.token,
+	_nextPage() {	
+		if (nextPageAllow) {
+			return
+		};	
+		let requestParams={
+			userID:this.state.userID,
 			page:0,
-			pageSize:10,
-			lastUpdate:lastUpdateTime,
-		};
+			pageSize:4,
+     		lastUpdate:lastUpdateTime,	
+		};       
 		const {dispatch}=this.props;
-		dispatch(fetchTuiwenPageIfNeeded(requestParams));
-    }
+		dispatch(fetchTweetPageIfNeeded(requestParams))
+	}
+   
     goTuiwen(){
     	this.props.navigator.push({
-    		component:PublishTuiwen
+    		component:PublishTuiwen,
+    		params:{
+    			userProfile:this.props.userProfile,
+    		}
     	})
     }
-    goBack(){
-    	this.props.navigator.pop();
-    }
+    backUp(){
+		this.props.navigator.pop();
+	}
+    componentWillUnmount(){		
+		lastUpdateTime='2075-09-09 00:00:00';
+	}
 	render(){
 		return(
 			<View style={styles.container}> 
 				<View style={styles.header}>
-					<Text onPress={this.goBack.bind(this)} style={{fontSize:16,color:'#ffffff'}}>返回</Text>
-									
-		            <Text style={{fontSize:16,color:'#ffffff'}}>发布</Text>                 
+				    <TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
+						<Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+					</TouchableOpacity>                      		            
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -139,8 +135,8 @@ class TweetPage extends Component{ //查看自己发布的tweet
 		             dataSource={this.state.dataSource}
 		             renderRow={this.renderRow.bind(this)}
 		             initialListSize={21}       
-		             pageSize={4}
-		             onEndReached={this.onEndReached.bind(this)} 
+		             pageSize={10}
+		       
 		             onEndReachedThreshold={20}
 		             scrollRenderAheadDistance={300}
 		             enableEmptySections={true}/>		
@@ -151,8 +147,11 @@ class TweetPage extends Component{ //查看自己发布的tweet
 }
 
 function mapStateToProps(state,ownProps){
-	const { tweetList }= state;	 
+	//这里的state就是store里面的各种键值对,store是个外壳
+	//在这个函数中，应该从store中取出所有需要的state，向下传递
+	const { userProfile,tweetList }= state;	 
 	return {
+		userProfile:userProfile,
 		weiboList:tweetList
 	}
 }
@@ -164,20 +163,33 @@ let styles=StyleSheet.create({
 		flex:1,
 		backgroundColor:'#F9FFFC'
 	},
-	header:{
+	returnButton:{
 		flexDirection:'row',
-		backgroundColor:'#43AC43',
-		height:51,
-		paddingLeft:15,
-		paddingRight:15,
-		justifyContent:'space-between',
+		justifyContent:'flex-start',
 		alignItems:'center'
 	},
-
+	header:{
+		height:51, //以此为准，导航栏高度是51，背景色是'#61B972',
+		flexDirection:'row',
+		justifyContent:'space-between',
+		alignItems:'center',
+		backgroundColor:'#61B972',
+		paddingLeft:6,
+		paddingRight:6
+	},
 	list: {
 	    justifyContent: 'flex-start',
 	    flexDirection: 'column',
 	    flexWrap: 'wrap'
   	},
+  	backImg:{
+		height:24,
+		width:24
+	},
+  	setting:{
+        position:'absolute',
+        right:15,
+        top:30
+    }
 });
 

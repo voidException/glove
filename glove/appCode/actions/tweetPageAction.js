@@ -1,8 +1,7 @@
 import * as types from './actionTypes';
-import { URLTuiwenPage} from '../utils/url';
+import { URLTweetPage} from '../utils/url';
 function  receiveTuiwenPage(requestParams,json){
-	let selectType=types.Get_tuiwenPage;
-	
+	let selectType=types.Get_tweetPage;
 	return{
 		type:selectType,
 		param:requestParams,
@@ -15,7 +14,7 @@ function  receiveTuiwenPage(requestParams,json){
 function fetchTuiWenPage(requestParams){
 	
 	return dispatch=>{
-		return fetch(URLTuiwenPage,{
+		return fetch(URLTweetPage,{
 					method:'POST',
 					headers:{
 						'Accept': 'application/json',
@@ -32,7 +31,7 @@ function fetchTuiWenPage(requestParams){
 	}
 }
 
-export function fetchTuiwenPageIfNeeded(requestParams){
+export function fetchTweetPageIfNeeded(requestParams){
 	return (dispatch,getState)=>{
 		return dispatch(fetchTuiWenPage(requestParams))
 	}

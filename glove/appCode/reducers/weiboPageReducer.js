@@ -3,7 +3,6 @@ import * as types  from '../actions/actionTypes';
 //进入别人的用户主页查看对方的微博时，用这个
 export function twitterList(state={
 		tuiwenList:[],
-		flag:0
     },action){
 	    //console.log(state.tuiwenList);
 	   // console.log(action);
@@ -20,8 +19,7 @@ export function twitterList(state={
 		switch (action.type){
 			case  types.Get_weiboPage:
 				return	Object.assign({},state,{
-					tuiwenList:action.posts,
-					flag:action.param.flag
+					tuiwenList:action.posts
 				});
 			default:
 				return state;

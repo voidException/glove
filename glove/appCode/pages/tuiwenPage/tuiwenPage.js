@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import Loading from '../../loading/loading';
 import PublishTuiwen from '../components/publishTuiwen';
 import fetchTool from '../../utils/fetchTool';
-import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
+//import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 import WeiBoItem from './weiboItem';
 

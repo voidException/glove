@@ -82,7 +82,7 @@ export default class OriginTuiwenContent extends Component{
 		if (this.state.helpTweet===2 &&this.state.cashuuid!=="" ) { //等于2表明是一条救助推文。
 	       
 	        let url=UrlCashConfirmRecord+this.state.cashuuid;
-	         console.log(url);
+	         //console.log(url);
 	        let  response=fetchToolget(url);
 	        response.then(resp=>{
 	            if (resp.retcode===2000) {
