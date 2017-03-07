@@ -212,8 +212,7 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
+        height: 50,
         width:width,    
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',

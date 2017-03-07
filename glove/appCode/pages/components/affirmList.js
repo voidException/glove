@@ -41,17 +41,7 @@ export default class AffirmList extends Component{
  // <Image source={require('../image/talk.png')} resizeMode={'contain'} style={styles.img} />
 	componentDidMount(){
 		//console.log(this.props.row.lp);
-		if (this.props.data.lp.length==0) {
-			return
-		};
-		this.setState({
-			dataSource: DS.cloneWithRows(this.props.data.lp)
-		});
-		if (this.props.data.lp.length=defaultPageSize) {
-			loadMoreTag=false; 
-		}else{
-			loadMoreTag=true;
-		}
+		this._onRefresh();
 	}
 	renderRow(row,sectionID){
 		return( <AffirmListItem  key={row.confirmid} row={row} />);
@@ -133,8 +123,9 @@ export default class AffirmList extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
-					
+					<TouchableOpacity onPress={this.back.bind(this)} style={styles.returnButton}>
+						<Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+					</TouchableOpacity>				
 					<Text onPress={this.onEndReached.bind(this)} style={{color:'#ffffff',fontSize:18}}>下一页</Text>
 				</View>
 				<ListView 
@@ -167,17 +158,25 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
+        height: 50,
         width:width,    
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
-	}
+        paddingLeft:5,
+        paddingRight:5
+	},
+	returnButton:{
+		flexDirection:'row',
+		justifyContent:'flex-start',
+		alignItems:'center'
+	},
+	backImg:{
+		height:24,
+		width:24
+	},
 });
 
 

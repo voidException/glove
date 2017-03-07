@@ -21,10 +21,8 @@ import { connect } from 'react-redux';
 import Loading from '../../loading/loading';
 import PublishTuiwen from '../components/publishTuiwen';
 import fetchTool from '../../utils/fetchTool';
-//import {URLTuiwenPage,URLmainPageWeiBo} from '../../utils/url';
 import fmDate from '../../utils/fmDate';
 import WeiBoItem from './weiboItem';
-
 let { width,height}=Dimensions.get('window');
 let lastUpdateTime='2075-09-09 00:00:00';
 let nextPageAllow=false;

@@ -359,18 +359,23 @@ class UserPageP extends Component{
         return(
             <View style={styles.container}> 
                 <View style={styles.topper}>
-                    <View style={styles.headWrapper}>               
+                    <View style={styles.headWrapper}>  
+
                         <TouchableOpacity onPress={this._back.bind(this)}>
                             <Image  source={require('../image/fanhui.png')} style={styles.headimg} />
-                        </TouchableOpacity>                      
+                        </TouchableOpacity> 
+
                         <View style={styles.nickName}>
                             <Text style={{fontWeight:'bold'}}>{this.state.usernickname}</Text>
                         </View>
+
                         <View style={{width:22}}></View>
                     </View>
 
                     <View style={styles.userPhotoWrapper}>
-                        <Image  source={{uri:this.state.userphoto}} style={styles.userPhoto} />
+                       <View style={{height:70,width:70, borderRadius:35, backgroundColor:'#61B972'}}>
+                            <Image  source={{uri:this.state.userphoto}} style={styles.userPhoto} />
+                       </View>                     
                     </View>
                 
                     <View style={styles.helpInfo}>
@@ -501,11 +506,8 @@ let styles=StyleSheet.create({
     },
     userPhotoWrapper:{
         flexDirection:'row',
+        alignItems:'center',
         justifyContent:'center',
-        width:70,
-        height:70,
-        borderRadius:35,
-        backgroundColor:'#61B972'
     },
     userPhoto:{
         width:70,

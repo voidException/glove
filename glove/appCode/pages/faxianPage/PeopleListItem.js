@@ -29,7 +29,7 @@ export default class PeopleListtItem extends Component{
 		super(props);
 		this.state={
 			url: this.props.row.userphoto || null,
-			introduce:this.props.row.selfintroduce|| '用户还没有写简介。',
+			introduce:this.props.row.selfintroduce|| '同学介绍下你自己呗。',
 			usernickname:this.props.row.usernickname ||'无名氏',
 			time:geShiDate(this.props.row.registerdate) || '2016-9-19'
 		}
@@ -50,7 +50,8 @@ export default class PeopleListtItem extends Component{
 			   <View>
 			    <View style={styles.toper}>
 			        <TouchableOpacity onPress={this.goUserPage.bind(this)}>
-			            {this.state.url==null ?
+			            {
+			            	this.state.url==null ?
 				        	 <Image source={Url} resizeMode={'contain'} style={styles.img} />
 				        	:
 				        	 <Image source={{uri:this.state.url}} resizeMode={'contain'} style={styles.img} />
@@ -66,7 +67,6 @@ export default class PeopleListtItem extends Component{
 	    	        <Text numberOfLines={4} style={{color:'#272822'}}>{this.state.introduce}</Text>
 	    	    </View>
 	    	    </View>
-
 			</View>
 		);
 	}

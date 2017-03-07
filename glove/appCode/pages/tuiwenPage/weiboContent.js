@@ -137,8 +137,8 @@ export default class WeiBoContent extends Component{
 		});
 	}
 	doComment(){
+		console.log(this.state.deletetag)
 		if (this.state.deletetag===2 || this.state.publicsee===2){ //已被删除或者不可见
-			return
 				Alert.alert(
                         '该内容不能被评论',
                         '可能作者已删除',
@@ -146,12 +146,19 @@ export default class WeiBoContent extends Component{
                             { text:'好的'}
                         ]
                 );
+                return
 		}
+		let tweetid;
+        if (this.state.tagid==1) {
+        	tweetid=this.props.row.tuiwen.tweetid;
+        }else{
+        	tweetid=this.props.row.zhuanfaTuiwen.tweetid;
+        }
 		this.props.navigator.push({
 			component:DoComment,
 			params:{
 				userProfile:this.props.userProfile,
-				tweetid:this.props.row.tuiwen.tweetid 
+				tweetid:tweetid 
 			}
 		});
 	}
@@ -176,11 +183,19 @@ export default class WeiBoContent extends Component{
                         ]
                     );
 		};
+        //如果这个只有源推文，那么tweetid就是this.props.row.tuiwen.tweetid，否则就是
+        //this.props.row.zhuanfaTuiwen.tweetid
+        let tweetid;
+        if (this.state.tagid==1) {
+        	tweetid=this.props.row.tuiwen.tweetid;
+        }else{
+        	tweetid=this.props.row.zhuanfaTuiwen.tweetid;
+        }
 		this.props.navigator.push({
 			component:DoZhuanFa,
 			params:{
 				userProfile:this.props.userProfile,
-				tweetid:this.props.row.tuiwen.tweetid 
+				tweetid:tweetid 
 			}
 		});
 	}
@@ -362,7 +377,7 @@ export default class WeiBoContent extends Component{
 		       		}
 
 					{
-						this.state.tagid===2 && this.props.tagDiffweiboItemOrigin==100 ?
+						this.state.tagid===2 ?
 						<OriginTuiwenItem  row={this.props.row.zhuanfaTuiwen} navigator={this.props.navigator} userProfile={this.props.userProfile}/>
 						: null
 					}
@@ -423,7 +438,7 @@ let styles=StyleSheet.create({
 		backgroundColor:'#F9FFFC',
 	},
 	broadcast:{
-		height:51,
+		height:50,
 		backgroundColor:'#61B972',
 		flexDirection:'row',
 		alignItems:'center',

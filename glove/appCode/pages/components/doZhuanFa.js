@@ -33,8 +33,13 @@ export default class DoZhuanFa extends Component{
 		this.state={
 			visible:false,
 			token:this.props.userProfile.items.backupfour,
-			notSay:this.props.userProfile.items.notsay, 
+			notSay:this.props.userProfile.items.notsay,
 			content:'', //转发时输入的内容
+			userUUIDTweet:this.props.userProfile.items.backupten || "", //用户的uuid
+			userNickname:this.props.userProfile.items.usernickname || "",
+			userphoto:this.props.userProfile.items.userphoto || "",
+			cityName:this.props.userProfile.items.backuptwo || "",
+			selfintroduce:this.props.userProfile.items.selfintroduce||"",				
             sourceMsgID:this.props.tweetid, //被转发的推文的id
 		}
 	}
@@ -48,6 +53,13 @@ export default class DoZhuanFa extends Component{
 		formData.append("content", this.state.content);
 		formData.append("notSay",this.state.notSay); 
 		formData.append("sourceMsgID",this.state.sourceMsgID); 
+
+	    formData.append("userUUIDTweet",this.state.userUUIDTweet);
+	    formData.append("userNickname",this.state.userNickname);
+	    formData.append("userphoto",this.state.userphoto);
+	    formData.append("cityName",this.state.cityName);
+	    formData.append("selfintroduce",this.state.selfintroduce);
+
 		let option={
 			url:UrldoZhuanfa,
 			body:formData
@@ -92,9 +104,9 @@ export default class DoZhuanFa extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text  style={{color:'#ffffff',fontSize:20}} onPress={this.cancel.bind(this)}> 取消 </Text>
-					<Text style={{color:'#000',fontSize:20,marginTop:-3}}>转发</Text>
-					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:20}}>发送</Text>
+					<Text  style={{color:'#ffffff',fontSize:17}} onPress={this.cancel.bind(this)}> 取消 </Text>
+					<Text style={{color:'#000',fontSize:17}}>转发</Text>
+					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:17}}>发送</Text>
 				</View>
 				<View style={styles.commonStyle}>					
 					<TextInput
@@ -117,21 +129,19 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
+        height: 50,
         width:width,          
-        //borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        paddingLeft:5,
+        paddingRight:5
 	},
 	commonStyle:{
 		marginTop:0,
 	},
 	affirmStyle:{
-		height:height-40-statusBarHeight,
+		height:height-50,
 		paddingLeft:3,		
 		marginRight:0,
 		marginLeft:0,

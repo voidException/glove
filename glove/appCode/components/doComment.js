@@ -95,9 +95,9 @@ export default class DoComment extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text onPress={this.cancel.bind(this)} style={{color:'#ffffff',fontSize:20}}>取消</Text>
-					<Text style={{color:'#000',fontSize:20,marginTop:-3}}>评价</Text>
-					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:20}}>发送</Text>
+					<Text onPress={this.cancel.bind(this)} style={{color:'#ffffff',fontSize:18}}>取消</Text>
+					<Text style={{color:'#000',fontSize:18,}}>评价</Text>
+					<Text onPress={this.doCommit.bind(this)}  style={{color:'#ffffff',fontSize:18}}>发送</Text>
 				</View>
 				<View style={styles.commonStyle}>					
 					<TextInput
@@ -120,20 +120,19 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
+        height: 50,
         width:width,    
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        paddingLeft:5,
+        paddingRight:5
 	},
 	commonStyle:{
 		marginTop:0,
 	},
 	affirmStyle:{
-		height:height-40-statusBarHeight,
+		height:height-50,
 		paddingLeft:3,		
 		marginRight:0,
 		marginLeft:0,

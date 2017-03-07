@@ -291,7 +291,7 @@ let styles=StyleSheet.create({
         backgroundColor:'#F9FFFC',
 	},
 	header:{
-        height:51,
+        height:50,
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',

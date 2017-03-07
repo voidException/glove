@@ -1,7 +1,7 @@
 //该组件用于实现登陆的
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
-import { NativeAppEventEmitter, PixelRatio,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
+import { NativeAppEventEmitter, PixelRatio,ScrollView,Text,Image,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
 //import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
@@ -21,6 +21,7 @@ export default class RegisterPage extends Component{
 			userEmail:null,
 			userPassword:null,
 			nickName:null,
+			cityName:null,
 			onoff:null,
 			visible:false
 		}
@@ -46,7 +47,8 @@ export default class RegisterPage extends Component{
 		let userAccount={
 			userEmail:this.state.userEmail,
 			userPassword:this.state.userPassword,
-			userNickName:this.state.nickName
+			userNickName:this.state.nickName,
+			cityName:this.state.cityName
 		};
 		//console.log(userAccount);
 		//发起网络请求
@@ -65,7 +67,15 @@ export default class RegisterPage extends Component{
         	  	visible:false
         	  });
              if (resp.retcode===2000) {
-              	  this.goBack();
+              	 
+              	  Alert.alert(
+                        '恭喜你',
+                        '注册成功',
+                        [
+                            { text:'好的',onPress:() => this.goBack()}
+
+                        ]
+                    );
               }else{
               	    Alert.alert(
                         '出错了',
@@ -133,6 +143,11 @@ export default class RegisterPage extends Component{
     		userPassword:event.nativeEvent.text
     	});
     }
+    handleCityChange(event){
+    	this.setState({
+    		cityName:event.nativeEvent.text
+    	});
+    }
 
     // focusNextField(nextField){
     // 	//点击return时，密码框自动获得焦点
@@ -159,9 +174,11 @@ export default class RegisterPage extends Component{
 		return(
 			<View style={{flex:1,backgroundColor:'#FFFFFF'}}>
 			    <View style={styles.header}>
-			    	<Text onPress={this.goBack.bind(this)} style={{color:'#FFFFFF',fontSize:16}}>返回</Text>
+			    	<TouchableOpacity onPress={this.goBack.bind(this)} style={styles.returnButton}>
+						<Image source={require('./imgs/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+					</TouchableOpacity>
 					<Text style={{color:'#FFFFFF',fontSize:16}}>捐助即保险</Text>
-					<View style={{width:32}}></View>
+					<View style={{width:24}}></View>
 				</View>
 				<View style={styles.glove}>
 					<Text style={{color:'green',fontSize:16}}>给点爱，一起温暖世界</Text>
@@ -222,6 +239,21 @@ export default class RegisterPage extends Component{
 					</View>
 				</View>
 					    
+				<View style={styles.password}>
+					<View style={styles.labelWrap}>
+                        <Text style={styles.label}>所在城市</Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+						<TextInput
+							 style={styles.passwordinput}
+							 placeholder='不需带省份名，如临沂市'
+							 maxLength={7}							
+							 autoCapitalize='none'
+							 clearButtonMode='always'
+							 autoCorrect={false}
+							 onChange={this.handlePassChange.bind(this)}/>
+					</View>
+				</View>	    
 				{/*<View style={styles.err}>{errTip}</View>*/}
 				{/* 
 	                <View>
@@ -249,6 +281,10 @@ export default class RegisterPage extends Component{
 				<View  style={styles.loginwrap}>					
 					<Text onPress={this.startRegister.bind(this)} style={styles.login}> 注 册</Text>				
 				</View>	
+				<View style={{padding:5}}>					
+					<Text> 提示：</Text>	
+					<Text> 正确的填写城市名很重要，否则您发起的募捐将无爱心社核实。</Text>			
+				</View>	
 				<Loading  visible={this.state.visible}/>	        
 		    </View>
 		);
@@ -261,13 +297,22 @@ let styles=StyleSheet.create({
 		flexDirection:'column'
 	},
 	header:{
-		height:60,
+		height:50,
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',
 		backgroundColor:'#61B972',
 		paddingLeft:5,
 		paddingRight:5
+	},
+	returnButton:{
+		flexDirection:'row',
+		justifyContent:'flex-start',
+		alignItems:'center'
+	},
+	backImg:{
+		height:24,
+		width:24
 	},
 	glove:{
 		flexDirection:'row',

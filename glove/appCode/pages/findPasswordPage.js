@@ -2,7 +2,7 @@
 //该组件用于实现登陆的
 //在login页面，最下面是还没注册 和忘记密码
 import  React,{ Component} from 'react';
-import { NativeAppEventEmitter,Alert, PixelRatio,ScrollView,Text,Picker,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
+import { NativeAppEventEmitter,Alert, PixelRatio,ScrollView,Text,Picker,Image,View,StyleSheet,TextInput,TouchableOpacity,TouchableWithoutFeedback,Dimensions,DeviceEventEmitter} from 'react-native';
 //import ErrorTips from './errorTips';
 import {fetchUserProfileIfNeeded} from '../actions/userProfileAction';
 import MyMainPage from '../pages/mainPage';
@@ -102,11 +102,14 @@ export default class RegisterPage extends Component{
 
 		return(
 			<View style={{backgroundColor:'#FFFFFF',flex:1}}>			
-				<View style={styles.header}>
-			    	<Text onPress={this.goBack.bind(this)}  style={{color:'#FFFFFF',fontSize:16}}>返回</Text>
-					<Text style={{color:'#FFFFFF',fontSize:16}}>人过留名</Text>
-					<View style={{width:32}}></View>
+				 <View style={styles.header}>
+			    	<TouchableOpacity onPress={this.goBack.bind(this)} style={styles.returnButton}>
+						<Image source={require('./imgs/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+					</TouchableOpacity>
+					<Text style={{color:'#FFFFFF',fontSize:16}}>捐助即保险</Text>
+					<View style={{width:24}}></View>
 				</View>
+
 				<View style={styles.glove}>
 					<Text style={{color:'green',fontSize:16}}>密码会发送到您的邮箱📮</Text>
 				</View>
@@ -146,13 +149,22 @@ let styles=StyleSheet.create({
 		flexDirection:'column'
 	},
 	header:{
-		height:60,
+		height:50,
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',
 		backgroundColor:'#61B972',
 		paddingLeft:5,
 		paddingRight:5
+	},
+	returnButton:{
+		flexDirection:'row',
+		justifyContent:'flex-start',
+		alignItems:'center'
+	},
+	backImg:{
+		height:24,
+		width:24
 	},
 	glove:{
 		flexDirection:'row',

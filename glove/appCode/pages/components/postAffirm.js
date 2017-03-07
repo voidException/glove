@@ -119,9 +119,9 @@ export default class PostAffirm extends Component{
 		return(
 			<View style={styles.container}>
 			    <View  style={styles.header}>
-					<Text style={{color:'white',fontSize:20}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#000',fontSize:20,marginTop:-3}}>证实</Text>
-					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:20,marginRight:6}}>提交</Text>
+					<Text style={{color:'white',fontSize:18}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text style={{color:'#000',fontSize:18}}>证实</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>
 				<View style={styles.commonInputWrapper}>
                     <Text style={styles.authoText}>关系:</Text>
@@ -181,14 +181,13 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
+        height: 50,
         width:width,    
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        paddingLeft:5,
+        paddingRight:5
 	},
 	 commonInputWrapper:{
         flexDirection:'row',

@@ -97,9 +97,9 @@ export default class ReportTuiwen extends Component{
 			<View style={styles.container}>
 		
 			    <View  style={styles.header}>
-					<Text style={{color:'#ffffff',fontSize:20,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text style={{color:'#000',fontSize:20,marginTop:-3}}>举报</Text>
-					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:20,marginRight:6}}>提交</Text>
+					<Text style={{color:'#ffffff',fontSize:18}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text style={{color:'#000',fontSize:18}}>举报</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18}}>提交</Text>
 				</View>
 			
 				<View>
@@ -125,9 +125,9 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
-        paddingLeft:4,
+        height: 50,
+        paddingLeft:5,
+        paddingRight:5,
         width:width,    
         alignItems:'center',
         justifyContent:'space-between',
@@ -136,7 +136,7 @@ let  styles=StyleSheet.create({
 	affirmStyle:{
 		height:120,
 		width:width,
-		paddingLeft:10,
+		paddingLeft:5,
 		textAlign:'left',
         textAlignVertical:'top'
 	},

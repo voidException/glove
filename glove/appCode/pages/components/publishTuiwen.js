@@ -31,10 +31,17 @@ let nullImg=require('../../image/tupianzhanwei.jpeg')
 export default class PublishTuiwen extends Component{
 	constructor(props){
 		super(props);
-		//console.log(props)
+		console.log(props)
 		this.state={
 			token:this.props.userProfile.items.backupfour,
 			notSay:this.props.userProfile.items.notsay, //1默认可以发表
+
+			userUUIDTweet:this.props.userProfile.items.backupten || "", //用户的uuid
+			userNickname:this.props.userProfile.items.usernickname || "",
+			userphoto:this.props.userProfile.items.userphoto || "",
+			cityName:this.props.userProfile.items.backuptwo || "",
+			selfintroduce:this.props.userProfile.items.selfintroduce||"",	
+
 			content:null,
 			avatarSource:nullImg,
 			imgOneUrl:nullImg,
@@ -42,7 +49,6 @@ export default class PublishTuiwen extends Component{
 			imgThreeUrl:nullImg,
 			visible:false
 		};
-	
 	}
 
 	cancel(){
@@ -62,6 +68,11 @@ export default class PublishTuiwen extends Component{
 		formData.append("token",this.state.token); 
 		formData.append("content", this.state.content);
 	    formData.append("notSay",this.state.notSay);
+	    formData.append("userUUIDTweet",this.state.userUUIDTweet);
+	    formData.append("userNickname",this.state.userNickname);
+	    formData.append("userphoto",this.state.userphoto);
+	    formData.append("cityName",this.state.cityName);
+	    formData.append("selfintroduce",this.state.selfintroduce);
 		let option={
 			url:UrlUploadFile,
 			body:formData
@@ -216,7 +227,7 @@ let  styles=StyleSheet.create({
 		backgroundColor:'#F9FFFC',
 	},
 	header:{
-		height:60,
+		height:50,
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',

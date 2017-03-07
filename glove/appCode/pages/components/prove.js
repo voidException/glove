@@ -15,6 +15,8 @@ import{
 } from 'react-native';
 import React,{ Component } from 'react';
 import Affirm from './affirm';
+import PostAffirm  from './postAffirm';
+import AffirmList from './affirmList';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
@@ -39,6 +41,30 @@ export default class Prove extends Component{
 		}
 	}
 	componentDidMount(){
+	}
+
+	postAffirm(){     
+		this.props.navigator.push({
+			component:PostAffirm,
+			params:{
+				token:this.props.userProfile.items.backupfour,
+				notsay:this.props.userProfile.items.notsay,
+				tweetid:this.props.tweetid,
+			}
+		});
+	}
+
+    goAffirmList(){
+    	if (this.state.count==0) {
+    		return
+    	};
+		this.props.navigator.push({
+			component:AffirmList,
+			params:{
+				data:this.state.affirm,
+				tweetid:this.props.tweetid
+			}
+		});
 	}
     
     componentWillReceiveProps(nextProps) {   
@@ -118,13 +144,13 @@ export default class Prove extends Component{
 					<View style={styles.zhengmingOuter}>
 						<View style={styles.zhengshi}>
 							<Text style={{fontSize:16,fontWeight:'bold'}}>已有<Text style={{fontSize:16,color:'red'}}>{this.state.cash.confirmList.length}</Text>人证实</Text>
-							<Text style={{color:'#2893C3',fontWeight:'bold',fontSize:16}} >我要证实</Text>
+							<Text onPress={this.postAffirm.bind(this)} style={{color:'#2893C3',fontWeight:'bold',fontSize:16}} >我要证实</Text>
 						</View>
 						<View  style={styles.zhengshiImg}>
 						     {                          
-						          items
+						        items
 						     }
-							 <TouchableOpacity  style={styles.zhengmingImgArrow}>
+							 <TouchableOpacity onPress={this.goAffirmList.bind(this)}  style={styles.zhengmingImgArrow}>
 							 	<Image source={require('./image/forward.png')} style={styles.zhengmingImgArrow}  resizeMode={'contain'}/>					 
 							 </TouchableOpacity>
 						</View>
@@ -215,6 +241,7 @@ let styles=StyleSheet.create({
 	},
 	zhengshiImg:{
 		marginTop:5,
+		height:40,	
 		flexDirection:'row',
 		alignItems:'flex-start'
 	},
