@@ -15,15 +15,14 @@ import{
 	TextInput,
 	Alert
 } from 'react-native';
-/*这个是加入监督处认证需要的*/
+/*这个是爱心社进行认证用到*/
 import React,{ Component } from 'react';
 import Affirm from './affirm';
-import UploadFile from '../../utils/uploadFile';
 import {UrlJoinLoveClue} from '../../utils/url';
+import Loading from '../../loading/loading';
 import formDate from '../../utils/formDate';
 import formTime from  '../../utils/formTime';
-import WeChat from 'react-native-wechat-android';
-import Loading from '../../loading/loading';
+import UploadFile from '../../utils/uploadFile';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
@@ -33,112 +32,103 @@ let ImagePicker = require('react-native-image-picker');
 let formData = new FormData();
 let nowDate = new Date(); //这个仅仅用于初始值
 let imgUrl=require('./image/uploadimg.jpg');
-export default class JoinSuperVise extends Component{
+export default class JoinSupervise extends Component{
 	constructor(props){
 		super(props);
-		//console.log(WeChat);'e10adc3949ba59abbe56e057f20f883e1'||
 		this.state={
-			token: this.props.userProfile.backupfour,
-			realName:null||"",
-			phoneNo:null||"",
-			idno:null||"",
-			post:null||"", //职务
-			showLoading:false,
-			selfIntroduce:null||"",//简单介绍自己
+			//token:this.props.userProfile.items.backupfour,
+			token:"e10adc3949ba59abbe56e057f20f883e1",
+			selfIntroduce:null||" ",
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,
 			imgThreeUrl:imgUrl,
 			imgFourUrl:imgUrl,
-			imgFiveUrl:imgUrl,
-			imgSixUrl:imgUrl,
-			imgSevenUrl:imgUrl
+			stopClick:false,
 		}
 	}
 
-    cancel(){
-   	 this.props.navigator.pop();
-    }
-    doCommit(){
-    	this.setState({
-			visible:true
-		});
-   	    let startDate=formTime();
-		formData.append("tag",3); //个人认证是1
+   cancel(){
+   	   this.props.navigator.pop();
+   }
+   doCommit(){
+   	    if (this.state.stopClick) {
+   	    	return
+   	    };
+   	    this.setState({
+   	    	stopClick:true
+   	    });
+		//提交数据的时候，应该吧数据放入到formData里面
+		// if(this.state.token.length<32 ||this.state.notSay===2){
+		// 	return 
+		// }
+		formData.append("tag",3); //爱心社认证标识为CertificateType 为2
 		formData.append("token",this.state.token); 
-	    formData.append("realName",this.state.realName); //真实姓名
-	    formData.append("phoneNo",this.state.phoneNo); //认证人的手机号
-	    formData.append("idno",this.state.idno); //认证人的身份证号
-	    formData.append("post",this.state.post); //社团中的职务，存入个人标签中backupseve
+	    // formData.append("notSay",this.state.notSay);
+	    formData.append("selfIntroduce",this.state.selfIntroduce); //真实姓名
+	    
+        //console.log(formData);
 		let option={
 			url:UrlJoinLoveClue,
 			body:formData
 		};
-	
+		this.setState({
+			visible:true
+		});
 		let response=UploadFile(option);
 		response.then(resp=>{
 			formData=new FormData(); 
 			this.setState({
 				visible:false
 			});
+			
 			if (resp.retcode===2000) {
+				this.setState({
+				   visible:false
+			    });
 				 Alert.alert(
             		'提交成功',
             		resp.msg,
 		            [
 		                {
 		                    text: '好的',
-		                    onPress:()=>{this.props.navigator.pop();}
+		                    onPress:()=>{this.props.navigator.pop()}
 		                }
 		            ]
        			 );
+				
 			}else{
+				 this.setState({
+				     visible:false
+			     });
 				 Alert.alert(
             		'出问题了',
             		resp.msg,
 		            [
 		                {
-		                    text: '好的'
+		                    text: '好的',
+		                    onPress:()=>{this.props.navigator.pop()}
 		                }
 		            ]
        			 );
 			}
 		}).catch(err=>{			
-			//console.log(err);
-			this.setState({
-				visible:false
-			});
+			console.log(err);
+			// this.setState({
+			// 	visible:false
+			// });
 		});
 	}
-    componentDidMount(){
-
+   componentDidMount(){
+       
 	}
-   getRealName(event){
-   		this.setState({
-			realName:event.nativeEvent.text
-		});
-   }
-   getPhoneNo(event){
-   		this.setState({
-			phoneNo:event.nativeEvent.text
-		});
-   }
-   getIdentiNo(event){
-   	     this.setState({
-			idno:event.nativeEvent.text
-		});
-   }
 
-   getPost(event){
-   	    this.setState({
-			post:event.nativeEvent.text
-		});
-   }
-   getStatus(event){
+   getSelfIntroduce(event){
    	    this.setState({
 			selfIntroduce:event.nativeEvent.text
 		});
    }
-   selectPicture(tag){
+   /* 选择上传图片处理函数*/
+	selectPicture(tag){
     	//options是对ImagePicker的定制
     	let options = {
 			title: '',
@@ -148,24 +138,22 @@ export default class JoinSuperVise extends Component{
 			}
 		};
     	ImagePicker.showImagePicker(options, (response) => {
-			  
-			  //console.log(response);
+
 			if (response.didCancel) {
 			      console.log('User cancelled image picker');
 			}else if (response.error) {
 			      console.log('ImagePicker Error:',response.error);
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
-			}else {
-                    //console.log(response);       
+			}else{
 				    let uri = response.path;
-					if(uri.indexOf('file://') < 0){ //android ,uri:"content://media/external/images/media/8055"
+					if(uri.indexOf('file://') < 0){
 						uri = 'file://' + uri;
 					}else{
-						uri = uri.replace('file://', '') 
+						uri = uri.replace('file://', '')
 					}
+					//这个source 是控制图片显示在手机上的
 					let source = {uri: uri, isStatic: true};
-					
 	          		if (tag===1) {
 	          			 this.setState({
 				            imgOneUrl: source
@@ -186,21 +174,6 @@ export default class JoinSuperVise extends Component{
 				            imgFourUrl: source
 				        });
 				        formData.append("filefoure", {uri: uri, type: 'image/jpeg',name:'filetfoure'});
-	          		}else if (tag===5) {
-	          			this.setState({
-				            imgFiveUrl: source
-				        });
-				        formData.append("filefive", {uri: uri, type: 'image/jpeg',name:'filefive'});
-	          		}else if (tag===6) {
-	          			this.setState({
-				            imgSixUrl: source
-				        });
-				        formData.append("filesix", {uri: uri, type: 'image/jpeg',name:'filesix'});
-	          		}else if (tag===7) {
-	          			this.setState({
-				            imgSevenUrl: source
-				        });
-				        formData.append("fileseven", {uri: uri, type: 'image/jpeg',name:'fileseven'});
 	          		}
 			}
 		});	
@@ -209,71 +182,26 @@ export default class JoinSuperVise extends Component{
 		return(
 			<View style={styles.container}>		
 			    <View  style={styles.header}>
-					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
-					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
+					<Text style={{color:'#ffffff',fontSize:20,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
+					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:20,marginRight:6}}>提交</Text>
 				</View>
-				<ScrollView>
-					<View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>姓名</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入你的真实姓名'}
-	                        maxLength={10}
-	                        onChange={this.getRealName.bind(this)}/>
-	                </View>
+				
 
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>手机号</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入你的手机号'}
-	                        maxLength={11}
-	                        onChange={this.getPhoneNo.bind(this)}/>
-	                </View>
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>身份证号</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入你的身份证号'}
-	                        maxLength={18}
-	                        onChange={this.getIdentiNo.bind(this)}/>
-	                </View>
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>职业</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'如CEO'}
-	                        maxLength={10}
-	                        onChange={this.getPost.bind(this)}/>
+	                    <Text style={styles.authoText}>提示：先完成个人实名认证。</Text>
 	                </View>
 
-	                <Text style={{marginTop:2,marginLeft:20,fontSize:16}}>其它</Text>
+	                <Text style={{marginTop:2,marginLeft:5,fontSize:16}}>简要介绍下自己</Text>
 				    <View style={styles.commonStyle}>
 						<TextInput 
 							style={styles.affirmStyle}
-							placeholder={'简要介绍下您自己'}
+							placeholder={'简要介绍些社团现状'}
 							placeholderTextColor={'#CCCCCC'}
 							multiline={true}
-							maxLength={120}
-							onChange={this.getStatus.bind(this)}/>
+							maxLength={200}
+							onChange={this.getSelfIntroduce.bind(this)}/>
 					</View>
-					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传能表明您身份信息的有关照片</Text>
+					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传学生证身份证等能能证明您信息的图片</Text>
 					<View style={styles.uploadimgView}>	
 						<TouchableOpacity onPress={this.selectPicture.bind(this,1)}>			
 							<Image key={1} source={this.state.imgOneUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
@@ -290,23 +218,8 @@ export default class JoinSuperVise extends Component{
 						<TouchableOpacity onPress={this.selectPicture.bind(this,4)}>
 							<Image key={4} source={this.state.imgFourUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
 						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,5)}>
-							<Image key={5} source={this.state.imgFiveUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,6)}>
-							<Image key={6} source={this.state.imgSixUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,7)}>
-							<Image key={7} source={this.state.imgSevenUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
 					</View>
-					<View style={{height:300}}></View>
-					
-				</ScrollView>
-				<Loading visible={this.state.showLoading} />
+					<Loading visible={this.state.visible} />				
 			</View>
 		);
 	}
@@ -339,16 +252,16 @@ let  styles=StyleSheet.create({
 		height:120,
 		width:width,
 		paddingLeft:10,
-		fontSize:14, 
-		textAlign:'left',
-        textAlignVertical:'top'
+		fontSize:14, 		
+        textAlign:'left',
+        textAlignVertical:'top'	
 	},
 	 commonInputWrapper:{
         flexDirection:'row',
         alignItems:'center',
         backgroundColor:'#FFFFFF',
         marginTop:1,
-        paddingLeft:20,
+        paddingLeft:5,
         height:44
     },
      authoText:{
@@ -358,11 +271,12 @@ let  styles=StyleSheet.create({
      authCode:{
         width:width-60,
         height:44,
-        fontSize:14,     
+        //fontSize:14,     
         paddingLeft:10,
         color:'#666666',
+  
         textAlign:'left',
-        textAlignVertical:'center'	
+        textAlignVertical:'center'
     },
     uploadimgView:{
 		flexWrap :'wrap',

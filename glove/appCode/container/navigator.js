@@ -92,7 +92,7 @@ class INavigator extends Component{
         //let defaultComponent=Report;
         //let defaultComponent=ReportTuiwen;
         //let defaultComponent=PublishTuiwen;
-        //let  defaultComponent=JoinLoveClub;
+       // let  defaultComponent=JoinLoveClub;
         //let  defaultComponent=PersonVerify;
         //let  defaultComponent=WelfareAuth;
         //let  defaultComponent=JoinSuperVise;

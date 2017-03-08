@@ -12,7 +12,8 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 /*这个是加V认证的*/
 import React,{ Component } from 'react';
@@ -39,15 +40,12 @@ export default class PersonVerify extends Component{
 			realName:null||" ", //真实姓名
 			phoneNo:null||" ", //手机号
 			idno:null||" ", //身份证号
-			post:null||" ", //职务
-			selfIntroduce:'用户还没有介绍自己',
+			mail:null||" ", 
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,
 			imgThreeUrl:imgUrl,
 			imgFourUrl:imgUrl,
-			imgFiveUrl:imgUrl,
-			imgSixUrl:imgUrl,
-			imgSevenUrl:imgUrl
+			stopClick:false,
 		}
 	}
 
@@ -55,13 +53,19 @@ export default class PersonVerify extends Component{
    	 this.props.navigator.pop();
     }
     doCommit(){
-   	    let startDate=formTime();
+    	if (this.state.stopClick) {
+   	    	return
+   	    };
+   	    this.setState({
+   	    	stopClick:true
+   	    });
+
 		formData.append("tag",1); //个人认证是1
 		formData.append("token",this.state.token); 
 	    formData.append("realName",this.state.realName); //真实姓名
 	    formData.append("phoneNo",this.state.phoneNo); //认证人的手机号
 	    formData.append("idno",this.state.idno); //认证人的身份证号
-	    formData.append("post",this.state.post); //社团中的职务，存入个人标签中backupseve
+	    formData.append("mail",this.state.mail); //社团中的职务，存入个人标签中backupseve
 		let option={
 			url:UrlJoinLoveClue,
 			body:formData
@@ -72,37 +76,39 @@ export default class PersonVerify extends Component{
 		let response=UploadFile(option);
 		response.then(resp=>{
 			formData=new FormData(); 
-			this.setState({
-				visible:false
-			});
-			//console.log(resp);
+			
 			if (resp.retcode===2000) {
+				this.setState({
+				   visible:false
+			    });
 				 Alert.alert(
             		'提交成功',
             		resp.msg,
 		            [
 		                {
 		                    text: '好的',
-		                    onPress:()=>{this.props.navigator.pop();}
+		                    onPress:()=>{this.props.navigator.pop()}
 		                }
 		            ]
        			 );
 			}else{
+				this.setState({
+			    	visible:false
+			    });
 				 Alert.alert(
             		'出问题了',
             		resp.msg,
 		            [
 		                {
-		                    text: '好的'
+		                    text: '好的',
+		                    onPress:()=>{this.props.navigator.pop()}
 		                }
 		            ]
        			 );
 			}
 		}).catch(err=>{			
 			//console.log(err);
-			this.setState({
-				visible:false
-			});
+			
 		});
 	}
     componentDidMount(){
@@ -124,7 +130,7 @@ export default class PersonVerify extends Component{
 		});
    }
  
-   getPost(event){ //认证的内容
+   getMail(event){ //认证的内容
    	    this.setState({
 			post:event.nativeEvent.text
 		});
@@ -176,21 +182,6 @@ export default class PersonVerify extends Component{
 			            imgFourUrl: source
 			        });
 			        formData.append("filefoure", {uri: uri, type: 'image/jpeg',name:'filetfoure'});
-          		}else if (tag===5) {
-          			this.setState({
-			            imgFiveUrl: source
-			        });
-			        formData.append("filefive", {uri: uri, type: 'image/jpeg',name:'filefive'});
-          		}else if (tag===6) {
-          			this.setState({
-			            imgSixUrl: source
-			        });
-			        formData.append("filesix", {uri: uri, type: 'image/jpeg',name:'filesix'});
-          		}else if (tag===7) {
-          			this.setState({
-			            imgSevenUrl: source
-			        });
-			        formData.append("fileseven", {uri: uri, type: 'image/jpeg',name:'fileseven'});
           		}
 			}
 		});	
@@ -204,7 +195,6 @@ export default class PersonVerify extends Component{
 					<Text style={{color:'#ffffff',fontSize:18,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
 					<Text  onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:18,marginRight:6}}>提交</Text>
 				</View>
-				<ScrollView>
 
 					<View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>您的真实姓名:</Text>
@@ -219,7 +209,7 @@ export default class PersonVerify extends Component{
 	                </View>
 
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>手就号:</Text>
+	                    <Text style={styles.authoText}>手机号:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
 	                        placeholderTextColor={'#CCCCCC'}
@@ -229,7 +219,7 @@ export default class PersonVerify extends Component{
 	                        onChange={this.getPhoneNo.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>身份证号</Text>
+	                    <Text style={styles.authoText}>身份证号:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
 	                        placeholderTextColor={'#CCCCCC'}
@@ -239,18 +229,18 @@ export default class PersonVerify extends Component{
 	                        onChange={this.getIdentiNo.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>一句话简介</Text>
+	                    <Text style={styles.authoText}>邮箱:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}
 	                        ref={textinput=>this.textinput=textinput}
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'25字以内'}
-	                        onChange={this.getPost.bind(this)}/>
+	                        placeholder={'输入你的邮箱'}
+	                        onChange={this.getMail.bind(this)}/>
 	                </View>
 	                	               
-					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传身份证有关信息</Text>
+					<Text style={{fontSize:16,marginTop:4,paddingLeft:7}}>上传身份证有关信息</Text>
 			        <View style={styles.uploadimgView}>	
 						<TouchableOpacity onPress={this.selectPicture.bind(this,1)}>			
 							<Image key={1} source={this.state.imgOneUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
@@ -267,21 +257,8 @@ export default class PersonVerify extends Component{
 						<TouchableOpacity onPress={this.selectPicture.bind(this,4)}>
 							<Image key={4} source={this.state.imgFourUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
 						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,5)}>
-							<Image key={5} source={this.state.imgFiveUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,6)}>
-							<Image key={6} source={this.state.imgSixUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,7)}>
-							<Image key={7} source={this.state.imgSevenUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
 					</View>
-					<View style={{height:200}}></View>
-				</ScrollView>
+					<Loading visible={this.state.visible} />
 			</View>
 		);
 	}

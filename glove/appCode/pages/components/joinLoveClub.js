@@ -12,7 +12,8 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 /*这个是爱心社进行认证用到*/
 import React,{ Component } from 'react';
@@ -36,20 +37,13 @@ export default class JoinLoveClub extends Component{
 		super(props);
 		this.state={
 			token:this.props.userProfile.items.backupfour,
-			realName:null||" ",
-			phoneNo:null||" ",
-			idno:null||" ",
-			school:null||" ",
-			post:null||" ", //职务
-			status:null||" ",//现状
-			status:imgUrl,
+			//token:"",
+			selfIntroduce:null||" ",
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,
 			imgThreeUrl:imgUrl,
 			imgFourUrl:imgUrl,
-			imgFiveUrl:imgUrl,
-			imgSixUrl:imgUrl,
-			imgSevenUrl:imgUrl
+			stopClick:false,
 		}
 	}
 
@@ -57,7 +51,12 @@ export default class JoinLoveClub extends Component{
    	   this.props.navigator.pop();
    }
    doCommit(){
-   	    let startDate=formTime();
+   	    if (this.state.stopClick) {
+   	    	return
+   	    };
+   	    this.setState({
+   	    	stopClick:true
+   	    });
 		//提交数据的时候，应该吧数据放入到formData里面
 		// if(this.state.token.length<32 ||this.state.notSay===2){
 		// 	return 
@@ -65,11 +64,8 @@ export default class JoinLoveClub extends Component{
 		formData.append("tag",2); //爱心社认证标识为CertificateType 为2
 		formData.append("token",this.state.token); 
 	    // formData.append("notSay",this.state.notSay);
-	    formData.append("realName",this.state.realName); //真实姓名
-	    formData.append("phoneNo",this.state.phoneNo); //认证人的手机号
-	    formData.append("idno",this.state.idno); //认证人的身份证号
-	    formData.append("school",this.state.school); //社团所属的大学University
-	    formData.append("post",this.state.post); //社团中的职务，存入个人标签中backupseve
+	    formData.append("selfIntroduce",this.state.selfIntroduce); //真实姓名
+	    
         //console.log(formData);
 		let option={
 			url:UrlJoinLoveClue,
@@ -84,7 +80,7 @@ export default class JoinLoveClub extends Component{
 			this.setState({
 				visible:false
 			});
-			//console.log(resp);
+			console.log(resp);
 			if (resp.retcode===2000) {
 				 Alert.alert(
             		'提交成功',
@@ -92,7 +88,7 @@ export default class JoinLoveClub extends Component{
 		            [
 		                {
 		                    text: '好的',
-		                    onPress:()=>{this.props.navigator.pop();}
+		                    onPress:()=>{this.props.navigator.pop()}
 		                }
 		            ]
        			 );
@@ -103,49 +99,26 @@ export default class JoinLoveClub extends Component{
             		resp.msg,
 		            [
 		                {
-		                    text: '好的'
+		                    text: '好的',
+		                    onPress:()=>{this.props.navigator.pop()}
 		                }
 		            ]
        			 );
 			}
 		}).catch(err=>{			
 			console.log(err);
-			this.setState({
-				visible:false
-			});
+			// this.setState({
+			// 	visible:false
+			// });
 		});
 	}
    componentDidMount(){
-       let startDate=formTime();
+       
 	}
-   getRealName(event){
-   		this.setState({
-			realName:event.nativeEvent.text
-		});
-   }
-   getPhoneNo(event){
-   		this.setState({
-			phoneNo:event.nativeEvent.text
-		});
-   }
-   getIdentiNo(event){
-   	     this.setState({
-			idno:event.nativeEvent.text
-		});
-   }
-   getSchool(event){
+
+   getSelfIntroduce(event){
    	    this.setState({
-			school:event.nativeEvent.text
-		});
-   }
-   getPost(event){
-   	    this.setState({
-			post:event.nativeEvent.text
-		});
-   }
-   getStatus(event){
-   	    this.setState({
-			status:event.nativeEvent.text
+			selfIntroduce:event.nativeEvent.text
 		});
    }
    /* 选择上传图片处理函数*/
@@ -195,21 +168,6 @@ export default class JoinLoveClub extends Component{
 				            imgFourUrl: source
 				        });
 				        formData.append("filefoure", {uri: uri, type: 'image/jpeg',name:'filetfoure'});
-	          		}else if (tag===5) {
-	          			this.setState({
-				            imgFiveUrl: source
-				        });
-				        formData.append("filefive", {uri: uri, type: 'image/jpeg',name:'filefive'});
-	          		}else if (tag===6) {
-	          			this.setState({
-				            imgSixUrl: source
-				        });
-				        formData.append("filesix", {uri: uri, type: 'image/jpeg',name:'filesix'});
-	          		}else if (tag===7) {
-	          			this.setState({
-				            imgSevenUrl: source
-				        });
-				        formData.append("fileseven", {uri: uri, type: 'image/jpeg',name:'fileseven'});
 	          		}
 			}
 		});	
@@ -221,67 +179,13 @@ export default class JoinLoveClub extends Component{
 					<Text style={{color:'#ffffff',fontSize:20,marginLeft:6}} onPress={this.cancel.bind(this)}>取消</Text>
 					<Text onPress={this.doCommit.bind(this)} style={{color:'#fff',fontSize:20,marginRight:6}}>提交</Text>
 				</View>
-				<ScrollView>
-					<View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>姓名</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入你的真实姓名'}
-	                        onChange={this.getRealName.bind(this)}/>
-	                </View>
+				
 
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>手机号</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入你的手机号'}
-	                        onChange={this.getPhoneNo.bind(this)}/>
-	                </View>
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>身份证号</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'请输入你的身份证号'}
-	                        onChange={this.getIdentiNo.bind(this)}/>
+	                    <Text style={styles.authoText}>提示：先完成个人实名认证。</Text>
 	                </View>
 
-					<View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>学校</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'输入完整的大学名称'}
-	                        onChange={this.getSchool.bind(this)}/>
-	                </View>
-
-	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>社团中的职务</Text>
-	                    <TextInput 
-	                        style={styles.authCode}
-	                        ref={textinput=>this.textinput=textinput}
-	                        placeholderTextColor={'#CCCCCC'}
-	                        underlineColorAndroid={'rgba(0,0,0,0)'}
-	                        keyboardType={'default'}
-	                        placeholder={'如书记'}
-	                        onChange={this.getPost.bind(this)}/>
-	                </View>
-
-	                <Text style={{marginTop:2,marginLeft:20,fontSize:16}}>其它</Text>
+	                <Text style={{marginTop:2,marginLeft:5,fontSize:16}}>简要介绍下自己</Text>
 				    <View style={styles.commonStyle}>
 						<TextInput 
 							style={styles.affirmStyle}
@@ -289,7 +193,7 @@ export default class JoinLoveClub extends Component{
 							placeholderTextColor={'#CCCCCC'}
 							multiline={true}
 							maxLength={200}
-							onChange={this.getStatus.bind(this)}/>
+							onChange={this.getSelfIntroduce.bind(this)}/>
 					</View>
 					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传学生证身份证等能能证明您信息的图片</Text>
 					<View style={styles.uploadimgView}>	
@@ -308,21 +212,8 @@ export default class JoinLoveClub extends Component{
 						<TouchableOpacity onPress={this.selectPicture.bind(this,4)}>
 							<Image key={4} source={this.state.imgFourUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
 						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,5)}>
-							<Image key={5} source={this.state.imgFiveUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,6)}>
-							<Image key={6} source={this.state.imgSixUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={this.selectPicture.bind(this,7)}>
-							<Image key={7} source={this.state.imgSevenUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
-						</TouchableOpacity>
-					</View>
-					<View style={{height:300}}></View>
-				</ScrollView>
+					</View>					
+				   <Loading visible={this.state.visible} />
 			</View>
 		);
 	}
@@ -364,7 +255,7 @@ let  styles=StyleSheet.create({
         alignItems:'center',
         backgroundColor:'#FFFFFF',
         marginTop:1,
-        paddingLeft:20,
+        paddingLeft:5,
         height:44
     },
      authoText:{
