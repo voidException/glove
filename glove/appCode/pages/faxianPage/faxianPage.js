@@ -99,7 +99,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 			<View style={styles.wrapper}>
 				<StatusBar backgroundColor='#3B3738' barStyle="default"/>
 				<View style={styles.topper}>			    
-				    <Text style={{fontSize:18,color:'#fff'}}>监督处</Text>
+				    <Text style={{fontSize:18,color:'#fff'}}>发现</Text>
 				</View>
 				<View style={styles.ad}>
 					<View style={styles.superUs}>
@@ -115,9 +115,9 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 				</View>
 				<View style={styles.welcomeJoin}>
 					<Image source={require('./image/superMan.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
-					<Text style={{color:'#31A75B',marginLeft:-44}}>政府官员、企业家、明星等</Text>
+					<Text style={{color:'#31A75B',marginLeft:-38}}>政府官员、企业家、明星等</Text>
 					<View style={styles.welcomeJoinUs}>
-						<Text onPress={this.goJoinSupervise.bind(this)}  style={{fontSize:12,color:'white'}}>欢迎加入></Text>
+						<Text onPress={this.goJoinSupervise.bind(this)}  style={{fontSize:12,color:'white'}}>欢迎加入</Text>
 						{/*<Image source={require('./image/rightArrow.png')} resizeMode={'cover'} style={{width:13,height:13}}/>*/}				
 					</View>
 				</View>
@@ -148,7 +148,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 			    <View style={styles.itemWrapperSociety}>
 			    	{/*<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.societyImg}/>*/}
 			        <View style={styles.shehui}>				        
-					    <Text   style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
+					    <Text  onPress={this.goMenList.bind(this,5)} style={{fontSize:16,fontWeight:'bold'}}>社会公益机构</Text>					    
 					    <View style={styles.shehuidown}>
 					    	<Text style={{marginRight:70, color:'#9D9D9D'}}>已入住300家</Text>
 					    	<Text onPress={this.goWelfareAuth.bind(this)} style={{marginLeft:80, color:'#9D9D9D'}}>申请加入</Text>
@@ -158,7 +158,7 @@ let loveImg = require('../../image/25.jpg');//慈善排行榜
 
 			    <View style={styles.itemWrapperTop}>
 			    	<Image source={require('./image/find_more_friend_bottle.png')} resizeMode={'cover'} style={styles.leftWrapperImage}/>
-			        <TouchableOpacity  onPress={this.gogongyiList.bind(this,7)}>
+			        <TouchableOpacity  onPress={this.gogongyiList.bind(this)}>
 				        <View style={styles.rightWrapper}>
 					    	<Text  style={styles.volunteer}>慈善排行榜</Text>	
 					    	<Image source={require('./image/hui_discount_item_rule_arrow.png')} resizeMode={'contain'} style={styles.rightImage}/>
@@ -239,8 +239,8 @@ let styles=StyleSheet.create({
 	 },
 	 welcomeJoinUs:{
 	 	height:24,
-	 	width:80,
-	 	borderRadius:12,
+	 	width:76,
+	 	borderRadius:30,
 	 	backgroundColor:'#31A75B',
 	 	flexDirection:'row',
 	 	alignItems:'center',

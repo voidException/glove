@@ -36,8 +36,8 @@ export default class JoinSupervise extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			//token:this.props.userProfile.items.backupfour,
-			token:"e10adc3949ba59abbe56e057f20f883e1",
+			token:this.props.userProfile.items.backupfour,
+			//token:"e10adc3949ba59abbe56e057f20f883e1",
 			selfIntroduce:null||" ",
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,

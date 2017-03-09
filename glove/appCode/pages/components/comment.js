@@ -170,15 +170,14 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height: 40+statusBarHeight,
-        paddingTop: statusBarHeight,
+        height: 50,       
         width:width,    
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        paddingLeft:5,
+        paddingRight:5
 	}
 });

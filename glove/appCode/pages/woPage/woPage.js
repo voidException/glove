@@ -17,7 +17,7 @@ import{
     Alert
 } from 'react-native';
 import React,{Component} from 'react';
-import PeopleListPage  from  '../faxianPage/PeopleListPage';
+import WatchListPage  from  '../faxianPage/watchListPage';
 import HelpListPage  from  '../faxianPage/helpListPage';
 import FAQ from './FAQ';
 import FeedBack from './feedBack';
@@ -55,28 +55,34 @@ let imgUrl=require('./123.png');
 	_back() {
         this.props.navigator.pop();
     }
-    goPeopleList(userType){      
+    //我关注的，还有关注我的人
+    goWatchList(userType){      
         this.props.navigator.push({
-            component: PeopleListPage,
+            component: WatchListPage,
             params:{
                 userType:userType,
-                userProfile:this.props.userProfile
+                userid:this.props.userProfile.items.userid
             }
         });
     }
-    goHelpListPage(userType){      
+    //帮助我的、我帮助的人
+    goHelpListPage(userType){   
+
         this.props.navigator.push({
             component: HelpListPage,
             params:{
                 userType:userType,
-                userProfile: this.props.userProfile
+                userid: this.props.userProfile.items.userid
             }
         });
     }
 
     goSetting(){
         this.props.navigator.push({
-            component: Setting
+            component: Setting,
+            params:{
+                userProfile: this.props.userProfile
+            }
         });
     }
 
@@ -175,6 +181,7 @@ let imgUrl=require('./123.png');
         });                               
 
     }
+    //我发布的推文
     goTweetList(){       
         this.props.navigator.push({
             component:TweetPageWrapper,
@@ -211,15 +218,15 @@ let imgUrl=require('./123.png');
                             <Text onPress={this.goHelpListPage.bind(this,21)}>我帮助</Text>
                         </View>
                         <View style={styles.helpInfoMoney}>
-                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.userhelpsman||0}人</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.userdonate ||0}元</Text>
+                            <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.userhelpsman||0}人</Text>
+                            <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.userdonate ||0}元</Text>
                         </View>
                     </View>
                     <View style={styles.helpInfoRight}>
                         <Text onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助我</Text>
                         <View  style={styles.helpInfoMoney}>
-                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.amountaccept||0}人</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.acceptmoney||0}元</Text>
+                            <Text onPress={this.goHelpListPage.bind(this,20)} style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.amountaccept||0}人</Text>
+                            <Text  onPress={this.goHelpListPage.bind(this,20)} style={{fontSize:14,fontWeight:'bold'}}>{this.props.userProfile.items.acceptmoney||0}元</Text>
                         </View>
                     </View>
                 </View>
@@ -233,16 +240,16 @@ let imgUrl=require('./123.png');
                 </View>
                 <View style={styles.tuiwenWrapper}>                 
                     <View style={styles.txtWrapper}>
-                        <Text style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.msgpubcount||0}</Text>
+                        <Text onPress={this.goTweetList.bind(this)} style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.msgpubcount||0}</Text>
                         <Text onPress={this.goTweetList.bind(this)}  style={styles.txt}>推文</Text>                           
                     </View>
                     <View style={styles.txtWrapper}>
-                        <Text style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.followcount||0}</Text>
-                        <Text  onPress={this.goPeopleList.bind(this,10)} style={styles.txt}>关注</Text>
+                        <Text onPress={this.goWatchList.bind(this,10)}style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.followcount||0}</Text>
+                        <Text  onPress={this.goWatchList.bind(this,10)} style={styles.txt}>关注</Text>
                     </View>
                     <View style={styles.txtWrapper}>
-                        <Text style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.fanscount||0}</Text>
-                        <Text onPress={this.goPeopleList.bind(this,11)} style={styles.txt}>粉丝</Text>
+                        <Text onPress={this.goWatchList.bind(this,11)}style={styles.tuiwenWrapperTxt}>{this.props.userProfile.items.fanscount||0}</Text>
+                        <Text onPress={this.goWatchList.bind(this,11)} style={styles.txt}>粉丝</Text>
                     </View>                 
                 </View>
                 <View style={styles.itemWrapperDonate}>                  

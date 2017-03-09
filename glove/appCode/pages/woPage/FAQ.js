@@ -40,7 +40,9 @@ export  default  class FAQ extends Component{
 		return(
 			<View style={styles.container}> 
 				<View style={styles.head}>   
-					<Text onPress={this.goBack.bind(this)} style={{fontSize:18,color:'#ffffff'}}>返回</Text>                                                     
+					<TouchableOpacity onPress={this.goBack.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>                                                   
                 </View>           
                 <WebView source={{uri: UrlFAQ}}/>
             </View>
@@ -63,8 +65,17 @@ let styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        paddingLeft:5,
+        paddingRight:5
+    },
+    returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
     },
     commonStyle:{
     	flexDirection:'row',

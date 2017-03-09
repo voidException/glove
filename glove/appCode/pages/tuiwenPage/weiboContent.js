@@ -472,10 +472,7 @@ let styles=StyleSheet.create({
 		width:0.3*width,
 		alignItems:'center'
 	},
-	backImg:{
-		height:24,
-		width:24
-	},
+
 	shareText:{
 		flexDirection:'row',
 		justifyContent:'space-between',
@@ -493,6 +490,10 @@ let styles=StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'flex-start',
 		alignItems:'center'
+	},
+	backImg:{
+		height:24,
+		width:24
 	},
 	broad:{
 		textAlign:'center',

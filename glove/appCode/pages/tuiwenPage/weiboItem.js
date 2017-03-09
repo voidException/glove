@@ -81,7 +81,7 @@ export default class WeiBoItem extends Component{
 			component:UserPage,
 			params:{
 				userID:this.state.useridtweet,
-				userNickName:this.state.usernickname,
+				userNickName:this.state.tweetAuthorNickname,
 				diffTag:99 //99表明传递的是一个昵称
 			}//注意从originTuiwenItem.js中也必须采用完全一样的形式
 		});

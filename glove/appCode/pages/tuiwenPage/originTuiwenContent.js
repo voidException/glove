@@ -25,6 +25,7 @@ import DoZhuanFa  from '../components/doZhuanFa';
 import Comment from '../components/comment';
 import PostAffirm from '../components/postAffirm';
 import DoComment from '../../components/doComment';
+import ReportTuiwen from '../components/reportTuiwen';
 import  Report  from  '../components/report';
 import fmDate from '../../utils/fmDate';
 import fetchTool  from '../../utils/fetchTool';
@@ -159,14 +160,35 @@ export default class OriginTuiwenContent extends Component{
 		});
 	}
 	goZhuanFa(){
+		if (this.state.deletetag===2 || this.state.publicsee===2) {//不能被转发
+			return Alert.alert(
+                        '审核未通过',
+                        '暂时不能转发',
+                        [
+                            { text:'好的'}
+                        ]
+                    );
+		};
+        //如果这个只有源推文，那么tweetid就是this.props.row.tuiwen.tweetid，否则就是
+        //this.props.row.zhuanfaTuiwen.tweetid
+        let tweetid=this.state.tweetid;
+       
 		this.props.navigator.push({
 			component:DoZhuanFa,
+			params:{
+				userProfile:this.props.userProfile,
+				tweetid:tweetid 
+			}
 		});
 	}
 
 	goReport(){
 		this.props.navigator.push({
-			component:Report,
+			component:ReportTuiwen,
+			params:{
+				userProfile:this.props.userProfile,
+				tweetid:this.state.tweetid 
+			}
 		})
 	}
 	reportMe(){

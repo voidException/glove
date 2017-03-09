@@ -129,7 +129,7 @@ class HelpPageP extends Component{
 		        		<Image source={require('./image/plants_003.png')} resizeMode={'cover'} style={{width:25,height:25}}/>
 		        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>爱心社、</Text>
 		        		<Text style={{fontSize:17,fontWeight:'bold',color:'#1EB277'}}>青年志愿者协会</Text>
-		        		<View style={styles.join}><Text onPress={this.goJoinLoveClub.bind(this)}  style={{fontSize:12,color:'#fff'}}>现在加入></Text></View>
+		        		<View style={styles.join}><Text onPress={this.goJoinLoveClub.bind(this)}  style={{fontSize:12,color:'#fff'}}>现在加入</Text></View>
 		        	</View>
 		        	<View style={styles.clubDetailInfo}>
 		        		<View>
@@ -227,9 +227,9 @@ let styles=StyleSheet.create({
 		position:'absolute',
 		top:1,
 		right:10,
-		height:20,
-		width:70,
-		borderRadius:35,
+		height:24,
+		width:76,
+		borderRadius:30,
 		backgroundColor:'#00A85A',
 		alignItems:'center',
 		justifyContent:'center'

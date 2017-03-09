@@ -1,3 +1,5 @@
+// 这个适用于查看我关注的人，查看我的粉丝；查看别人关注的人，别人的粉丝
+
 import{
 	StyleSheet,
 	Text,
@@ -18,34 +20,38 @@ import React,{ Component } from 'react';
 import PeopleListItem from './PeopleListItem';
 import fetchTool from '../../utils/fetchTool';
 import fmDate from '../../utils/fmDate';
-import {UrlHelpMeList,UrliHelpList} from '../../utils/url';
+import {UrlWatchList,UrlFansList,} from '../../utils/url';
 let ratio = PixelRatio.get();
 let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-//这个是查看我帮助的人和帮助我的界面
-//该页面需要的token等userProfile需要父页面传入，查看我帮助的人或者帮助我的人
-export default class UserPageHelpList extends Component{
+//查看我关注的，我的粉丝，爱心社排行榜等等都是这个
+//该页面需要的token等userProfile需要父页面传入
+export default class WatchListPage extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props);
         this.DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			userType: this.props.userType, // 20助我的人 21我帮助的人		
+			tag: this.props.userType, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
+			userid:this.props.userid,
+			page:1,
+			pageSize:10
 		};
-		this.lastTime='2015-09-01 12:10:01';
+		this.lastTime='2075-09-01 00:00:00';
 	}
 
     componentDidMount(){
-	   setTimeout(()=>{ 
+       
+	    setTimeout(()=>{ 
    			this._onRefresh(); 
     	},500) 
-	    
 	}
+ 
     renderRow(row,sectionID){
+    	//console.log(row.userid)
 		return( <PeopleListItem key={row.userid} row={row} {...this.props}/>);
 	}
 
@@ -53,21 +59,20 @@ export default class UserPageHelpList extends Component{
 		this.props.navigator.pop();
 	}
 
-    _onRefresh() {     
+    _onRefresh() {
+       
        let url;
-       let localTag=this.state.userType;
-       if (localTag==20) { 
-       		url=UrlHelpMeList; //帮助我的人
-       }else if (localTag==21) {
-       		url=UrliHelpList; // 我帮助的人
+       let localTag=this.state.tag;
+       if (localTag==10) {
+       		url=UrlWatchList; //我关注的人
+       }else if (localTag==11) {
+       	  url=UrlFansList; //我的粉丝
        }
 	   let params={
-			userID:this.props.userProfile.userid,  
-			loadMoreTag:1, //refresh 是1
-			tag:localTag, //这个用不到
+			userID:this.state.userid,
 			page:0,
 			pageSize:6,
-			lastTime:'2015-09-01 12:10:01' //根据帮助的时间排序
+			lastTime:'2075-09-01 00:00:00'
 		};
 		let options={
             url:url,
@@ -101,21 +106,19 @@ export default class UserPageHelpList extends Component{
         });
     }
     _loadMore(){
-
        let url;
-       let localTag=this.state.userType;
-       if (localTag==20) { 
-       		url=UrlHelpMeList; //帮助我的人
-       }else if (localTag==21) {
-       		url=UrliHelpList; // 我帮助的人
+       let localTag=this.state.tag;  //this.props.userType
+       if (localTag==10) {
+       		url=UrlWatchList; //我关注的人
+       }else if (localTag==11) {
+       	    url=UrlFansList; //我的粉丝
        }
+
 	   let params={
-			userID:this.props.userProfile.userid, 
-			loadMoreTag:2, //refresh 是1
-			tag:localTag,  //这个用不到
+			userID:this.state.userid, //查看我帮助的人
 			page:0,
-			pageSize:6,
-			lastTime:fmDate(this.lastTime) //根据帮助的时间排序
+			pageSize:4,
+			lastTime:fmDate(this.lastTime), // 对时间进行了格式化
 		};
 		//console.log(this.lastTime);
 		let options={
@@ -126,26 +129,22 @@ export default class UserPageHelpList extends Component{
        
         response.then(resp=>{
         	 //console.log(resp);
-             if (resp.retcode===2000) { 
+            if (resp.retcode===2000) { 
              	this.setState({
 				    dataSource: this.DS.cloneWithRows(resp.data)
 				});
-				//console.log(resp.data);
 				//这里要更新this.lastTime
 				let length=resp.data.length-1;
 				this.lastTime=resp.data[length].registerdate; 
-				//console.log('loadMore')
-                //console.log(this.lastTime)
-              }
-              else{
-              	    Alert.alert(
-                        '提示...',
-                        resp.msg,
-                        [
-                            { text:'好的',onPress:()=>this.props.navigator.pop()}
+            }else{
+          	    Alert.alert(
+                    '提示...',
+                    resp.msg,
+                    [
+                        { text:'好的',onPress:()=>this.props.navigator.pop()}
 
-                        ]
-                    );
+                    ]
+                );
               }
         }).catch(err=>{
         	console.log(err);
@@ -163,7 +162,9 @@ export default class UserPageHelpList extends Component{
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:16}}>返回</Text>
+					<TouchableOpacity onPress={this.back.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>
 					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:16}}>下一页</Text>
 				</View>
 			   	<ListView 
@@ -197,14 +198,23 @@ let  styles=StyleSheet.create({
 	},
 	header:{
 		flexDirection:'row',
-        height:50,
+        height: 50,
         width:width,    
         borderBottomWidth:1/ratio,
         borderBottomColor:'#F9F9F9',
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
-	}
+        paddingLeft:5,
+        paddingRight:5
+	},
+	returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
+    },
 });

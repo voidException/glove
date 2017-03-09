@@ -19,8 +19,8 @@ import{
 import React,{Component} from 'react';
 import WeiBoPageWrapper from '../pages/tuiwenPage/weiboPage';
 import {UrldoWatch,UrlcancelWatch,UrlByAtgetUserProfile,UrlqueryWatchif} from '../utils/url';
-import UserPagePeopleList from '../pages/faxianPage/userPagePeopleList';
-import UserPageHelpList from '../pages/faxianPage/userPageHelpList';
+import WatchListPage from '../pages/faxianPage/watchListPage';
+import HelpListPage from '../pages/faxianPage/helpListPage';
 import fetchTool from '../utils/fetchTool';
 import UploadFile from '../utils/uploadFile';
 import { connect } from 'react-redux';
@@ -242,21 +242,25 @@ class UserPageP extends Component{
             mainOrmore:2
         })
     }
-    goMenList(userType){        
+
+    //我关注的人，关注我的人
+    goWatchList(userType){        
         this.props.navigator.push({
-            component: UserPagePeopleList,
+            component: WatchListPage,
             params:{
                 userType:userType,
-                userProfile:this.userProfile
+                userid:this.userProfile.userid
             }
         });
     }
-    goHelpListPage(userType){      
+    //我帮助的人，帮助我的人
+    goHelpListPage(userType){  
+      
         this.props.navigator.push({
-            component: UserPageHelpList,
+            component: HelpListPage,
             params:{
                 userType:userType,
-                userProfile: this.userProfile
+                userid:this.userProfile.userid
             }
         });
     }
@@ -362,7 +366,7 @@ class UserPageP extends Component{
                     <View style={styles.headWrapper}>  
 
                         <TouchableOpacity onPress={this._back.bind(this)}>
-                            <Image  source={require('../image/fanhui.png')} style={styles.headimg} />
+                            <Image  source={require('../image/return2.png')} style={styles.headimg} />
                         </TouchableOpacity> 
 
                         <View style={styles.nickName}>
@@ -391,8 +395,8 @@ class UserPageP extends Component{
                         <View style={styles.helpInfoRight}>
                             <Text  onPress={this.goHelpListPage.bind(this,20)} style={{marginBottom:5}}>帮助他</Text>
                             <View  style={styles.helpInfoMoney}>
-                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.amountaccept||0}人</Text>
-                                <Text onPress={this.goHelpListPage.bind(this,21)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.acceptmoney ||0}元</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,20)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.amountaccept||0}人</Text>
+                                <Text onPress={this.goHelpListPage.bind(this,20)} style={{fontSize:14,fontWeight:'bold'}}>{this.state.acceptmoney ||0}元</Text>
                             </View>
                         </View>
                     </View>
@@ -409,16 +413,16 @@ class UserPageP extends Component{
                 {this.state.mainOrmore===2 ?
                     <ScrollView>
                         <View style={styles.commonStyle}>
-                            <Text  onPress={this.goMenList.bind(this,11)} style={{color:'#B1B1B1'}}>粉丝:</Text>
-                            <Text style={{marginLeft:20}}>{this.state.fanscount}</Text>
+                            <Text  onPress={this.goWatchList.bind(this,11)} style={{color:'#B1B1B1'}}>粉丝:</Text>
+                            <Text  onPress={this.goWatchList.bind(this,11)} style={{marginLeft:20}}>{this.state.fanscount}</Text>
                         </View>
                         <View style={styles.commonStyle}>
-                            <Text  onPress={this.goMenList.bind(this,10)} style={{color:'#B1B1B1'}}>收听:</Text>
-                            <Text style={{marginLeft:20}}>{this.state.followcount}</Text>
+                            <Text  onPress={this.goWatchList.bind(this,10)} style={{color:'#B1B1B1'}}>收听:</Text>
+                            <Text  onPress={this.goWatchList.bind(this,10)} style={{marginLeft:20}}>{this.state.followcount}</Text>
                         </View>
                         <View style={styles.commonStyle}>
                             <Text onPress={this.goWeiBoList.bind(this)}  style={{color:'#B1B1B1'}}>推文:</Text>
-                            <Text style={{marginLeft:20}}>{this.state.msgpubcount}</Text>
+                            <Text  onPress={this.goWeiBoList.bind(this)} style={{marginLeft:20}}>{this.state.msgpubcount}</Text>
                         </View>
                         <View style={styles.commonStyle}>
                             <Text style={{color:'#B1B1B1'}}>所在城市:</Text>

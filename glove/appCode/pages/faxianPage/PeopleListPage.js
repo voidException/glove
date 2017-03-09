@@ -24,8 +24,8 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-//查看我关注的，我的粉丝，爱心社排行榜等等都是这个
-//该页面需要的token等userProfile需要父页面传入
+let lastUpdateTime='2075-09-09 00:00:00';
+
 export default class PeopleListPage extends Component{
 	constructor(props){
 		super(props);
@@ -34,12 +34,12 @@ export default class PeopleListPage extends Component{
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			tag: this.props.userType, //1普通，2社团，3监督，4志愿者，5社会公益机构 10我关注的人 11我的粉丝 20助我的人 21我帮助的人
+			tag: this.props.userType, //2社团，3监督，4志愿者，5社会公益机构 
 			userID:this.props.userProfile.items.userid,
 			page:1,
-			pageSize:10
+			pageSize:8
 		};
-		this.lastTime='2015-09-01 12:10:01';
+		this.lastTime='2075-09-09 00:00:00';
 	}
 
     componentDidMount(){
@@ -58,30 +58,20 @@ export default class PeopleListPage extends Component{
 		this.props.navigator.pop();
 	}
     _onRefresh() {
-       let url;
-       let localTag=this.state.tag;
-       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { 
-       		url=UrlCommomPeopleList;
-       }else if (localTag==10) {
-       		url=UrlWatchList; //我关注的人
-       }else if (localTag==11) {
-       	  url=UrlFansList; //我的粉丝
-       }
+       
 	   let params={
-			userID:this.props.userProfile.items.userid,
-			tag:this.state.tag,  //在我关注的人，和关注我的人时，没用到这个标志
-			loadMoreTag:1, //refresh 是1
+			tag:this.state.tag,   //2社团，3监督，4志愿者，5社会公益机构 
 			page:0,
 			pageSize:6,
-			lastTime:'2015-09-01 12:10:01'
+			lastTime:'2075-09-09 00:00:00'
 		};
 		let options={
-            url:url,
+            url:UrlCommomPeopleList,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
         response.then(resp=>{
-        	 //console.log(resp);
+        	// console.log(resp);
             if (resp.retcode===2000) { 
                     this.setState({
 						dataSource: this.DS.cloneWithRows(resp.data)
@@ -107,31 +97,15 @@ export default class PeopleListPage extends Component{
     }
     _loadMore(){
 
-       let url;
-       let localTag=this.state.tag;  //this.props.userType
-       if (localTag==2 ||localTag==3||localTag==4 ||localTag==5) { //爱心社 公益机构等
-       		url=UrlCommomPeopleList;
-       }else if (localTag==10) {
-       		url=UrlWatchList; //我关注的人
-       }else if (localTag==11) {
-       	  url=UrlFansList; //我的粉丝
-       }else if (localTag==20) {
-          url=UrlHelpMeList; //帮助我的人
-       }else if (localTag==21){
-       		url=UrliHelpList; //我帮助的人
-       }
-
 	   let params={
-			userID:this.props.userProfile.items.userid, //查看我帮助的人
 			tag:this.state.tag,
-			loadMoreTag:2, //refresh 是1
 			page:0,
-			pageSize:4,
+			pageSize:6,
 			lastTime:fmDate(this.lastTime), // 对时间进行了格式化
 		};
 		//console.log(this.lastTime);
 		let options={
-            url:url,
+            url:UrlCommomPeopleList,
             body: JSON.stringify(params)
         };
         let  response=fetchTool(options);
@@ -173,7 +147,9 @@ export default class PeopleListPage extends Component{
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:20}}>返回</Text>
+					<TouchableOpacity onPress={this.back.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>
 					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:20}}>下一页</Text>
 				</View>
 			   	<ListView 
@@ -214,7 +190,16 @@ let  styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
-	}
+        paddingLeft:5,
+        paddingRight:5
+	},
+	returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
+    },
 });

@@ -37,11 +37,11 @@ export default class ResetPassword extends Component{
 		this.state={
 			visible:false,
 			notSay:1, 
-			token:"e10adc3949ba59abbe56e057f20f883e1",
+			token:this.props.userProfile.items.backupfour,
 			originPass:'', 
             newPass:'', 
             againPass:''
-		}
+		};
 	}
    cancel(){
    	 this.props.navigator.pop();
@@ -143,7 +143,7 @@ export default class ResetPassword extends Component{
 	                        placeholder={'再次输入新密码'}
 	                        onChange={this.getAgainPass.bind(this)}/>
 	                </View>
-			
+			<Loading  visible={this.state.visible}/>
 			</View>
 		);
 	}

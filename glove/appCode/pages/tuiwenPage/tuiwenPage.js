@@ -161,7 +161,7 @@ let styles=StyleSheet.create({
 		backgroundColor:'#F9FFFC'
 	},
 	header:{
-		height:51, //以此为准，导航栏高度是51，背景色是'#61B972',
+		height:50, //以此为准，导航栏高度是51，背景色是'#61B972',
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',

@@ -24,21 +24,18 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-//这个是查看我帮助的人和帮助我的界面
-//该页面需要的token等userProfile需要父页面传入，查看我帮助的人或者帮助我的人
+//这个是查看我帮助的人和帮助我的界面;查看userPage别人帮助的人，查看userPage别人获得的帮助
+
 export default class HelpListPage extends Component{
 	constructor(props){
 		super(props);
-		//console.log(this.props);
         this.DS=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2 });
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			userType: this.props.userType, // 20助我的人 21我帮助的人
-			token:this.props.userProfile.items.backupfour,
-		
+			userType: this.props.userType, // 20助我的人 21我帮助的人		
 		};
-		this.lastTime='2015-09-01 12:10:01';
+		this.lastTime='2075-09-01 00:00:00';
 	}
 
     componentDidMount(){
@@ -68,12 +65,10 @@ export default class HelpListPage extends Component{
        		url=UrliHelpList; // 我帮助的人
        }
 	   let params={
-			userID:this.props.userProfile.items.userid,  
-			loadMoreTag:1, //refresh 是1
-			tag:localTag, //这个用不到
+			userID:this.props.userid,  
 			page:0,
 			pageSize:6,
-			lastTime:'2015-09-01 12:10:01' //根据帮助的时间排序
+			lastTime:'2075-09-01 00:00:00' //根据帮助的时间排序
 		};
 		let options={
             url:url,
@@ -116,9 +111,7 @@ export default class HelpListPage extends Component{
        		url=UrliHelpList; // 我帮助的人
        }
 	   let params={
-			userID:this.props.userProfile.items.userid, 
-			loadMoreTag:2, //refresh 是1
-			tag:localTag,  //这个用不到
+			userID:this.props.userid, 
 			page:0,
 			pageSize:6,
 			lastTime:fmDate(this.lastTime) //根据帮助的时间排序
@@ -169,7 +162,9 @@ export default class HelpListPage extends Component{
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:16}}>返回</Text>
+					<TouchableOpacity onPress={this.back.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>
 					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:16}}>下一页</Text>
 				</View>
 			   	<ListView 
@@ -210,7 +205,16 @@ let  styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
-	}
+        paddingLeft:5,
+        paddingRight:5
+	},
+	returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
+    },
 });

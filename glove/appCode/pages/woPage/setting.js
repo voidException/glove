@@ -33,12 +33,18 @@ export  default  class Setting extends Component{
 
     goCompleteProfile(){
         this.props.navigator.push({
-            component: CompleteProfile
+            component: CompleteProfile,
+             params:{
+                userProfile: this.props.userProfile
+            }
         });
     }
      goResetPassword(){
         this.props.navigator.push({
-            component: ResetPassword
+            component: ResetPassword,
+             params:{
+                userProfile: this.props.userProfile
+            }
         });
     }
     goBack(){
@@ -47,9 +53,10 @@ export  default  class Setting extends Component{
 	render(){
 		return(
 			<View style={styles.container}> 
-				<View style={styles.head}>   
-					<Text onPress={this.goBack.bind(this)}  style={{fontSize:18,color:'#ffffff'}}>返回</Text>        
-                                                   
+				<View style={styles.head}>          
+                    <TouchableOpacity onPress={this.goBack.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>                            
                 </View>
                 <View style={styles.commonStyle}>
                 	<Text onPress={this.goCompleteProfile.bind(this)}>完善资料</Text>
@@ -84,8 +91,17 @@ let styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
+        paddingLeft:5,
+        paddingRight:5
+    },
+    returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
     },
     commonStyle:{
     	flexDirection:'row',

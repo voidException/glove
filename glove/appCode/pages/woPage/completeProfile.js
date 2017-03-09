@@ -36,11 +36,11 @@ export default class CompleteProfile extends Component{
 		this.state={
 		    visible:false,
 			notSay:1, 
-			token:"fcea920f7412b5da7be0cf42b8c937591",
+			token:this.props.userProfile.items.backupfour,
 			content:'', 
             sex:1, 
             label:''
-		}
+		};
 	}
 
    cancel(){

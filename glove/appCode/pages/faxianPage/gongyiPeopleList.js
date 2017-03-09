@@ -24,7 +24,7 @@ let lineHeight = Platform.OS === 'ios' ? 14 : 16;
 let statusBarHeight = Platform.OS === 'ios' ? 20 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
-//因为公益排行榜是依据钱排名的，所以单独列出来
+//因为公益排行榜是依据钱排名的
 export default class GongYiPeopleList extends Component{
 	constructor(props){
 		super(props);
@@ -33,9 +33,8 @@ export default class GongYiPeopleList extends Component{
 		this.state={
 			dataSource:this.DS.cloneWithRows([]),
 			isRefreshing: false,
-			tag: 2, //对应于tobeuseone，1表明未捐钱 2捐钱了 
 		};
-		this.money=1;
+		this.money=100000000;
 	}
 
     componentDidMount(){
@@ -55,11 +54,9 @@ export default class GongYiPeopleList extends Component{
 
     _onRefresh() {
 	   let params={
-			tag:this.state.tag,
-			loadMoreTag:1, //refresh 是1
 			page:0,
-			pageSize:10,
-			money:this.money
+			pageSize:6,
+			money:10000000
 		};
 		let options={
             url:UrligongyiList,
@@ -87,17 +84,20 @@ export default class GongYiPeopleList extends Component{
                 );
               }
         }).catch(err=>{
+        	Alert.alert(
+                    'ooohs',
+                    resp.msg,
+                    [
+                        { text:'好的'}
 
+                    ]
+                );
         });
     }
-    _loadMore(){
-  
-	   let params={
-			
-			tag:this.state.tag,
-			loadMoreTag:2, //refresh 是1
+    _loadMore(){ 
+	   let params={			 
 			page:0,
-			pageSize:10,
+			pageSize:6,
 			money:this.money,
 		};
 		//console.log(this.lastTime);
@@ -136,7 +136,9 @@ export default class GongYiPeopleList extends Component{
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:16}}>返回</Text>
+					<TouchableOpacity onPress={this.back.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>
 					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:16}}>下一页</Text>
 				</View>
 			   	<ListView 
@@ -177,7 +179,16 @@ let  styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         backgroundColor:'#43AC43',
-        paddingLeft:10,
-        paddingRight:10
-	}
+        paddingLeft:5,
+        paddingRight:5
+	},
+	returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
+    },
 });
