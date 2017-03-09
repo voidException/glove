@@ -38,10 +38,11 @@ export default class AffirmList extends Component{
 			pageSize:6
 		}
 	}
- // <Image source={require('../image/talk.png')} resizeMode={'contain'} style={styles.img} />
 	componentDidMount(){
-		//console.log(this.props.row.lp);
-		this._onRefresh();
+	
+		setTimeout(()=>{ 
+   			this._onRefresh();
+    	},500)
 	}
 	renderRow(row,sectionID){
 		return( <AffirmListItem  key={row.confirmid} row={row} />);

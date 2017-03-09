@@ -84,9 +84,9 @@ class TweetPage extends Component{
 		dispatch(fetchTweetPageIfNeeded(requestParams))
 	}
 	_nextPage() {	
-		if (nextPageAllow) {
-			return
-		};	
+		// if (nextPageAllow) {
+		// 	return
+		// };	
 		let requestParams={
 			userID:this.state.userID,
 			page:0,
@@ -117,7 +117,8 @@ class TweetPage extends Component{
 				<View style={styles.header}>
 				    <TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
 						<Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
-					</TouchableOpacity>                      		            
+					</TouchableOpacity>   
+					<Text onPress={this._nextPage.bind(this)} style={{color:'#FFFFFF',fontSize:17}}>下一页</Text>	                   		            
 				</View>
 			    <ListView 
 			    	refreshControl={
@@ -167,7 +168,7 @@ let styles=StyleSheet.create({
 		alignItems:'center'
 	},
 	header:{
-		height:51, //以此为准，导航栏高度是51，背景色是'#61B972',
+		height:50, //以此为准，导航栏高度是51，背景色是'#61B972',
 		flexDirection:'row',
 		justifyContent:'space-between',
 		alignItems:'center',

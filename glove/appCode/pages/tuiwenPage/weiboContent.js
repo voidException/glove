@@ -137,7 +137,6 @@ export default class WeiBoContent extends Component{
 		});
 	}
 	doComment(){
-		console.log(this.state.deletetag)
 		if (this.state.deletetag===2 || this.state.publicsee===2){ //已被删除或者不可见
 				Alert.alert(
                         '该内容不能被评论',
@@ -148,6 +147,7 @@ export default class WeiBoContent extends Component{
                 );
                 return
 		}
+		
 		let tweetid;
         if (this.state.tagid==1) {
         	tweetid=this.props.row.tuiwen.tweetid;
@@ -268,6 +268,14 @@ export default class WeiBoContent extends Component{
         	this.setState({
         		visible:false
         	});
+        	Alert.alert(
+                '出错了',
+                '抛出异常',
+                [
+                    { text:'好的',onPress:() =>console.log('删除失败')}
+
+                ]
+            );
 
         });
 	}//deleteMe
@@ -306,7 +314,7 @@ export default class WeiBoContent extends Component{
 						<Text  onPress={this.deleteMe.bind(this)} style={{fontSize:17,color:'white'}}>删除</Text>
 						:null
 					}					
-					<View style={{marginRight:6}}>
+					<View style={{marginRight:5}}>
 						<Text style={styles.broad}  onPress={this.goZhuanFa.bind(this)}>转发</Text>
 					</View>
 				</View>
@@ -497,7 +505,7 @@ let styles=StyleSheet.create({
 	},
 	broad:{
 		textAlign:'center',
-		fontSize:20,
+		fontSize:17,
 		color:'#FFFFFF'
 	},
 	shareWrapper:{

@@ -55,7 +55,7 @@ export default  class ProgressUpdate extends Component{
 			    	<Text style={styles.txt}>我要更新</Text>
 			    </View>
 				<View style={styles.backupStyle}>
-					<Text style={styles.text}>支持了({this.state.data.totalBackup})</Text>
+					<Text style={styles.text}>支持了({this.state.data.totalBackup||0})</Text>
 				</View>			    	
 			</View>
 		);

@@ -31,7 +31,7 @@ let nullImg=require('../../image/tupianzhanwei.jpeg')
 export default class PublishTuiwen extends Component{
 	constructor(props){
 		super(props);
-		console.log(props)
+
 		this.state={
 			token:this.props.userProfile.items.backupfour,
 			notSay:this.props.userProfile.items.notsay, //1默认可以发表

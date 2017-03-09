@@ -26,11 +26,10 @@ export default class CommentItem extends Component{
 		super(props);
 		//console.log(this.props.row);
 		this.state={
-			url: this.props.row.backuptwo ||null,
-			relation:this.props.row.confirmbackuptwo || '../../image/25.jpg',
-			content:this.props.row.discussreplytext|| '暂无评论',
+			url: this.props.row.backuptwo ,
+			content:this.props.row.discussreplytext,
 			backupone:this.props.row.backupone,
-			discussreplytime:this.props.row.discussreplytime || '2016-9-19'
+			discussreplytime:this.props.row.discussreplytime
 		}
 	}
 
@@ -39,10 +38,12 @@ export default class CommentItem extends Component{
 		return(
 			<View style={styles.container}>
 			    <View style={styles.toper}>
-			        <Image source={{uri:this.state.url}} resizeMode={'contain'} style={styles.img} />
+			        <View style={styles.imgWrapper}>
+			        	<Image source={{uri:this.state.url}} resizeMode={'contain'} style={styles.img} />
+			        </View>
 			        <View style={styles.topRight}>
-			    	    <Text style={{color:'red'}}>{this.state.backupone}</Text>
-			    	    <Text style={{color:'red'}}>{publishTime}</Text>
+			    	    <Text>{this.state.backupone}</Text>
+			    	    <Text>{publishTime}</Text>
 			    	</View>
 			    </View>
                 
@@ -77,12 +78,16 @@ let  styles=StyleSheet.create({
 		marginLeft:5,
 		marginTop:5
 	},
-
-	img:{
+	imgWrapper:{
 		height:40,
 		width:40,
 		borderRadius:20,
-		marginRight:6
+		backgroundColor:'#F9FFFC'
+	},
+	img:{
+		height:40,
+		width:40,
+		borderRadius:20
 	},
 	txt:{
 	    //marginLeft:40,

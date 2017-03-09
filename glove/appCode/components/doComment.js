@@ -36,8 +36,12 @@ export default class DoComment extends Component{
 			token:this.props.userProfile.items.backupfour,
 			notSay:this.props.userProfile.items.notsay, //1默认可以发表
 			content:" ", //评论内容
-            tuiwenid:this.props.tweetid,  //被评论的推文id            			
+            tuiwenid:this.props.tweetid,  //被评论的推文id  
+            userphoto:this.props.userProfile.items.userphoto,
+            usernickname:this.props.userProfile.items.usernickname        			
 		}
+
+		console.log(this.props.userProfile.items);
 	}
 	cancel(){
 		this.props.navigator.pop();
@@ -52,6 +56,8 @@ export default class DoComment extends Component{
 		formData.append("content", this.state.content);
 		formData.append("notSay",this.state.notSay); 
 		formData.append("tuiwenid",this.state.tuiwenid); 
+		formData.append("userphoto",this.state.userphoto); 
+		formData.append("usernickname",this.state.usernickname); 
 		let option={
 			url:UrladdCommont,
 			body:formData

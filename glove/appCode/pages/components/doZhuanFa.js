@@ -12,7 +12,8 @@ import{
 	PixelRatio,
 	Platform,
 	Dimensions,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native';
 import React,{ Component } from 'react';
 import {UrldoZhuanfa} from '../../utils/url';
@@ -92,6 +93,16 @@ export default class DoZhuanFa extends Component{
 			this.setState({
 				visible:false
 			});
+			Alert.alert(
+	        		'出问题了',
+	        		resp.msg,
+		            [
+		                {
+		                    text: '好的',
+		                    onPress:() =>this.props.navigator.pop()
+		                }
+		            ]
+	   			 );
 		});		
     }
     getContent(event){

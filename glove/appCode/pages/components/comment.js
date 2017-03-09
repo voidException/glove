@@ -32,20 +32,33 @@ export default class Comment extends Component{
 		super(props);
 		this.state={
 			dataSource:DS.cloneWithRows([]),
-			isRefreshing: false,
-			page:1,
-			pageSize:3
+			isRefreshing: false,			
 		};
-		this.lastCommentTime='2016-09-04 00:00:00';
+		this.lastCommentTime='2075-09-01 00:00:00';
 	}
 
     componentDidMount(){
+    	setTimeout(()=>{ 
+   			this._onRefresh();
+    	},500)
+       
+	}//componentDidMount
 
-       let params={
-			tag:1, //1刷新 2loadMore
-		    tweetid:5,
+
+    renderRow(row,sectionID){
+		//console.log(row)
+		return( <CommentItem  key={row.discussreplyid}  row={row} {...this.props}/>);
+	}
+
+	goBack(){
+		this.props.navigator.pop();
+	}
+
+    _onRefresh() {
+    	let params={
+		    tweetid:this.props.tweetid,
 		    page:0,
-		    pageSize:this.state.pageSize,
+		    pageSize:8,
 		    lastCommentTime:this.lastCommentTime, //loadMore 后要更新这个值，没有刷新，首次加载是唯一的刷新，降低难度	
 		};
 		let options={
@@ -78,28 +91,13 @@ export default class Comment extends Component{
    			console.log(err);
         });
 	   
-	}//componentDidMount
-
-
-    renderRow(row,sectionID){
-		//console.log(row)
-		return( <CommentItem  key={row.discussreplyid}  row={row} {...this.props}/>);
-	}
-
-	back(){
-		this.props.navigator.pop();
-	}
-
-    _onRefresh() {
-    	
     }
     _loadMore(){
         //注意更新this.lastCommentTime的值
          let params={
-			tag:2, //1刷新 2loadMore
-		    tweetid:5,
+		    tweetid:this.props.tweetid,
 		    page:0,
-		    pageSize:this.state.pageSize,
+		    pageSize:8,
 		    lastCommentTime:this.lastCommentTime, //loadMore 后要更新这个值，没有刷新，首次加载是唯一的刷新，降低难度	
 		};
 		
@@ -137,7 +135,9 @@ export default class Comment extends Component{
 		return(
 			<View style={styles.contain}>
 			   	<View  style={styles.header}>
-					<Text onPress={this.back.bind(this)} style={{color:'#ffffff',fontSize:18}}>返回</Text>
+					<TouchableOpacity onPress={this.goBack.bind(this)} style={styles.returnButton}>
+                        <Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
+                    </TouchableOpacity>   
 					<Text onPress={this._loadMore.bind(this)} style={{color:'#ffffff',fontSize:18}}>下一页</Text>
 				</View>
 			   	<ListView 
@@ -166,7 +166,8 @@ export default class Comment extends Component{
 
 let  styles=StyleSheet.create({
 	contain:{
-		flex:1
+		flex:1,
+		backgroundColor:'#ffffff'
 	},
 	header:{
 		flexDirection:'row',
@@ -179,5 +180,14 @@ let  styles=StyleSheet.create({
         backgroundColor:'#43AC43',
         paddingLeft:5,
         paddingRight:5
-	}
+	},
+	returnButton:{
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center'
+    },
+    backImg:{
+        height:24,
+        width:24
+    },
 });

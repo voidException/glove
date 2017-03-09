@@ -45,7 +45,7 @@ class TuiWenPage extends Component{
 		let requestParams={
 			userID:this.state.userID,
 			page:0,
-			pageSize:4,
+			pageSize:20,
 			lastUpdate:lastUpdateTime
 		};
 		const {dispatch}=this.props;
@@ -79,16 +79,16 @@ class TuiWenPage extends Component{
 		let requestParams={
 			userID:this.state.userID,
 			page:0,
-			pageSize:4,
+			pageSize:10,
      		lastUpdate:'2075-09-09 00:00:00',	
 		};       
 		const {dispatch}=this.props;
 		dispatch(fetchTuiwenPageIfNeeded(requestParams))
 	}
 	_nextPage() {	
-		if (nextPageAllow) {
-			return
-		};	
+		// if (nextPageAllow) {
+		// 	return
+		// };	
 		let requestParams={
 			userID:this.state.userID,
 			page:0,

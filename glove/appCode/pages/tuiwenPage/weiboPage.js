@@ -86,9 +86,9 @@ class WeiBoPage extends Component{
 		dispatch(fetchWeiBoPageIfNeeded(requestParams))
 	}
 	_nextPage() {	
-		if (nextPageAllow) {
-			return
-		};	
+		// if (nextPageAllow) {
+		// 	return
+		// };	
 		let requestParams={
 			userID:this.state.userID,
 			page:0,
@@ -119,7 +119,8 @@ class WeiBoPage extends Component{
 				<View style={styles.header}>
 				    <TouchableOpacity onPress={this.backUp.bind(this)} style={styles.returnButton}>
 						<Image source={require('./image/return2.png')} style={styles.backImg} resizeMode={'contain'} />
-					</TouchableOpacity>                      		            
+					</TouchableOpacity>   
+					<Text onPress={this._nextPage.bind(this)} style={{color:'#FFFFFF',fontSize:17}}>下一页</Text>	                   		            
 				</View>
 			    <ListView 
 			    	refreshControl={
