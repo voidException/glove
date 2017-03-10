@@ -32,6 +32,7 @@ let statusBarHeight = Platform.OS === 'ios' ? 16 : 0;
 let width=Dimensions.get('window').width;
 let height=Dimensions.get('window').height;
 let ImagePicker = require('react-native-image-picker');
+
 let formData = new FormData();
 let nowDate = new Date(); //这个仅仅用于初始值
 let imgUrl=require('./image/uploadimg.jpg');
@@ -40,32 +41,42 @@ export default class AddHelpMan extends Component{
 		super(props);
 		this.state={
 			token:this.props.userProfile.items.backupfour,
-			notSay:1, //1默认可以发表
-			AXSnickName:null||'putaozhuose',
-			JDnickName:null||" ",
-			JTFZnickName:null||'你好啊',
-			SZRnickName:null||" ",
-			FQRnickName:null||" ",
-			visible:false,
-			idZhangming:false,
-			jwZhengming:false,
-			yyZhengming:false,
-		 	qtZhengming: false,
-		 	chengnuoType:1,
-		 	chengnuoContent:null||" ",
-		 	targetMoney:0,
-		 	moneyTitle:null||" ",
-		 	description:null||" ", //具体描述
-            pickerValue:'java', 
-            endDate:formDate(nowDate,7),
-            sliderValue:7,
+			cityName:'中国',
+			shouZhurenName:null, //受助人真实姓名
+			shouZhureniDentityNo:null, //受助人身份证号
+			acceptMoneyName:null,    //收款人真实姓名
+			acceptMoneyPhone:null,   //收款人联系电话
+
+			
+			idZhengming:false,       //身份证明
+			jwZhengming:false,       //居委会证明
+			yyZhengming:false,       //医院证明
+		 	pinkunZhengming: false,  //贫困证明
+		 	relationZhengming:false,  //收款人关系证明
+
+		 	chengnuoType:1,         //承诺类型
+		 	chengnuoContent:"",   //承诺的内容
+
+		 	targetMoney:0,            //目标捐款
+
+		 	startDate:null, //开始日期
+            endDate:formDate(nowDate,7),   //结束时间
+            sliderValue:7, //持续的天数 
+
+            moneyTitle:"",    // 筹款标题
+		 	description:"", //具体情况描述800字上限      
+           
 			imgOneUrl:imgUrl,
 			imgTwoUrl:imgUrl,
 			imgThreeUrl:imgUrl,
 			imgFourUrl:imgUrl,
 			imgFiveUrl:imgUrl,
 			imgSixUrl:imgUrl,
-			imgSevenUrl:imgUrl
+			imgSevenUrl:imgUrl,
+
+			visible:false,
+			notSay:1, //1默认可以发表
+			pickerValue:'java', 
 		}
 	}
 
@@ -82,26 +93,33 @@ export default class AddHelpMan extends Component{
 		// 	return 
 		// }
 		formData.append("token",this.state.token); 
-		formData.append("content", this.state.content);
+		formData.append("content", this.state.content);		
 	    formData.append("notSay",this.state.notSay);
-	    formData.append("AXSnickName",this.state.AXSnickName); //爱心社昵称
-	    formData.append("JDnickName",this.state.JDnickName); //监督处昵称
-	    formData.append("JTFZnickName",this.state.JTFZnickName); //爱心社中具体负责人的昵称、
-	    formData.append("SZRnickName",this.state.SZRnickName); //受助人昵称
-	    formData.append("FQRnickName",this.state.FQRnickName); //发起人昵称
+
+	    formData.append("cityName",this.state.cityName); 
+	    formData.append("shouZhurenName",this.state.shouZhurenName); 
+	    formData.append("shouZhureniDentityNo",this.state.shouZhureniDentityNo); 
+	    formData.append("acceptMoneyName",this.state.acceptMoneyName); 
+	    formData.append("acceptMoneyPhone",this.state.acceptMoneyPhone); 
+
 	    formData.append("idZhangming",this.state.idZhangming); //是否有身份证明
 	    formData.append("jwZhengming",this.state.jwZhengming); //是否有居委证明
 	    formData.append("yyZhengming",this.state.yyZhengming); //是否有医院证明
-	    formData.append("qtZhengming",this.state.qtZhengming); //是否有其它权威证明
+	    formData.append("yyZhengming",this.state.yyZhengming); //是否贫困证明
+	    formData.append("relationZhengming",this.state.relationZhengming); //是否有其它权威证明
+
 	    formData.append("chengnuoType",this.state.chengnuoType); //承诺的类型
 	    formData.append("chengnuoContent",this.state.chengnuoContent); //承诺的话
+
 	    formData.append("targetMoney",this.state.targetMoney); //目标金额
+
 	    formData.append("startDate",startDate); //开始日期
 	    formData.append("endDate",this.state.endDate); //截止时间
 	    formData.append("duration",this.state.sliderValue); //持续时长
-	    formData.append("moneyTitle",this.state.moneyTitle);
-	    formData.append("content",this.state.description);
-        //console.log(formData);
+
+	    formData.append("moneyTitle",this.state.moneyTitle);  //筹款的标题
+	    formData.append("description",this.state.description);
+
 		let option={
 			url:UrlAddNeedMan,
 			body:formData
@@ -130,7 +148,7 @@ export default class AddHelpMan extends Component{
        			 );
 			}
 		}).catch(err=>{			
-			console.log(err);
+			
 			this.setState({
 				visible:false
 			});
@@ -145,32 +163,34 @@ export default class AddHelpMan extends Component{
        	    );
 		});
 	}
-    getAXSbnickName(event){
-		//console.log(tag);
+    getCityName(event){  //城市
 		this.setState({
-			AXSnickName:event.nativeEvent.text
+			cityName:event.nativeEvent.text
 		});
 	}
-    getJDnickName(event){
+    getShouZhurenName (event){ //受助人真实姓名
     	this.setState({
-			JDnickName:event.nativeEvent.text
+			shouZhurenName:event.nativeEvent.text
 		});
     }
-    getJTFZnickName(event){
+    getShouZhureniDentityNo(event){  //受助人身份证号
     	this.setState({
-			JTFZnickName:event.nativeEvent.text
+			shouZhureniDentityNo:event.nativeEvent.text
 		});
     }
-    getSZRnickName(event){
+
+    getAcceptMoneyName(event){  //收款人姓名
     	this.setState({
-			SZRnickName:event.nativeEvent.text
+			acceptMoneyName:event.nativeEvent.text
 		});
     }
-    getFQRnickName(event){
+
+    getAcceptMoneyPhone(event){ //收款人垫还
     	this.setState({
-			FQRnickName:event.nativeEvent.text
+			acceptMoneyPhone:event.nativeEvent.text
 		});
     }
+
     getCNtype(event){
     	this.setState({
 			chengnuoType:event.nativeEvent.text
@@ -181,6 +201,7 @@ export default class AddHelpMan extends Component{
 			chengnuoContent:event.nativeEvent.text
 		});
     }
+
     getTargetMoney(event){
     	this.setState({
 			targetMoney:event.nativeEvent.text
@@ -196,6 +217,7 @@ export default class AddHelpMan extends Component{
 			description:event.nativeEvent.text
 		});
     }
+
    switchFun(e){
    	 //console.log(e);
    	 this.setState({
@@ -203,17 +225,14 @@ export default class AddHelpMan extends Component{
    	 });
    }
    sliderEnd(days){
-   	 	let now = new Date();
-   	 	
+   	 	let now = new Date();  	 	
    	 	this.setState({
    	 		endDate:formDate(now, days),
    	 		sliderValue:days
    	 	});
    	}
    componentDidMount(){
-       let startDate=formTime();
-   	   //console.log(startDate);
-	 
+      
 	}
 	/* 选择上传图片处理函数*/
 	selectPicture(tag){
@@ -228,9 +247,9 @@ export default class AddHelpMan extends Component{
     	ImagePicker.showImagePicker(options, (response) => {
 
 			if (response.didCancel) {
-			      console.log('User cancelled image picker');
+			      //console.log('User cancelled image picker');
 			}else if (response.error) {
-			      console.log('ImagePicker Error:',response.error);
+			      //console.log('ImagePicker Error:',response.error);
 			}else if (response.customButton) {
 			      console.log('User tapped custom button:',response.customButton);
 			}else {
@@ -296,55 +315,55 @@ export default class AddHelpMan extends Component{
 					  	<Text>证明信息</Text>
 					</View>
 					<View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>认证机构:</Text>
+	                    <Text style={styles.authoText}>受助人所在城市:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}	                         
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'填写所在地某一大学爱心社'}
-	                        onChange={this.getAXSbnickName.bind(this)}/>
+	                        placeholder={'重要，如“临沂市”'}
+	                        onChange={this.getCityName.bind(this)}/>
 	                </View>
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>监督小组:</Text>
+	                    <Text style={styles.authoText}>受助人姓名:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'填写与大学爱心社对应的监督处'}
-	                        onChange={this.getJDnickName.bind(this)}/>
+	                        placeholder={'填写受助人真实姓名'}
+	                        onChange={this.getShouZhurenName.bind(this)}/>
 	                </View>
 	             
 	                <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>具体负责人:</Text>
+	                    <Text style={styles.authoText}>受助人身份证号:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}                       
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'普通用户发起的不必填写'}
-	                        onChange={this.getJTFZnickName.bind(this)}/>
+	                        placeholder={'身份证号'}
+	                        onChange={this.getShouZhureniDentityNo.bind(this)}/>
 	                </View>
 	                  <View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>受助人:</Text>
+	                    <Text style={styles.authoText}>收款人姓名:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}	                       
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'受助人昵称，不能有空格'}
-	                        onChange={this.getSZRnickName.bind(this)}/>
+	                        placeholder={'收款人姓名'}
+	                        onChange={this.getAcceptMoneyName.bind(this)}/>
 	                </View>
 					<View style={styles.commonInputWrapper}>
-	                    <Text style={styles.authoText}>发起人:</Text>
+	                    <Text style={styles.authoText}>收款人联系电话:</Text>
 	                    <TextInput 
 	                        style={styles.authCode}	                        
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'发起人昵称'}
-	                        onChange={this.getFQRnickName.bind(this)}/>
+	                        placeholder={'可随时联系到'}
+	                        onChange={this.getAcceptMoneyPhone.bind(this)}/>
 	                </View>
 	              
 	               <View style={styles.onclose}>
@@ -372,12 +391,20 @@ export default class AddHelpMan extends Component{
 	                		value={this.state.yyZhengming}/>
 	                </View>
 	                <View style={styles.onclose}>
-	               		<Text>是否有其它权威证明？</Text>
+	               		<Text>是否有贫困证明？</Text>
 	                	<Switch 
 	                	    disabled={false}
 	                	    style={styles.switchStyle}
-	                		onValueChange={(value) => this.setState({qtZhengming: value})}
-	                		value={this.state.qtZhengming}/>
+	                		onValueChange={(value) => this.setState({pinkunZhengming: value})}
+	                		value={this.state.pinkunZhengming}/>
+	                </View>
+	                <View style={styles.onclose}>
+	               		<Text>是否有收款人关系证明？</Text>
+	                	<Switch 
+	                	    disabled={false}
+	                	    style={styles.switchStyle}
+	                		onValueChange={(value) => this.setState({relationZhengming: value})}
+	                		value={this.state.relationZhengming}/>
 	                </View>
 	                <View style={styles.headerDesp}>
 					  	<Text>受助人承诺</Text>
@@ -405,7 +432,7 @@ export default class AddHelpMan extends Component{
 	                        onChange={this.getChengnuoContent.bind(this)}/>
 	                </View>
 	                <View style={styles.headerDesp}>
-					  		<Text>捐款信息</Text>
+					  	<Text>捐款信息</Text>
 					</View>
 	                <View style={styles.commonInputWrapper}>
 	                    <Text style={styles.authoText}>目标金额</Text>
@@ -447,17 +474,17 @@ export default class AddHelpMan extends Component{
 	                        placeholderTextColor={'#CCCCCC'}
 	                        underlineColorAndroid={'rgba(0,0,0,0)'}
 	                        keyboardType={'default'}
-	                        placeholder={'简要概述情况，不得超过50字'}
+	                        placeholder={'简要概述情况，12字以内'}
 	                        onChange={this.getMoneyTitle.bind(this)}/>
 	                </View>    
 	                <Text style={{marginTop:2,marginLeft:17,fontSize:16}}>具体情况</Text>
 				    <View style={styles.commonStyle}>
 						<TextInput 
 							style={styles.affirmStyle}
-							placeholder={'被救助人情况描述，400字以内'}
+							placeholder={'被救助人情况描述，800字以内'}
 							placeholderTextColor={'#CCCCCC'}
 							multiline={true}
-							maxLength={400}
+							maxLength={800}
 							onChange={this.getDescription.bind(this)}/>
 					</View>      
 					<Text style={{fontSize:16,marginTop:4,paddingLeft:5}}>上传身份证有关信息</Text>
@@ -490,7 +517,7 @@ export default class AddHelpMan extends Component{
 							<Image key={7} source={this.state.imgSevenUrl} style={styles.uploadImg}  resizeMode={'cover'}/>
 						</TouchableOpacity>
 					</View>
-					<View style={{height:200}}></View>
+					<View style={{height:100}}></View>
 				</ScrollView>
 				
 			</View>

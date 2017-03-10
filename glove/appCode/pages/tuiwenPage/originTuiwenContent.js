@@ -11,7 +11,8 @@ import{
 	ListView,
 	PixelRatio,
 	Platform,
-	Dimensions
+	Dimensions,
+	Alert
 } from 'react-native';
 import React,{Component} from 'react';
 import WoPage from '../woPage/woPage';
