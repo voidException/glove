@@ -20,7 +20,7 @@ var dismissKeyboard = require('dismissKeyboard');
 let ratio = PixelRatio.get();
 //对于包含多个输入域的
 
-export default class DengLuFragment extends Component{
+class DengLuFragment extends Component{
 	constructor(props){
 		super(props);
 		this.state={
